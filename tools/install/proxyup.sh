@@ -30,7 +30,6 @@ APP_NAME="Scrapoxy"
 ###############
 
 USAGE="Usage: $0 {start|stop|restart|status}"
-FORCE_OP=false
 
 pid_file_exists() {
     [ -f "$PID_FILE" ]
@@ -77,12 +76,9 @@ start_app() {
             exit 1
         else
             echo "$APP_NAME stopped, but pid file exists"
-            if [ $FORCE_OP = true ]
-            then
-                echo "Forcing start anyways"
-                remove_pid_file
-                start_it
-            fi
+            echo "Forcing start anyways"
+            remove_pid_file
+            start_it
         fi
     else
         start_it
@@ -126,10 +122,6 @@ status_app() {
 }
 
 case "$2" in
-    --force)
-        FORCE_OP=true
-    ;;
-
     "")
     ;;
 
