@@ -100,14 +100,9 @@ stop_app() {
             echo "$APP_NAME stopped"
         else
             echo "$APP_NAME already stopped, but pid file exists"
-            if [ $FORCE_OP = true ]
-            then
-                echo "Forcing stop anyways ..."
-                remove_pid_file
-                echo "$APP_NAME stopped"
-            else
-                exit 1
-            fi
+            echo "Forcing stop anyways ..."
+            remove_pid_file
+            echo "$APP_NAME stopped"
         fi
     else
         echo "$APP_NAME already stopped, pid file does not exist"
