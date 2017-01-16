@@ -29,7 +29,7 @@ APP_NAME="Scrapoxy"
 
 ###############
 
-USAGE="Usage: $0 {start|stop|restart|status} [--force]"
+USAGE="Usage: $0 {start|stop|restart|status}"
 FORCE_OP=false
 
 pid_file_exists() {
