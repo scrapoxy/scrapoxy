@@ -157,13 +157,11 @@ module.exports = class Manager extends EventEmitter {
 
                     winston.debug('[Manager] adjustInstances: remove %d instances', count);
 
-                    const models = _(Array.from(self._managedInstances.values()))
+                    const instances =_(Array.from(self._managedInstances.values()))
                         .sample(count)
-                        .map((instance) => instance.model) // get function
-                        .filter((model) => !model.locked) // only unlocked instance can be removed
+                        .filter((instance) => !instance.model.locked) // only unlocked instance can be removed
                         .value();
-
-                    return self._provider.removeInstances(models);
+                    return Promise.map(instances, (instance) => instance.remove());
                 }
                 else if (managedCount < self._config.scaling.required) {
                     // Not enough
