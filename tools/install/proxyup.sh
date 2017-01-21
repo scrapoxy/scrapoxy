@@ -9,7 +9,7 @@ PID_FILE="$PID_DIR/app.pid"
 LOG_DIR="$APP_DIR/log"
 LOG_FILE="$LOG_DIR/app.log"
 NODE_EXEC=$(which node)
-APP_NAME="Scrapoxy"
+APP_NAME="proxyup"
 
 ###############
 
