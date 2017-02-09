@@ -45,10 +45,10 @@ function getBaseDomainForUri(uri) {
 }
 
 
-function convertHostnamePathToUri(hostname, path) {
+function convertHostnamePathToUri(hostname, path, ssl = false) {
     if (hostname) {
         const urlOpts = {
-            protocol: 'http',
+            protocol: ssl ? 'https' : 'http',
             hostname,
         };
 
