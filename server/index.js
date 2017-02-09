@@ -8,6 +8,7 @@ const _ = require('lodash'),
     ProviderDigitalOcean = require('./providers/digitalocean'),
     ProviderOVHCloud = require('./providers/ovhcloud'),
     ProviderVscale = require('./providers/vscale'),
+    ProviderLocal = require('./providers/local'),
     fs = require('fs'),
     moment = require('moment'),
     ovh = require('ovh'),
@@ -151,6 +152,11 @@ function startProxy(configFilename) {
             case 'vscale':
             {
                 return new ProviderVscale(cfg.providers.vscale, cfg.instance.port);
+            }
+
+            case 'local':
+            {
+                return new ProviderLocal();
             }
 
             default:
