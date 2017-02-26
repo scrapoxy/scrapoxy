@@ -5,6 +5,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Allow wrong certificates
 module.exports = {
     proxy: {
         port: 8888,
+        useMitm: false,
+        mitmCaDir: null,
     },
 
     commander: {

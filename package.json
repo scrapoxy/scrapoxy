@@ -37,6 +37,7 @@
         "aws-sdk": "~2.4.1",
         "bluebird": "~3.4.1",
         "commander": "~2.9.0",
+        "http-mitm-proxy": "^0.5.1",
         "kcors": "~1.2.1",
         "koa": "~1.2.0",
         "koa-bodyparser": "~2.2.0",
