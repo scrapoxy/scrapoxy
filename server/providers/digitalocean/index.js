@@ -225,6 +225,7 @@ module.exports = class ProviderDigitalOcean {
                 size: self._config.size,
                 image: imageId,
                 ssh_keys: [sshKeyId],
+                tags: self._config.tags,
             };
 
             return self._api.createDroplet(createOptions);

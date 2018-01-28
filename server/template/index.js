@@ -57,6 +57,7 @@ const template = {
             size: '512mb',
             sshKeyName: 'YOUR SSH KEY (could be: mykey)',
             imageName: 'YOUR SNAPSHOT NAME (could be: forward-proxy)',
+            tags: 'YOUR IMAGE TAGS (could be: ["myTags"])',
         },
 
         {

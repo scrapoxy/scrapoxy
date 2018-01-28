@@ -105,6 +105,7 @@ function getProvidersByType() {
                 sshKeyName: process.env.PROVIDERS_DIGITALOCEAN_SSHKEYNAME,
                 imageName: process.env.PROVIDERS_DIGITALOCEAN_IMAGENAME,
                 name: process.env.PROVIDERS_DIGITALOCEAN_NAME || 'Proxy',
+                tags: process.env.PROVIDERS_DIGITALOCEAN_TAGS,
                 max,
             }];
         }
