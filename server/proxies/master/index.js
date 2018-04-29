@@ -38,7 +38,7 @@ module.exports = class Master {
         self._server = http.createServer();
 
         self._server.on('request', request);
-		self._server.on('connect', connect);
+        self._server.on('connect', connect);
 
 
         ////////////
@@ -52,6 +52,13 @@ module.exports = class Master {
                         'Proxy-Authenticate': 'Basic realm="Scrapoxy"',
                         'Content-Type': 'text/plain',
                     });
+                }
+            }
+
+            // Check requested url against blocklist items
+            for (var blockrule of self._config.blocklist) {
+                if (req.url.indexOf(blockrule) !== -1) {
+                    return writeEnd(res, 403, '[Master] Error: Requested URL matches blocklist rule');
                 }
             }
 
@@ -179,6 +186,13 @@ module.exports = class Master {
                         'Proxy-Authenticate': 'Basic realm="Scrapoxy"',
                         'Connection': 'close',
                     });
+                }
+            }
+
+            // Check requested url against blocklist items
+            for (var blockrule of self._config.blocklist) {
+                if (req.url.indexOf(blockrule) !== -1) {
+                    return writeEnd(socket, 403, '[Master] Error: Requested URL matches blocklist rule');
                 }
             }
 
