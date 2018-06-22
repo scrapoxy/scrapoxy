@@ -75,6 +75,7 @@ Scrapoxy adds to the response an HTTP header **x-cache-proxyname**.
 
 This header contains the name of the proxy.
 
+If you are using HTTPS in `HTTPS CONNECT/Tunnel Mode` Scrapoxy is unable to add this header since the traffic is encrypted.
 
 Can the scraper force the request to go through a specific proxy?
 -----------------------------------------------------------------
