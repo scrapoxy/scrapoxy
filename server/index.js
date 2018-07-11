@@ -103,7 +103,7 @@ function startProxy(configFilename) {
     // Write logs (if specified)
     if (config.logs && config.logs.path) {
         winston.add(winston.transports.File, {
-            filename: `{config.logs.path}/scrapoxy_${moment().format('YYYYMMDD_HHmmss')}.log`,
+            filename: `${config.logs.path}/scrapoxy_${moment().format('YYYYMMDD_HHmmss')}.log`,
             json: false,
             timestamp: true,
         });
