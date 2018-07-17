@@ -41,7 +41,7 @@ Create the package.json::
 
 Add dependencies::
 
-    npm install lodash bluebird cheerio request winston --save
+    npm install lodash bluebird cheerio request winston@2.x --save
 
 
 What are these dependencies ?
