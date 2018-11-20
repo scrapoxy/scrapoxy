@@ -33,7 +33,8 @@ Step 4: Find the public AMI
 ===========================
  
 1. Click on *AMIs*
-2. Search *ami-c74d0db4*
+2. Select *Public images*
+3. Search *ami-c74d0db4*
 
 .. image:: step_1.jpg
 
