@@ -66,7 +66,18 @@ function checkConfig(value, name) {
 
 
 function getProvidersByType() {
-    const providerType = process.env.PROVIDERS_TYPE || 'awsec2';
+    let providersConf = [];
+    let providersType = process.env.PROVIDERS_TYPE.split("|") || ['awsec2'];
+    
+    providersType.forEach(provider => {
+        providersConf.push(getConfProviderByType(provider));
+    });
+
+    return providersConf;
+}
+
+function getConfProviderByType(providerType) {
+
     switch(providerType) {
         case 'awsec2': {
             let max;
@@ -74,7 +85,7 @@ function getProvidersByType() {
                 max = parseInt(process.env.PROVIDERS_AWSEC2_MAX);
             }
 
-            return [{
+            return {
                 type: 'awsec2',
                 accessKeyId: process.env.PROVIDERS_AWSEC2_ACCESSKEYID,
                 secretAccessKey: process.env.PROVIDERS_AWSEC2_SECRETACCESSKEY,
@@ -88,7 +99,7 @@ function getProvidersByType() {
                 },
                 tag: process.env.PROVIDERS_AWSEC2_TAG || 'Proxy',
                 max,
-            }];
+            };
         }
 
         case 'digitalocean': {
@@ -97,7 +108,7 @@ function getProvidersByType() {
                 max = parseInt(process.env.PROVIDERS_DIGITALOCEAN_MAX);
             }
 
-            return [{
+            return {
                 type: 'digitalocean',
                 token: process.env.PROVIDERS_DIGITALOCEAN_TOKEN,
                 region: process.env.PROVIDERS_DIGITALOCEAN_REGION,
@@ -107,7 +118,7 @@ function getProvidersByType() {
                 tags: process.env.PROVIDERS_DIGITALOCEAN_TAGS,
                 name: process.env.PROVIDERS_DIGITALOCEAN_NAME || 'Proxy',
                 max,
-            }];
+            };
         }
 
         case 'ovhcloud': {
@@ -116,7 +127,7 @@ function getProvidersByType() {
                 max = parseInt(process.env.PROVIDERS_OVHCLOUD_MAX);
             }
 
-            return [{
+            return {
                 type: 'ovhcloud',
                 endpoint: process.env.PROVIDERS_OVHCLOUD_ENDPOINT,
                 appKey: process.env.PROVIDERS_OVHCLOUD_APPKEY,
@@ -129,7 +140,7 @@ function getProvidersByType() {
                 snapshotName: process.env.PROVIDERS_OVHCLOUD_SNAPSHOTNAME,
                 name: process.env.PROVIDERS_OVHCLOUD_NAME || 'Proxy',
                 max,
-            }];
+            };
         }
 
         case 'vscale': {
@@ -138,7 +149,7 @@ function getProvidersByType() {
                 max = parseInt(process.env.PROVIDERS_VSCALE_MAX);
             }
 
-            return [{
+            return {
                 type: 'vscale',
                 token: process.env.PROVIDERS_VSCALE_TOKEN,
                 region: process.env.PROVIDERS_VSCALE_REGION,
@@ -147,7 +158,7 @@ function getProvidersByType() {
                 plan: process.env.PROVIDERS_VSCALE_PLAN,
                 name: process.env.PROVIDERS_VSCALE_NAME || 'Proxy',
                 max,
-            }];
+            };
         }
 
         default: {
