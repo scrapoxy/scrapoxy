@@ -89,13 +89,13 @@ module.exports = class Master {
             // Log errors
             req.on('error',
                 (err) => {
-                    winston.error('[Master] Error: request error from client (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                    winston.error('[Master] Error: request error from client (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
                 }
             );
 
             res.on('error',
                 (err) => {
-                    winston.error('[Master] Error: response error from client (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                    winston.error('[Master] Error: response error from client (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
                 }
             );
 
@@ -133,9 +133,9 @@ module.exports = class Master {
             const proxy_req = http.request(proxyOpts);
 
             proxy_req.on('error', (err) => {
-                winston.error('[Master] Error: request error from target (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                winston.error('[Master] Error: request error from target (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
 
-                return writeEndRequest(res, 500, `[Master] Error: request error from target (${req.method} ${req.url} on instance ${instance.toString()}): ${err.toString()}`);
+                return writeEndRequest(res, 500, `[Master] Error: request error from target (${req.method} ${req.url} on instance ${instanceName(instance)}): ${err.toString()}`);
             });
 
             // Start timer
@@ -143,9 +143,9 @@ module.exports = class Master {
 
             proxy_req.on('response', (proxy_res) => {
                 proxy_res.on('error', (err) => {
-                    winston.error('[Master] Error: response error from target (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                    winston.error('[Master] Error: response error from target (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
 
-                    return writeEndRequest(res, 500, `[Master] Error: response error from target (${req.method} ${req.url} on instance ${instance.toString()}): ${err.toString()}`);
+                    return writeEndRequest(res, 500, `[Master] Error: response error from target (${req.method} ${req.url} on instance ${instanceName(instance)}): ${err.toString()}`);
                 });
 
                 proxy_res.on('end', () => {
@@ -201,6 +201,14 @@ module.exports = class Master {
             }
         }
 
+        function instanceName(instance) {
+            // Ensure instance is defined when writing to logs
+            if (instance) {
+                return instance.toString();
+            }
+            return 'n/a';
+        }
+
         function connect(req, socket) {
             // Check auth
             if (self._token) {
@@ -215,13 +223,13 @@ module.exports = class Master {
             // Log errors
             req.on('error',
                 (err) => {
-                    winston.error('[Master] Error: request error from client (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                    winston.error('[Master] Error: request error from client (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
                 }
             );
 
             socket.on('error',
                 (err) => {
-                    winston.error('[Master] Error: socket error from client (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                    winston.error('[Master] Error: socket error from client (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
                 }
             );
 
@@ -266,9 +274,9 @@ module.exports = class Master {
             const proxy_req = http.request(proxyOpts);
 
             proxy_req.on('error', (err) => {
-                winston.error('[Master] Error: request error from client (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                winston.error('[Master] Error: request error from client (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
 
-                return writeEndSocket(socket, 500, `[Master] Error: request error from target (${req.method} ${req.url} on instance ${instance.toString()}): ${err.toString()}`);
+                return writeEndSocket(socket, 500, `[Master] Error: request error from target (${req.method} ${req.url} on instance ${instanceName(instance)}): ${err.toString()}`);
             });
 
             // Start timer
@@ -276,9 +284,9 @@ module.exports = class Master {
 
             proxy_req.on('connect', (instance_req, proxy_socket) => {
                 proxy_socket.on('error', (err) => {
-                    winston.error('[Master] Error: response error from target (%s %s on instance %s):', req.method, req.url, instance.toString(), err);
+                    winston.error('[Master] Error: response error from target (%s %s on instance %s):', req.method, req.url, instanceName(instance), err);
 
-                    return writeEndSocket(socket, 500, `[Master] Error: response error from target (${req.method} ${req.url} on instance ${instance.toString()}): ${err.toString()}`);
+                    return writeEndSocket(socket, 500, `[Master] Error: response error from target (${req.method} ${req.url} on instance ${instanceName(instance)}): ${err.toString()}`);
                 });
 
                 proxy_socket.on('end', () => {
