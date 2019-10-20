@@ -266,6 +266,11 @@ module.exports = class Master {
                 headers: {},
             };
 
+            if (proxyParameters.username && proxyParameters.password) {
+                const usernamePasswordB64 = new Buffer(`${proxyParameters.username}:${proxyParameters.password}`).toString('base64');
+                proxyOpts.headers['proxy-authorization'] = `Basic ${usernamePasswordB64}`;
+            }
+
             const proxy_req = http.request(proxyOpts);
 
             proxy_req.on('error', (err) => {
