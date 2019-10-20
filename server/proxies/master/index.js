@@ -122,6 +122,9 @@ module.exports = class Master {
             // Update headers
             instance.updateRequestHeaders(req.headers);
 
+            // Remove Master auth credentials, if present, as they would otherwise leak to external hosts
+            delete req.headers['proxy-authorization'];
+
             // Make request
             const proxyOpts = _.merge(createProxyOpts(req.url), {
                 method: req.method,
