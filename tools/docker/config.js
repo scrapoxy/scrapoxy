@@ -106,6 +106,7 @@ function getProvidersByType() {
                 imageName: process.env.PROVIDERS_DIGITALOCEAN_IMAGENAME,
                 tags: process.env.PROVIDERS_DIGITALOCEAN_TAGS,
                 name: process.env.PROVIDERS_DIGITALOCEAN_NAME || 'Proxy',
+                tags: process.env.PROVIDERS_DIGITALOCEAN_TAGS,
                 max,
             }];
         }
