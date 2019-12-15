@@ -5,6 +5,9 @@
         "browser": true,
         "jasmine": true
     },
+    "parserOptions": {
+        "ecmaVersion": 2017
+    },
     "ecmaFeatures": {
         "modules": true
     },

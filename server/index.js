@@ -3,21 +3,22 @@
 'use strict';
 
 const _ = require('lodash'),
-    Promise = require('bluebird'),
-    ProviderAWSEC2 = require('./providers/awsec2'),
-    ProviderDigitalOcean = require('./providers/digitalocean'),
-    ProviderOVHCloud = require('./providers/ovhcloud'),
-    ProviderVscale = require('./providers/vscale'),
-    fs = require('fs'),
-    moment = require('moment'),
-    ovh = require('ovh'),
-    path = require('path'),
-    program = require('commander'),
-    Proxies = require('./proxies'),
-    sigstop = require('./common/sigstop'),
-    template = require('./template'),
-    TestProxy = require('./test-proxy'),
-    winston = require('winston');
+  Promise = require('bluebird'),
+  ProviderGCP = require('./providers/gcp'),
+  ProviderAWSEC2 = require('./providers/awsec2'),
+  ProviderDigitalOcean = require('./providers/digitalocean'),
+  ProviderOVHCloud = require('./providers/ovhcloud'),
+  ProviderVscale = require('./providers/vscale'),
+  fs = require('fs'),
+  moment = require('moment'),
+  ovh = require('ovh'),
+  path = require('path'),
+  program = require('commander'),
+  Proxies = require('./proxies'),
+  sigstop = require('./common/sigstop'),
+  template = require('./template'),
+  TestProxy = require('./test-proxy'),
+  winston = require('winston');
 
 const configDefaults = require('./config.defaults');
 
@@ -142,30 +143,34 @@ function startProxy(configFilename) {
 
         function getProvider(provider) {
             switch (provider.type) {
-                case 'awsec2':
-                {
-                    return new ProviderAWSEC2(provider, cfg.instance.port);
-                }
+              case 'awsec2': 
+              {
+                return new ProviderAWSEC2(provider, cfg.instance.port);
+              }
+              case 'gcp': 
+              {
+                return new ProviderGCP(provider, cfg.instance.port);
+              }
 
-                case 'digitalocean':
-                {
-                    return new ProviderDigitalOcean(provider, cfg.instance.port);
-                }
+              case 'digitalocean': 
+              {
+                return new ProviderDigitalOcean(provider, cfg.instance.port);
+              }
 
-                case 'ovhcloud':
-                {
-                    return new ProviderOVHCloud(provider, cfg.instance.port);
-                }
+              case 'ovhcloud': 
+              {
+                return new ProviderOVHCloud(provider, cfg.instance.port);
+              }
 
-                case 'vscale':
-                {
-                    return new ProviderVscale(provider, cfg.instance.port);
-                }
+              case 'vscale': 
+              {
+                return new ProviderVscale(provider, cfg.instance.port);
+              }
 
-                default:
-                {
-                    return;
-                }
+              default: 
+              {
+                return;
+              }
             }
         }
     }
