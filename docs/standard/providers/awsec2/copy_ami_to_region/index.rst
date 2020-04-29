@@ -33,7 +33,8 @@ Step 4: Find the public AMI
 ===========================
  
 1. Click on *AMIs*
-2. Search *ami-c74d0db4*
+2. Select the drop-down and choose 'Public images' (Not pictured below as Scrapoxy is the owner/creator of the image)
+3. Search *ami-c74d0db4*
 
 .. image:: step_1.jpg
 
