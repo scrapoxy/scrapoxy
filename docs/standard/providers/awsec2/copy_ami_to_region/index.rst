@@ -5,7 +5,7 @@ Tutorial: AWS / EC2 - Copy an AMI from a region to another
 
 AMI (and security groups) are restricted to a region.
 
-A AMI in eu-west-1 is not available in eu-central-1.
+An AMI in eu-west-1 is not available in eu-central-1.
 
 .. warning::
     You must create an AMI **by region**.
