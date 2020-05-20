@@ -12,6 +12,7 @@ if (emptyConfig(process.env.PROVIDERS_TYPE)) {
 module.exports = {
     proxy: {
         port: parseInt(process.env.PROXY_PORT || '8888'),
+        ...setProxyAuthentication()
     },
 
     commander: {
@@ -64,6 +65,17 @@ function checkConfig(value, name) {
     }
 }
 
+function setProxyAuthentication() {
+    if (process.env.PROXY_AUTH_USERNAME && process.env.PROXY_AUTH_PASSWORD) {
+        return {
+            auth: {
+                username: process.env.PROXY_AUTH_USERNAME,
+                password: process.env.PROXY_AUTH_PASSWORD
+            }
+        }
+    }
+    return {}
+}
 
 function getProvidersByType() {
     const providerType = process.env.PROVIDERS_TYPE || 'awsec2';
