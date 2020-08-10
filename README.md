@@ -8,7 +8,7 @@ Scrapoxy **hides** your scraper behind a cloud.
 
 It starts a pool of proxies to send your requests.
 
-Now, you can crawl without thinking about blacklisting!
+Now, you can crawl without thinking about blocklisting!
 
 It is written in Javascript (ES6) with [Node.js](https://nodejs.org) & [AngularJS](https://angularjs.org) and it is **open source**!
 

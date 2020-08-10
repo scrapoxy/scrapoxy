@@ -14,7 +14,7 @@ Scrapoxy **hides** your scraper behind a cloud.
 
 It starts a pool of proxies to send your requests.
 
-Now, you can crawl without thinking about blacklisting!
+Now, you can crawl without thinking about blocklisting!
 
 It is written in Javascript (ES6) with `Node.js`_ & AngularJS_ and it is **open source**!
 
@@ -36,18 +36,18 @@ What Scrapoxy does ?
 - Use multiple cloud providers (AWS_, DigitalOcean_, OVH_, Vscale_)
 - Rotate IP addresses
 - Impersonate known browsers
-- Exclude blacklisted instances
+- Exclude blocklisted instances
 - Monitor the requests
 - Detect bottleneck
 - Optimize the scraping
 
 
-Why Scrapoxy doesn't support anti-blacklisting ?
+Why Scrapoxy doesn't support anti-blocklisting ?
 ------------------------------------------------
 
-Anti-blacklisting is a job for the scraper.
+Anti-blocklisting is a job for the scraper.
 
-When the scraper detects blacklisting, it asks Scrapoxy to remove the proxy from the proxies pool (through a REST API).
+When the scraper detects blocklisting, it asks Scrapoxy to remove the proxy from the proxies pool (through a REST API).
 
 
 What is the best scraper framework to use with Scrapoxy ?
@@ -120,7 +120,7 @@ And complete with :ref:`tutorials-docs`.
 
    tutorials/python-scrapy/index
    tutorials/nodejs-request/index
-   tutorials/python-scrapy-blacklisting/index
+   tutorials/python-scrapy-blocklisting/index
 
 
 Prerequisite

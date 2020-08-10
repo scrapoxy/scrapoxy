@@ -19,7 +19,7 @@ Features
 --------
 
 - **mitm**: decrypt & encrypt SSL requests to add headers (like **x-cache-proxyname**). Compatible with HTTPS requests in PhantomJS_.
-- **domains**: manage whitelist or blacklist for urls (idea from Jonathan Wiklund)
+- **domains**: manage allowlist or blocklist for urls (idea from Jonathan Wiklund)
 - **docs**: add **ami-485fbba5** with type t2.micro
 
 

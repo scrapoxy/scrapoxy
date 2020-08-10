@@ -108,7 +108,7 @@ module.exports = class Stats extends EventEmitter {
         ++this._counter.stop_order_count_now;
 
         if (!count) {
-            // Don't add immediate blacklisting
+            // Don't add immediate blocklisting
             return;
         }
 

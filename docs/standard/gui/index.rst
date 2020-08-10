@@ -172,8 +172,8 @@ This panel has 4 indicators:
 
 - the total **count of requests** to monitor performance;
 - the total **count of received and sent data** to control the volume of data;
-- the total of **stop instance orders**, to monitor anti-blacklisting;
-- the **count of requests received by an instance** (minimum, average, maximum) to check anti-blacklisting performance.
+- the total of **stop instance orders**, to monitor anti-blocklisting;
+- the **count of requests received by an instance** (minimum, average, maximum) to check anti-blocklisting performance.
 
 
 Requests

@@ -102,24 +102,24 @@ Yes. When an instance starts (or restarts), it gets a random User Agent (from th
 When the instance receives a request, it **overrides** the User Agent.
 
 
-Blacklisting
+blocklisting
 ============
 
-How can you manage blacklisted response ?
+How can you manage blocklisted response ?
 -----------------------------------------
 
-Remember, Scrapoxy cannot detect blacklisted response because it is too specific to a scraping usecase.
+Remember, Scrapoxy cannot detect blocklisted response because it is too specific to a scraping usecase.
 It can be a 503 HTTP response, a captcha, a longer response, etc.
 
-Anti-blacklisting is **a job for the scraper**:
+Anti-blocklisting is **a job for the scraper**:
 
-1. The scraper must detect a blacklisted response;
+1. The scraper must detect a blocklisted response;
 2. The scraper extracts the name of the instance from the HTTP response header (see :ref:`here <instance-name>`);
 3. The scraper asks to Scrapoxy to remove the instance with the API (see `here <../api/index.html#stop-an-instance>`_).
 
-When the blacklisted response is detected, Scrapoxy will replace the instance with a valid one (new IP address).
+When the blocklisted response is detected, Scrapoxy will replace the instance with a valid one (new IP address).
 
-There is a tutorial: :doc:`../../tutorials/python-scrapy-blacklisting/index`.
+There is a tutorial: :doc:`../../tutorials/python-scrapy-blocklisting/index`.
 
 
 Instances management
