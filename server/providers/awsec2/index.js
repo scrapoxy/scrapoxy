@@ -227,6 +227,13 @@ module.exports = class ProviderAWSEC2 {
                     MinCount: cnt,
                     MaxCount: cnt,
                     InstanceInitiatedShutdownBehavior: 'terminate',
+                    InstanceMarketOptions: {
+                        MarketType: "spot",
+                        SpotOptions:{
+                            InstanceInterruptionBehavior: "terminate",
+                            SpotInstanceType: "one-time"
+                        }
+                    },
                     Monitoring: {
                         Enabled: false,
                     },
