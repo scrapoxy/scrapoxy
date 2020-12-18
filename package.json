@@ -34,7 +34,7 @@
         "webscraping"
     ],
     "dependencies": {
-        "@google-cloud/compute": "^1.1.8",
+        "@google-cloud/compute": "^2.4.1",
         "aws-sdk": "~2.171.0",
         "bluebird": "~3.5.1",
         "body-parser": "~1.18.2",
@@ -42,22 +42,22 @@
         "compression": "~1.7.1",
         "cors": "~2.8.4",
         "express": "~4.16.2",
-        "lodash": "~4.17.4",
+        "lodash": "^4.17.20",
         "moment": "~2.19.4",
         "morgan": "~1.9.0",
         "ovh": "~2.0.1",
-        "request": "~2.83.0",
+        "request": "^2.88.2",
         "socket.io": "~2.0.4",
         "winston": "~2.4.0"
     },
     "devDependencies": {
         "chai": "~4.1.2",
         "eslint": "~4.13.1",
-        "gulp": "~3.9.1",
+        "gulp": "^4.0.2",
         "gulp-eslint": "~4.0.0",
         "gulp-exit": "~0.0.2",
-        "gulp-load-plugins": "~1.5.0",
-        "gulp-mocha": "~4.3.1",
+        "gulp-load-plugins": "^2.0.6",
+        "gulp-mocha": "^7.0.2",
         "interpret": "~1.1.0",
         "multimatch": "~2.1.0"
     },
