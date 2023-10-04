@@ -1,6 +1,6 @@
 # Scrapoxy
 
-![Scrapoxy](docs/logo.png)
+![scrapoxy](https://github.com/fabienvauchelles/scrapoxy/assets/2435319/36ca6457-bd78-41cd-ae2d-8dd3b8839fb9)
 
 http://scrapoxy.io
 
