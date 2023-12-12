@@ -1,0 +1,24 @@
+<c-card [class]="cssClasses">
+    <c-card-header>
+        <c-row>
+            <c-col>
+                <div class="range-value">{{ avg }}</div>
+                <div class="range-title">{{ label }}</div>
+            </c-col>
+        </c-row>
+    </c-card-header>
+
+    <c-card-body>
+        <c-row>
+            <c-col>
+                <div class="range-value">{{ min }}</div>
+                <div class="range-title">min</div>
+            </c-col>
+            <div class="vr"></div>
+            <c-col>
+                <div class="range-value">{{ max }}</div>
+                <div class="range-title">max</div>
+            </c-col>
+        </c-row>
+    </c-card-body>
+</c-card>

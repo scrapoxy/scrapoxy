@@ -1,0 +1,120 @@
+{
+    "name": "frontend-app",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/frontend/app",
+    "sourceRoot": "packages/frontend/app/src",
+    "projectType": "application",
+    "prefix": "scrapoxy",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:application",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "outputPath": "dist/frontend",
+                "index": "packages/frontend/app/src/index.html",
+                "browser": "packages/frontend/app/src/main.ts",
+                "polyfills": ["zone.js"],
+                "tsConfig": "packages/frontend/app/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                    "packages/frontend/app/src/assets"
+                ],
+                "styles": [
+                    "jsvectormap/dist/css/jsvectormap.css",
+                    "packages/frontend/app/src/scss/style.scss"
+                ],
+                "scripts": [],
+                "allowedCommonJsDependencies": [
+                    "chart.js",
+                    "@coreui/chartjs/dist/js/corefrontend-chartjs.js",
+                    "jsvectormap",
+                    "socket.io-client"
+                ],
+                "extractLicenses": false,
+                "optimization": false,
+                "sourceMap": true,
+                "namedChunks": true
+            },
+            "configurations": {
+                "production": {
+                    "fileReplacements": [
+                        {
+                            "replace": "packages/frontend/app/src/environments/environment.ts",
+                            "with": "packages/frontend/app/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "optimization": {
+                        "scripts": true,
+                        "styles": {
+                            "minify": true,
+                            "inlineCritical": false
+                        },
+                        "fonts": true
+                    },
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "6mb",
+                            "maximumError": "10mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "6kb",
+                            "maximumError": "10kb"
+                        }
+                    ],
+                    "outputHashing": "all"
+                }
+            }
+        },
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "options": {
+                "buildTarget": "frontend-app:build",
+                "port": 8890,
+                "proxyConfig": "packages/frontend/app/proxy.conf.json",
+                "disableHostCheck": true
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "frontend-app:build:production"
+                }
+            }
+        },
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "buildTarget": "frontend-app:build"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/frontend/app/src/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/frontend/app/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/frontend/app/src/**/{*,*.*}.html"
+            }
+        }
+    },
+    "tags": []
+}

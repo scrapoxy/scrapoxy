@@ -1,0 +1,197 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Metrics</c-breadcrumb-item>
+        </c-breadcrumb>
+
+        <c-button-group role="group">
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                [active]="currentWindow === 0"
+                (click)="updateWindow(0)">
+                1m
+            </button>
+
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                [active]="currentWindow === 1"
+                (click)="updateWindow(1)">
+                5m
+            </button>
+
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                [active]="currentWindow === 2"
+                (click)="updateWindow(2)">
+                10m
+            </button>
+
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                [active]="currentWindow === 3"
+                (click)="updateWindow(3)">
+                1h
+            </button>
+
+            <!-- no window where currentWindow === 4 -->
+
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                [active]="currentWindow === 5"
+                (click)="updateWindow(5)">
+                5h
+            </button>
+
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                [active]="currentWindow === 6"
+                (click)="updateWindow(6)">
+                1d
+            </button>
+        </c-button-group>
+    </c-container>
+</div>
+
+@if (client.store?.view?.project; as projectMetrics) {
+    <c-container fluid class="container-main">
+        <c-row>
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="received" color="success" [value]="projectMetrics.bytesReceived | fileUnit">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilCloudDownload" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="sent" color="warning" [value]="projectMetrics.bytesSent | fileUnit">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilCloudUpload" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="requests" color="success" [value]="projectMetrics.requests">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilTransfer" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="stops" color="warning" [value]="projectMetrics.stops">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilFaceDead" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f
+                    title="received rate"
+                    color="success"
+                    [value]="projectMetrics.bytesReceivedRate | fileUnit: '/s'">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilArrowCircleBottom" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f
+                    title="sent rate"
+                    color="warning"
+                    [value]="projectMetrics.bytesSentRate | fileUnit: '/s'">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilArrowCircleTop" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="proxies created" color="success" [value]="projectMetrics.proxiesCreated">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilHappy" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="proxies removed" color="warning" [value]="projectMetrics.proxiesRemoved">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilFrown" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6">
+                <widget-range
+                    color="primary"
+                    [avg]="requestsBeforeStopAvg | numberUnit"
+                    label="Avg Requests Before Stop"
+                    [min]="projectMetrics.requestsBeforeStop.min || 0 | numberUnit"
+                    [max]="projectMetrics.requestsBeforeStop.max || 0 | numberUnit"></widget-range>
+            </c-col>
+
+            <c-col md="6">
+                <widget-range
+                    color="success"
+                    [avg]="uptimeBeforeStopAvg | timeUnit"
+                    label="Avg Uptime Before Stop"
+                    [min]="projectMetrics.uptimeBeforeStop.min || 0 | timeUnit"
+                    [max]="projectMetrics.uptimeBeforeStop.max || 0 | timeUnit"></widget-range>
+            </c-col>
+
+            <c-col md="6">
+                <c-card>
+                    <c-card-header>Data received & sent</c-card-header>
+                    <c-card-body>
+                        <c-chart [data]="bytesData" [options]="bytesChartOptions" type="line"></c-chart>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+
+            <c-col md="6">
+                <c-card>
+                    <c-card-header>Requests sent</c-card-header>
+                    <c-card-body>
+                        <c-chart [data]="requestsData" [options]="requestsChartOptions" type="line"></c-chart>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+
+            <c-col md="6">
+                <c-card>
+                    <c-card-header>Stop orders received</c-card-header>
+                    <c-card-body>
+                        <c-chart [data]="stopsData" [options]="stopsChartOptions" type="line"></c-chart>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+        </c-row>
+    </c-container>
+}

@@ -1,0 +1,37 @@
+{
+    "name": "frontend-sdk",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/frontend-sdk",
+    "sourceRoot": "packages/frontend-sdk/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/frontend-sdk",
+                "main": "packages/frontend/sdk/src/index.ts",
+                "tsConfig": "packages/frontend/sdk/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/frontend/sdk/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/frontend/sdk/**/*.ts"
+                ],
+                "fix": true
+            }
+        }
+    },
+    "tags": []
+}

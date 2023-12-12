@@ -1,0 +1,80 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId, 'connectors']">Connectors</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId, 'connectors', connectorId]">
+                {{ connector?.name }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Scale</c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+<c-container fluid class="container-main">
+    <c-row>
+        <c-col>
+            <form cForm [formGroup]="form" (ngSubmit)="update()">
+                <c-card class="card-form">
+                    <c-card-header>Connector Scaling</c-card-header>
+
+                    <c-card-body class="loading" [ngClass]="{finished: !!connector}">
+                        <c-row>
+                            <label cLabel cCol md="2">Name</label>
+
+                            <c-col md="10">
+                                {{ connector?.name }}
+                            </c-col>
+                        </c-row>
+
+                        @if (form.controls['proxiesMax']; as c) {
+                            <c-row>
+                                <label cLabel cCol md="2" for="proxiesMax"># Proxies</label>
+
+                                <c-col md="10">
+                                    <input
+                                        type="number"
+                                        cFormControl
+                                        id="proxiesMax"
+                                        formControlName="proxiesMax"
+                                        placeholder="Enter the number of proxies for this connector"
+                                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                                    @if (c.dirty || c.touched) {
+                                        <c-form-feedback [valid]="c.valid">
+                                            @if (c.errors; as errs) {
+                                                @if (errs['required']) {
+                                                    <div># Proxies is required.</div>
+                                                }
+                                                @if (errs['min']) {
+                                                    <div># Proxies should be at least 1</div>
+                                                }
+                                            }
+                                        </c-form-feedback>
+                                    }
+                                </c-col>
+                            </c-row>
+                        }
+                    </c-card-body>
+
+                    <c-card-footer>
+                        <button
+                            cButton
+                            type="submit"
+                            color="primary"
+                            [loading]="processing"
+                            [disabled]="!form.valid || form.pristine">
+                            Update
+                        </button>
+
+                        <a cButton color="secondary" [routerLink]="['/projects', projectId, 'connectors']">Back</a>
+                    </c-card-footer>
+                </c-card>
+            </form>
+        </c-col>
+    </c-row>
+</c-container>

@@ -1,0 +1,24 @@
+.card-header {
+    border-bottom: $card-header-border-bottom !important;
+
+    font-size: 1rem;
+    font-weight: 500 !important;
+}
+
+.card-footer {
+    border-top: $card-footer-border-top !important;
+
+    .btn:not(:first-child) {
+        margin-left: 0.5rem;
+    }
+}
+
+.card-form {
+    .card-body .row {
+        margin-bottom: var(--cui-card-spacer-y);
+    }
+
+    .card-header {
+        font-weight: bolder;
+    }
+}

@@ -1,0 +1,3 @@
+export const AUTH_LOCAL_NAME = 'local';
+
+export const AUTH_LOCAL_MODULE_CONFIG = 'AUTH_LOCAL_MODULE_CONFIG';

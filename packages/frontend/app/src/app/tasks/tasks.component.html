@@ -1,0 +1,83 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Tasks</c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+<c-container fluid class="container-main">
+    <c-row>
+        <c-col>
+            <c-card>
+                <c-card-header>Tasks</c-card-header>
+
+                <c-card-body>
+                    @if (client.tasks.length <= 0) {
+                        There is no task.
+                    } @else {
+                        <table cTable small>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Type</th>
+
+                                    <th scope="col">Start at</th>
+
+                                    <th scope="col">End at</th>
+
+                                    <th scope="col" class="task-step">Step</th>
+
+                                    <th class="col-actions"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @for (task of client.tasks; track task.id) {
+                                    <tr
+                                        [ngClass]="{
+                                            error: isTaskFailed(task),
+                                            success: isTaskSucceed(task)
+                                        }">
+                                        <td>{{ task.type }}</td>
+                                        <td>
+                                            {{ task.startAtTs | date: 'dd/MM/yyyy HH:mm' }}
+                                        </td>
+                                        <td>
+                                            @if (task.endAtTs) {
+                                                {{ task.endAtTs | date: 'dd/MM/yyyy HH:mm' }}
+                                            } @else {
+                                                -
+                                            }
+                                        </td>
+                                        <td class="task-step">
+                                            <c-progress>
+                                                <c-progress-bar [max]="task.stepMax" [value]="task.stepCurrent">
+                                                    {{ task.stepCurrent }} /
+                                                    {{ task.stepMax }}
+                                                </c-progress-bar>
+                                            </c-progress>
+                                        </td>
+                                        <td class="col-actions">
+                                            <a
+                                                cButton
+                                                color="secondary"
+                                                variant="outline"
+                                                [routerLink]="['/projects', projectId, 'tasks', task.id]">
+                                                <svg cIcon name="cilZoom"></svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>

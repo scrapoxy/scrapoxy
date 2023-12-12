@@ -1,0 +1,185 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['zone']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="zone">Zone</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="zone"
+                        formControlName="zone"
+                        (change)="zoneChanged()"
+                        [attr.disabled]="processingZones ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Zone ------</option>
+                        @for (zone of zones; track zone) {
+                            <option [ngValue]="zone">{{ zone }}</option>
+                        }
+                    </select>
+
+                    @if (processingZones) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['port']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="port">Port</label>
+
+            <c-col md="10">
+                <input
+                    type="number"
+                    cFormControl
+                    id="port"
+                    formControlName="port"
+                    placeholder="Enter the Port"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Port is required.</div>
+                            }
+                            @if (errs['min'] || errs['max']) {
+                                <div>Port should be between 1024 and 65535.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['machineType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="machineType">Machine Type</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="machineType"
+                        formControlName="machineType"
+                        [attr.disabled]="processingMachineTypes ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Machine Type ------</option>
+                        @for (machineType of machineTypes; track machineType) {
+                            <option [ngValue]="machineType">
+                                {{ machineType }}
+                            </option>
+                        }
+                    </select>
+
+                    @if (processingMachineTypes) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['templateName']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="templateName">Template Name</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="templateName"
+                    formControlName="templateName"
+                    placeholder="Enter the Template Name"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Template Name is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['networkName']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="networkName">Network Name</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="networkName"
+                    formControlName="networkName"
+                    placeholder="Enter the Network Name"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Network Name is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['label']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="label">Label</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="label"
+                    formControlName="label"
+                    placeholder="Enter the label"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Label is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['firewallName']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="firewallName">Firewall Name</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="firewallName"
+                    formControlName="firewallName"
+                    placeholder="Enter the Firewall Name"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Firewall Name is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>

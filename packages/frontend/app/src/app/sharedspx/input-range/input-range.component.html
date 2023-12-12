@@ -1,0 +1,23 @@
+<input
+    type="text"
+    class="form-control"
+    [ngClass]="{
+        'is-invalid': validValue === false,
+        'is-valid': validValue === true
+    }"
+    [disabled]="disabled"
+    [value]="min"
+    (keyup)="onMinChange($event)"
+    (focus)="markAsTouched()" />
+-
+<input
+    type="text"
+    class="form-control"
+    [ngClass]="{
+        'is-invalid': validValue === false,
+        'is-valid': validValue === true
+    }"
+    [disabled]="disabled"
+    [value]="max"
+    (keyup)="onMaxChange($event)"
+    (focus)="markAsTouched()" />

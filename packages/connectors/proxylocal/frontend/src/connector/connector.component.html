@@ -1,0 +1,17 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['region']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="region">region</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="region"
+                    formControlName="region"
+                    placeholder="Enter the region"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+            </c-col>
+        </c-row>
+    }
+</ng-container>

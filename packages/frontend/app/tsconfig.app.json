@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "declarationMap": true,
+        "inlineSources": true,
+        "types": []
+    },
+    "files": [
+        "src/main.ts"
+    ],
+    "include": [
+        "src/**/*.d.ts"
+    ]
+}

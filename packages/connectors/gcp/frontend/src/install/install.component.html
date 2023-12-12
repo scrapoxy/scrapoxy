@@ -1,0 +1,56 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['diskType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="diskType">Disk Type</label>
+
+            <c-col md="10">
+                <select cSelect id="diskType" formControlName="diskType">
+                    <option [ngValue]="null" disabled>----- Disk Type ------</option>
+                    <option value="pd-standard">Standard persistent disk</option>
+                    <option value="pd-balanced">Balanced persistent disk</option>
+                    <option value="pd-ssd">SSD persistent disk</option>
+                    <option value="pd-extreme">Extreme persistent disk</option>
+                </select>
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Disk Type is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['diskSize']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="diskSize">Disk Size</label>
+
+            <c-col md="10">
+                <input
+                    type="number"
+                    cFormControl
+                    id="diskSize"
+                    name="diskSize"
+                    formControlName="diskSize"
+                    placeholder="Enter the Disk Size"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Disk Size is required.</div>
+                            }
+                            @if (errs['min'] || errs['max']) {
+                                <div>Disk Size should be between 1 and 128.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>

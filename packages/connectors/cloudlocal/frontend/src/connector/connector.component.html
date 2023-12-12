@@ -1,0 +1,68 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['region']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="region">Region</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="region"
+                        formControlName="region"
+                        (change)="regionChanged()"
+                        [attr.disabled]="processingRegions ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Region ------</option>
+                        @for (region of regions; track region.id) {
+                            <option [ngValue]="region.id">{{ region.description }} ({{ region.id }})</option>
+                        }
+                    </select>
+
+                    @if (processingRegions) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['size']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="size">Size</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="size" formControlName="size" [attr.disabled]="processingSizes ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Size ------</option>
+                        @for (size of sizes; track size.id) {
+                            <option [ngValue]="size.id">
+                                {{ size.description }} ({{ size.vcpus }} vCpu, {{ size.memory }}MB)
+                            </option>
+                        }
+                    </select>
+
+                    @if (processingSizes) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['imageId']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="imageId">Image ID</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="imageId"
+                    formControlName="imageId"
+                    placeholder="Enter the image ID"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+            </c-col>
+        </c-row>
+    }
+</ng-container>

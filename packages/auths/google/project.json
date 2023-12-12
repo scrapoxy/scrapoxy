@@ -1,0 +1,48 @@
+{
+    "name": "auth-google",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/auths/google",
+    "sourceRoot": "packages/auths/google/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/auths-google",
+                "main": "packages/auths/google/src/index.ts",
+                "tsConfig": "packages/auths/google/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/auths/google/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/auths/google/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/auths/google/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

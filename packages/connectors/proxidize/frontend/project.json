@@ -1,0 +1,49 @@
+{
+    "name": "connector-proxidize-frontend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/proxidize/frontend",
+    "sourceRoot": "packages/connectors/proxidize/frontend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-proxidize-frontend",
+                "main": "packages/connectors/proxidize/frontend/src/index.ts",
+                "tsConfig": "packages/connectors/proxidize/frontend/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/proxidize/frontend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/proxidize/frontend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/connectors/proxidize/frontend/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/connectors/proxidize/frontend/src/**/{*,*.*}.html"
+            }
+        }
+    },
+    "tags": []
+}

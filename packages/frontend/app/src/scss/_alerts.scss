@@ -1,0 +1,11 @@
+.alert-warning {
+    display: flex !important;
+
+    align-items: center;
+
+    .icon {
+        flex-shrink: 0;
+
+        margin-right: 0.5rem;
+    }
+}

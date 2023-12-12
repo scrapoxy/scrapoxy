@@ -1,0 +1,39 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['packageFilter']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="packageFilter">Package</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="packageFilter"
+                        formControlName="packageFilter"
+                        [attr.disabled]="processingPackages ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Package ------</option>
+                        <option value="all">all</option>
+                        @for (package of packages; track package) {
+                            <option [ngValue]="package">{{ package }}</option>
+                        }
+                    </select>
+
+                    @if (processingPackages) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+
+                    @if (c.dirty || c.touched) {
+                        <c-form-feedback [valid]="c.valid">
+                            @if (c.errors; as errs) {
+                                @if (errs['required']) {
+                                    <div>Package is required.</div>
+                                }
+                            }
+                        </c-form-feedback>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+</ng-container>

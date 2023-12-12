@@ -1,0 +1,40 @@
+<c-sidebar #sidebar="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar" visible>
+    <c-sidebar-brand
+        [brandFull]="{
+            src: 'assets/imgs/scrapoxy-reverse.svg',
+            width: 200,
+            height: 30,
+            alt: 'Scrapoxy'
+        }"
+        [brandNarrow]="{
+            src: 'assets/imgs/scrapoxy-small.svg',
+            width: 30,
+            height: 30,
+            alt: 'Scrapoxy'
+        }"
+        routerLink="/"></c-sidebar-brand>
+
+    <ng-scrollbar pointerEventsMethod="scrollbar">
+        <c-sidebar-nav [navItems]="navItems" dropdownMode="close"></c-sidebar-nav>
+    </ng-scrollbar>
+
+    @if (!sidebar.narrow) {
+        <c-sidebar-toggler toggle="unfoldable" cSidebarToggle="sidebar"></c-sidebar-toggler>
+    }
+</c-sidebar>
+
+<div class="wrapper">
+    <app-layout-header
+        class="d-print-none header header-sticky"
+        position="sticky"
+        sidebarId="sidebar"></app-layout-header>
+
+    <div class="body">
+        <router-outlet></router-outlet>
+
+        <connection [disconnected]="!connected"></connection>
+    </div>
+</div>
+
+<c-toaster position="fixed" placement="bottom-end"></c-toaster>
+<confirm></confirm>

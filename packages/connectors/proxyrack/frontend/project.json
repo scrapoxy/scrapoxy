@@ -1,0 +1,49 @@
+{
+    "name": "connector-proxyrack-frontend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/proxyrack/frontend",
+    "sourceRoot": "packages/connectors/proxyrack/frontend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-proxyrack-frontend",
+                "main": "packages/connectors/proxyrack/frontend/src/index.ts",
+                "tsConfig": "packages/connectors/proxyrack/frontend/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/proxyrack/frontend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/proxyrack/frontend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/connectors/proxyrack/frontend/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/connectors/proxyrack/frontend/src/**/{*,*.*}.html"
+            }
+        }
+    },
+    "tags": []
+}

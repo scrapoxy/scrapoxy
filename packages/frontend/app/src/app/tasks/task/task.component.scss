@@ -1,0 +1,21 @@
+@import '../../../scss/variables_all';
+
+.error-label {
+    display: none;
+}
+
+.error {
+    color: $danger;
+
+    .description-label {
+        display: none;
+    }
+
+    .error-label {
+        display: inline;
+    }
+}
+
+.success {
+    color: $success;
+}

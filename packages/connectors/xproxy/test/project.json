@@ -1,0 +1,48 @@
+{
+    "name": "connector-xproxy-test",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/xproxy/test",
+    "sourceRoot": "packages/connectors/xproxy/test/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-xproxy-test",
+                "main": "packages/connectors/xproxy/test/jest.config.ts",
+                "tsConfig": "packages/connectors/xproxy/test/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/xproxy/test/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/xproxy/test/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test-connector": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/xproxy/test/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

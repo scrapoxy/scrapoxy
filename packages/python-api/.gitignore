@@ -1,0 +1,22 @@
+# Virtualenv
+.Python
+bin
+lib
+include
+
+*.pyc
+_trial_temp*
+dropin.cache
+docs/build
+*egg-info
+.tox
+venv
+build
+dist
+*.log
+
+.ipynb_checkpoints
+
+.idea
+
+.DS_Store

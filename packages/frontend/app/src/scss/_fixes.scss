@@ -1,0 +1,51 @@
+// Place for temp fixes
+
+// Form
+.form-floating > .form-select {
+    padding-top: 1.625rem !important;
+    padding-bottom: 0.625rem !important;
+}
+
+// Scrollbar
+@supports (scrollbar-width: thin) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #444 transparent;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 0.9em;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cui-body-bg, #fff);
+    border-radius: 100vw;
+    margin-block: 0.2em;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #999;
+    border: 0.2em solid var(--cui-body-bg, #fff);
+    border-radius: 100vw;
+
+    &:hover {
+        background: #444;
+    }
+}
+
+.dark-theme::-webkit-scrollbar-thumb {
+    background: #444;
+
+    &:hover {
+        background: #999;
+    }
+}
+
+// Charts
+.chartjs-tooltip-body-item > td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    font-size: smaller;
+}

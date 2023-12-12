@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the guidelines
+    about: "Please ensure you have read the submission guidelines before creating an issue"
+    url: https://www.scrapoxy.io/contrib/guidelines
+  - name: Have a question?
+    about: "Join the Scrapoxy Official Discord Server for interactive discussions and quick answers to your questions."
+    url: https://discord.com/invite/ktNGGwZnUD

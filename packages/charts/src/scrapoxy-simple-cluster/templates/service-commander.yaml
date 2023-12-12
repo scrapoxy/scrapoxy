@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:
+    name: {{ .Release.Name }}-commander
+    labels:
+        app.kubernetes.io/component: {{ .Release.Name }}-commander
+        app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+    type: ClusterIP
+    ports:
+        - name: commander
+          port: {{ .Values.commander.port }}
+          protocol: TCP
+{{- with .Values.commander.debugPort }}
+        - name: debug
+          protocol: TCP
+          appProtocol: tcp
+          port: {{ . }}
+          targetPort: {{ . }}
+{{- end }}
+    selector:
+        app.kubernetes.io/component: {{ .Release.Name }}-commander
+        app.kubernetes.io/instance: {{ .Release.Name }}

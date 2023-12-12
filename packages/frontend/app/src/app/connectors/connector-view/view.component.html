@@ -1,0 +1,92 @@
+<c-card>
+    @if (connector.error) {
+        <div class="card-left warning" [cTooltip]="connector.error" cTooltipPlacement="top">
+            <svg cIcon size="lg" name="cilWarning"></svg>
+        </div>
+    } @else if (connector.active) {
+        <div class="card-left active" cTooltip="Connector is active" cTooltipPlacement="top">
+            <svg cIcon size="lg" name="cilCheckAlt"></svg>
+        </div>
+    } @else {
+        <div class="card-left inactive" cTooltip="Connector is ready to start" cTooltipPlacement="top">
+            <svg cIcon size="lg" name="cilCheckAlt"></svg>
+        </div>
+    }
+
+    <c-card-body>
+        {{ connector.name }}
+        <c-badge color="secondary" cTooltip="Type of the connector" cTooltipPlacement="top">
+            {{ connector.type | connectorName }}
+        </c-badge>
+    </c-card-body>
+
+    <div class="scale" cTooltip="# of active proxies vs Max allowed in this connector" cTooltipPlacement="top">
+        {{ proxies.length }} / {{ proxiesMax }}
+
+        <c-button-group aria-label="Scaling" role="group">
+            <button cButton color="dark" variant="outline" (click)="scaleDown()">
+                <svg cIcon name="cilMinus"></svg>
+            </button>
+
+            <button cButton color="dark" variant="outline" (click)="scaleUp()">
+                <svg cIcon name="cilPlus"></svg>
+            </button>
+        </c-button-group>
+    </div>
+
+    <div class="card-right">
+        <c-form-check [switch]="true" sizing="lg" cTooltip="Is default connector?" cTooltipPlacement="top">
+            <input
+                cFormCheckInput
+                type="checkbox"
+                [checked]="connector.id === project.connectorDefaultId"
+                (click)="makeDefault()" />
+        </c-form-check>
+    </div>
+
+    <div class="card-right">
+        <c-form-check
+            [switch]="true"
+            sizing="lg"
+            class="form-check-success"
+            cTooltip="Start/Stop this connector"
+            cTooltipPlacement="top">
+            <input cFormCheckInput type="checkbox" [checked]="connector.active" (click)="activate($event)" />
+        </c-form-check>
+    </div>
+
+    <c-dropdown>
+        <button cButton color="dark" variant="outline" cDropdownToggle [caret]="false">
+            <svg cIcon name="cilOptions"></svg>
+        </button>
+
+        <ul cDropdownMenu>
+            @if (!connector.active) {
+                <li>
+                    <button cDropdownItem (click)="update()">Edit</button>
+                </li>
+            }
+
+            <li>
+                <button cDropdownItem (click)="scale()">Scale</button>
+            </li>
+
+            @if (!connector.active) {
+                @if (config?.canInstall) {
+                    <li>
+                        <button cDropdownItem (click)="install()">Install</button>
+                    </li>
+                }
+                @if (config?.canUninstall) {
+                    <li>
+                        <button cDropdownItem (click)="uninstallWithConfirm()">Uninstall</button>
+                    </li>
+                }
+
+                <li>
+                    <button cDropdownItem (click)="removeWithConfirm()">Delete</button>
+                </li>
+            }
+        </ul>
+    </c-dropdown>
+</c-card>

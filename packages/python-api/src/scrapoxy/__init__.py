@@ -1,0 +1,4 @@
+from scrapoxy.blacklist import ScrapoxyBlacklistDownloaderMiddleware
+from scrapoxy.proxy import ScrapoxyProxyDownloaderMiddleware
+from scrapoxy.scale import ScrapoxyScaleSpiderMiddleware
+from scrapoxy.sticky import ScrapoxyStickySpiderMiddleware

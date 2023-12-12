@@ -1,0 +1,29 @@
+.jvm-tooltip {
+    background: #000 !important;
+}
+
+.fp-tooltip {
+    text-align: left;
+}
+
+.fp-row {
+    display: flex;
+
+    flex-flow: row;
+}
+
+.fp-title {
+    width: 55px;
+    min-width: 55px;
+
+    margin: 0.1rem 0;
+}
+
+.fp-content {
+    overflow: hidden;
+
+    margin: 0.1rem 0;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

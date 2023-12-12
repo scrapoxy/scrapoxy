@@ -1,0 +1,40 @@
+<c-button-group role="group">
+    <button
+        type="button"
+        cButton
+        color="secondary"
+        variant="outline"
+        size="sm"
+        cTooltip="OFF MODE - No proxy"
+        cTooltipPlacement="bottom"
+        [active]="project?.status === EProjectStatus.OFF"
+        (click)="update(EProjectStatus.OFF)">
+        <svg cIcon name="cilBattery0"></svg>
+    </button>
+
+    <button
+        type="button"
+        cButton
+        color="secondary"
+        variant="outline"
+        size="sm"
+        cTooltip="CALM MODE - Keep only 1 proxy"
+        cTooltipPlacement="bottom"
+        [active]="project?.status === EProjectStatus.CALM"
+        (click)="update(EProjectStatus.CALM)">
+        <svg cIcon name="cilBattery3"></svg>
+    </button>
+
+    <button
+        type="button"
+        cButton
+        color="secondary"
+        variant="outline"
+        size="sm"
+        cTooltip="HOT MODE - Wake all proxies"
+        cTooltipPlacement="bottom"
+        [active]="project?.status === EProjectStatus.HOT"
+        (click)="update(EProjectStatus.HOT)">
+        <svg cIcon name="cilBattery5"></svg>
+    </button>
+</c-button-group>

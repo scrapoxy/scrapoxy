@@ -1,0 +1,109 @@
+<div class="page">
+    <c-container>
+        <c-row>
+            <c-col md="8" class="logo">
+                <img
+                    [cHtmlAttr]="{
+                        src: 'assets/imgs/scrapoxy.svg',
+                        height: 50,
+                        alt: 'Scrapoxy'
+                    }" />
+            </c-col>
+        </c-row>
+        <c-row>
+            <c-col xs="12" md="8" lg="6" xxl="4">
+                <c-card>
+                    <c-card-body>
+                        <h4>Login</h4>
+
+                        @if (authLocal === true) {
+                            <form cForm [formGroup]="form" (ngSubmit)="login()">
+                                <p>Sign In to your account</p>
+
+                                @if (form.controls['username']; as c) {
+                                    <c-row>
+                                        <c-col>
+                                            <c-input-group>
+                                                <span cInputGroupText>
+                                                    <svg cIcon name="cilUser"></svg>
+                                                </span>
+
+                                                <input
+                                                    type="text"
+                                                    cFormControl
+                                                    id="username"
+                                                    formControlName="username"
+                                                    placeholder="Username"
+                                                    [autofocus]="true"
+                                                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                                                @if (c.dirty || c.touched) {
+                                                    <c-form-feedback [valid]="c.valid">
+                                                        @if (c.errors; as errs) {
+                                                            @if (errs['required']) {
+                                                                <div>Username is required.</div>
+                                                            }
+                                                        }
+                                                    </c-form-feedback>
+                                                }
+                                            </c-input-group>
+                                        </c-col>
+                                    </c-row>
+                                }
+                                @if (form.controls['password']; as c) {
+                                    <c-row>
+                                        <c-col>
+                                            <c-input-group>
+                                                <span cInputGroupText>
+                                                    <svg cIcon name="cilLockLocked"></svg>
+                                                </span>
+
+                                                <input
+                                                    type="password"
+                                                    cFormControl
+                                                    id="password"
+                                                    formControlName="password"
+                                                    placeholder="Password"
+                                                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                                                @if (c.dirty || c.touched) {
+                                                    <c-form-feedback [valid]="c.valid">
+                                                        @if (c.errors; as errs) {
+                                                            @if (errs['required']) {
+                                                                <div>Password is required.</div>
+                                                            }
+                                                        }
+                                                    </c-form-feedback>
+                                                }
+                                            </c-input-group>
+                                        </c-col>
+                                    </c-row>
+                                }
+
+                                <c-row>
+                                    <c-col>
+                                        <button cButton type="submit" color="primary" [disabled]="!form.valid">
+                                            Login
+                                        </button>
+                                    </c-col>
+                                </c-row>
+                            </form>
+                        } @else if (authLocal === false) {
+                            <p>We currently only provide social logins.</p>
+                        }
+                    </c-card-body>
+
+                    @if (auths.length > 0) {
+                        <c-card-footer>
+                            @for (auth of auths; track auth.type) {
+                                <a [attr.href]="getAuthUrl(auth)">
+                                    <svg cIcon [name]="auth.icon"></svg>
+                                </a>
+                            }
+                        </c-card-footer>
+                    }
+                </c-card>
+            </c-col>
+        </c-row>
+    </c-container>
+</div>

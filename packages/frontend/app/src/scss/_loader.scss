@@ -1,0 +1,23 @@
+.loader {
+    @extend .fade;
+    @extend .show;
+
+    .spinner-grow {
+        @extend .spinner-grow-sm;
+        color: $primary;
+    }
+
+    & > span {
+        margin: 0.25rem;
+    }
+}
+
+.loading {
+    filter: blur(4px);
+
+    transition: all 0.2s ease-in;
+
+    &.finished {
+        filter: none;
+    }
+}

@@ -1,0 +1,33 @@
+.table {
+    th {
+        padding: $spacer * 0.5;
+
+        font-size: 0.875rem;
+        font-weight: 500;
+        vertical-align: middle;
+    }
+
+    td {
+        padding: 0.65rem $spacer * 0.5;
+
+        vertical-align: middle;
+
+        * {
+            vertical-align: middle;
+        }
+    }
+
+    &.table-sm {
+        td {
+            padding: 0.4rem $spacer * 0.5;
+        }
+    }
+}
+
+.col-actions {
+    text-align: end;
+
+    .btn:not(:first-child) {
+        margin-left: 0.2rem;
+    }
+}

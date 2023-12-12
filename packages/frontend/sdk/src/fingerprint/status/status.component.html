@@ -1,0 +1,13 @@
+@switch (status) {
+    @case (EFingerprintStatus.ONLINE) {
+        <svg cIcon name="cilPowerStandby" class="online"></svg>
+    }
+
+    @case (EFingerprintStatus.OFFLINE) {
+        <svg cIcon name="cilPowerStandby" class="offline"></svg>
+    }
+
+    @case (EFingerprintStatus.ERROR) {
+        <svg cIcon name="cilPowerStandby" class="error"></svg>
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "name": "connector-digitalocean-backend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/digitalocean/backend",
+    "sourceRoot": "packages/connectors/digitalocean/backend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-digitalocean-backend",
+                "main": "packages/connectors/digitalocean/backend/src/index.ts",
+                "tsConfig": "packages/connectors/digitalocean/backend/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/digitalocean/backend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/digitalocean/backend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/digitalocean/backend/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

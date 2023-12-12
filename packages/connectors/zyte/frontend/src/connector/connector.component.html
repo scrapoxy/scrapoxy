@@ -1,0 +1,27 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['region']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="region">Region</label>
+
+            <c-col md="10">
+                <select cSelect id="region" formControlName="region">
+                    <option [ngValue]="null" disabled>----- Select Region ------</option>
+                    <option value="all">All</option>
+                    @for (country of countries; track country.code) {
+                        <option [ngValue]="country.code">{{ country.name }} ({{ country.code }})</option>
+                    }
+                </select>
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Region is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>

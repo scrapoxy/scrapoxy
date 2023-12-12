@@ -1,0 +1,103 @@
+{
+    "name": "backend-app",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/backend/app",
+    "sourceRoot": "packages/backend/app/src",
+    "projectType": "application",
+    "implicitDependencies": [
+        "proxy-app",
+        "frontend-app"
+    ],
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/scrapoxy",
+                "outputFileName": "scrapoxy.js",
+                "main": "packages/backend/app/src/main.ts",
+                "tsConfig": "packages/backend/app/tsconfig.app.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/backend/app/webpack.config.js",
+                "generatePackageJson": true,
+                "extractLicenses": false,
+                "assets": [
+                    {
+                        "input": "packages/backend/sdk/src/assets",
+                        "output": "./assets",
+                        "glob": "**/*.*"
+                    },
+                    {
+                        "input": "dist/proxy",
+                        "output": "./assets/proxy",
+                        "glob": "**/*.*"
+                    },
+                    {
+                        "input": "dist/frontend/browser",
+                        "output": "./assets/frontend",
+                        "glob": "**/*.*"
+                    }
+                ]
+            },
+            "configurations": {
+                "test": {
+                    "tsConfig": "packages/backend/app/tsconfig.spec.json"
+                },
+                "production": {
+                    "optimization": true,
+                    "inspect": false,
+                    "fileReplacements": [
+                        {
+                            "replace": "packages/backend/app/src/environments/environment.ts",
+                            "with": "packages/backend/app/src/environments/environment.prod.ts"
+                        }
+                    ]
+                }
+            }
+        },
+        "docker-build": {
+            "command": "docker build --no-cache -f packages/backend/app/Dockerfile . -t scrapoxy"
+        },
+        "serve": {
+            "executor": "@nx/js:node",
+            "options": {
+                "buildTarget": "backend-app:build",
+                "watch": false,
+                "port": 0
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "backend-app:build:production"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/backend/app/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/backend/app/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

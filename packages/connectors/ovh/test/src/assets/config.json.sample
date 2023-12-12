@@ -1,0 +1,8 @@
+{
+  "projectId": "<TO FILL>",,
+  "region": "<TO FILL>",,
+  "port": 3128,
+  "flavorId": "<TO FILL>",,
+  "snapshotId": "",
+  "tag": "spxindex"
+}

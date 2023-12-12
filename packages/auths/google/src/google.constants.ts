@@ -1,0 +1,3 @@
+export const AUTH_GOOGLE_NAME = 'google';
+
+export const AUTH_GOOGLE_MODULE_CONFIG = 'AUTH_GOOGLE_MODULE_CONFIG';

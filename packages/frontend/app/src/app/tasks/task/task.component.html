@@ -1,0 +1,108 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId, 'tasks']">Tasks</c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">
+                {{ task?.type }}
+            </c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+@if (task) {
+    <c-container fluid class="container-main">
+        <c-row>
+            <c-col>
+                <c-card class="card-form">
+                    <c-card-header>Task Information</c-card-header>
+
+                    <c-card-body class="loading" [ngClass]="{finished: !!task}">
+                        <c-row>
+                            <c-col md="2">Type</c-col>
+
+                            <c-col md="10">{{ task.type }}</c-col>
+                        </c-row>
+
+                        <c-row>
+                            <c-col md="2">Status</c-col>
+
+                            <c-col md="10">
+                                @if (task.cancelled) {
+                                    Cancelled
+                                } @else if (task.running) {
+                                    Running
+                                } @else if (task.stepCurrent === task.stepMax) {
+                                    Finished
+                                } @else {
+                                    <div class="error">Error</div>
+                                }
+                            </c-col>
+                        </c-row>
+
+                        <c-row>
+                            <c-col md="2">Step</c-col>
+
+                            <c-col md="10">{{ task.stepCurrent }} / {{ task.stepMax }}</c-col>
+                        </c-row>
+
+                        <c-row>
+                            <c-col md="2">Start at</c-col>
+
+                            <c-col md="10">
+                                {{ task.startAtTs | date: 'dd/MM/yyyy HH:mm:ss' }}
+                            </c-col>
+                        </c-row>
+
+                        <c-row>
+                            <c-col md="2">End at</c-col>
+
+                            <c-col md="10">
+                                @if (task.endAtTs) {
+                                    {{ task.endAtTs | date: 'dd/MM/yyyy HH:mm:ss' }}
+                                } @else {
+                                    -
+                                }
+                            </c-col>
+                        </c-row>
+
+                        <c-row>
+                            <c-col md="2">Next retry at</c-col>
+
+                            <c-col md="10">
+                                {{ task.nextRetryTs | date: 'dd/MM/yyyy HH:mm:ss' }}
+                            </c-col>
+                        </c-row>
+
+                        <c-row
+                            [ngClass]="{
+                                error: isTaskFailed(task),
+                                success: isTaskSucceed(task)
+                            }">
+                            <c-col md="2">
+                                <span class="error-label">Error</span>
+                                <span class="description-label">Description</span>
+                            </c-col>
+
+                            <c-col md="10">{{ task.message }}</c-col>
+                        </c-row>
+                    </c-card-body>
+
+                    <c-card-footer>
+                        <a cButton color="primary" [routerLink]="['/projects', projectId, 'tasks']">Back</a>
+
+                        @if (task.running) {
+                            <button cButton color="danger" [loading]="processingCancel" (click)="cancelWithConfirm()">
+                                Stop
+                            </button>
+                        }
+                    </c-card-footer>
+                </c-card>
+            </c-col>
+        </c-row>
+    </c-container>
+}

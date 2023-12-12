@@ -1,0 +1,61 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId, 'users']">Users</c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Add</c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+<c-container fluid class="container-main">
+    <c-row>
+        <c-col>
+            <form cForm [formGroup]="form" (ngSubmit)="add()">
+                <c-card class="card-form">
+                    <c-card-header>Add User</c-card-header>
+
+                    <c-card-body>
+                        @if (form.controls['email']; as c) {
+                            <c-row>
+                                <label cLabel cCol md="2" for="email">Email</label>
+
+                                <c-col md="10">
+                                    <input
+                                        type="text"
+                                        cFormControl
+                                        id="email"
+                                        formControlName="email"
+                                        placeholder="Enter the Email"
+                                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                                    @if (c.dirty || c.touched) {
+                                        <c-form-feedback [valid]="c.valid">
+                                            @if (c.errors; as errs) {
+                                                @if (errs['required']) {
+                                                    <div>Email is required.</div>
+                                                }
+                                            }
+                                        </c-form-feedback>
+                                    }
+                                </c-col>
+                            </c-row>
+                        }
+                    </c-card-body>
+
+                    <c-card-footer>
+                        <button cButton color="primary" type="submit" [loading]="processing" [disabled]="!form.valid">
+                            Add
+                        </button>
+
+                        <a cButton color="secondary" [routerLink]="['/projects', projectId, 'users']">Back</a>
+                    </c-card-footer>
+                </c-card>
+            </form>
+        </c-col>
+    </c-row>
+</c-container>

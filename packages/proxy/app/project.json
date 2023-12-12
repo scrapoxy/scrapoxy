@@ -1,0 +1,58 @@
+{
+    "name": "proxy-app",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/proxy/app",
+    "sourceRoot": "packages/proxy/app/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/proxy",
+                "outputFileName": "proxy.js",
+                "main": "packages/proxy/app/src/main.ts",
+                "tsConfig": "packages/proxy/app/tsconfig.app.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/proxy/app/webpack.config.js",
+                "sourceMap": false,
+                "generatePackageJson": false,
+                "extractLicenses": false
+            },
+            "configurations": {
+                "production": {
+                    "optimization": true,
+                    "inspect": false
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/proxy/app/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/proxy/app/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

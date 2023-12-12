@@ -1,0 +1,5 @@
+<c-toast-header [closeButton]="true">{{ title }}</c-toast-header>
+
+<c-toast-body #toast [cToastClose]="toast.toast">
+    <p>{{ message }}</p>
+</c-toast-body>

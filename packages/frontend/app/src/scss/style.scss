@@ -1,0 +1,35 @@
+// If you want to override variables do it here
+
+/* You can add global styles to this file, and also import other style files */
+// If you want to override variables do it here
+@import 'variables';
+
+$enable-ltr: true;
+$enable-rtl: true;
+
+// Import styles with default layout.
+@import '@coreui/coreui/scss/coreui';
+
+// Import Chart.js custom tooltips styles
+@import '@coreui/chartjs/scss/coreui-chartjs';
+
+// perfect scrollbar theming for use with [perfectScrollbar] directive
+// @import '~perfect-scrollbar/css/perfect-scrollbar.css';
+
+@import 'alerts';
+@import 'badge';
+@import 'breadcrumb';
+@import 'buttons';
+@import 'card';
+@import 'dropdown';
+@import 'fixes';
+@import 'fonts';
+@import 'form';
+@import 'icons';
+@import 'layout';
+@import 'loader';
+@import 'map';
+@import 'pagination';
+@import 'sidebar';
+@import 'table';
+@import 'toast';

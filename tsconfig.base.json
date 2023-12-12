@@ -1,0 +1,206 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": ".",
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+        "lib": [
+            "es2020",
+            "dom"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "paths": {
+            "@scrapoxy/auth-github": [
+                "packages/auths/github/src/index.ts"
+            ],
+            "@scrapoxy/auth-google": [
+                "packages/auths/google/src/index.ts"
+            ],
+            "@scrapoxy/auth-local": [
+                "packages/auths/local/src/index.ts"
+            ],
+            "@scrapoxy/backend-sdk": [
+                "packages/backend/sdk/src/index.ts"
+            ],
+            "@scrapoxy/backend-test-sdk": [
+                "packages/backend/test-sdk/src/index.ts"
+            ],
+            "@scrapoxy/cloudlocal": [
+                "packages/cloudlocal/src/index.ts"
+            ],
+            "@scrapoxy/common": [
+                "packages/common/src/index.ts"
+            ],
+            "@scrapoxy/connector-aws-backend": [
+                "packages/connectors/aws/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-aws-frontend": [
+                "packages/connectors/aws/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-aws-sdk": [
+                "packages/connectors/aws/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-azure-backend": [
+                "packages/connectors/azure/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-azure-frontend": [
+                "packages/connectors/azure/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-azure-sdk": [
+                "packages/connectors/azure/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-cloudlocal-backend": [
+                "packages/connectors/cloudlocal/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-cloudlocal-frontend": [
+                "packages/connectors/cloudlocal/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-cloudlocal-sdk": [
+                "packages/connectors/cloudlocal/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-digitalocean-backend": [
+                "packages/connectors/digitalocean/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-digitalocean-frontend": [
+                "packages/connectors/digitalocean/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-digitalocean-sdk": [
+                "packages/connectors/digitalocean/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-freeproxies-backend": [
+                "packages/connectors/freeproxies/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-freeproxies-frontend": [
+                "packages/connectors/freeproxies/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-freeproxies-sdk": [
+                "packages/connectors/freeproxies/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-gcp-backend": [
+                "packages/connectors/gcp/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-gcp-frontend": [
+                "packages/connectors/gcp/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-gcp-sdk": [
+                "packages/connectors/gcp/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-iproyal-backend": [
+                "packages/connectors/iproyal/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-iproyal-frontend": [
+                "packages/connectors/iproyal/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-iproyal-sdk": [
+                "packages/connectors/iproyal/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-ninjasproxy-backend": [
+                "packages/connectors/ninjasproxy/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-ninjasproxy-frontend": [
+                "packages/connectors/ninjasproxy/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-ninjasproxy-sdk": [
+                "packages/connectors/ninjasproxy/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-ovh-backend": [
+                "packages/connectors/ovh/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-ovh-frontend": [
+                "packages/connectors/ovh/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-ovh-sdk": [
+                "packages/connectors/ovh/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxidize-backend": [
+                "packages/connectors/proxidize/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxidize-frontend": [
+                "packages/connectors/proxidize/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxidize-sdk": [
+                "packages/connectors/proxidize/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxylocal-backend": [
+                "packages/connectors/proxylocal/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxylocal-frontend": [
+                "packages/connectors/proxylocal/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxylocal-sdk": [
+                "packages/connectors/proxylocal/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxyrack-backend": [
+                "packages/connectors/proxyrack/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxyrack-frontend": [
+                "packages/connectors/proxyrack/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxyrack-sdk": [
+                "packages/connectors/proxyrack/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-rayobyte-backend": [
+                "packages/connectors/rayobyte/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-rayobyte-frontend": [
+                "packages/connectors/rayobyte/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-rayobyte-sdk": [
+                "packages/connectors/rayobyte/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-xproxy-backend": [
+                "packages/connectors/xproxy/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-xproxy-frontend": [
+                "packages/connectors/xproxy/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-xproxy-sdk": [
+                "packages/connectors/xproxy/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-zyte-backend": [
+                "packages/connectors/zyte/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-zyte-frontend": [
+                "packages/connectors/zyte/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-zyte-sdk": [
+                "packages/connectors/zyte/sdk/src/index.ts"
+            ],
+            "@scrapoxy/frontend-sdk": [
+                "packages/frontend/sdk/src/index.ts"
+            ],
+            "@scrapoxy/proxy-sdk": [
+                "packages/proxy/sdk/src/index.ts"
+            ],
+            "@scrapoxy/proxylocal": [
+                "packages/proxylocal/src/index.ts"
+            ],
+            "@scrapoxy/storage-distributed": [
+                "packages/storages/distributed/src/index.ts"
+            ],
+            "@scrapoxy/storage-local": [
+                "packages/storages/local/src/index.ts"
+            ]
+        },
+        "rootDir": ".",
+        "sourceMap": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "target": "es2022",
+        "verbatimModuleSyntax": true
+    },
+    "exclude": [
+        "node_modules",
+        "tmp"
+    ]
+}

@@ -1,0 +1,175 @@
+@use 'sass:math';
+@import '../../scss/variables_all';
+
+.header-buttons > button {
+    margin-left: math.div($grid-gutter-width, 2);
+}
+
+.map-container {
+    position: relative;
+
+    margin: $grid-gutter-width;
+
+    background-color: var(--cui-body-bg);
+}
+
+#map {
+    display: flex;
+
+    align-items: center;
+}
+
+.map-icon {
+    margin-right: 25px;
+
+    img {
+        height: 85px;
+    }
+}
+
+.map-title {
+    display: none;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+
+    height: 110px;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: $grid-gutter-width;
+
+    background: rgb(255 255 255 / 30%);
+
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: $card-box-shadow;
+}
+
+.map-text {
+    font-size: 4rem;
+}
+
+.metrics {
+    display: flex;
+
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
+
+.info {
+    background: rgb(255 255 255 / 30%);
+
+    border: 0;
+    border-radius: 0.25rem;
+    box-shadow: $card-box-shadow;
+}
+
+.metric {
+    display: flex;
+
+    min-width: 150px;
+    height: 110px;
+
+    align-items: center;
+    flex-flow: column;
+    justify-content: center;
+
+    padding: $grid-gutter-width;
+
+    &:not(:last-child) {
+        margin-right: $grid-gutter-width;
+    }
+}
+
+.metric-text {
+    font-size: 4.3rem;
+    line-height: 1;
+}
+
+.metric-title {
+    color: $gray-600;
+
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.topcounters {
+    display: none;
+
+    position: absolute;
+    bottom: 100px;
+    left: 100px;
+    right: 100px;
+
+    justify-content: center;
+}
+
+.topcounter {
+    width: 400px;
+
+    &:not(:last-child) {
+        margin-right: $grid-gutter-width * 4;
+    }
+
+    th,
+    td {
+        border-color: #dfdfdf !important;
+
+        font-size: 1rem;
+    }
+
+    th {
+        border-bottom-width: 0;
+
+        text-align: center;
+    }
+}
+
+@media (width >= 540px) {
+    #map {
+        height: 600px;
+    }
+}
+
+@media (width >= 720px) {
+    #map {
+        height: 700px;
+    }
+}
+
+@media (width >= 960px) {
+    #map {
+        height: 800px;
+    }
+}
+
+@media (width >= 1140px) {
+    #map {
+        height: 900px;
+    }
+}
+
+@media (width >= 1320px) {
+    #map {
+        height: 1000px;
+    }
+}
+
+:fullscreen {
+    #map {
+        height: 100vh;
+    }
+
+    .map-title,
+    .topcounters {
+        display: flex;
+    }
+
+    .metrics {
+        top: 100px;
+        right: 100px;
+    }
+}

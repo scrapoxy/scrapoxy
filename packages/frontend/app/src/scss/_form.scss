@@ -1,0 +1,35 @@
+@use 'sass:math';
+
+.form-label {
+    @extend .col-form-label;
+
+    display: flex;
+
+    align-items: center;
+}
+
+form c-col {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
+.input-group.main {
+    --cui-btn-border-radius: $card-border-radius;
+    --cui-input-border-color: $card-border-color;
+
+    .btn-outline-secondary {
+        --cui-btn-border-color: $card-border-color;
+    }
+
+    margin-bottom: $grid-gutter-width;
+
+    border: $card-border-width solid var(--cui-input-border-color);
+    border-radius: var(--cui-btn-border-radius);
+    box-shadow: $card-box-shadow;
+
+    .form-control {
+        padding: math.div($grid-gutter-width, 2);
+
+        border-radius: var(--cui-btn-border-radius);
+    }
+}

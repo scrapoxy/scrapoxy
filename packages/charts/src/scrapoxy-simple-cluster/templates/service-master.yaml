@@ -1,0 +1,24 @@
+kind: Service
+apiVersion: v1
+metadata:
+    name: {{ .Release.Name }} # aka scrapoxy-master
+    labels:
+        app.kubernetes.io/component: {{ .Release.Name }}-master
+        app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+    type: ClusterIP
+    ports:
+        - name: master
+          port: {{ .Values.master.port }}
+          protocol: TCP
+          appProtocol: tcp
+{{- with .Values.master.debugPort }}
+        - name: debug
+          protocol: TCP
+          appProtocol: tcp
+          port: {{ . }}
+          targetPort: {{ . }}
+{{- end }}
+    selector:
+        app.kubernetes.io/component: {{ .Release.Name }}-master
+        app.kubernetes.io/instance: {{ .Release.Name }}

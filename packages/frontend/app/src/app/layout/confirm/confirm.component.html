@@ -1,0 +1,13 @@
+<c-modal [visible]="visible" alignment="center" (visibleChange)="visibleChange($event)">
+    <c-modal-header>
+        <h5 cModalTitle>{{ title }}</h5>
+        <button cButtonClose (click)="validate(false)"></button>
+    </c-modal-header>
+
+    <c-modal-body>{{ description }}</c-modal-body>
+
+    <c-modal-footer>
+        <button cButton color="primary" (click)="validate(true)">Yes</button>
+        <button cButton color="secondary" (click)="validate(false)">No</button>
+    </c-modal-footer>
+</c-modal>

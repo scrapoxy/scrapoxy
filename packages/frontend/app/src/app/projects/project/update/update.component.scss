@@ -1,0 +1,15 @@
+@import '../../../../scss/variables_all';
+
+.error {
+    color: $danger;
+}
+
+.success {
+    color: $success;
+}
+
+.task-step {
+    min-width: 150px;
+
+    text-align: center;
+}

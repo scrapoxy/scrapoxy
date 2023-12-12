@@ -1,0 +1,138 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Coverage</c-breadcrumb-item>
+        </c-breadcrumb>
+
+        <div class="header-buttons">
+            <project-status></project-status>
+
+            <button cButton color="secondary" variant="outline" size="sm" (click)="openFullScreen()">
+                <svg cIcon name="cilFullscreen"></svg>
+            </button>
+        </div>
+    </c-container>
+</div>
+
+<div class="map-container" #fullscreen>
+    <div id="map"></div>
+
+    <div class="map-title">
+        <div class="map-icon">
+            <img src="assets/imgs/scrapoxy-small.svg" alt="Scrapoxy" />
+        </div>
+        <div class="map-text">Scrapoxy Proxies Coverage</div>
+    </div>
+
+    <div class="metrics">
+        <div class="metric info">
+            <div class="metric-text">{{ proxiesCount }}</div>
+            <div class="metric-title">
+                @if (proxiesCount <= 1) {
+                    Proxy
+                } @else {
+                    Proxies
+                }
+            </div>
+        </div>
+
+        <div class="metric info">
+            <div class="metric-text">{{ proxiesByCountries.size }}</div>
+            <div class="metric-title">
+                @if (proxiesByCountries.size <= 1) {
+                    Country
+                } @else {
+                    Countries
+                }
+            </div>
+        </div>
+
+        <div class="metric info">
+            <div class="metric-text">{{ proxiesByCities.size }}</div>
+            <div class="metric-title">
+                @if (proxiesByCities.size <= 1) {
+                    City
+                } @else {
+                    Cities
+                }
+            </div>
+        </div>
+
+        <div class="metric info">
+            <div class="metric-text">{{ proxiesByAsns.size }}</div>
+            <div class="metric-title">
+                @if (proxiesByAsns.size <= 1) {
+                    ASN
+                } @else {
+                    ASNs
+                }
+            </div>
+        </div>
+
+        <div class="metric info">
+            <div class="metric-text">{{ proxiesByConnectors.size }}</div>
+            <div class="metric-title">
+                @if (proxiesByConnectors.size <= 1) {
+                    Connector
+                } @else {
+                    Connectors
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="topcounters">
+        @if (proxiesByCountries.size > 0) {
+            <table cTable small class="topcounter info">
+                <tbody>
+                    @for (row of proxiesByCountries.top(10); track row.name) {
+                        <tr>
+                            <td scope="col" class="col-name">{{ row.name }}</td>
+                            <td scope="col" class="col-count">{{ row.count }}</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th colspan="2">Top countries</th>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+        @if (proxiesByCities.size > 0) {
+            <table cTable small class="topcounter info">
+                <tbody>
+                    @for (row of proxiesByCities.top(10); track row.name) {
+                        <tr>
+                            <td scope="col" class="col-name">{{ row.name }}</td>
+                            <td scope="col" class="col-count">{{ row.count }}</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th colspan="2">Top cities</th>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+        @if (proxiesByAsns.size > 0) {
+            <table cTable small class="topcounter info">
+                <tbody>
+                    @for (row of proxiesByAsns.top(10); track row.name) {
+                        <tr>
+                            <td scope="col" class="col-name">{{ row.name }}</td>
+                            <td scope="col" class="col-count">{{ row.count }}</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th colspan="2">Top ASNs</th>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

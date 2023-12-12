@@ -1,0 +1,165 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Proxies</c-breadcrumb-item>
+        </c-breadcrumb>
+
+        <project-status>></project-status>
+    </c-container>
+</div>
+
+@if (proxiesLoaded) {
+    <c-container fluid class="container-main">
+        <c-row>
+            <c-col>
+                @if (proxies.length <= 0) {
+                    <c-card>
+                        <c-card-header>Proxies</c-card-header>
+
+                        <c-card-body>There is no proxies.</c-card-body>
+                    </c-card>
+                } @else {
+                    <c-card class="card-proxies">
+                        <c-card-body>
+                            <table cTable small>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="col-proxy-name">Connector</th>
+                                        <th
+                                            scope="col"
+                                            class="col-proxy-name"
+                                            cTooltip="Name of the proxy"
+                                            cTooltipPlacement="top">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="col-proxy-address">IP Address</th>
+                                        <th scope="col" class="col-proxy-status">Status</th>
+                                        <th
+                                            scope="col"
+                                            class="col-proxy-bytes-received"
+                                            cTooltip="Bytes received by the proxy"
+                                            cTooltipPlacement="top">
+                                            Received
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="col-proxy-bytes-sent"
+                                            cTooltip="Bytes sent by the proxy"
+                                            cTooltipPlacement="top">
+                                            Sent
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="col-proxy-requests"
+                                            cTooltip="# Requests initiated by the proxy"
+                                            cTooltipPlacement="top">
+                                            Requests
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="col-proxy-uptime"
+                                            cTooltip="Proxy TTL"
+                                            cTooltipPlacement="top">
+                                            Uptime
+                                        </th>
+                                        <th scope="col" class="col-actions"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @for (proxy of proxies; track proxy.id) {
+                                        <tr
+                                            [ngClass]="{
+                                                online: proxy.online,
+                                                removing: proxy.removing
+                                            }">
+                                            <td class="col-connector-name">
+                                                {{ proxy.connectorName }}
+                                            </td>
+                                            <td class="col-proxy-name">
+                                                {{ proxy.name }}
+                                            </td>
+
+                                            <td class="col-proxy-address">
+                                                <fingerprint-address
+                                                    [fingerprint]="proxy.fingerprint"></fingerprint-address>
+                                            </td>
+
+                                            <td class="col-proxy-status">
+                                                <proxy-status [status]="proxy.status"></proxy-status>
+
+                                                <fingerprint-status
+                                                    [fingerprint]="proxy.fingerprint"
+                                                    [error]="proxy.fingerprintError"></fingerprint-status>
+                                            </td>
+
+                                            <td class="col-proxy-bytes-received">
+                                                {{ proxy.bytesReceived | fileUnit }}
+                                            </td>
+
+                                            <td class="col-proxy-bytes-sent">
+                                                {{ proxy.bytesSent | fileUnit }}
+                                            </td>
+
+                                            <td class="col-proxy-requests">
+                                                {{ proxy.requests | numberUnit }}
+                                            </td>
+
+                                            <td class="col-proxy-uptime">
+                                                {{ proxy.elapsed | timeUnit }}
+                                            </td>
+
+                                            <td class="col-actions">
+                                                <button
+                                                    cButton
+                                                    color="secondary"
+                                                    variant="outline"
+                                                    (click)="removeProxy(proxy, false)">
+                                                    <svg cIcon name="cilTrash"></svg>
+                                                </button>
+
+                                                @if (getConfig(proxy)?.canReplaceProxy) {
+                                                    <button
+                                                        cButton
+                                                        color="secondary"
+                                                        variant="outline"
+                                                        (click)="removeProxy(proxy, true)">
+                                                        <svg cIcon name="cilXCircle"></svg>
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            <c-pagination align="center">
+                                <li cPageItem [disabled]="pageCurrent < 1">
+                                    <a cPageLink (click)="pageCurrent = pageCurrent - 1">Previous</a>
+                                </li>
+                                @for (page of pagesList; track page) {
+                                    <li cPageItem [disabled]="pageCurrent == page">
+                                        <a cPageLink (click)="pageCurrent = page">
+                                            {{ page + 1 }}
+                                        </a>
+                                    </li>
+                                }
+                                <li cPageItem [disabled]="pageCurrent >= pageMax - 1">
+                                    <a cPageLink (click)="pageCurrent = pageCurrent + 1">Next</a>
+                                </li>
+                                <li cPageItem [disabled]="pageCurrent == pageMax - 1">
+                                    <a cPageLink (click)="pageCurrent = pageMax - 1">Last</a>
+                                </li>
+                            </c-pagination>
+                        </c-card-body>
+                    </c-card>
+                }
+            </c-col>
+        </c-row>
+    </c-container>
+}

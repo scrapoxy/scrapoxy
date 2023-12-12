@@ -1,0 +1,30 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Projects</c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+@if (projects.length > 0) {
+    <c-container fluid class="container-main">
+        <c-row>
+            <c-col>
+                <a cButton color="primary" variant="outline" class="btn-main" [routerLink]="['/projects', 'create']">
+                    Create new project...
+                </a>
+            </c-col>
+        </c-row>
+
+        @if (projects.length > 0) {
+            <c-row>
+                @for (project of projects; track project.id) {
+                    <c-col md="4" xl="4">
+                        <project-view [project]="project" (click)="selectProject(project)"></project-view>
+                    </c-col>
+                }
+            </c-row>
+        }
+    </c-container>
+}

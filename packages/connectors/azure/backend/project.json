@@ -1,0 +1,48 @@
+{
+    "name": "connector-azure-backend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/azure/backend",
+    "sourceRoot": "packages/connectors/azure/backend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-azure-backend",
+                "main": "packages/connectors/azure/backend/src/index.ts",
+                "tsConfig": "packages/connectors/azure/backend/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/azure/backend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/azure/backend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/azure/backend/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

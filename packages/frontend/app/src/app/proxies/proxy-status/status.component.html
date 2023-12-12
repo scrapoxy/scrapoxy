@@ -1,0 +1,27 @@
+@switch (status) {
+    @case (EProxyStatus.STARTING) {
+        <span cTooltip="Instance is starting" cTooltipPlacement="top">
+            <svg cIcon name="cilArrowTop" class="wip"></svg>
+        </span>
+    }
+    @case (EProxyStatus.STARTED) {
+        <span cTooltip="Instance is started" cTooltipPlacement="top">
+            <svg cIcon name="cilArrowTop"></svg>
+        </span>
+    }
+    @case (EProxyStatus.STOPPING) {
+        <span cTooltip="Instance is stopping" cTooltipPlacement="top">
+            <svg cIcon name="cilArrowBottom" class="wip"></svg>
+        </span>
+    }
+    @case (EProxyStatus.STOPPED) {
+        <span cTooltip="Instance is stopped" cTooltipPlacement="top">
+            <svg cIcon name="cilArrowBottom"></svg>
+        </span>
+    }
+    @case (EProxyStatus.ERROR) {
+        <span cTooltip="Instance has an error" cTooltipPlacement="top">
+            <svg cIcon name="cilWarning"></svg>
+        </span>
+    }
+}

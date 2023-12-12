@@ -1,0 +1,48 @@
+{
+    "name": "backend-sdk",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/backend/sdk",
+    "sourceRoot": "packages/backend/sdk/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/backend-sdk",
+                "main": "packages/backend/sdk/src/index.ts",
+                "tsConfig": "packages/backend/sdk/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/backend/sdk/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/backend/sdk/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/backend/sdk/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

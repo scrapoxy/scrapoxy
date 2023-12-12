@@ -1,0 +1,102 @@
+@if (!createMode) {
+    <c-row>
+        <label cCol md="2" for="freeproxiesAdd" class="form-label">Add new proxies</label>
+
+        <c-col md="10">
+            <c-input-group>
+                <textarea id="freeproxiesAdd" class="form-control" [(ngModel)]="freeproxiesAdd"></textarea>
+
+                <button cButton color="primary" [disabled]="freeproxiesAdd.length <= 0" (click)="addFreeproxies()">
+                    <svg cIcon name="cilPlus"></svg>
+                </button>
+            </c-input-group>
+        </c-col>
+    </c-row>
+
+    <c-row>
+        <c-col md="12">
+            @if (freeproxies.length > 0) {
+                <table cTable small>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-freeproxy-type">Type</th>
+
+                            <th scope="col" class="col-freeproxy-address-in">Inbound Address</th>
+
+                            <th scope="col" class="col-freeproxy-status">Status</th>
+
+                            <th scope="col" class="col-freeproxy-address-out">Outbound Address</th>
+
+                            <th scope="col" class="col-actions">
+                                <button
+                                    cButton
+                                    color="secondary"
+                                    variant="outline"
+                                    (click)="removeFreeproxiesOfflineWithConfirm()">
+                                    <svg cIcon name="cilPowerStandby"></svg>
+                                </button>
+
+                                <button cButton color="primary" (click)="removeFreeproxiesAllWithConfirm()">
+                                    <svg cIcon name="cilTrash"></svg>
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (freeproxy of freeproxies; track freeproxy.key) {
+                            <tr>
+                                <td class="col-freeproxy-type">
+                                    {{ freeproxy.type }}
+                                </td>
+
+                                <td class="col-freeproxy-address-in">
+                                    {{ freeproxy.key }}
+                                </td>
+
+                                <td class="col-freeproxy-status">
+                                    <fingerprint-status
+                                        [fingerprint]="freeproxy.fingerprint"
+                                        [error]="freeproxy.fingerprintError"></fingerprint-status>
+                                </td>
+
+                                <td class="col-freeproxy-address-out">
+                                    <fingerprint-address [fingerprint]="freeproxy.fingerprint"></fingerprint-address>
+                                </td>
+
+                                <td class="col-actions">
+                                    <button
+                                        cButton
+                                        color="secondary"
+                                        variant="outline"
+                                        (click)="removeFreeproxyWithConfirm(freeproxy)">
+                                        <svg cIcon name="cilTrash"></svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <c-pagination align="center">
+                    <li cPageItem [disabled]="pageCurrent < 1">
+                        <a cPageLink (click)="pageCurrent = pageCurrent - 1">Previous</a>
+                    </li>
+                    @for (page of pagesList; track page) {
+                        <li cPageItem [disabled]="pageCurrent == page">
+                            <a cPageLink (click)="pageCurrent = page">
+                                {{ page + 1 }}
+                            </a>
+                        </li>
+                    }
+                    <li cPageItem [disabled]="pageCurrent >= pageMax - 1">
+                        <a cPageLink (click)="pageCurrent = pageCurrent + 1">Next</a>
+                    </li>
+                    <li cPageItem [disabled]="pageCurrent == pageMax - 1">
+                        <a cPageLink (click)="pageCurrent = pageMax - 1">Last</a>
+                    </li>
+                </c-pagination>
+            }
+        </c-col>
+    </c-row>
+}

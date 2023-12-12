@@ -1,0 +1,44 @@
+.spin {
+    @extend .spinner-border;
+
+    --cui-spinner-border-width: 0;
+    --cui-spinner-animation-speed: 2s;
+}
+
+svg[name='cilArrowTop'] {
+    color: $success;
+
+    &.wip {
+        color: $warning;
+
+        transform: rotate(45deg);
+    }
+}
+
+svg[name='cilArrowBottom'] {
+    color: $danger;
+
+    &.wip {
+        color: $warning;
+
+        transform: rotate(-45deg);
+    }
+}
+
+svg[name='cilWarning'] {
+    color: $danger;
+}
+
+svg[name='cilPowerStandby'] {
+    &.online {
+        color: $success;
+    }
+
+    &.offline {
+        color: $warning;
+    }
+
+    &.error {
+        color: $danger;
+    }
+}

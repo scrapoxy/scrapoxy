@@ -1,0 +1,15 @@
+@import '../../../scss/variables_all';
+
+:host {
+    display: flex;
+
+    align-items: center;
+
+    .form-control:not(:last-child) {
+        margin-right: $grid-gutter-width;
+    }
+
+    .form-control:not(:first-child) {
+        margin-left: $grid-gutter-width;
+    }
+}

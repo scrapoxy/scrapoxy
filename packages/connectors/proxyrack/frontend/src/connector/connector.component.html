@@ -1,0 +1,104 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['country']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="7">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="country"
+                        formControlName="country"
+                        (change)="countryChanged()"
+                        [attr.disabled]="processingCountries ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="all">All</option>
+                        @for (country of countries; track country.code) {
+                            <option [ngValue]="country.code">{{ country.name }} ({{ country.code }})</option>
+                        }
+                    </select>
+
+                    @if (processingCountries) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+
+            <c-col md="3">
+                @if (proxiesCount === undefined) {
+                    Retrieving proxies count....
+                } @else if (proxiesCount === 0) {
+                    No proxy found
+                } @else if (proxiesCount === 1) {
+                    1 proxy found
+                } @else {
+                    {{ proxiesCount }} proxies found
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['city']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="city">City</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="city" formControlName="city" [attr.disabled]="processingCities ? true : null">
+                        <option [ngValue]="null" disabled>----- Select City ------</option>
+                        <option value="all">All</option>
+                        @for (city of cities; track city) {
+                            <option [ngValue]="city">{{ city }}</option>
+                        }
+                    </select>
+
+                    @if (processingCities) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['isp']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="isp">ISP</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="isp" formControlName="isp" [attr.disabled]="processingIsps ? true : null">
+                        <option [ngValue]="null" disabled>----- Select ISP ------</option>
+                        <option value="all">All</option>
+                        @for (isp of isps; track isp) {
+                            <option [ngValue]="isp">{{ isp }}</option>
+                        }
+                    </select>
+
+                    @if (processingIsps) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['osName']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="osName">OS</label>
+
+            <c-col md="10">
+                <select cSelect id="osName" formControlName="osName">
+                    <option [ngValue]="null" disabled>----- Select OS ------</option>
+                    <option value="all">All</option>
+                    <option value="FreeBSD">FreeBSD</option>
+                    <option value="Linux">Linux</option>
+                    <option value="Mac OS X">Mac OS X</option>
+                    <option value="Windows">Windows</option>
+                </select>
+            </c-col>
+        </c-row>
+    }
+</ng-container>

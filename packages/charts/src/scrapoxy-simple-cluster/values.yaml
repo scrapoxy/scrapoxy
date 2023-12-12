@@ -1,0 +1,41 @@
+image:
+    repository: fabienvauchelles/scrapoxy
+    tag: latest
+    pullPolicy: Always
+    pullSecrets: []
+
+commander:
+    port: 8890
+    fileStorageSize: 100Mi
+    resources:
+        limits:
+            cpu: 1000m
+            memory: 2Gi
+        requests:
+            cpu: 100m
+            memory: 256Mi
+
+master:
+    port: 8888
+    resources:
+        limits:
+            cpu: 1000m
+            memory: 2Gi
+        requests:
+            cpu: 100m
+            memory: 256Mi
+
+refresh:
+    resources:
+        limits:
+            cpu: 1000m
+            memory: 2Gi
+        requests:
+            cpu: 100m
+            memory: 256Mi
+
+priorityClassName: ""
+nodeSelector: {}
+tolerations: []
+affinity: {}
+podAnnotations: {}

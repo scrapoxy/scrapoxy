@@ -1,0 +1,9 @@
+@import '../../../scss/variables_all';
+
+:host {
+    margin-bottom: $grid-gutter-width;
+}
+
+.card {
+    cursor: pointer;
+}

@@ -1,0 +1,50 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId, 'connectors']">Connectors</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId, 'connectors', connectorId]">
+                {{ connector?.name }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Install</c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+<c-container fluid class="container-main">
+    <c-row>
+        <c-col>
+            <form cForm [formGroup]="form" (ngSubmit)="install()">
+                <c-card class="card-form">
+                    <c-card-header>Connector Install Information</c-card-header>
+
+                    <c-card-body class="loading" [ngClass]="{finished: !!connector}">
+                        <c-row>
+                            <label cLabel cCol md="2">Type</label>
+
+                            <c-col md="10" class="connector-image">
+                                @if (connector) {
+                                    <img
+                                        [src]="'assets/imgs/connectors/' + connector.type + '.svg'"
+                                        [alt]="connector.type | connectorName" />
+                                }
+                            </c-col>
+                        </c-row>
+
+                        <ng-template #dform></ng-template>
+                    </c-card-body>
+
+                    <c-card-footer>
+                        <button cButton color="primary" type="submit">Install</button>
+
+                        <a cButton color="secondary" [routerLink]="['/projects', projectId, 'connectors']">Back</a>
+                    </c-card-footer>
+                </c-card>
+            </form>
+        </c-col>
+    </c-row>
+</c-container>

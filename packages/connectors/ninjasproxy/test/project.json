@@ -1,0 +1,48 @@
+{
+    "name": "connector-ninjasproxy-test",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/ninjasproxy/test",
+    "sourceRoot": "packages/connectors/ninjasproxy/test/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-ninjasproxy-test",
+                "main": "packages/connectors/ninjasproxy/test/jest.config.ts",
+                "tsConfig": "packages/connectors/ninjasproxy/test/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/ninjasproxy/test/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/ninjasproxy/test/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test-connector": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/ninjasproxy/test/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

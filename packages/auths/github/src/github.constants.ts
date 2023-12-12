@@ -1,0 +1,3 @@
+export const AUTH_GITHUB_NAME = 'github';
+
+export const AUTH_GITHUB_MODULE_CONFIG = 'AUTH_GITHUB_MODULE_CONFIG';

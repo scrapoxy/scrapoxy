@@ -1,0 +1,21 @@
+{{- if .Values.refresh.debugPort }}
+kind: Service
+apiVersion: v1
+metadata:
+    name: {{ .Release.Name }}-refresh
+    labels:
+        app.kubernetes.io/component: {{ .Release.Name }}-refresh
+        app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+    type: ClusterIP
+    ports:
+        - name: debug
+          protocol: TCP
+          appProtocol: tcp
+          port: {{ .Values.refresh.debugPort }}
+          targetPort: {{ .Values.refresh.debugPort }}
+
+    selector:
+        app.kubernetes.io/component: {{ .Release.Name }}-refresh
+        app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

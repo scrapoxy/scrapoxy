@@ -1,0 +1,63 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ projectName }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Users</c-breadcrumb-item>
+        </c-breadcrumb>
+    </c-container>
+</div>
+
+<c-container fluid class="container-main">
+    <c-row>
+        <c-col>
+            <c-card>
+                <c-card-header>Users</c-card-header>
+
+                <c-card-body class="loading" [ngClass]="{finished: usersLoaded}">
+                    <table cTable small>
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-name">Name</th>
+
+                                <th scope="col" class="col-actions">
+                                    <a
+                                        cButton
+                                        color="primary"
+                                        cTooltip="Add a user"
+                                        cTooltipPlacement="top"
+                                        [routerLink]="['/projects', projectId, 'users', 'add']">
+                                        <svg cIcon name="cilPlus"></svg>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (user of users; track user.id) {
+                                <tr>
+                                    <td class="col-name">{{ user.name }} ({{ user.email }})</td>
+
+                                    <td class="col-actions">
+                                        <button
+                                            cButton
+                                            color="secondary"
+                                            variant="outline"
+                                            cTooltip="Remove user from project"
+                                            cTooltipPlacement="top"
+                                            (click)="removeUserWithConfirm(user)">
+                                            <svg cIcon name="cilTrash"></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</c-container>

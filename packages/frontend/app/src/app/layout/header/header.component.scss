@@ -1,0 +1,32 @@
+@import '../../../scss/variables_all';
+
+.header-toggler {
+    padding-left: 0.25rem;
+}
+
+.nav-link.btn {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    box-shadow: none;
+
+    .name {
+        margin-left: 0.5rem;
+
+        color: $dark;
+
+        font-size: 0.75rem;
+    }
+
+    &:hover {
+        .name {
+            color: $primary;
+        }
+    }
+}
+
+.dropdown-menu {
+    width: auto;
+
+    padding-top: 0;
+}

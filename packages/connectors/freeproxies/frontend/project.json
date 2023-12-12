@@ -1,0 +1,49 @@
+{
+    "name": "connector-freeproxies-frontend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/freeproxies/frontend",
+    "sourceRoot": "packages/connectors/freeproxies/frontend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-freeproxies-frontend",
+                "main": "packages/connectors/freeproxies/frontend/src/index.ts",
+                "tsConfig": "packages/connectors/freeproxies/frontend/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/freeproxies/frontend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/freeproxies/frontend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/connectors/freeproxies/frontend/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/connectors/freeproxies/frontend/src/**/{*,*.*}.html"
+            }
+        }
+    },
+    "tags": []
+}

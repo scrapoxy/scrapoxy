@@ -1,0 +1,37 @@
+name: Website Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Website
+        run: npx nx build website
+
+      - name: Copy file via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SCRAPOXY_SSH_HOST }}
+          username: ${{ secrets.SCRAPOXY_SSH_USERNAME }}
+          port: ${{ secrets.SCRAPOXY_SSH_PORT }}
+          key: ${{ secrets.SCRAPOXY_SSH_KEY }}
+          rm: true
+          strip_components: 2
+          source: dist/website
+          target: ${{ secrets.WWW_PATH }}

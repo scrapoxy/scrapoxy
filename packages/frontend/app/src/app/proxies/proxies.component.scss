@@ -1,0 +1,97 @@
+@use 'sass:color';
+@import '../../scss/variables_all';
+
+.card.card-proxies {
+    --cui-card-spacer-x: 0;
+    --cui-card-spacer-y: 0;
+
+    td,
+    th {
+        white-space: nowrap;
+    }
+}
+
+.table {
+    margin-bottom: 1rem;
+}
+
+@keyframes background-animation {
+    0% {
+        text-decoration: none;
+    }
+
+    50% {
+        text-decoration: line-through;
+    }
+
+    100% {
+        text-decoration: none;
+    }
+}
+
+tr {
+    transition: 0.5s;
+
+    &.online {
+        background: color.adjust($success, $lightness: 49%);
+    }
+
+    &.removing {
+        animation: background-animation 1s infinite;
+    }
+
+    &:hover .actions {
+        opacity: 1;
+    }
+}
+
+.icon {
+    width: 0.8rem !important;
+}
+
+.btn {
+    --cui-btn-padding-x: 0.6rem;
+    --cui-btn-padding-y: 0.2rem;
+    --cui-btn-line-height: 1;
+}
+
+.col-proxy-name {
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.col-connector-name {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.col-proxy-address {
+    width: 150px;
+    max-width: 150px;
+
+    .icon {
+        margin-left: 0.1rem;
+    }
+}
+
+.col-proxy-status,
+.col-proxy-bytes-received,
+.col-proxy-bytes-sent,
+.col-proxy-requests,
+.col-proxy-uptime {
+    text-align: center;
+}
+
+.col-actions {
+    width: 120px;
+}

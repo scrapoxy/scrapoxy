@@ -1,0 +1,36 @@
+name: Helm Charts Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Build Helm charts
+        run: |
+          rm -Rf dist/charts
+          mkdir -p dist/charts
+          helm package packages/charts/src/scrapoxy -d dist/charts
+          helm package packages/charts/src/scrapoxy-simple-cluster -d dist/charts
+          helm repo index dist/charts --url https://charts.scrapoxy.io
+
+      - name: Copy file via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SCRAPOXY_SSH_HOST }}
+          username: ${{ secrets.SCRAPOXY_SSH_USERNAME }}
+          port: ${{ secrets.SCRAPOXY_SSH_PORT }}
+          key: ${{ secrets.SCRAPOXY_SSH_KEY }}
+          rm: true
+          strip_components: 2
+          source: dist/charts
+          target: ${{ secrets.CHARTS_PATH }}

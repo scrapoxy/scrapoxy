@@ -1,0 +1,49 @@
+{
+    "name": "connector-iproyal-frontend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/iproyal/frontend",
+    "sourceRoot": "packages/connectors/iproyal/frontend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-iproyal-frontend",
+                "main": "packages/connectors/iproyal/frontend/src/index.ts",
+                "tsConfig": "packages/connectors/iproyal/frontend/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/iproyal/frontend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/iproyal/frontend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/connectors/iproyal/frontend/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/connectors/iproyal/frontend/src/**/{*,*.*}.html"
+            }
+        }
+    },
+    "tags": []
+}

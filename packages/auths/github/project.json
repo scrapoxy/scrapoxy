@@ -1,0 +1,48 @@
+{
+    "name": "auth-github",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/auths/github",
+    "sourceRoot": "packages/auths/github/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/auths-github",
+                "main": "packages/auths/github/src/index.ts",
+                "tsConfig": "packages/auths/github/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/auths/github/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/auths/github/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/auths/github/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

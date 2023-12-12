@@ -1,0 +1,69 @@
+@import '../../scss/variables_all';
+
+@keyframes background-animation {
+    0% {
+        background-size: 3000px;
+    }
+
+    50% {
+        background-size: 3200px;
+    }
+
+    100% {
+        background-size: 3000px;
+    }
+}
+
+.logo {
+    margin-bottom: 15px;
+
+    text-align: center;
+}
+
+h4 {
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.card {
+    --cui-card-border-radius: 5px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-footer {
+    text-align: center;
+
+    a {
+        display: inline-block;
+
+        width: 35px;
+        height: 35px;
+
+        margin-top: -5px;
+
+        background: $border-color;
+        border: 0;
+        border-radius: 50px;
+        box-shadow: $box-shadow;
+        color: $primary;
+
+        font-size: 15px;
+        line-height: 36px;
+
+        &:not(:first-child) {
+            margin-left: 1rem;
+        }
+
+        &:hover {
+            background: $primary;
+            color: $white;
+        }
+    }
+}
+
+.row {
+    --cui-gutter-y: -0.75rem;
+}

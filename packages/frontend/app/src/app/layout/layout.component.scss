@@ -1,0 +1,23 @@
+@import '../../scss/variables_all';
+
+.wrapper {
+    display: flex;
+
+    width: 100%;
+    min-height: 100vh;
+
+    flex-direction: column;
+    will-change: auto;
+
+    @include ltr-rtl('padding-left', var(--cui-sidebar-occupy-start, 0));
+    @include ltr-rtl('padding-right', var(--cui-sidebar-occupy-end, 0));
+    @include transition(padding 0.15s);
+}
+
+.body {
+    flex-grow: 1;
+}
+
+.toaster {
+    padding: 1rem;
+}

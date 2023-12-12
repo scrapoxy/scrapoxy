@@ -1,0 +1,33 @@
+@import '../../../scss/variables_all';
+
+.range-title {
+    font-size: 0.875em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.range-value {
+    font-weight: 300;
+}
+
+.card {
+    margin-bottom: $grid-gutter-width;
+
+    color: $white;
+}
+
+.card-header {
+    .range-value {
+        font-size: calc(1.3rem + 0.6vw);
+    }
+}
+
+.card-body {
+    .range-value {
+        font-size: 1.25rem;
+    }
+}
+
+.col {
+    text-align: center;
+}

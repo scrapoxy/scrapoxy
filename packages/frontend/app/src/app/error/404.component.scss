@@ -1,0 +1,29 @@
+@import '../../scss/variables_all';
+
+.container {
+    color: $white;
+
+    text-align: center;
+}
+
+h1 {
+    display: inline;
+
+    font-size: 6rem;
+    font-weight: 400;
+}
+
+h4 {
+    display: inline;
+
+    font-size: 20px;
+    font-weight: 400;
+}
+
+p {
+    font-size: 1rem;
+}
+
+.btn {
+    margin-top: 15px;
+}

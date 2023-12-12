@@ -1,0 +1,51 @@
+{
+    "name": "scrapoxy",
+    "author": {
+        "name": "Fabien Vauchelles",
+        "url": "https://www.linkedin.com/in/fabienvauchelles"
+    },
+    "description": "Scrapoxy is a super-proxy aggregator for scrapers",
+    "url": "https://github.com/fabienvauchelles/scrapoxy",
+    "homepage": "https://scrapoxy.io",
+    "repository": "fabienvauchelles/scrapoxy",
+    "license": "MIT",
+    "dependencies": {
+        "@nestjs/common": "~10.2.0",
+        "@nestjs/core": "~10.2.0",
+        "@nestjs/microservices": "~10.2.0",
+        "@nestjs/passport": "~10.0.0",
+        "@nestjs/platform-express": "~10.2.0",
+        "@nestjs/platform-socket.io": "~10.2.0",
+        "@nestjs/schedule": "~4.0.0",
+        "@nestjs/serve-static": "~4.0.0",
+        "@nestjs/websockets": "~10.2.0",
+        "amqp-connection-manager": "~4.1.0",
+        "axios": "~1.6.0",
+        "commander": "~11.1.0",
+        "compression": "~1.7.0",
+        "fast-equals": "~5.0.0",
+        "joi": "~17.11.0",
+        "jsonwebtoken": "9.0.2",
+        "mongodb": "~6.3.0",
+        "node-forge": "~1.3.0",
+        "nodemailer": "~6.9.0",
+        "passport": "~0.6.0",
+        "passport-github2": "~0.1.12",
+        "passport-google-oauth20": "~2.0.0",
+        "passport-local": "~1.0.0",
+        "passport-oauth2": "~1.7.0",
+        "rxjs": "~7.8.0",
+        "socket.io-client": "~4.7.0",
+        "tslib": "^2.3.0",
+        "umzug": "~3.4.0",
+        "uuid": "~9.0.0",
+        "xml2js": "~0.6.0"
+    },
+    "engines": {
+        "node": ">= 20",
+        "npm": ">= 8"
+    },
+    "bin": {
+        "scrapoxy": "scrapoxy.js"
+    }
+}

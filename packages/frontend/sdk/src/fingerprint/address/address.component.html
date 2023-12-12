@@ -1,0 +1,59 @@
+@if (fingerprint) {
+    <span [cTooltip]="addressTooltip" cTooltipPlacement="right">
+    {{ fingerprint!.ip }}
+        <svg cIcon [name]="countryFlag"></svg>
+    </span>
+} @else {
+    -
+}
+
+<ng-template #addressTooltip>
+    <div class="fp-tooltip">
+        <div class="fp-row">
+            <div class="fp-title">IP:</div>
+            <div class="fp-content">{{ fingerprint!.ip }}</div>
+        </div>
+
+        @if (fingerprint!.asnNetwork) {
+            <div class="fp-row">
+                <div class="fp-title">Range:</div>
+                <div class="fp-content">{{ fingerprint!.asnNetwork }}</div>
+            </div>
+        }
+
+        @if (fingerprint!.asnName) {
+            <div class="fp-row">
+                <div class="fp-title">ASN:</div>
+                <div class="fp-content">{{ fingerprint!.asnName }}</div>
+            </div>
+        }
+
+        @if (fingerprint!.continentName) {
+            <div class="fp-row">
+                <div class="fp-title">Zone:</div>
+                <div class="fp-content">{{ fingerprint!.continentName }} ({{ fingerprint!.continentCode }})</div>
+            </div>
+        }
+
+        @if (fingerprint!.countryName) {
+            <div class="fp-row">
+                <div class="fp-title">Country:</div>
+                <div class="fp-content">{{ fingerprint!.countryName }} ({{ fingerprint!.countryCode }})</div>
+            </div>
+        }
+
+        @if (fingerprint!.cityName) {
+            <div class="fp-row">
+                <div class="fp-title">City:</div>
+                <div class="fp-content">{{ fingerprint!.cityName }}</div>
+            </div>
+        }
+
+        @if (fingerprint!.timezone) {
+            <div class="fp-row">
+                <div class="fp-title">TZ:</div>
+                <div class="fp-content">{{ fingerprint!.timezone }}</div>
+            </div>
+        }
+    </div>
+</ng-template>

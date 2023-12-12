@@ -1,0 +1,41 @@
+<c-container fluid>
+    <button toggle="visible" cHeaderToggler [cSidebarToggle]="sidebarId">
+        <svg cIcon name="cilMenu" size="lg"></svg>
+    </button>
+
+    @if (client) {
+        <c-header-nav>
+            <ng-container *ngTemplateOutlet="clientDropdown"></ng-container>
+        </c-header-nav>
+    }
+</c-container>
+
+<ng-template #clientDropdown>
+    <c-dropdown alignment="end" variant="nav-item">
+        <button cButton color="" cDropdownToggle [caret]="false">
+            <c-avatar
+                cTextColor="primary"
+                shape="rounded-1"
+                size="md"
+                [src]="client.user.picture || 'assets/imgs/nobody.svg'"></c-avatar>
+
+            <span class="name">{{ client.user.name }}</span>
+        </button>
+
+        <ul cDropdownMenu>
+            <li>
+                <a routerLink="/profile" cDropdownItem>
+                    <svg cIcon name="cilUser"></svg>
+                    Profile
+                </a>
+            </li>
+
+            <li>
+                <button cDropdownItem (click)="logout()">
+                    <svg cIcon name="cilLockLocked"></svg>
+                    Logout
+                </button>
+            </li>
+        </ul>
+    </c-dropdown>
+</ng-template>

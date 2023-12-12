@@ -1,0 +1,21 @@
+@import '../../../scss/variables_all';
+
+.btn-group .btn.active {
+    background-color: var(--cui-btn-bg);
+
+    svg[name='cilBattery0'] {
+        color: $danger;
+    }
+
+    svg[name='cilBattery3'] {
+        color: $warning;
+    }
+
+    svg[name='cilBattery5'] {
+        color: $success;
+    }
+}
+
+.icon {
+    vertical-align: middle;
+}

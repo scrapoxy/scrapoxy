@@ -1,0 +1,192 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['location']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="location">Location</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="location"
+                        formControlName="location"
+                        (change)="locationChanged()"
+                        [attr.disabled]="processingLocations ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Location ------</option>
+                        @for (location of locations; track location.name) {
+                            <option [ngValue]="location.name">{{ location.description }} ({{ location.name }})</option>
+                        }
+                    </select>
+
+                    @if (processingLocations) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                    @if (c.dirty || c.touched) {
+                        <c-form-feedback [valid]="c.valid">
+                            @if (c.errors; as errs) {
+                                @if (errs['required']) {
+                                    <div>Location is required.</div>
+                                }
+                            }
+                        </c-form-feedback>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['port']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="port">Port</label>
+
+            <c-col md="10">
+                <input
+                    type="number"
+                    cFormControl
+                    id="port"
+                    formControlName="port"
+                    placeholder="Enter the Port"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Port is required.</div>
+                            }
+                            @if (errs['min'] || errs['max']) {
+                                <div>Port should be between 1024 and 65535.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['resourceGroupName']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="resourceGroupName">Resource Group Name</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="resourceGroupName"
+                    formControlName="resourceGroupName"
+                    placeholder="Enter the Resource Group Name"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Resource Group Name is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['vmSize']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="vmSize">VM size</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="vmSize"
+                        formControlName="vmSize"
+                        [attr.disabled]="processingVmSizes ? true : null">
+                        <option [ngValue]="null" disabled>----- Select VM size ------</option>
+                        @for (vmSize of vmSizes; track vmSize.name) {
+                            <option [ngValue]="vmSize.name">
+                                {{ vmSize.name }} ({{ vmSize.vcpus }} vCpu, {{ vmSize.memory }}MB)
+                            </option>
+                        }
+                    </select>
+
+                    @if (processingVmSizes) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['storageAccountType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="storageAccountType">Storage Type</label>
+
+            <c-col md="10">
+                <select cSelect id="storageAccountType" formControlName="storageAccountType">
+                    <option [ngValue]="null" disabled>----- Select Storage Type ------</option>
+                    <option value="Standard_LRS">Standard_LRS</option>
+                    <option value="Premium_LRS">Premium_LRS</option>
+                </select>
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Storage Type is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['prefix']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="prefix">Prefix</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="prefix"
+                    formControlName="prefix"
+                    placeholder="Enter the prefix"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Prefix is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['imageResourceGroupName']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="imageResourceGroupName">Image Resource Group Name</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="imageResourceGroupName"
+                    formControlName="imageResourceGroupName"
+                    placeholder="Enter the Image Resource Group Name"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Image Resource Group Name is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>

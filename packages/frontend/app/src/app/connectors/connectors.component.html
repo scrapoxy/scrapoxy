@@ -1,0 +1,42 @@
+<div class="header">
+    <c-container fluid>
+        <c-breadcrumb>
+            <c-breadcrumb-item [url]="['/']">Home</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects']">Projects</c-breadcrumb-item>
+            <c-breadcrumb-item [url]="['/projects', projectId]">
+                {{ project?.name }}
+            </c-breadcrumb-item>
+            <c-breadcrumb-item [active]="true">Connectors</c-breadcrumb-item>
+        </c-breadcrumb>
+
+        <project-status></project-status>
+    </c-container>
+</div>
+
+@if (project) {
+    <c-container fluid class="container-main">
+        <c-row>
+            <c-col>
+                <a
+                    cButton
+                    color="primary"
+                    variant="outline"
+                    class="btn-main"
+                    [routerLink]="['/projects', projectId, 'connectors', 'create']">
+                    Create new connector...
+                </a>
+            </c-col>
+        </c-row>
+
+        @for (view of client.views; track view.connector.id) {
+            <c-row>
+                <c-col>
+                    <connector-view
+                        [project]="project"
+                        [connector]="view.connector"
+                        [proxies]="view.proxies"></connector-view>
+                </c-col>
+            </c-row>
+        }
+    </c-container>
+}
