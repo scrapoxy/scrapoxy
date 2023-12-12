@@ -1,6 +1,6 @@
 from random import randrange
 from scrapy.exceptions import IgnoreRequest
-from scrapoxy import ScrapoxyApi, is_proxy_online
+from scrapoxy.api import ScrapoxyApi, is_proxy_online
 from time import sleep
 
 import logging

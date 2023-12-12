@@ -1,5 +1,5 @@
 from scrapy import signals
-from scrapoxy import ScrapoxyApi
+from scrapoxy.api import ScrapoxyApi
 from time import sleep
 
 import logging
