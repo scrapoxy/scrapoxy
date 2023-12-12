@@ -958,11 +958,16 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.logger.error(`${id}: ${message} (${req.method} ${req.url})`);
         }
 
-        res.writeHead(
-            statusCode,
-            id,
-            headers
-        );
+        try {
+            res.writeHead(
+                statusCode,
+                id,
+                headers
+            );
+        } catch (err: any) {
+            // Error is: Cannot write headers after they are sent to the client
+            // Ignore because it happens when client aborts connection
+        }
 
         res.end(JSON.stringify(data));
     }
