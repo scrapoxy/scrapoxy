@@ -63,6 +63,7 @@ export default defineConfig({
                 items: [
                     {text: 'Changelog', link: '/intro/changelog'},
                     {text: 'Discord', link: discordUrl},
+                    {text: 'Previous version', link: 'https://docs-v3.scrapoxy.io'},
                 ]
             }
         ],
