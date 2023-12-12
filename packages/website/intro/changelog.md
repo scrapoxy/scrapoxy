@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.1
+
+### Bug fixes
+
+- **master**: handle writeHead error after aborted connection 
+
+
 ## 4.0.0
 
 Scrapoxy 4 represents a complete rewrite, now developed in Typescript.
