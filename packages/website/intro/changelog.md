@@ -160,7 +160,7 @@ The configuration of providers changes.
 ## 2.3.5
 
 ::: warning BREAKING CHANGE
-Please rebuild instance image.**
+Please rebuild instance image.
 :::
 
 ### Features

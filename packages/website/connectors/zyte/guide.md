@@ -2,7 +2,7 @@
 
 ![Zyte](/assets/images/zyte.svg){width=150 nozoom}
 
-[Zyte](https://app.zyte.com) (formely Crawlera) is a proxies service for Data Extraction.
+[Zyte](https://zyte.com) (formely Crawlera) is a proxies service for Data Extraction.
 
 
 ## Prerequisites
