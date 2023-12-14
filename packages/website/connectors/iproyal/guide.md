@@ -4,6 +4,10 @@
 
 [IPRoyal](https://iproyal.com) is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies
 
+::: info
+Currently, this connector supports only **Static Residential** proxies.
+:::
+
 
 ## Prerequisites
 
