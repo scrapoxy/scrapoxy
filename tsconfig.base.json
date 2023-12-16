@@ -93,6 +93,15 @@
             "@scrapoxy/connector-gcp-sdk": [
                 "packages/connectors/gcp/sdk/src/index.ts"
             ],
+            "@scrapoxy/connector-iproyal-residential-backend": [
+                "packages/connectors/iproyal/residential/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-iproyal-residential-frontend": [
+                "packages/connectors/iproyal/residential/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-iproyal-residential-sdk": [
+                "packages/connectors/iproyal/residential/sdk/src/index.ts"
+            ],
             "@scrapoxy/connector-iproyal-server-backend": [
                 "packages/connectors/iproyal/server/backend/src/index.ts"
             ],

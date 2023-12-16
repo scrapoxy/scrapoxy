@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+
+    align-items: center;
+
+    .form-control {
+        width: 100px;
+    }
+
+    .form-select {
+        width: 90px;
+    }
+}

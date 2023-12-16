@@ -1,0 +1,48 @@
+{
+    "name": "connector-iproyal-residential-test",
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/iproyal/residential/test",
+    "sourceRoot": "packages/connectors/iproyal/residential/test/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-iproyal-residential-test",
+                "main": "packages/connectors/iproyal/residential/test/jest.config.ts",
+                "tsConfig": "packages/connectors/iproyal/residential/test/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/iproyal/residential/test/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/iproyal/residential/test/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test-connector": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/iproyal/residential/test/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

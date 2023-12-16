@@ -1,0 +1,20 @@
+<c-input-group>
+    <input
+        type="text"
+        class="form-control"
+        [ngClass]="{
+            'is-invalid': validValue === false,
+            'is-valid': validValue === true
+        }"
+        data-form-type="other"
+        [disabled]="disabled"
+        [value]="value"
+        (keyup)="onValueChange($event)"
+        (focus)="markAsTouched()" />
+
+    <select cSelect [value]="unit" [disabled]="disabled" (change)="onUnitChange($event)">
+        <option value="s">Sec</option>
+        <option value="m">Min</option>
+        <option value="h">Hour</option>
+    </select>
+</c-input-group>
