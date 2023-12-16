@@ -13,11 +13,11 @@ import {
     TransportprovidersService,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_PROXYRACK_TYPE } from './proxyrack.constants';
+import { DEFAULT_PROXYRACK_PORT } from '../api';
 import {
-    DEFAULT_PROXYRACK_PORT,
     formatUsername,
     productToHostname,
-} from '../api';
+} from '../proxyrack.helpers';
 import type { IProxyToConnectConfigProxyrack } from './proxyrack.interface';
 import type {
     IConnectorProxyrackConfig,
