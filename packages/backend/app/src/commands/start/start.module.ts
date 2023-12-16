@@ -36,7 +36,7 @@ import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backen
 import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-backend';
 import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-backend';
-import { ConnectorIproyalModule } from '@scrapoxy/connector-iproyal-backend';
+import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server-backend';
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-backend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-backend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-backend';
@@ -87,7 +87,7 @@ export class AppStartModule {
             ConnectorAzureModule,
             ConnectorDigitaloceanModule,
             ConnectorFreeproxiesModule,
-            ConnectorIproyalModule,
+            ConnectorIproyalServerModule,
             ConnectorGcpModule,
             ConnectorNinjasproxyModule,
             ConnectorOvhModule,

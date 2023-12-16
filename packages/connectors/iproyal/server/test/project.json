@@ -1,0 +1,48 @@
+{
+    "name": "connector-iproyal-server-test",
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/iproyal/server/test",
+    "sourceRoot": "packages/connectors/iproyal/server/test/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-iproyal-server-test",
+                "main": "packages/connectors/iproyal/server/test/jest.config.ts",
+                "tsConfig": "packages/connectors/iproyal/server/test/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/iproyal/server/test/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/iproyal/server/test/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test-connector": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/iproyal/server/test/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

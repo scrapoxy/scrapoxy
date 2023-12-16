@@ -93,14 +93,14 @@
             "@scrapoxy/connector-gcp-sdk": [
                 "packages/connectors/gcp/sdk/src/index.ts"
             ],
-            "@scrapoxy/connector-iproyal-backend": [
-                "packages/connectors/iproyal/backend/src/index.ts"
+            "@scrapoxy/connector-iproyal-server-backend": [
+                "packages/connectors/iproyal/server/backend/src/index.ts"
             ],
-            "@scrapoxy/connector-iproyal-frontend": [
-                "packages/connectors/iproyal/frontend/src/index.ts"
+            "@scrapoxy/connector-iproyal-server-frontend": [
+                "packages/connectors/iproyal/server/frontend/src/index.ts"
             ],
-            "@scrapoxy/connector-iproyal-sdk": [
-                "packages/connectors/iproyal/sdk/src/index.ts"
+            "@scrapoxy/connector-iproyal-server-sdk": [
+                "packages/connectors/iproyal/server/sdk/src/index.ts"
             ],
             "@scrapoxy/connector-ninjasproxy-backend": [
                 "packages/connectors/ninjasproxy/backend/src/index.ts"
