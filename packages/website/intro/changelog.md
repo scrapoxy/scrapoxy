@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.1.1
+
+### Bug fixes
+
+- **iproyal**: add migration layer for file storage
+
+
 ## 4.1.0
 
 ### Features
