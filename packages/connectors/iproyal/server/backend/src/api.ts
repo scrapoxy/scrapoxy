@@ -18,7 +18,7 @@ export class IproyalServerApi {
     ) {
         this.instance = axios.create({
             ...agents.axiosDefaults,
-            baseURL: 'https://dashboard.iproyal.com/api',
+            baseURL: 'https://dashboard.iproyal.com/api/servers/proxies/reseller',
             headers: {
                 'X-Access-Token': `Bearer ${token}`,
             },
@@ -100,7 +100,7 @@ export class IproyalServerApi {
 
     private async getAllOrders(): Promise<IIproyalServerOrder[]> {
         const res = await this.instance.get<IIproyalServerOrder[]>(
-            'servers/proxies/reseller/orders?status[]=confirmed',
+            'orders?status[]=confirmed',
             {
                 params: {
                     status: [
@@ -114,13 +114,13 @@ export class IproyalServerApi {
     }
 
     private async getOrderById(id: number): Promise<IIproyalServerOrderDetail> {
-        const res = await this.instance.get<IIproyalServerOrderDetail>(`servers/proxies/reseller/${id}/order`);
+        const res = await this.instance.get<IIproyalServerOrderDetail>(`${id}/order`);
 
         return res.data;
     }
 
     private async getOrderProxiesById(id: number): Promise<IIproyalServerProxy[]> {
-        const res = await this.instance.get<IIproyalServerProxiesResponse>(`servers/proxies/reseller/${id}/credentials`);
+        const res = await this.instance.get<IIproyalServerProxiesResponse>(`${id}/credentials`);
 
         return res.data.data;
     }
