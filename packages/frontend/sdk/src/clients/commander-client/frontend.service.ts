@@ -283,7 +283,7 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
     async getConnectorById(
         projectId: string, connectorId: string
     ): Promise<IConnectorData> {
-        const res = await lastValueFrom(this.client.get<IConnectorData>(`${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/edit`));
+        const res = await lastValueFrom(this.client.get<IConnectorData>(`${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/update`));
 
         return res;
     }

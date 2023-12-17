@@ -49,7 +49,7 @@ Complete the form with the following information:
 
 ![Connector Update Select](spx_connector_update_select.png)
 
-On the connector, click on `Edit`.
+On the connector, click on `Update`.
 
 ---
 

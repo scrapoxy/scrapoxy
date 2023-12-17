@@ -296,7 +296,7 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
         projectId: string, connectorId: string
     ): Promise<IConnectorData> {
         const res = await this.instance
-            .get<IConnectorData>(`projects/${projectId}/connectors/${connectorId}/edit`);
+            .get<IConnectorData>(`projects/${projectId}/connectors/${connectorId}/update`);
 
         return res.data;
     }

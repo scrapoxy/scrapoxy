@@ -345,7 +345,7 @@ export class CommanderFrontendController {
         return connectors;
     }
 
-    @Get('projects/:projectId/connectors/:connectorId/edit')
+    @Get('projects/:projectId/connectors/:connectorId/update')
     @UseGuards(CommanderFrontendRoleGuard)
     async getConnectorById(
         @Param('projectId') projectId: string,
