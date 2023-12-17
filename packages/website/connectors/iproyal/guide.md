@@ -155,7 +155,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ---
 
-![Credential Form](spx_credential_create.png)
+![Credential Form](spx_credential_residential_create.png)
 
 Complete the form with the following information:
 1. **Name**: The name of the credential;
