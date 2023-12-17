@@ -9,3 +9,5 @@ export * from './providers.module';
 export * from './providers.service';
 
 export * from './proxy';
+
+export * from './residential';
