@@ -4,7 +4,8 @@ import { FormGroup } from '@angular/forms';
 
 export enum EConnectorFactoryGroup {
     CloudProvider = 'cloud_provider',
-    ProxiesService = 'proxies_service',
+    ProxiesServiceStatic = 'proxies_service_static',
+    ProxiesServiceDynamic = 'proxies_service_dynamic',
     Hardware = 'hardware',
     Other = 'freeproxies',
 }

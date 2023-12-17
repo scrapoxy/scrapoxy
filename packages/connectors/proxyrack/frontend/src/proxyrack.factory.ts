@@ -26,7 +26,7 @@ export class ConnectorProxyrackFactory implements IConnectorFactory {
         name: 'Proxyrack',
         description: 'Proxyrack is an online platform that provides diverse and rotating residential, datacenter, and mobile proxies.',
         url: 'https://proxyrack.com',
-        group: EConnectorFactoryGroup.ProxiesService,
+        group: EConnectorFactoryGroup.ProxiesServiceDynamic,
         canInstall: false,
         canUninstall: false,
         useCertificate: false,

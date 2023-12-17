@@ -26,7 +26,7 @@ export class ConnectorRayobyteFactory implements IConnectorFactory {
         name: 'Rayobyte',
         description: 'Rayobyte is an US platform that provides diverse and rotating residential, datacenter, and mobile proxies.',
         url: 'https://rayobyte.com',
-        group: EConnectorFactoryGroup.ProxiesService,
+        group: EConnectorFactoryGroup.ProxiesServiceStatic,
         canInstall: false,
         canUninstall: false,
         useCertificate: false,

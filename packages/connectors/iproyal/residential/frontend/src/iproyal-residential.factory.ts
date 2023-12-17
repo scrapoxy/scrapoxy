@@ -26,7 +26,7 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory {
        name: 'IPRoyal Residential',
        description: 'IPRoyal is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies',
        url: 'https://iproyal.com',
-       group: EConnectorFactoryGroup.ProxiesService,
+       group: EConnectorFactoryGroup.ProxiesServiceDynamic,
        canInstall: false,
        canUninstall: false,
        useCertificate: false,

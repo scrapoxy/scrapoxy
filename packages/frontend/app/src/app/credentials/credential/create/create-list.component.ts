@@ -58,8 +58,13 @@ export class CredentialCreateListComponent implements OnInit, OnDestroy {
 
     private readonly groupsOfProviders: IGroupOfProviders[] = [
         {
-            group: EConnectorFactoryGroup.ProxiesService,
-            name: 'Proxies Services',
+            group: EConnectorFactoryGroup.ProxiesServiceStatic,
+            name: 'Static Proxies Services',
+            providers: [],
+        },
+        {
+            group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+            name: 'Dynamic Proxies Services',
             providers: [],
         },
         {

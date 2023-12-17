@@ -26,7 +26,7 @@ export class ConnectorZyteFactory implements IConnectorFactory {
         name: 'Zyte Smartproxy Manager API',
         description: 'Zyte (formely Crawlera) is a proxies service for Data Extraction.',
         url: 'https://zyte.com',
-        group: EConnectorFactoryGroup.ProxiesService,
+        group: EConnectorFactoryGroup.ProxiesServiceDynamic,
         canInstall: false,
         canUninstall: false,
         canReplaceProxy: false,

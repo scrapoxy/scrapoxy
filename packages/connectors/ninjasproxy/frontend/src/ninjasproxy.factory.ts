@@ -26,7 +26,7 @@ export class ConnectorNinjasproxyFactory implements IConnectorFactory {
        name: 'Ninjas proxy',
        description: 'Ninjas proxy is a provider that offers static and residential proxies',
        url: 'https://ninjasproxy.com/',
-       group: EConnectorFactoryGroup.ProxiesService,
+       group: EConnectorFactoryGroup.ProxiesServiceStatic,
        canInstall: false,
        canUninstall: false,
        useCertificate: false,
