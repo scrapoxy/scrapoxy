@@ -24,14 +24,14 @@ On, the `Edit User access` section, remember `API Key`.
 
 ## Scrapoxy
 
-Open Scrapoxy User Interface and select `Credentials`:
+Open Scrapoxy User Interface and select `Marketplace`:
 
 
 ### Step 1: Create a new credential
 
 ![Credential Select](spx_credential_select.png)
 
-Create a new credential and select `IPRoyal` as provider.
+Select `Ninjas Proxy` as provider to create a new credential (use search if necessary).
 
 ---
 

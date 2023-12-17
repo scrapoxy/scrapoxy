@@ -9,14 +9,14 @@ For instance, a free proxies list can be obtained from:
 
 ## Scrapoxy
 
-Open Scrapoxy User Interface and select `Credentials`:
+Open Scrapoxy User Interface and select `Marketplace`:
 
 
 ### Step 1: Create a new credential
 
 ![Credential Select](spx_credential_select.png)
 
-Create a new credential and select `Free Proxies List` as provider.
+Select `Free Proxies List` as provider to create a new credential (use search if necessary).
 
 ---
 

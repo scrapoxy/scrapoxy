@@ -44,14 +44,14 @@ Remember the `Access key ID` and the `Secret access key` values.
 
 ## Scrapoxy
 
-Open Scrapoxy User Interface and select `Credentials`:
+Open Scrapoxy User Interface and select `Marketplace`:
 
 
 ### Step 1: Create a new credential
 
 ![Credential Select](spx_credential_select.png)
 
-Create a new credential and select `AWS` as provider.
+Select `AWS` as provider to create a new credential (use search if necessary).
 
 ---
 

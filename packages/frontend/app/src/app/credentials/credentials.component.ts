@@ -60,10 +60,7 @@ export class CredentialsComponent implements OnInit, OnDestroy {
 
             if (credentials.length <= 0) {
                 await this.router.navigate([
-                    '/projects',
-                    this.projectId,
-                    'credentials',
-                    'create',
+                    '/projects', this.projectId, 'marketplace',
                 ]);
 
                 return;

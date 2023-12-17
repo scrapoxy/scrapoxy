@@ -31,14 +31,14 @@ Connect to [Admin](https://member.proxyrack.com/access/member).
 
 ## Scrapoxy
 
-Open Scrapoxy User Interface and select `Credentials`:
+Open Scrapoxy User Interface and select `Marketplace`:
 
 
 ### Step 1: Create a new credential
 
 ![Credential Select](spx_credential_select.png)
 
-Create a new credential and select `IPRoyal` as provider.
+Select `Proxyrack` as provider to create a new credential (use search if necessary).
 
 ---
 

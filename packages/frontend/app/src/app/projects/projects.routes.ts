@@ -58,6 +58,10 @@ export const routes: Routes = [
                                 loadChildren: () => import('../map/map.module').then(m => m.MapModule),
                             },
                             {
+                                path: 'marketplace',
+                                loadChildren: () => import('../marketplace/marketplace.module').then(m => m.MarketplaceModule),
+                            },
+                            {
                                 path: 'proxies',
                                 loadChildren: () => import('../proxies/proxies.module').then(m => m.ProxiesModule),
                             },

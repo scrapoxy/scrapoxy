@@ -1,5 +1,4 @@
 import { ConfirmGuard } from '@scrapoxy/frontend-sdk';
-import { CredentialCreateListComponent } from './credential/create/create-list.component';
 import { CredentialCreateComponent } from './credential/create/create.component';
 import { CredentialLayoutComponent } from './credential/layout.component';
 import { CredentialUpdateComponent } from './credential/update/update.component';
@@ -20,10 +19,6 @@ export const routes: Routes = [
             {
                 path: 'view',
                 component: CredentialsComponent,
-            },
-            {
-                path: 'create',
-                component: CredentialCreateListComponent,
             },
             {
                 path: 'create/:connectorType',

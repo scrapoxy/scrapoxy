@@ -59,14 +59,18 @@ Settings can also be accessed through the left menu.
 If you come back to the `Projects` section, Scrapoxy will display a list of all accessible projects.
 
 
+## Marketplace
+
+![Marketplace](marketplace.png)
+
+Upon the first connection:
+1. Scrapoxy will redirect you to the `Marketplace` section;
+2. Search for a provider by name or type;
+3. Providers are categorized by type (e.g., cloud provider, proxies services, etc.);
+4. Click on `Create` to commence the configuration the chosen provider.
+
+
 ## Credentials
-
-### Provider choice
-
-![Credential providers](credential_providers.png)
-
-Upon the first connection, Scrapoxy will prompt you to create a new credential for the connector.
-
 
 ### Credential creation
 

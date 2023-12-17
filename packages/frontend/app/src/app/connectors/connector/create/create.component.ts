@@ -103,10 +103,7 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
 
             if (this.credentials.length <= 0) {
                 await this.router.navigate([
-                    '/projects',
-                    this.projectId,
-                    'credentials',
-                    'create',
+                    '/projects', this.projectId, 'marketplace',
                 ]);
 
                 return;

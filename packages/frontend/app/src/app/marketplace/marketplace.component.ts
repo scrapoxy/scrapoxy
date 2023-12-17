@@ -40,12 +40,12 @@ interface IGroupOfProviders {
 
 
 @Component({
-    templateUrl: './create-list.component.html',
+    templateUrl: './marketplace.component.html',
     styleUrls: [
-        './create-list.component.scss',
+        './marketplace.component.scss',
     ],
 })
-export class CredentialCreateListComponent implements OnInit, OnDestroy {
+export class MarketplaceComponent implements OnInit, OnDestroy {
     EGroup = EConnectorFactoryGroup;
 
     groupsOfProvidersFiltered: IGroupOfProviders[] = [];

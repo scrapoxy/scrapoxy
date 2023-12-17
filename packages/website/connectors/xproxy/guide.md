@@ -45,15 +45,14 @@ The password can only be changed and not viewed.
 
 ## Scrapoxy
 
-Open Scrapoxy User Interface and select `Credentials`:
+Open Scrapoxy User Interface and select `Marketplace`:
 
 
 ### Step 1: Create a new credential
 
 ![Credential Select](spx_credential_select.png)
 
-
-Create a new credential and select `XProxy` as provider.
+Select `XProxy` as provider to create a new credential (use search if necessary).
 
 ---
 

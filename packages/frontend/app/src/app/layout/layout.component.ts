@@ -173,6 +173,13 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
                     name: this.project.name,
                 },
                 {
+                    name: 'Marketplace',
+                    url: `/projects/${this.project.id}/marketplace`,
+                    iconComponent: {
+                        name: 'cil-basket',
+                    },
+                },
+                {
                     name: 'Credentials',
                     url: `/projects/${this.project.id}/credentials`,
                     iconComponent: {
