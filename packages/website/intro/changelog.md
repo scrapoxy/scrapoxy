@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.1.0
+
+### Features
+
+- **iproyal**: add support for Royal Residential proxies
+- **marketplace**: add marketplace menu with static proxies, dynamic proxies, hardware, cloud providers and other
+
+### Bug fixes
+
+- **transport**: factorize code for residential proxies
+
+
 ## 4.0.1
 
 ### Bug fixes
@@ -29,6 +41,7 @@ Scrapoxy 4 is not compatible with previous versions.
 - **sticky sessions**: it supports sticky sessions to keep the same IP address for a scraping session or a browser
 - **traffic interception**: it intercepts HTTP and HTTPS traffic to inject consistent headers or cookies;
 - **monitoring**: it monitors proxies and provides many statistics;
+
 
 ## 3.1.1
 
