@@ -10,7 +10,7 @@
 An active Ninjas Proxy subscription is required.
 
 
-## IPRoyal Dashboard
+## Ninjas Proxy Dashboard
 
 Connect to [Dashboard](https://hello.ninjasproxy.com).
 
@@ -46,7 +46,7 @@ And click on `Create`.
 
 ### Step 2: Create a new connector
 
-Create a new connector and select `IPRoyal` as provider:
+Create a new connector and select `Ninjasproxy` as provider:
 
 ![Connector Create](spx_connector_create.png)
 

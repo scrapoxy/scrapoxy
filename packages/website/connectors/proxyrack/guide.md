@@ -55,7 +55,7 @@ And click on `Create`.
 
 ### Step 2: Create a new connector
 
-Create a new connector and select `IPRoyal` as provider:
+Create a new connector and select `Proxyrack` as provider:
 
 ![Connector Create](spx_connector_create.png)
 
