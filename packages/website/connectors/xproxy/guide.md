@@ -7,8 +7,18 @@
 
 ## Prerequisites
 
-1. XProxy material and subscription is required.
-2. Scrapoxy can access to XProxy admin interface and proxies IP addresses.
+Before using XProxy, ensure the following prerequisites are met:
+
+1. Obtain XProxy materials and subscribe to the service.
+2. Ensure that Scrapoxy has access to the XProxy admin interface and proxy IP addresses.
+
+
+::: warning
+Be aware that XProxy employees have SSH root access to the material, and the password cannot be changed.
+:::
+
+It is recommended to deploy the XProxy box behind a firewall in a [DMZ (Demilitarized Zone)](https://en.wikipedia.org/wiki/DMZ_(computing)).
+This configuration enables control over inbound connections to the box while preventing any outbound connections to your internal network.
 
 
 ## XProxy Admin
