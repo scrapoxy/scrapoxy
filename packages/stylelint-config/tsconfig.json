@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "verbatimModuleSyntax": false
+    },
+    "files": [],
+    "include": [
+        "src/**/*.ts"
+    ]
+}
