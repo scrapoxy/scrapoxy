@@ -6,7 +6,7 @@
 
 Ubuntu 23.04 or later is recommended, but any Linux distribution should work.
 
-It has also been tested on Windows.
+It has also been tested on Windows but it requires more configuration (see below).
 
 ### Software
 
@@ -30,6 +30,13 @@ cd scrapoxy
 
 
 ## Install dependencies
+
+For Windows development, ensure the installation of the following dependencies before proceeding:
+
+```shell
+npm install --save-dev @nx/nx-win32-x64-msvc @rollup/rollup-win32-x64-msvc
+```
+
 
 Install Node.js dependencies: 
 
