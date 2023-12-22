@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.1.2
+
+- **doc**: add warning for xproxy installation 
+- **doc**: improve documentation and website
+- **eslint**: merge scrapoxy-linter repository into scrapoxy repository
+
+
 ## 4.1.1
 
 ### Bug fixes
