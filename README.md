@@ -9,7 +9,7 @@ It also smartly handles **traffic routing 🔀** to minimize bans and increase *
 
 <br/>
 
-![Scrapoxy](https://raw.githubusercontent.com/fabienvauchelles/scrapoxy/master/packages/website/intro/scrapoxy.gif)
+![Scrapoxy](https://raw.githubusercontent.com/fabienvauchelles/scrapoxy/master/packages/website/public/assets/images/scrapoxy.gif)
 
 **🚀🚀 [GO TO SCRAPOXY.IO FOR MORE INFORMATION!](https://scrapoxy.io) 🚀🚀**
 
