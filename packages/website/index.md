@@ -6,7 +6,7 @@ title: 'Home'
 hero:
   name: Scrapoxy
   text: Never be blocked. Again.
-  tagline: Aggregate all your proxies in one place to create a consistent webscraping strategy
+  tagline: Aggregate all your proxies in one place and create a consistent webscraping strategy.
   image:
     src: /assets/images/scrapoxy-warrior.png
     alt: Scrapoxy
@@ -99,11 +99,13 @@ sponsors:
             img: '/assets/images/wiremind.svg'
 
 ---
-<HomeGetStarted message="Get started in a few seconds:" />
+<HomeImage message="Your personal proxies aggregator:" icon="🎯" src="/intro/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>
+<HomeGetStarted message="Get started in a few seconds:" icon="🚀" />
 <HomeProviders message="Compatible with" icon="📎" :data="$frontmatter.providers" />
 <HomeProviders message="Sponsored by" icon="❤️" :data="$frontmatter.sponsors" />
 
 <script setup>
+  import HomeImage from './components/HomeImage.vue';
   import HomeGetStarted from './components/HomeGetStarted.vue';
   import HomeProviders from './components/HomeProviders.vue';
 </script>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 interface IProps {
-  message?: string
+    icon?: string
+    message?: string
 }
 defineProps<IProps>();
 
@@ -26,20 +27,20 @@ async function copy($event) {
 </script>
 
 <template>
-  <section>
-    <div class="container">
-      <div class="header">
-        <div class="icon">🚀</div>
-        <div class="message">{{ message }}</div>
-      </div>
+    <section>
+        <div class="container">
+            <div class="header">
+                <div v-if="icon" class="icon">{{ icon }}</div>
+                <h2 v-if="message" class="message">{{ message }}</h2>
+            </div>
 
-      <div class="code">
-        <button title="Copy Code" class="copy" v-on:click="copy($event)"></button>
+            <div class="code">
+                <button title="Copy Code" class="copy" v-on:click="copy($event)"></button>
 
-        <pre>$ {{code.join(' \\\n  ')}}</pre>
-    </div>
-    </div>
-  </section>
+                <pre>$ {{code.join(' \\\n  ')}}</pre>
+            </div>
+        </div>
+    </section>
 
 
 </template>

@@ -7,6 +7,17 @@ rather than spreading it across multiple scrapers 🕸️.
 
 It also smartly handles **traffic routing 🔀** to minimize bans and increase **success rates 🚀**.
 
+<br/>
+
+![Scrapoxy](scrapoxy.gif)
+
+
+## What is not Scrapoxy?
+
+Scrapoxy is not:
+- a webscraper like [Scrapy](https://scrapy.org) or [Crawlee](https://crawlee.dev);
+- a proxy service like [IP Royal](https://iproyal.com).
+
 
 ## Why Scrapoxy?
 

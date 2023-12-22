@@ -1,22 +1,10 @@
 <script setup lang="ts">
-import {VPSponsors} from "vitepress/theme";
-
-export interface IProviders {
-    tier: string
-    size?: 'medium' | 'big'
-    items: IProvider[]
-}
-
-export interface IProvider {
-    name: string
-    img: string
-    url: string
-}
-
 interface IProps {
     icon?: string
     message?: string
-    data: IProviders[]
+    src: string
+    alt: string
+    maxWidth: string
 }
 
 defineProps<IProps>();
@@ -30,8 +18,8 @@ defineProps<IProps>();
                 <h2 v-if="message" class="message">{{ message }}</h2>
             </div>
 
-            <div class="sponsors">
-                <VPSponsors :data="data"/>
+            <div class="image">
+                <img :src="src" :alt="alt">
             </div>
         </div>
     </section>
@@ -46,6 +34,10 @@ section {
 }
 
 .container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
     margin: 0 auto;
     max-width: 1152px;
 }
@@ -56,7 +48,6 @@ section {
     text-align: center;
 }
 
-
 .icon {
     font-size: 20px;
 }
@@ -65,7 +56,9 @@ section {
     padding-top: 10px;
 }
 
-.sponsors {
-    padding-top: 10px;
+.image {
+    margin-top: 10px;
+
+    max-width: v-bind('maxWidth');
 }
 </style>
