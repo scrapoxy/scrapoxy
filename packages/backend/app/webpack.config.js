@@ -21,6 +21,9 @@ module.exports = composePlugins(withNx(), (config) => {
 
                 // Make the scrapoxy.js file executable
                 await fs.chmod('dist/scrapoxy/scrapoxy.js', '755');
+
+                // Copy readme.md for NPM package
+                await fs.copyFile('README.md', 'dist/scrapoxy/README.md');
             });
         }
     });
