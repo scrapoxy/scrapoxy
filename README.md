@@ -7,9 +7,11 @@ rather than spreading it across multiple scrapers 🕸️.
 
 It also smartly handles **traffic routing 🔀** to minimize bans and increase **success rates 🚀**.
 
+<br/>
+
 ![Scrapoxy](https://raw.githubusercontent.com/fabienvauchelles/scrapoxy/master/packages/website/intro/scrapoxy.gif)
 
-**Go to [Scrapoxy.io](https://scrapoxy.io) for more information 🚀!**
+**🚀🚀 [GO TO SCRAPOXY.IO FOR MORE INFORMATION!](https://scrapoxy.io) 🚀🚀**
 
 
 ## Features
