@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.3
+
+- **doc**: correct link to picture
+- **backend-app**: add version to package-lock.json in build
+
 ## 4.1.2
 
 - **doc**: add warning for xproxy installation 
