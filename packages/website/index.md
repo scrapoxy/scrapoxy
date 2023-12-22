@@ -20,8 +20,9 @@ hero:
       link: https://github.com/fabienvauchelles/scrapoxy
       img: https://img.shields.io/github/stars/fabienvauchelles/scrapoxy?logo=github&logoColor=000000&label=Star&color=fafafa&style=social 
     - theme: alt
-      text: Join Discord
+      text: Join
       link: https://discord.gg/ktNGGwZnUD
+      img: https://img.shields.io/discord/1095676356496461934?logo=discord&logoColor=000000&label=Discord&style=social
 
 features:
   - icon: 🕸️

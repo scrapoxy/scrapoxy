@@ -119,7 +119,7 @@ const heroImageSlotExists = inject('hero-image-slot-exists') as Ref<boolean>
     }
 
     .VPHero.has-image .main {
-        max-width: 650px;
+        max-width: 720px;
     }
 }
 
