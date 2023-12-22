@@ -14,10 +14,14 @@ module.exports = composePlugins(withNx(), (config) => {
                 // Add the version from the root package.json to the dist package.json
                 const packageJsonRoot = JSON.parse(await fs.readFile('package.json'));
                 const packageJsonDist = JSON.parse(await fs.readFile('dist/scrapoxy/package.json'));
-
                 packageJsonDist.version = packageJsonRoot.version;
-
                 await fs.writeFile('dist/scrapoxy/package.json', JSON.stringify(packageJsonDist, null, 4));
+
+                // And to package-lock.json
+                const packageJsonLockDist = JSON.parse(await fs.readFile('dist/scrapoxy/package-lock.json'));
+                packageJsonLockDist.version = packageJsonRoot.version;
+                packageJsonLockDist.packages[''].version = packageJsonRoot.version;
+                await fs.writeFile('dist/scrapoxy/package-lock.json', JSON.stringify(packageJsonLockDist, null, 4));
 
                 // Make the scrapoxy.js file executable
                 await fs.chmod('dist/scrapoxy/scrapoxy.js', '755');
