@@ -124,7 +124,7 @@ A warm thank-you message is appreciated as well 😃🙏.
 
 ## Licence
 
-See [The MIT License (MIT)](LICENCE.md)
+See [The MIT License (MIT)](https://github.com/fabienvauchelles/scrapoxy/blob/master/LICENCE.md)
 
 
 ## Follow-up
