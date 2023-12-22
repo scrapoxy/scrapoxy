@@ -9,7 +9,7 @@ It also smartly handles **traffic routing 🔀** to minimize bans and increase *
 
 <br/>
 
-![Scrapoxy](scrapoxy.gif)
+![Scrapoxy](/assets/images/scrapoxy.gif)
 
 
 ## What is not Scrapoxy?

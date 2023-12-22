@@ -100,7 +100,7 @@ sponsors:
             img: '/assets/images/wiremind.svg'
 
 ---
-<HomeImage message="Your personal proxies aggregator:" icon="🎯" src="/intro/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>
+<HomeImage message="Your personal proxies aggregator:" icon="🎯" src="/assets/images/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>
 <HomeGetStarted message="Get started in a few seconds:" icon="🚀" />
 <HomeProviders message="Compatible with" icon="📎" :data="$frontmatter.providers" />
 <HomeProviders message="Sponsored by" icon="❤️" :data="$frontmatter.sponsors" />
