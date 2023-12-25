@@ -13,7 +13,7 @@ import type {
     IFingerprint,
     IFingerprintOptions,
     IFingerprintRequest,
-    IProxyToRefresh,
+    IProxyToConnect,
 } from '@scrapoxy/common';
 import type { ClientRequestArgs } from 'http';
 
@@ -133,7 +133,7 @@ function fingerprintRequest(
 function fingerprintImpl(
     url: string,
     transport: ITransportService,
-    proxy: IProxyToRefresh,
+    proxy: IProxyToConnect,
     payload: IFingerprintRequest,
     sockets: Sockets,
     timeout: number,
@@ -209,7 +209,7 @@ function fingerprintImpl(
 
 export function fingerprint(
     transport: ITransportService,
-    proxy: IProxyToRefresh,
+    proxy: IProxyToConnect,
     options: IFingerprintOptions,
     payload: IFingerprintRequest,
     sockets: Sockets

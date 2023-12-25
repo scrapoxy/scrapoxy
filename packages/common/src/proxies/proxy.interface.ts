@@ -158,7 +158,19 @@ export interface IProxyToConnect {
 }
 
 
-export type IProxyToRefresh = IProxyToConnect;
+export const PROXY_TO_REFRESH_META = [
+    ...PROXY_TO_CONNECT_META,
+    'bytesReceived',
+    'bytesSent',
+    'requests',
+];
+
+
+export interface IProxyToRefresh extends IProxyToConnect {
+    bytesReceived: number;
+    bytesSent: number;
+    requests: number;
+}
 
 
 export interface IProxyInfo {

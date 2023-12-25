@@ -78,6 +78,7 @@ import {
     PROXY_DATA_META_MONGODB,
     PROXY_SYNC_META_MONGODB,
     PROXY_TO_CONNECT_META_MONGODB,
+    PROXY_TO_REFRESH_META_MONGODB,
     PROXY_VIEW_META_MONGODB,
 } from '../proxy.model';
 import {
@@ -1937,7 +1938,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             },
             {
                 limit: count,
-                projection: PROXY_TO_CONNECT_META_MONGODB,
+                projection: PROXY_TO_REFRESH_META_MONGODB,
             }
         )
             .map((p) => fromMongo<IProxyToRefresh>(p))

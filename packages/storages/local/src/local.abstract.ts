@@ -77,7 +77,10 @@ import {
     toProjectMetricsView,
     toProjectSync,
 } from './project.model';
-import { toProxyToConnectBase } from './proxy.model';
+import {
+    toProxyToConnect,
+    toProxyToRefresh,
+} from './proxy.model';
 import type { IConnectorModel } from './connector.model';
 import type { ICredentialModel } from './credential.model';
 import type { IFreeproxyModel } from './freeproxy.model';
@@ -1694,7 +1697,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             throw new NoProjectProxyError(projectId);
         }
 
-        return toProxyToConnectBase(proxyModel);
+        return toProxyToConnect(proxyModel);
     }
 
     async updateProxyLastConnectionTs(
@@ -1738,7 +1741,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 0,
                 count
             )
-            .map(toProxyToConnectBase);
+            .map(toProxyToRefresh);
 
         return proxiesToRefresh;
     }

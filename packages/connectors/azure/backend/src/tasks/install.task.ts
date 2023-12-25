@@ -39,7 +39,7 @@ import type {
     ICertificate,
     IFingerprintOptions,
     IFingerprintRequest,
-    IProxyToRefresh,
+    IProxyToConnect,
     ITaskData,
     ITaskFactory,
     ITaskToUpdate,
@@ -262,7 +262,7 @@ class AzureInstallCommand extends ATaskCommand {
                     certificate: this.data.certificate,
                 };
                 const key = uuid();
-                const proxy: IProxyToRefresh = {
+                const proxy: IProxyToConnect = {
                     id: formatProxyId(
                         this.task.connectorId,
                         key
@@ -281,6 +281,9 @@ class AzureInstallCommand extends ATaskCommand {
                         mode: EFingerprintMode.INSTALL,
                         connectorType: proxy.type,
                         proxyId: proxy.id,
+                        bytesReceived: 0,
+                        bytesSent: 0,
+                        requests: 0,
                     };
 
                     await fingerprint(

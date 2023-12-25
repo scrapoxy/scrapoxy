@@ -66,6 +66,9 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                 const payload: IFingerprintRequest = {
                     installId: freeproxieToRefresh.installId,
                     mode: EFingerprintMode.FREEPROXIES,
+                    bytesReceived: 0,
+                    bytesSent: 0,
+                    requests: 0,
                 };
                 const config: IProxyTransport = {
                     address: freeproxy.address,

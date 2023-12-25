@@ -26,6 +26,9 @@ export interface IFingerprintRequest {
     mode: EFingerprintMode;
     connectorType?: string;
     proxyId?: string;
+    bytesReceived: number;
+    bytesSent: number;
+    requests: number;
 }
 
 

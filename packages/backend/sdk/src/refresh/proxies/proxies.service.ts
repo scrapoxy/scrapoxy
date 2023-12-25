@@ -63,22 +63,25 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
         }
     }
 
-    async task(proxiesToRefreshed: IProxiesToRefresh): Promise<void> {
-        const ids = proxiesToRefreshed.proxies.map((p) => p.id);
+    async task(proxiesToRefresh: IProxiesToRefresh): Promise<void> {
+        const ids = proxiesToRefresh.proxies.map((p) => p.id);
         this.logger.debug(`fingerprint instances ${ids.join(',')}`);
 
         // Parallel version
         const sockets = new Sockets(this.sockets);
         let proxiesRefreshed: IProxyRefreshed[];
         try {
-            proxiesRefreshed = await Promise.all(proxiesToRefreshed.proxies.map((proxy) => {
+            proxiesRefreshed = await Promise.all(proxiesToRefresh.proxies.map((proxy) => {
                 const factory = this.connectorproviders.getFactory(proxy.type);
                 const transport = this.transportproviders.getTransportByType(factory.config.transportType);
                 const payload: IFingerprintRequest = {
-                    installId: proxiesToRefreshed.installId,
+                    installId: proxiesToRefresh.installId,
                     mode: EFingerprintMode.CONNECTOR,
                     connectorType: proxy.type,
                     proxyId: proxy.id,
+                    bytesReceived: proxy.bytesReceived,
+                    bytesSent: proxy.bytesSent,
+                    requests: proxy.requests,
                 };
 
                 return fingerprint(

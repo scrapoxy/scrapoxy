@@ -2,6 +2,7 @@ import {
     PROXY_DATA_META,
     PROXY_SYNC_META,
     PROXY_TO_CONNECT_META,
+    PROXY_TO_REFRESH_META,
     PROXY_VIEW_META,
 } from '@scrapoxy/common';
 import { toMongoMeta } from './mongo/mongo.helpers';
@@ -26,4 +27,5 @@ export const
     PROXY_DATA_META_MONGODB = toMongoMeta(PROXY_DATA_META),
     PROXY_SYNC_META_MONGODB = toMongoMeta(PROXY_SYNC_META),
     PROXY_TO_CONNECT_META_MONGODB = toMongoMeta(PROXY_TO_CONNECT_META),
+    PROXY_TO_REFRESH_META_MONGODB = toMongoMeta(PROXY_TO_REFRESH_META),
     PROXY_VIEW_META_MONGODB = toMongoMeta(PROXY_VIEW_META);

@@ -2,6 +2,7 @@ import type {
     IProxyData,
     IProxySync,
     IProxyToConnect,
+    IProxyToRefresh,
     IProxyView,
 } from '@scrapoxy/common';
 
@@ -12,7 +13,7 @@ export interface IProxyModel extends IProxyData, IProxySync, IProxyView {
 }
 
 
-export function toProxyToConnectBase(proxy: IProxyModel): IProxyToConnect {
+export function toProxyToConnect(proxy: IProxyModel): IProxyToConnect {
     const connect: IProxyToConnect = {
         id: proxy.id,
         type: proxy.type,
@@ -21,6 +22,24 @@ export function toProxyToConnectBase(proxy: IProxyModel): IProxyToConnect {
         key: proxy.key,
         config: proxy.config,
         useragent: proxy.useragent,
+    };
+
+    return connect;
+}
+
+
+export function toProxyToRefresh(proxy: IProxyModel): IProxyToRefresh {
+    const connect: IProxyToRefresh = {
+        id: proxy.id,
+        type: proxy.type,
+        connectorId: proxy.connectorId,
+        projectId: proxy.projectId,
+        key: proxy.key,
+        config: proxy.config,
+        useragent: proxy.useragent,
+        bytesReceived: proxy.bytesReceived,
+        bytesSent: proxy.bytesSent,
+        requests: proxy.requests,
     };
 
     return connect;
