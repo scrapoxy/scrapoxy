@@ -24,8 +24,8 @@ export enum EFingerprintMode {
 export interface IFingerprintRequest {
     installId: string;
     mode: EFingerprintMode;
-    connectorType?: string;
-    proxyId?: string;
+    connectorType: string;
+    proxyId: string;
     bytesReceived: number;
     bytesSent: number;
     requests: number;

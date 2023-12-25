@@ -66,6 +66,8 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                 const payload: IFingerprintRequest = {
                     installId: freeproxieToRefresh.installId,
                     mode: EFingerprintMode.FREEPROXIES,
+                    connectorType: CONNECTOR_FREEPROXIES_TYPE,
+                    proxyId: freeproxy.id,
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,
