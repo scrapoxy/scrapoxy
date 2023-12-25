@@ -1,21 +1,26 @@
 import type { UmzugStorage } from 'umzug';
 
 
-export class DirectStorage implements UmzugStorage {
+interface IMigration {
+    name: string;
+}
+
+
+export class DirectStorage implements UmzugStorage<IMigration> {
     constructor(private readonly migrations: string[]) {}
 
-    async logMigration({ name: migrationName }: { name: string }): Promise<void> {
-        this.migrations.push(migrationName);
+    async logMigration(migration: IMigration): Promise<void> {
+        this.migrations.push(migration.name);
     }
 
-    async unlogMigration({ name: migrationName }: { name: string }): Promise<void> {
-        let ind = this.migrations.indexOf(migrationName);
+    async unlogMigration(migration: IMigration): Promise<void> {
+        let ind = this.migrations.indexOf(migration.name);
         while (ind >= 0) {
             this.migrations.splice(
                 ind,
                 1
             );
-            ind = this.migrations.indexOf(migrationName);
+            ind = this.migrations.indexOf(migration.name);
         }
     }
 
