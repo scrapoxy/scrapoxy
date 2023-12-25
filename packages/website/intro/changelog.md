@@ -1,11 +1,22 @@
 # Changelog
 
+## 4.1.4
+
+### Bug fixes
+
+- **fingerprint**: better fingerprint
+
+
 ## 4.1.3
+
+### Bug fixes
 
 - **doc**: correct link to picture
 - **backend-app**: add version to package-lock.json in build
 
 ## 4.1.2
+
+### Bug fixes
 
 - **doc**: add warning for xproxy installation 
 - **doc**: improve documentation and website
