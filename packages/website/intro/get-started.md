@@ -12,6 +12,10 @@ docker run -d -p 8888:8888 -p 8890:8890 -e AUTH_LOCAL_USERNAME=admin -e AUTH_LOC
 
 User interface is now running on http://localhost:8890 with `admin` as username and `password` as password.
 
+:::tip
+To upgrade Scrapoxy, pull the latest image with `docker pull fabienvauchelles/scrapoxy`.
+:::
+
 
 ## With NPM
 
