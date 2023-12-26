@@ -20,7 +20,7 @@ pip install requests
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Click on `Download CA certificate` and save the file;
-3. Remember the project token.
+3. Remember the project token (format is `USERNAME:PASSWORD`).
 
 ::: info
 It is assumed that file is saved in `/tmp/scrapoxy-ca.crt`.
@@ -35,7 +35,7 @@ Create a file name `requests.py` with the following content:
 import requests
 
 ca = "/tmp/scrapoxy-ca.crt"
-proxy = "http://<project_username>:<project_password>@localhost:8888"
+proxy = "http://USERNAME:PASSWORD@localhost:8888"
 
 r = requests.get(
     "https://fingerprint.scrapoxy.io",
@@ -48,7 +48,7 @@ print("proxy instance:", r.headers["x-scrapoxy-proxyname"])
 print(r.json())
 ```
 
-Replace `<project_username>` and `<project_password>` by the credentials you copied earlier.
+Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 Scrapoxy includes a `x-scrapoxy-proxyname` header in each response,
 indicating the name of the proxy instance assigned for the request.
@@ -68,9 +68,9 @@ To reuse the same proxy instance for all requests, add the following line:
 import requests
 
 ca = "/tmp/scrapoxy-ca.crt"
-proxy = "http://<project_username>:<project_password>@localhost:8888"
+proxy = "http://USERNAME:PASSWORD@localhost:8888"
 headers={
-    'X-Scrapoxy-Proxyname': '<proxyname>'
+    'X-Scrapoxy-Proxyname': 'PROXYNAME'
 }
 
 r = requests.get(
@@ -83,7 +83,7 @@ r = requests.get(
 print("proxy instance:", r.headers["x-scrapoxy-proxyname"])
 ```
 
-Replace `<proxyname>` by the proxy instance name you want to use.
+Replace `PROXYNAME` by the proxy instance name you want to use.
 
 
 ## HRequests
@@ -120,7 +120,7 @@ Create a file name `hrequests.py` with the following content:
 import hrequests
 
 ca = "/tmp/scrapoxy-ca.crt"
-proxy = "http://<project_username>:<project_password>@localhost:8888"
+proxy = "http://USERNAME:PASSWORD@localhost:8888"
 
 session = hrequests.Session()
 
@@ -136,6 +136,8 @@ print("proxy instance:", r.headers["x-scrapoxy-proxyname"])
 
 print(r.json())
 ```
+
+Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 ::: info
 All requests made in the same session will use the same proxy instance.

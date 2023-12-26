@@ -18,7 +18,7 @@ cd my-crawler
 ![Token](../token.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
-2. Remember the project token.
+2. Remember the project token (format is `USERNAME:PASSWORD`).
 
 
 ## Step 3: Create a crawler
@@ -33,7 +33,7 @@ import {
 
 const proxyConfiguration = new ProxyConfiguration({
     proxyUrls: [
-        'http://<project_username>:<project_password>@localhost:8888',
+        'http://USERNAME:PASSWORD@localhost:8888',
     ]
 });
 
@@ -53,7 +53,7 @@ const crawler = new CheerioCrawler({
     .catch(console.error);
 ```
 
-Replace `<project_username>` and `<project_password>` by the credentials you copied earlier.
+Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 Run the crawler:
 

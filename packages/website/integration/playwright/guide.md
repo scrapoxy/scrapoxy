@@ -25,7 +25,7 @@ npx playwright install
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;
-3. Remember the project token.
+3. Remember the project token (format is `USERNAME:PASSWORD`).
 
 
 ### Step 3: Create and run the script
@@ -41,8 +41,8 @@ import playwright from 'playwright';
         args: ["--headless=new"],
         proxy: {
             server: 'http://localhost:8888',
-            username: '<project_username>',
-            password: '<project_password>'
+            username: 'USERNAME',
+            password: 'PASSWORD'
         },
     });
 
@@ -62,7 +62,7 @@ import playwright from 'playwright';
 
 ```
 
-Replace `<project_username>` and `<project_password>` by the credentials you copied earlier.
+Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 ::: info
 All requests made in the same session will use the same proxy instance.

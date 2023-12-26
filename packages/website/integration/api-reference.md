@@ -13,7 +13,7 @@ The username/password comes from the project settings.
 
 ![Token](./token.png)
 
-The token follows this format: `<project_username>:<project_password>`.
+The token follows this format: `USERNAME:PASSWORD`.
 
 Basic authentication transmits the username and password in the `Authorization` header of a request,
 encoded using Base64.

@@ -17,7 +17,7 @@ pip install scrapy scrapoxy
 ![Token](../token.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
-2. Remember the project token.
+2. Remember the project token (format is `USERNAME:PASSWORD`).
 
 
 ## Step 3: Create a new project
@@ -47,11 +47,11 @@ DOWNLOADER_MIDDLEWARES = {
 
 SCRAPOXY_MASTER = "http://localhost:8888"
 SCRAPOXY_API = "http://localhost:8890/api"
-SCRAPOXY_USERNAME = "<project_username>"
-SCRAPOXY_PASSWORD = "<project_password>"
+SCRAPOXY_USERNAME = "USERNAME"
+SCRAPOXY_PASSWORD = "PASSWORD"
 ```
 
-Replace `<project_username>` and `<project_password>` by the credentials you copied earlier.
+Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 
 ## Step 5: Remove blacklisted instances (optional)
