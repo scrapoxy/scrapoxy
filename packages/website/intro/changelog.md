@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.1.5
+
+### Bug fixes
+
+- **auth**: `secure` flag for the authentication cookie is now optional;
+- **doc**: usage of username:password is better explained.
+
+
 ## 4.1.4
 
 ### Bug fixes
