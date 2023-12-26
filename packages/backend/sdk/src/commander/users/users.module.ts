@@ -13,6 +13,7 @@ import type { DynamicModule } from '@nestjs/common';
 
 export interface ICommanderUsersModuleConfig {
     jwt: IJwtConfig;
+    secureCookie: boolean;
 }
 
 
@@ -21,6 +22,7 @@ export class CommanderUsersModule {
     static forRoot(): DynamicModule {
         const config: ICommanderUsersModuleConfig = {
             jwt: getEnvFrontendJwtConfig(),
+            secureCookie: process.env.FRONTEND_SECURE_COOKIE === 'true' || process.env.FRONTEND_SECURE_COOKIE === '1',
         };
 
         return {

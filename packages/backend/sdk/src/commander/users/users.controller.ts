@@ -67,7 +67,8 @@ export class CommanderUsersController {
         addAuthCookie(
             res,
             toUserToken(user),
-            this.config.jwt
+            this.config.jwt,
+            this.config.secureCookie
         );
 
         res.redirect('/');
@@ -86,7 +87,8 @@ export class CommanderUsersController {
         addAuthCookie(
             res,
             toUserToken(user),
-            this.config.jwt
+            this.config.jwt,
+            this.config.secureCookie
         );
 
         // No redirect on POST request
@@ -132,7 +134,8 @@ export class CommanderUsersController {
         addAuthCookie(
             res,
             toUserToken(userFound),
-            this.config.jwt
+            this.config.jwt,
+            this.config.secureCookie
         );
 
         if ([
@@ -146,7 +149,10 @@ export class CommanderUsersController {
 
     @Get('me/logout')
     logout(@ResponseNest() res: ResponseExpress) {
-        removeAuthCookie(res);
+        removeAuthCookie(
+            res,
+            this.config.secureCookie
+        );
 
         res.redirect('/login');
     }

@@ -12,6 +12,7 @@
 
 - `FRONTEND_JWT_SECRET` : Secret of the JWT used for users connections.
 - `FRONTEND_JWT_EXPIRATION` : Duration of the JWT for users connections. The default value is `24h`.
+- `FRONTEND_SECURE_COOKIE` : Enable the secure flag on the authentication cookie by setting it to `1`, especially if the Scrapoxy UI is located behind an SSL reverse proxy like [Nginx](https://www.nginx.com). The default value is `0`.
 
 
 :::warning

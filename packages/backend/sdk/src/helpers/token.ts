@@ -14,10 +14,9 @@ export interface IJwtConfig {
 export const AUTH_COOKIE = 'token';
 
 
-const cookieOptions = {
+const COOKIE_OPTIONS = {
     httpOnly: true,
     sameSite: true,
-    secure: true,
 };
 
 
@@ -72,7 +71,8 @@ export function parserAuthFromHeaders(headers: IncomingHttpHeaders): string | un
 export function addAuthCookie(
     res: Response,
     user: IUserToken,
-    config: IJwtConfig
+    config: IJwtConfig,
+    secure: boolean
 ) {
     const jwtToken = jwt.sign(
         user,
@@ -85,14 +85,23 @@ export function addAuthCookie(
     res.cookie(
         AUTH_COOKIE,
         jwtToken,
-        cookieOptions
+        {
+            ...COOKIE_OPTIONS,
+            secure,
+        }
     );
 }
 
 
-export function removeAuthCookie(res: Response) {
+export function removeAuthCookie(
+    res: Response,
+    secure: boolean
+) {
     res.clearCookie(
         AUTH_COOKIE,
-        cookieOptions
+        {
+            ...COOKIE_OPTIONS,
+            secure,
+        }
     );
 }
