@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.1.6
+
+### Bug fixes
+
+- **frontend**: correct pagination component
+- **doc**: replace local search with algolia
+- **doc**: misc documentation fixes
+
+
 ## 4.1.5
 
 ### Bug fixes
