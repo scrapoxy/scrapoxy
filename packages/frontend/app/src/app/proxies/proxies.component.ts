@@ -42,8 +42,6 @@ export class ProxiesComponent implements OnInit, OnDestroy {
 
     pageMax = 0;
 
-    pagesList: number[] = [];
-
     projectId: string;
 
     projectName = '';
@@ -159,21 +157,12 @@ export class ProxiesComponent implements OnInit, OnDestroy {
         }
     }
 
-    onProxiesRefreshed() {
+    private onProxiesRefreshed() {
         this.pageMax = Math.ceil(this.client.proxies.length / ITEMS_PER_PAGE);
 
-        if (this.pageCurrent > this.pageMax) {
-            this.pageCurrent = Math.max(
-                0,
-                this.pageMax - 1
-            );
-        }
-        this.pagesList.length = 0;
-        for (let page = 0; page < Math.min(
-            9,
-            this.pageMax
-        ); page++) {
-            this.pagesList.push(page);
-        }
+        this.pageCurrent = Math.min(
+            this.pageCurrent,
+            this.pageMax - 1
+        );
     }
 }

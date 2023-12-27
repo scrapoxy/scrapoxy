@@ -63,8 +63,6 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
     pageMax = 0;
 
-    pagesList: number[] = [];
-
     readonly subForm: FormGroup;
 
     freeproxiesAdd = '';
@@ -262,22 +260,13 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         });
     }
 
-    onFreeproxiesRefreshed() {
+    private onFreeproxiesRefreshed() {
         this.pageMax = Math.ceil(this.client.freeproxies.length / ITEMS_PER_PAGE);
 
-        if (this.pageCurrent > this.pageMax) {
-            this.pageCurrent = Math.max(
-                0,
-                this.pageMax - 1
-            );
-        }
-        this.pagesList.length = 0;
-        for (let page = 0; page < Math.min(
-            9,
-            this.pageMax
-        ); page++) {
-            this.pagesList.push(page);
-        }
+        this.pageCurrent = Math.min(
+            this.pageCurrent,
+            this.pageMax - 1
+        );
     }
 
     private async removeFreeproxies(options: IFreeproxiesToRemoveOptions): Promise<void> {

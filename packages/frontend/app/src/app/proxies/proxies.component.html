@@ -138,24 +138,7 @@
                                 </tbody>
                             </table>
 
-                            <c-pagination align="center">
-                                <li cPageItem [disabled]="pageCurrent < 1">
-                                    <a cPageLink (click)="pageCurrent = pageCurrent - 1">Previous</a>
-                                </li>
-                                @for (page of pagesList; track page) {
-                                    <li cPageItem [disabled]="pageCurrent == page">
-                                        <a cPageLink (click)="pageCurrent = page">
-                                            {{ page + 1 }}
-                                        </a>
-                                    </li>
-                                }
-                                <li cPageItem [disabled]="pageCurrent >= pageMax - 1">
-                                    <a cPageLink (click)="pageCurrent = pageCurrent + 1">Next</a>
-                                </li>
-                                <li cPageItem [disabled]="pageCurrent == pageMax - 1">
-                                    <a cPageLink (click)="pageCurrent = pageMax - 1">Last</a>
-                                </li>
-                            </c-pagination>
+                            <table-pagination [(pageCurrent)]="pageCurrent" [pageMax]="pageMax"></table-pagination>
                         </c-card-body>
                     </c-card>
                 }

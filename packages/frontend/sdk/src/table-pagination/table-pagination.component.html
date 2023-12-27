@@ -1,0 +1,21 @@
+<c-pagination align="center">
+    <li cPageItem [disabled]="pageCurrent === 0">
+        <a cPageLink (click)="setPage(0)">First</a>
+    </li>
+    <li cPageItem [disabled]="pageCurrent < 1">
+        <a cPageLink (click)="setPage(pageCurrent - 1)">Previous</a>
+    </li>
+    @for (page of pagesList; track page) {
+        <li cPageItem [disabled]="pageCurrent === page">
+            <a cPageLink (click)="setPage(page)">
+                {{ page + 1 }}
+            </a>
+        </li>
+    }
+    <li cPageItem [disabled]="pageCurrent >= pageMax - 1">
+        <a cPageLink (click)="setPage(pageCurrent + 1)">Next</a>
+    </li>
+    <li cPageItem [disabled]="pageCurrent === pageMax - 1">
+        <a cPageLink (click)="setPage(pageMax - 1)">Last</a>
+    </li>
+</c-pagination>

@@ -12,6 +12,8 @@ export * from './fingerprint';
 
 export * from './isocodes';
 
+export * from './table-pagination';
+
 export * from './toasts';
 
 export * from './validators';

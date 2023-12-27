@@ -7,13 +7,13 @@ import {
     ButtonModule,
     FormModule,
     GridModule,
-    PaginationModule,
     TableModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import {
     ConnectorprovidersModule,
     FingerprintModule,
+    TablePaginationModule,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorFreeproxiesComponent } from './connector/connector.component';
 import { CredentialFreeproxiesComponent } from './credential/credential.component';
@@ -24,14 +24,14 @@ import { ConnectorFreeproxiesFactory } from './freeproxies.factory';
     imports: [
         ButtonModule,
         ConnectorprovidersModule,
+        FingerprintModule,
         FormModule,
         FormsModule,
         GridModule,
         IconModule,
-        PaginationModule,
-        TableModule,
         ReactiveFormsModule,
-        FingerprintModule,
+        TableModule,
+        TablePaginationModule,
     ],
     declarations: [
         ConnectorFreeproxiesComponent, CredentialFreeproxiesComponent,
