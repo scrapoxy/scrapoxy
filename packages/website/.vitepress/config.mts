@@ -201,7 +201,12 @@ export default defineConfig({
         },
 
         search: {
-            provider: 'local',
+            provider: 'algolia',
+            options: {
+                appId: 'BHEFK0R9M4',
+                apiKey: '7d34631eaec83eb01c977a5c114cb0f4',
+                indexName: 'scrapoxy'
+            }
         }
     },
 
