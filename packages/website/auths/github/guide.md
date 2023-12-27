@@ -29,12 +29,9 @@ On the left menu, click on `Developer settings`.
 
 1. Enter `Scrapoxy` as Application name;
 2. Enter your app URL as Homepage URL;
-3. Enter `http://localhost:8890/api/users/auths/github` as Authorization callback URL;
+3. Enter `http://localhost:8890/api/users/auths/github` as Authorization callback URL (replace `http://localhost:8890` by the **external URL** of your Scrapoxy instance);
 4. Click on `Register application`.
 
-::: tip
-Replace `http://localhost:8890` by the URL of your Scrapoxy instance and keep the `/api/users/auths/github` path.
-:::
 
 ---
 
@@ -52,21 +49,51 @@ Remember the Client secret.
 
 ## Scrapoxy
 
-Add 2 environment variables to your Scrapoxy instance:
+### With Docker
+
+Open the **terminal** and run the following command:
 
 ```shell
-export AUTH_GITHUB_CLIENT_ID=MY_CLIENT_ID
-export AUTH_GITHUB_CLIENT_SECRET=MY_CLIENT_SECRET
+docker run -d -p 8888:8888 -p 8890:8890 -e FRONTEND_URL=http://localhost:8890 -e AUTH_GITHUB_CLIENT_ID=my_client_id -e AUTH_GITHUB_CLIENT_SECRET=my_client_secret -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 fabienvauchelles/scrapoxy
 ```
 
-Replace `MY_CLIENT_ID` and `MY_CLIENT_SECRET` by the values you copied earlier.
+Replace:
+- `my_client_id` and `my_client_secret` with the values you copied earlier;
+- `http://localhost:8890` by the external URL of your Scrapoxy instance.
 
-Based on this environment values, Scrapoxy will automatically bootstrap the Github authentication.
-
-::: info
-Adapt the command to your environment (Docker, Kubernetes, etc.).
-:::
-
-And restart your Scrapoxy instance with Github Authentication:
+Scrapoxy will automatically bootstrap the Github authentication:
 
 ![SPX Auth](spx_auth.png)
+
+
+### With NPM
+
+### On Linux
+
+Open the **terminal** and run the following command:
+
+```shell
+FRONTEND_URL=http://localhost:8890 AUTH_GITHUB_CLIENT_ID=my_client_id AUTH_GITHUB_CLIENT_SECRET=my_client_secret BACKEND_JWT_SECRET=secret1 FRONTEND_JWT_SECRET=secret2 npx --yes scrapoxy
+```
+
+Replace:
+- `my_client_id` and `my_client_secret` with the values you copied earlier;
+- `http://localhost:8890` by the external URL of your Scrapoxy instance.
+
+
+### On Windows
+
+Open the **Command Prompt** and run the following command:
+
+```shell
+set FRONTEND_URL=http://localhost:8890
+set AUTH_GITHUB_CLIENT_ID=my_client_id
+set AUTH_GITHUB_CLIENT_SECRET=my_client_secret
+set BACKEND_JWT_SECRET=secret1
+set FRONTEND_JWT_SECRET=secret2
+npx --yes scrapoxy
+```
+
+Replace:
+- `my_client_id` and `my_client_secret` with the values you copied earlier;
+- `http://localhost:8890` by the external URL of your Scrapoxy instance.

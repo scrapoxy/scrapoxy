@@ -112,11 +112,11 @@ Click on `BACK TO DASHBOARD`.
 
 1. Select `Web application` as Application type;
 2. Enter `Scrapoxy Client` as Name;
-3. Enter `http://localhost:8890/api/users/auths/google` as Authorized redirect URIs;
+3. Enter `http://localhost:8890/api/users/auths/google` as Authorized redirect URIs (replace `http://localhost:8890` by the **external URL** of your Scrapoxy instance)
 4. And click on `CREATE`.
 
-::: tip
-Replace `http://localhost:8890` by the URL of your Scrapoxy instance and keep the `/api/users/auths/google` path.
+::: info
+Google only accepts HTTPS URLS.
 :::
 
 
@@ -128,21 +128,51 @@ Replace `http://localhost:8890` by the URL of your Scrapoxy instance and keep th
 
 ## Scrapoxy
 
-Add 2 environment variables to your Scrapoxy instance:
+### With Docker
+
+Open the **terminal** and run the following command:
 
 ```shell
-export AUTH_GOOGLE_CLIENT_ID=MY_CLIENT_ID
-export AUTH_GOOGLE_CLIENT_SECRET=MY_CLIENT_SECRET
+docker run -d -p 8888:8888 -p 8890:8890 -e FRONTEND_URL=http://localhost:8890 -e AUTH_GOOGLE_CLIENT_ID=my_client_id -e AUTH_GOOGLE_CLIENT_SECRET=my_client_secret -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 fabienvauchelles/scrapoxy
 ```
 
-Replace `MY_CLIENT_ID` and `MY_CLIENT_SECRET` by the values you copied earlier.
+Replace:
+- `my_client_id` and `my_client_secret` with the values you copied earlier;
+- `http://localhost:8890` by the external URL of your Scrapoxy instance (HTTPS only).
 
-Based on this environment values, Scrapoxy will automatically bootstrap the Google authentication.
-
-::: info
-Adapt the command to your environment (Docker, Kubernetes, etc.).
-:::
-
-And restart your Scrapoxy instance with Google Authentication:
+Scrapoxy will automatically bootstrap the Google authentication:
 
 ![SPX Auth](spx_auth.png)
+
+
+### With NPM
+
+### On Linux
+
+Open the **terminal** and run the following command:
+
+```shell
+FRONTEND_URL=http://localhost:8890 AUTH_GOOGLE_CLIENT_ID=my_client_id AUTH_GOOGLE_CLIENT_SECRET=my_client_secret BACKEND_JWT_SECRET=secret1 FRONTEND_JWT_SECRET=secret2 npx --yes scrapoxy
+```
+
+Replace:
+- `my_client_id` and `my_client_secret` with the values you copied earlier;
+- `http://localhost:8890` by the external URL of your Scrapoxy instance (HTTPS only).
+
+
+### On Windows
+
+Open the **Command Prompt** and run the following command:
+
+```shell
+set FRONTEND_URL=http://localhost:8890
+set AUTH_GOOGLE_CLIENT_ID=my_client_id
+set AUTH_GOOGLE_CLIENT_SECRET=my_client_secret
+set BACKEND_JWT_SECRET=secret1
+set FRONTEND_JWT_SECRET=secret2
+npx --yes scrapoxy
+```
+
+Replace:
+- `my_client_id` and `my_client_secret` with the values you copied earlier;
+- `http://localhost:8890` by the external URL of your Scrapoxy instance (HTTPS only).
