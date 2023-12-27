@@ -131,11 +131,11 @@ Replace `http://localhost:8890` by the URL of your Scrapoxy instance and keep th
 Add 2 environment variables to your Scrapoxy instance:
 
 ```shell
-export AUTH_GOOGLE_CLIENT_ID=<client_id>
-export AUTH_GOOGLE_CLIENT_SECRET=<client_secret>
+export AUTH_GOOGLE_CLIENT_ID=MY_CLIENT_ID
+export AUTH_GOOGLE_CLIENT_SECRET=MY_CLIENT_SECRET
 ```
 
-Replace `<client_id>` and `<client_secret>` by the values you copied earlier.
+Replace `MY_CLIENT_ID` and `MY_CLIENT_SECRET` by the values you copied earlier.
 
 Based on this environment values, Scrapoxy will automatically bootstrap the Google authentication.
 

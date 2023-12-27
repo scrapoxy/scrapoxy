@@ -55,11 +55,11 @@ Remember the Client secret.
 Add 2 environment variables to your Scrapoxy instance:
 
 ```shell
-export AUTH_GITHUB_CLIENT_ID=<client_id>
-export AUTH_GITHUB_CLIENT_SECRET=<client_secret>
+export AUTH_GITHUB_CLIENT_ID=MY_CLIENT_ID
+export AUTH_GITHUB_CLIENT_SECRET=MY_CLIENT_SECRET
 ```
 
-Replace `<client_id>` and `<client_secret>` by the values you copied earlier.
+Replace `MY_CLIENT_ID` and `MY_CLIENT_SECRET` by the values you copied earlier.
 
 Based on this environment values, Scrapoxy will automatically bootstrap the Github authentication.
 

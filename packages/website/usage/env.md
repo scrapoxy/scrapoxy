@@ -25,7 +25,7 @@ To start Scrapoxy, it is mandatory to set the secrets `BACKEND_JWT_SECRET` and `
 ### Commander
 
 - `COMMANDER_PORT` : Port of the Commander API. The default value is `8890`.
-- `COMMANDER_URL` : Commander exposed API URL. It is required if using a distributed configuration. The default value is `http://localhost:<COMMANDER_PORT>/api`.
+- `COMMANDER_URL` : Commander exposed API URL. It is required if using a distributed configuration. The default value is `http://localhost:COMMANDER_PORT/api`.
 
 
 ### User interface
@@ -73,7 +73,7 @@ To activate Github OAuth authentication, set all the following environment varia
 
 - `AUTH_GITHUB_CLIENT_ID` : Github Client ID
 - `AUTH_GITHUB_SECRET` : Github Secret
-- `AUTH_GITHUB_CALLBACK_URL` : Callback URL. The default value is `<FRONTEND_URL>/api/users/auths/github`.
+- `AUTH_GITHUB_CALLBACK_URL` : Callback URL. The default value is `FRONTEND_URL/api/users/auths/github`.
 
 
 ### Google
@@ -82,7 +82,7 @@ To activate Google OAuth authentication, set all the following environment varia
 
 - `AUTH_GOOGLE_CLIENT_ID` : Google Client ID
 - `AUTH_GOOGLE_SECRET` : Google Secret
-- `AUTH_GOOGLE_CALLBACK_URL` : Callback URL. The default value is `<FRONTEND_URL>/api/users/auths/google`.
+- `AUTH_GOOGLE_CALLBACK_URL` : Callback URL. The default value is `FRONTEND_URL/api/users/auths/google`.
 
 
 ## Storage
