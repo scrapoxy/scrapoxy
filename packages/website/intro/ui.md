@@ -208,7 +208,6 @@ A proxy is characterized by the following attributes:
 8. **Uptime**: The uptime of the proxy, representing the duration between its creation and the current moment;
 9. **Delete**: Manually remove the proxy from the pool.
 
-
 ### Proxy status
 
 The proxy has 2 sets of statuses:
@@ -248,8 +247,10 @@ Scrapoxy will route traffic only when the proxy status is `STARTED` and connecti
 2. Scrapoxy furnishes metrics such as active proxies, countries, or cities;
 3. Click on the full-screen icon to expand the map for a more detailed view.
 
-::: tip
 Checking the origin of your proxies is valuable for optimizing your scraping performance.
+
+::: info
+The map displays only proxies that have been used **at least once**, allowing Scrapoxy to fingerprint them.
 :::
 
 
