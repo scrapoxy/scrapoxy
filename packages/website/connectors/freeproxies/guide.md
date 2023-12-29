@@ -3,8 +3,23 @@
 A _Free Proxies List_ is a specific type of connector designed to manage a manual list of proxies. 
 Users have the flexibility to either utilize their own private proxies or incorporate a list of free proxies available on the Internet.
 
-For instance, a free proxies list can be obtained from:
+Scrapoxy supports HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
+
+For instance, free proxies can be obtained from:
 - [ProxyScrape](https://proxyscrape.com/free-proxy-list)
+- [Spys One](https://spys.one)
+- [IPRoyal](https://iproyal.com/free-proxy-list)
+- [Free Proxy CZ](http://free-proxy.cz)
+- [Free Proxy World](https://www.freeproxy.world)
+- [Proxy List Download](https://www.proxy-list.download)
+- [Scraping Ant](https://scrapingant.com/free-proxies)
+- [ProxyDB.net](https://proxydb.net)
+- ...
+
+
+::: info
+Feel free to reach out to me on [Discord](https://discord.gg/ktNGGwZnUD) if you'd like to contribute and add your proxy list.
+:::
 
 
 ## Scrapoxy
@@ -61,9 +76,15 @@ Scrapoxy supports theses formats:
 - `ip:port`
 - `ip:port:username:password`
 - `http://ip:port`
-- `http://ip:port:username:password`
+- `http://username:password@ip:port`
 - `https://ip:port`
-- `https://ip:port:username:password`
+- `https://username:password@ip:port`
+- `socks://ip:port` (shortcut for `socks5://ip:port`)
+- `socks://username:password@ip:port` (shortcut for `socks5://username:password@ip:port`)
+- `socks4://ip:port`
+- `socks4://username:password@ip:port`
+- `socks5://ip:port`
+- `socks5://username:password@ip:port`
 
 --- 
 

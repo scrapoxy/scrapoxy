@@ -43,7 +43,7 @@ It uses their APIs to handle IP rotation on 4G networks.
 
 ### 📜 Free Proxy Lists 📜
 
-Scrapoxy supports lists of HTTP/HTTPS proxies.
+Scrapoxy supports lists of HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
 
 It takes care of testing their connectivity to aggregate them into the proxy pool.
 

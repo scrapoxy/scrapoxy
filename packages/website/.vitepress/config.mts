@@ -105,6 +105,11 @@ export default defineConfig({
                 collapsed: false,
                 items: [
                     {
+                        text: 'Free Proxies',
+                        base: '/connectors/',
+                        link: 'freeproxies/guide'
+                    },
+                    {
                         text: 'Cloud Providers',
                         base: '/connectors/',
                         items: [
@@ -132,13 +137,6 @@ export default defineConfig({
                         items: [
                             {text: 'Proxidize', link: 'proxidize/guide'},
                             {text: 'XProxy', link: 'xproxy/guide'},
-                        ]
-                    },
-                    {
-                        text: 'Others',
-                        base: '/connectors/',
-                        items: [
-                            {text: 'Free Proxies', link: 'freeproxies/guide'},
                         ]
                     },
                 ],
