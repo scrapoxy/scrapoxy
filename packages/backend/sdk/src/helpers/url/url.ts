@@ -1,16 +1,15 @@
-export interface IHttpOptions {
-    protocol: string | undefined;
-    ssl: boolean;
+export interface IUrlOptions {
+    protocol: string;
     username: string | undefined;
     password: string | undefined;
     hostname: string | undefined;
-    port: number | undefined;
+    port: number;
     pathname: string;
     search: string | undefined;
     hash: string | undefined;
 }
 
-export function urlToHttpOptions(url: string | null | undefined): IHttpOptions | undefined {
+export function urlToUrlOptions(url: string | null | undefined): IUrlOptions | undefined {
     if (!url) {
         return;
     }
@@ -32,27 +31,28 @@ export function urlToHttpOptions(url: string | null | undefined): IHttpOptions |
         }
     }
 
-    let ssl: boolean;
+    if (!port) {
+        switch (urlObj.protocol) {
+            case 'http:': {
+                port = 80;
 
-    if (urlObj.protocol === 'https:') {
-        ssl = true;
+                break;
+            }
 
-        if (!port) {
-            port = 443;
+            case 'https:': {
+                port = 443;
+
+                break;
+            }
+
+            default: {
+                port = 80;
+            }
         }
-    } else if (urlObj.protocol === 'http:') {
-        ssl = false;
-
-        if (!port) {
-            port = 80;
-        }
-    } else {
-        ssl = false;
     }
 
-    const options: IHttpOptions = {
+    const options: IUrlOptions = {
         protocol: urlObj.protocol,
-        ssl,
         username: urlObj.username && urlObj.username.length > 0 ? urlObj.username : void 0,
         password: urlObj.password && urlObj.password.length > 0 ? urlObj.password : void 0,
         hostname: urlObj.hostname,
@@ -66,8 +66,8 @@ export function urlToHttpOptions(url: string | null | undefined): IHttpOptions |
 }
 
 
-export function httpOptionsToUrl(
-    options: IHttpOptions | null | undefined,
+export function urlOptionsToUrl(
+    options: IUrlOptions | null | undefined,
     withHostname = true
 ): string | undefined {
     if (!options) {
@@ -77,9 +77,7 @@ export function httpOptionsToUrl(
     let url = '';
 
     if (withHostname) {
-        if (options.protocol) {
-            url += `${options.protocol}//`;
-        }
+        url += `${options.protocol}//`;
 
         if (options.hostname) {
             if (options.username ?? options.password) {
@@ -96,13 +94,11 @@ export function httpOptionsToUrl(
 
             url += options.hostname;
 
-            if (options.port) {
-                if (
-                    !(options.protocol === 'http:' && options.port === 80) &&
-                    !(options.protocol === 'https:' && options.port === 443)
-                ) {
-                    url += `:${options.port}`;
-                }
+            if (
+                !(options.protocol === 'http:' && options.port === 80) &&
+                !(options.protocol === 'https:' && options.port === 443)
+            ) {
+                url += `:${options.port}`;
             }
         }
     }

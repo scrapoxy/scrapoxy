@@ -1,10 +1,17 @@
+import { promises as fs } from 'fs';
+import { resolve } from 'path';
+import { ONE_MINUTE_IN_MS } from '@scrapoxy/common';
 import {
     md,
     pki,
     random,
     util,
 } from 'node-forge';
-import type { ICertificateInfo } from '@scrapoxy/common';
+import { getEnvAssetsPath } from './config';
+import type {
+    ICertificate,
+    ICertificateInfo,
+} from '@scrapoxy/common';
 
 
 function makeNumberPositive(hexString: string): string {
@@ -23,6 +30,28 @@ function makeNumberPositive(hexString: string): string {
 // Generate a random serial number for the Certificate
 function randomSerialNumber(): string {
     return makeNumberPositive(util.bytesToHex(random.getBytesSync(20)));
+}
+
+
+export async function readCaCert(): Promise<string> {
+    const data = await fs.readFile(resolve(
+        getEnvAssetsPath(),
+        'certificates',
+        'scrapoxy-ca.crt'
+    ));
+
+    return data.toString();
+}
+
+
+export async function readCaKey(): Promise<string> {
+    const data = await fs.readFile(resolve(
+        getEnvAssetsPath(),
+        'certificates',
+        'scrapoxy-ca.key'
+    ));
+
+    return data.toString();
 }
 
 
@@ -174,4 +203,31 @@ export function generateCertificateFromCa(
     };
 
     return info;
+}
+
+
+export function generateCertificateSelfSignedForTest(): ICertificate {
+    const certificateInfo = generateCertificateSelfSigned(10 * ONE_MINUTE_IN_MS);
+
+    return certificateInfo.certificate;
+}
+
+
+export async function generateCertificateFromCaTest(): Promise<ICertificate> {
+    const [
+        caCertRaw, caKeyRaw,
+    ] = await Promise.all([
+        readCaCert(), readCaKey(),
+    ]);
+    const
+        caCert = pki.certificateFromPem(caCertRaw),
+        caKey = pki.privateKeyFromPem(caKeyRaw);
+    const certificateInfo = generateCertificateFromCa(
+        caCert,
+        caKey,
+        'localhost',
+        10 * ONE_MINUTE_IN_MS
+    );
+
+    return certificateInfo.certificate;
 }

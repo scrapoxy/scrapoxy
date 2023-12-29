@@ -17,6 +17,7 @@ import type {
 
 function convertToProxy(f: IFreeproxy): IConnectorProxyRefreshed {
     const config: IProxyTransport = {
+        type: f.type,
         address: f.address,
         auth: f.auth,
     };

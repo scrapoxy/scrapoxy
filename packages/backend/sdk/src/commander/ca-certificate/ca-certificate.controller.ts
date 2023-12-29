@@ -3,7 +3,7 @@ import {
     Get,
     Header,
 } from '@nestjs/common';
-import { readCaCert } from './ca-certificate.helpers';
+import { readCaCert } from '../../helpers';
 import type { OnModuleInit } from '@nestjs/common';
 
 

@@ -46,7 +46,7 @@ import {
     removeHeadersWithPrefix,
     sanitizeHeaders,
     SocketsDebug,
-    urlToHttpOptions,
+    urlToUrlOptions,
 } from '../helpers';
 import { TransportprovidersService } from '../transports';
 import type { IMasterModuleConfig } from './master.module';
@@ -360,7 +360,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             const factory = this.connectorproviders.getFactory(proxy.type);
             transport = this.transportproviders.getTransportByType(factory.config.transportType);
 
-            const urlOpts = urlToHttpOptions(req.url as string);
+            const urlOpts = urlToUrlOptions(req.url as string);
 
             if (!urlOpts) {
                 throw new Error('Cannot parse req.url');

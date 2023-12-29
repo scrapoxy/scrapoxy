@@ -1,4 +1,7 @@
-import { EFreeproxyType } from './freeproxy.interface';
+import {
+    EProxyType,
+    PROXY_TYPE_KEYS,
+} from '../proxies';
 import type { IFreeproxyBase } from './freeproxy.interface';
 import type { IProxyTransportAuth } from '../proxies';
 
@@ -10,9 +13,6 @@ export function formatFreeproxyId(
 }
 
 
-const freeproxyTypeKeys = Object.values(EFreeproxyType) as string[];
-
-
 export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase | undefined {
     if (!raw || raw.length <= 0) {
         return;
@@ -21,19 +21,26 @@ export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase |
     const protocolMatch = /^(.*):\/\//i.exec(raw);
     let
         rawWithoutProtocol: string,
-        type: EFreeproxyType | undefined;
+        type: EProxyType | undefined;
 
     if (protocolMatch) {
         const protocolStr = protocolMatch[ 1 ];
 
-        if (!freeproxyTypeKeys .includes(protocolStr)) {
-            return;
+        // Normalize SOCKS protocol
+        if (protocolStr.startsWith('socks4')) {
+            type = EProxyType.SOCKS4;
+        } else if (protocolStr.startsWith('socks')) {
+            type = EProxyType.SOCKS5;
+        } else {
+            if (!PROXY_TYPE_KEYS.includes(protocolStr)) {
+                return;
+            }
+            type = protocolStr as EProxyType;
         }
-        type = protocolStr as EFreeproxyType;
 
         rawWithoutProtocol = raw.substring(protocolMatch[ 0 ].length);
     } else {
-        type = EFreeproxyType.HTTP;
+        type = EProxyType.HTTP;
         rawWithoutProtocol = raw;
     }
 

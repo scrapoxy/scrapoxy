@@ -2,8 +2,6 @@ export * from './auths';
 
 export * from './connectors';
 
-export * from './certificate';
-
 export * from './commander';
 
 export * from './commander-client';
@@ -18,7 +16,7 @@ export * from './master';
 
 export * from './probe';
 
-export * from './proxy-http';
+export * from './proxy';
 
 export * from './transports';
 

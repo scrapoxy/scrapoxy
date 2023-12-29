@@ -1,4 +1,4 @@
-import type { IHttpOptions } from '../helpers';
+import type { IUrlOptions } from '../helpers';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -18,7 +18,7 @@ export interface ITransportService {
 
     buildRequestArgs: (
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -28,7 +28,7 @@ export interface ITransportService {
 
     buildFingerprintRequestArgs: (
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,

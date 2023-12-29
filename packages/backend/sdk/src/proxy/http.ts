@@ -1,11 +1,12 @@
 import {
     ClientRequest,
-    createServer,
+    createServer as createServerHttp,
     IncomingMessage,
     request,
     Server,
     ServerResponse,
 } from 'http';
+import { createServer as createServerHttps } from 'https';
 import {
     createConnection,
     Socket,
@@ -17,16 +18,17 @@ import {
 } from '@scrapoxy/proxy-sdk';
 import {
     createConnectionAuto,
-    httpOptionsToUrl,
-    urlToHttpOptions,
+    generateCertificateSelfSignedForTest,
+    urlOptionsToUrl,
+    urlToUrlOptions,
 } from '../helpers';
 import type { LoggerService } from '@nestjs/common';
 import type { ClientRequestArgs } from 'http';
 import type { AddressInfo } from 'net';
 
 
-export class ProxyHttp {
-    private readonly server: Server;
+abstract class AProxy {
+    protected server: Server | undefined;
 
     private readonly sockets = new Sockets();
 
@@ -37,8 +39,30 @@ export class ProxyHttp {
     constructor(
         private readonly logger: LoggerService,
         private readonly timeout: number
-    ) {
-        this.server = createServer();
+    ) {}
+
+    get port(): number | null {
+        if (!this.server) {
+            throw new Error('Server has not been initialized');
+        }
+
+        const address: AddressInfo = this.server.address() as AddressInfo;
+
+        if (!address) {
+            return null;
+        }
+
+        return address.port;
+    }
+
+    get url(): string {
+        return `http://localhost:${this.port}`;
+    }
+
+    listen(port = 0): Promise<number> {
+        if (!this.server) {
+            throw new Error('Server has not been initialized');
+        }
 
         this.server.on(
             'request',
@@ -64,23 +88,7 @@ export class ProxyHttp {
                 );
             }
         );
-    }
 
-    get port(): number | null {
-        const address: AddressInfo = this.server.address() as AddressInfo;
-
-        if (!address) {
-            return null;
-        }
-
-        return address.port;
-    }
-
-    get url(): string {
-        return `http://localhost:${this.port}`;
-    }
-
-    listen(port = 0): Promise<number> {
         if (this.closePromise) {
             throw new Error('Server has already been stopped');
         }
@@ -92,14 +100,14 @@ export class ProxyHttp {
         this.listenPromise = new Promise<number>((
             resolve, reject
         ) => {
-            this.server.on(
+            this.server!.on(
                 'error',
                 (err: any) => {
                     reject(new Error(`Proxy cannot listen at port ${port} : ${err.message}`));
                 }
             );
 
-            this.server.on(
+            this.server!.on(
                 'listening',
                 () => {
                     this.logger.debug?.(`[ProxyHttp] listen at ${this.port}`);
@@ -109,7 +117,7 @@ export class ProxyHttp {
                 }
             );
 
-            this.server.listen(port);
+            this.server!.listen(port);
         });
 
         return this.listenPromise;
@@ -126,7 +134,7 @@ export class ProxyHttp {
             ) => {
                 this.sockets.closeAll();
 
-                this.server.close((err: Error | undefined) => {
+                this.server!.close((err: Error | undefined) => {
                     if (err) {
                         reject(err);
 
@@ -160,7 +168,7 @@ export class ProxyHttp {
             }
         );
 
-        const urlOpts = urlToHttpOptions(req.url);
+        const urlOpts = urlToUrlOptions(req.url);
 
         if (!urlOpts) {
             res.statusCode = 400;
@@ -169,7 +177,7 @@ export class ProxyHttp {
             return;
         }
 
-        const path = httpOptionsToUrl(
+        const path = urlOptionsToUrl(
             urlOpts,
             false
         );
@@ -189,7 +197,7 @@ export class ProxyHttp {
                 oncreate,
                 this.sockets,
                 'ProxyHttp:request',
-                urlOpts.ssl ? {} : void 0
+                urlOpts.protocol === 'https:' ? {} : void 0
             ),
         };
 
@@ -331,5 +339,39 @@ export class ProxyHttp {
 
         socket.pipe(proxySocket);
     }
+}
 
+
+export class ProxyHttp extends AProxy {
+    constructor(
+        logger: LoggerService,
+        timeout: number
+    ) {
+        super(
+            logger,
+            timeout
+        );
+
+        this.server = createServerHttp();
+    }
+}
+
+
+export class ProxyHttps extends AProxy {
+    constructor(
+        logger: LoggerService,
+        timeout: number
+    ) {
+        super(
+            logger,
+            timeout
+        );
+
+        const certificate = generateCertificateSelfSignedForTest();
+
+        this.server = createServerHttps({
+            cert: certificate.cert,
+            key: certificate.key,
+        });
+    }
 }

@@ -42,8 +42,8 @@ import {
     UserNotFoundByEmailError,
     UserNotFoundError,
     UserProfileIncompleteError,
-    ValidationError,
 } from './client.errors';
+import { ValidationError } from '../helpers';
 
 
 export function catchError(data: any) {

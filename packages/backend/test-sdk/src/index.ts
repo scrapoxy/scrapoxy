@@ -2,8 +2,6 @@ export * from './agent-proxy-https-tunnel';
 
 export * from './apps';
 
-export * from './certificate.helper';
-
 export * from './connectors.helpers';
 
 export * from './commander-scraper-client';

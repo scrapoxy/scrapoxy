@@ -7,10 +7,10 @@ import { connect } from 'tls';
 import { Injectable } from '@nestjs/common';
 import {
     createConnectionAuto,
-    httpOptionsToUrl,
     isUrl,
     parseBodyError,
     TransportprovidersService,
+    urlOptionsToUrl,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_ZYTE_TYPE } from './zyte.constants';
 import type { IProxyToConnectConfigZyte } from './zyte.interface';
@@ -19,8 +19,8 @@ import type {
     IConnectorZyteCredential,
 } from '../zyte.interface';
 import type {
-    IHttpOptions,
     ITransportService,
+    IUrlOptions,
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -56,7 +56,7 @@ export class TransportZyteService implements ITransportService {
 
     buildRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -66,191 +66,44 @@ export class TransportZyteService implements ITransportService {
         const config = proxy.config as IProxyToConnectConfigZyte;
         const auth = btoa(`${config.token}:`);
 
-        if (urlOpts.ssl) {
-            // HTTPS request
-            return {
-                method,
-                hostname: 'proxy.crawlera.com',
-                port: 8011,
-                path: httpOptionsToUrl(
+        switch (urlOpts.protocol) {
+            case 'https:': {
+                return this.buildRequestArgsHttps(
+                    method,
                     urlOpts,
-                    false
-                ),
-                headers,
-                timeout,
-                createConnection: (
-                    args,
-                    oncreate
-                ) => {
-                    headersConnect[ 'Proxy-Authorization' ] = `Basic ${auth}`;
-                    headersConnect[ 'X-Crawlera-Session' ] = proxy.key;
-
-                    if (config.region !== 'all') {
-                        headersConnect[ 'X-Crawlera-Region' ] = config.region.toUpperCase();
-                    }
-
-                    const proxyReqArgs: ClientRequestArgs = {
-                        method: 'CONNECT',
-                        hostname: args.hostname,
-                        port: args.port,
-                        path: headersConnect.Host as string,
-                        headers: headersConnect,
-                        timeout,
-                        createConnection: (
-                            args2,
-                            oncreate2
-                        ) => createConnectionAuto(
-                            args2,
-                            oncreate2,
-                            sockets,
-                            'TransportZyteService:https:buildRequestArgs'
-                        ),
-                    };
-                    const proxyReq = request(proxyReqArgs);
-                    proxyReq.on(
-                        'error',
-                        (err: any) => {
-                            oncreate(
-                                err,
-                                void 0 as any
-                            );
-                        }
-                    );
-
-                    proxyReq.on(
-                        'connect',
-                        (
-                            proxyRes: IncomingMessage, proxySocket: Socket
-                        ) => {
-                            proxyRes.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            proxySocket.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            proxyReq.on(
-                                'close',
-                                () => {
-                                    sockets.remove(proxySocket);
-                                }
-                            );
-
-                            if (proxyRes.statusCode !== 200) {
-                                parseBodyError(
-                                    proxyRes,
-                                    (err: any) => {
-                                        oncreate(
-                                            err,
-                                            void 0 as any
-                                        );
-                                    }
-                                );
-
-                                return;
-                            }
-
-                            const options: ConnectionOptions = {
-                                socket: proxySocket,
-                                requestCert: true,
-                                rejectUnauthorized: false,
-                                timeout,
-                            };
-
-                            if (isUrl(urlOpts.hostname)) {
-                                options.servername = urlOpts.hostname as string;
-                            }
-
-                            const returnedSocket = connect(options);
-                            returnedSocket.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            returnedSocket.on(
-                                'close',
-                                () => {
-                                    sockets.remove(returnedSocket);
-                                }
-                            );
-                            sockets.add(
-                                returnedSocket,
-                                'TransportZyteService:buildRequestArgs:createConnection:connect'
-                            );
-
-                            returnedSocket.on(
-                                'timeout',
-                                () => {
-                                    returnedSocket.destroy();
-                                    returnedSocket.emit('close');
-                                }
-                            );
-
-                            oncreate(
-                                void 0 as any,
-                                returnedSocket
-                            );
-                        }
-                    );
-
-                    proxyReq.end();
-
-                    return void 0 as any;
-                },
-            };
-        } else {
-            // HTTP request
-            headers[ 'Proxy-Authorization' ] = `Basic ${auth}`;
-            headers[ 'X-Crawlera-Session' ] = proxy.key;
-
-            if (config.region !== 'all') {
-                headers[ 'X-Crawlera-Region' ] = config.region;
+                    headers,
+                    headersConnect,
+                    proxy,
+                    config,
+                    auth,
+                    sockets,
+                    timeout
+                );
             }
 
-            return {
-                method,
-                hostname: 'proxy.crawlera.com',
-                port: 8011,
-                path: httpOptionsToUrl(
+            case 'http:': {
+                return this.buildRequestArgsHttp(
+                    method,
                     urlOpts,
-                    true
-                ),
-                headers,
-                timeout,
-                createConnection: (
-                    opts,
-                    oncreate
-                ) => createConnectionAuto(
-                    opts,
-                    oncreate,
+                    headers,
+                    headersConnect,
+                    proxy,
+                    config,
+                    auth,
                     sockets,
-                    'TransportZyte:buildRequestArgs'
-                ),
-            };
+                    timeout
+                );
+            }
+
+            default: {
+                throw new Error(`Zyte: Unsupported protocol: ${urlOpts.protocol}`);
+            }
         }
     }
 
     buildFingerprintRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -301,6 +154,207 @@ export class TransportZyteService implements ITransportService {
                 sockets,
                 'TransportZyte:buildConnectArgs'
             ),
+        };
+    }
+
+    private buildRequestArgsHttp(
+        method: string | undefined,
+        urlOpts: IUrlOptions,
+        headers: OutgoingHttpHeaders,
+        headersConnect: OutgoingHttpHeaders,
+        proxy: IProxyToConnect,
+        config: IProxyToConnectConfigZyte,
+        auth: string,
+        sockets: ISockets,
+        timeout: number
+    ): ClientRequestArgs {
+        headers[ 'Proxy-Authorization' ] = `Basic ${auth}`;
+        headers[ 'X-Crawlera-Session' ] = proxy.key;
+
+        if (config.region !== 'all') {
+            headers[ 'X-Crawlera-Region' ] = config.region;
+        }
+
+        return {
+            method,
+            hostname: 'proxy.crawlera.com',
+            port: 8011,
+            path: urlOptionsToUrl(
+                urlOpts,
+                true
+            ),
+            headers,
+            timeout,
+            createConnection: (
+                opts,
+                oncreate
+            ) => createConnectionAuto(
+                opts,
+                oncreate,
+                sockets,
+                'TransportZyte:buildRequestArgs'
+            ),
+        };
+    }
+
+    private buildRequestArgsHttps(
+        method: string | undefined,
+        urlOpts: IUrlOptions,
+        headers: OutgoingHttpHeaders,
+        headersConnect: OutgoingHttpHeaders,
+        proxy: IProxyToConnect,
+        config: IProxyToConnectConfigZyte,
+        auth: string,
+        sockets: ISockets,
+        timeout: number
+    ): ClientRequestArgs {
+        return {
+            method,
+            hostname: 'proxy.crawlera.com',
+            port: 8011,
+            path: urlOptionsToUrl(
+                urlOpts,
+                false
+            ),
+            headers,
+            timeout,
+            createConnection: (
+                args,
+                oncreate
+            ) => {
+                headersConnect[ 'Proxy-Authorization' ] = `Basic ${auth}`;
+                headersConnect[ 'X-Crawlera-Session' ] = proxy.key;
+
+                if (config.region !== 'all') {
+                    headersConnect[ 'X-Crawlera-Region' ] = config.region.toUpperCase();
+                }
+
+                const proxyReqArgs: ClientRequestArgs = {
+                    method: 'CONNECT',
+                    hostname: args.hostname,
+                    port: args.port,
+                    path: headersConnect.Host as string,
+                    headers: headersConnect,
+                    timeout,
+                    createConnection: (
+                        args2,
+                        oncreate2
+                    ) => createConnectionAuto(
+                        args2,
+                        oncreate2,
+                        sockets,
+                        'TransportZyteService:https:buildRequestArgs'
+                    ),
+                };
+                const proxyReq = request(proxyReqArgs);
+                proxyReq.on(
+                    'error',
+                    (err: any) => {
+                        oncreate(
+                            err,
+                            void 0 as any
+                        );
+                    }
+                );
+
+                proxyReq.on(
+                    'connect',
+                    (
+                        proxyRes: IncomingMessage, proxySocket: Socket
+                    ) => {
+                        proxyRes.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        proxySocket.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        proxyReq.on(
+                            'close',
+                            () => {
+                                sockets.remove(proxySocket);
+                            }
+                        );
+
+                        if (proxyRes.statusCode !== 200) {
+                            parseBodyError(
+                                proxyRes,
+                                (err: any) => {
+                                    oncreate(
+                                        err,
+                                        void 0 as any
+                                    );
+                                }
+                            );
+
+                            return;
+                        }
+
+                        const options: ConnectionOptions = {
+                            socket: proxySocket,
+                            requestCert: true,
+                            rejectUnauthorized: false,
+                            timeout,
+                        };
+
+                        if (isUrl(urlOpts.hostname)) {
+                            options.servername = urlOpts.hostname as string;
+                        }
+
+                        const returnedSocket = connect(options);
+                        returnedSocket.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        returnedSocket.on(
+                            'close',
+                            () => {
+                                sockets.remove(returnedSocket);
+                            }
+                        );
+                        sockets.add(
+                            returnedSocket,
+                            'TransportZyteService:buildRequestArgs:createConnection:connect'
+                        );
+
+                        returnedSocket.on(
+                            'timeout',
+                            () => {
+                                returnedSocket.destroy();
+                                returnedSocket.emit('close');
+                            }
+                        );
+
+                        oncreate(
+                            void 0 as any,
+                            returnedSocket
+                        );
+                    }
+                );
+
+                proxyReq.end();
+
+                return void 0 as any;
+            },
         };
     }
 }

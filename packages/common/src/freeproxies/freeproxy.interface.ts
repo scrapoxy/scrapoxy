@@ -2,16 +2,8 @@ import type { IFingerprintResponse } from '../fingerprint';
 import type { IProxyTransport } from '../proxies';
 
 
-export enum EFreeproxyType {
-    HTTP = 'http',
-    HTTPS = 'https',
-    SOCKS = 'socks',
-}
-
-
 export interface IFreeproxyBase extends IProxyTransport {
     key: string;
-    type: EFreeproxyType;
 }
 
 

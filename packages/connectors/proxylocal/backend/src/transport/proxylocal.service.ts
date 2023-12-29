@@ -7,11 +7,11 @@ import { connect } from 'tls';
 import { Injectable } from '@nestjs/common';
 import {
     createConnectionAuto,
-    httpOptionsToUrl,
     isUrl,
     parseBodyError,
     TransportprovidersService,
-    urlToHttpOptions,
+    urlOptionsToUrl,
+    urlToUrlOptions,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_PROXYLOCAL_TYPE } from './proxylocal.constants';
 import type { IProxyToConnectConfigProxylocal } from './proxylocal.interface';
@@ -20,8 +20,8 @@ import type {
     IConnectorProxylocalCredential,
 } from '../proxylocal.interface';
 import type {
-    IHttpOptions,
     ITransportService,
+    IUrlOptions,
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -72,7 +72,7 @@ export class TransportProxylocalService implements ITransportService {
 
     buildRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -80,191 +80,49 @@ export class TransportProxylocalService implements ITransportService {
         timeout: number
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigProxylocal;
-        const proxyUrlOpts = urlToHttpOptions(config.url);
+        const proxyUrlOpts = urlToUrlOptions(config.url);
 
         if (!proxyUrlOpts) {
             throw new Error('Cannot parse proxy config.url');
         }
 
-        if (urlOpts.ssl) {
-            // HTTPS request
-            return {
-                method,
-                hostname: proxyUrlOpts.hostname,
-                port: proxyUrlOpts.port,
-                path: httpOptionsToUrl(
+        switch (urlOpts.protocol) {
+            case 'https:': {
+                return this.buildRequestArgsHttps(
+                    method,
                     urlOpts,
-                    false
-                ),
-                headers,
-                timeout,
-                createConnection: (
-                    args,
-                    oncreate
-                ) => {
-                    headersConnect[ 'Proxy-Authorization' ] = `Basic ${config.token}`;
-                    headersConnect[ 'X-Proxylocal-Session-ID' ] = proxy.key;
-                    headersConnect[ 'X-Proxylocal-Region' ] = config.region;
-
-                    const proxyReqArgs: ClientRequestArgs = {
-                        method: 'CONNECT',
-                        hostname: args.hostname,
-                        port: args.port,
-                        path: headersConnect.Host as string,
-                        headers: headersConnect,
-                        timeout,
-                        createConnection: (
-                            args2,
-                            oncreate2
-                        ) => createConnectionAuto(
-                            args2,
-                            oncreate2,
-                            sockets,
-                            'TransportProxylocalService:https:buildRequestArgs'
-                        ),
-                    };
-                    const proxyReq = request(proxyReqArgs);
-                    proxyReq.on(
-                        'error',
-                        (err: any) => {
-                            oncreate(
-                                err,
-                                void 0 as any
-                            );
-                        }
-                    );
-
-                    proxyReq.on(
-                        'connect',
-                        (
-                            proxyRes: IncomingMessage, proxySocket: Socket
-                        ) => {
-                            proxyRes.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            proxySocket.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            proxyReq.on(
-                                'close',
-                                () => {
-                                    sockets.remove(proxySocket);
-                                }
-                            );
-
-                            if (proxyRes.statusCode !== 200) {
-                                parseBodyError(
-                                    proxyRes,
-                                    (err: any) => {
-                                        oncreate(
-                                            err,
-                                            void 0 as any
-                                        );
-                                    }
-                                );
-
-                                return;
-                            }
-
-                            const options: ConnectionOptions = {
-                                socket: proxySocket,
-                                requestCert: true,
-                                rejectUnauthorized: false,
-                                timeout,
-                            };
-
-                            if (isUrl(urlOpts.hostname)) {
-                                options.servername = urlOpts.hostname as string;
-                            }
-
-                            const returnedSocket = connect(options);
-                            returnedSocket.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            returnedSocket.on(
-                                'close',
-                                () => {
-                                    sockets.remove(returnedSocket);
-                                }
-                            );
-                            sockets.add(
-                                returnedSocket,
-                                'TransportProxylocalService:buildRequestArgs:createConnection:connect'
-                            );
-
-                            returnedSocket.on(
-                                'timeout',
-                                () => {
-                                    returnedSocket.destroy();
-                                    returnedSocket.emit('close');
-                                }
-                            );
-
-                            oncreate(
-                                void 0 as any,
-                                returnedSocket
-                            );
-                        }
-                    );
-
-                    proxyReq.end();
-
-                    return void 0 as any;
-                },
-            };
-        } else {
-            // HTTP request
-            headers[ 'Proxy-Authorization' ] = `Basic ${config.token}`;
-            headers[ 'X-Proxylocal-Session-ID' ] = proxy.key;
-            headers[ 'X-Proxylocal-Region' ] = config.region;
-
-            return {
-                method,
-                hostname: proxyUrlOpts.hostname,
-                port: proxyUrlOpts.port,
-                path: httpOptionsToUrl(
-                    urlOpts,
-                    true
-                ),
-                headers,
-                timeout,
-                createConnection: (
-                    opts,
-                    oncreate
-                ) => createConnectionAuto(
-                    opts,
-                    oncreate,
+                    headers,
+                    headersConnect,
+                    proxy,
+                    proxyUrlOpts,
+                    config,
                     sockets,
-                    'TransportProxylocal:buildRequestArgs'
-                ),
-            };
+                    timeout
+                );
+            }
+
+            case 'http:': {
+                return this.buildRequestArgsHttp(
+                    method,
+                    urlOpts,
+                    headers,
+                    proxy,
+                    proxyUrlOpts,
+                    config,
+                    sockets,
+                    timeout
+                );
+            }
+
+            default: {
+                throw new Error(`Proxy local: Unsupported protocol ${urlOpts.protocol}`);
+            }
         }
     }
 
     buildFingerprintRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -298,7 +156,7 @@ export class TransportProxylocalService implements ITransportService {
         timeout: number
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigProxylocal;
-        const proxyUrlOpts = urlToHttpOptions(config.url);
+        const proxyUrlOpts = urlToUrlOptions(config.url);
 
         if (!proxyUrlOpts) {
             throw new Error('Cannot parse proxy config.url');
@@ -324,6 +182,200 @@ export class TransportProxylocalService implements ITransportService {
                 sockets,
                 'TransportProxylocal:buildConnectArgs'
             ),
+        };
+    }
+
+    private buildRequestArgsHttp(
+        method: string | undefined,
+        urlOpts: IUrlOptions,
+        headers: OutgoingHttpHeaders,
+        proxy: IProxyToConnect,
+        proxyUrlOpts: IUrlOptions,
+        config: IProxyToConnectConfigProxylocal,
+        sockets: ISockets,
+        timeout: number
+    ): ClientRequestArgs {
+        headers[ 'Proxy-Authorization' ] = `Basic ${config.token}`;
+        headers[ 'X-Proxylocal-Session-ID' ] = proxy.key;
+        headers[ 'X-Proxylocal-Region' ] = config.region;
+
+        return {
+            method,
+            hostname: proxyUrlOpts.hostname,
+            port: proxyUrlOpts.port,
+            path: urlOptionsToUrl(
+                urlOpts,
+                true
+            ),
+            headers,
+            timeout,
+            createConnection: (
+                opts,
+                oncreate
+            ) => createConnectionAuto(
+                opts,
+                oncreate,
+                sockets,
+                'TransportProxylocal:buildRequestArgs'
+            ),
+        };
+    }
+
+    private buildRequestArgsHttps(
+        method: string | undefined,
+        urlOpts: IUrlOptions,
+        headers: OutgoingHttpHeaders,
+        headersConnect: OutgoingHttpHeaders,
+        proxy: IProxyToConnect,
+        proxyUrlOpts: IUrlOptions,
+        config: IProxyToConnectConfigProxylocal,
+        sockets: ISockets,
+        timeout: number
+    ): ClientRequestArgs {
+        return {
+            method,
+            hostname: proxyUrlOpts.hostname,
+            port: proxyUrlOpts.port,
+            path: urlOptionsToUrl(
+                urlOpts,
+                false
+            ),
+            headers,
+            timeout,
+            createConnection: (
+                args,
+                oncreate
+            ) => {
+                headersConnect[ 'Proxy-Authorization' ] = `Basic ${config.token}`;
+                headersConnect[ 'X-Proxylocal-Session-ID' ] = proxy.key;
+                headersConnect[ 'X-Proxylocal-Region' ] = config.region;
+
+                const proxyReqArgs: ClientRequestArgs = {
+                    method: 'CONNECT',
+                    hostname: args.hostname,
+                    port: args.port,
+                    path: headersConnect.Host as string,
+                    headers: headersConnect,
+                    timeout,
+                    createConnection: (
+                        args2,
+                        oncreate2
+                    ) => createConnectionAuto(
+                        args2,
+                        oncreate2,
+                        sockets,
+                        'TransportProxylocalService:https:buildRequestArgs'
+                    ),
+                };
+                const proxyReq = request(proxyReqArgs);
+                proxyReq.on(
+                    'error',
+                    (err: any) => {
+                        oncreate(
+                            err,
+                            void 0 as any
+                        );
+                    }
+                );
+
+                proxyReq.on(
+                    'connect',
+                    (
+                        proxyRes: IncomingMessage, proxySocket: Socket
+                    ) => {
+                        proxyRes.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        proxySocket.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        proxyReq.on(
+                            'close',
+                            () => {
+                                sockets.remove(proxySocket);
+                            }
+                        );
+
+                        if (proxyRes.statusCode !== 200) {
+                            parseBodyError(
+                                proxyRes,
+                                (err: any) => {
+                                    oncreate(
+                                        err,
+                                        void 0 as any
+                                    );
+                                }
+                            );
+
+                            return;
+                        }
+
+                        const options: ConnectionOptions = {
+                            socket: proxySocket,
+                            requestCert: true,
+                            rejectUnauthorized: false,
+                            timeout,
+                        };
+
+                        if (isUrl(urlOpts.hostname)) {
+                            options.servername = urlOpts.hostname as string;
+                        }
+
+                        const returnedSocket = connect(options);
+                        returnedSocket.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        returnedSocket.on(
+                            'close',
+                            () => {
+                                sockets.remove(returnedSocket);
+                            }
+                        );
+                        sockets.add(
+                            returnedSocket,
+                            'TransportProxylocalService:buildRequestArgs:createConnection:connect'
+                        );
+
+                        returnedSocket.on(
+                            'timeout',
+                            () => {
+                                returnedSocket.destroy();
+                                returnedSocket.emit('close');
+                            }
+                        );
+
+                        oncreate(
+                            void 0 as any,
+                            returnedSocket
+                        );
+                    }
+                );
+
+                proxyReq.end();
+
+                return void 0 as any;
+            },
         };
     }
 }

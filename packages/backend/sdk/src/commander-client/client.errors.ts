@@ -914,19 +914,3 @@ export class InconsistencyDataError extends InternalServerErrorException {
         });
     }
 }
-
-
-export class ValidationError extends BadRequestException {
-    static readonly id = ECommanderError.Validation;
-
-    static from(data: any): ValidationError {
-        return new ValidationError(data.message);
-    }
-
-    constructor(message: string) {
-        super({
-            id: ValidationError.id,
-            message,
-        });
-    }
-}

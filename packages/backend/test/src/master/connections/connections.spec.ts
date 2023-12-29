@@ -3,14 +3,14 @@ import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import {
     CommanderMasterClientService,
+    generateCertificateFromCaTest,
+    generateCertificateSelfSignedForTest,
     MasterModule,
     MasterService,
     readCaCert,
 } from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
-    generateCertificateFromCaTest,
-    generateCertificateSelfSignedForTest,
     TestServers,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
@@ -383,6 +383,30 @@ describe(
                                 `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
                                 proxy.id
                             );
+                    }
+                );
+
+                it(
+                    'should not make a unknown protocol request',
+                    async() => {
+                        const res = await instance.get(
+                            'file://c:/windows/win.ini',
+                            {
+                                headers: {
+                                    'Proxy-Authorization': 'Basic fake_token',
+                                },
+                                proxy: {
+                                    host: 'localhost',
+                                    port,
+                                    protocol: 'http',
+                                },
+                            }
+                        );
+
+                        expect(res.status)
+                            .toBe(500);
+                        expect(res.data.message)
+                            .toContain('Unsupported protocol: file:');
                     }
                 );
             }

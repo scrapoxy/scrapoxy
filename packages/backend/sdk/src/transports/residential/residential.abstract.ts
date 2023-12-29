@@ -6,12 +6,12 @@ import { Socket } from 'net';
 import { connect } from 'tls';
 import {
     createConnectionAuto,
-    httpOptionsToUrl,
     isUrl,
     parseBodyError,
+    urlOptionsToUrl,
 } from '../../helpers';
 import type { IProxyToConnectConfigResidential } from './residential.interface';
-import type { IHttpOptions } from '../../helpers';
+import type { IUrlOptions } from '../../helpers';
 import type { ITransportService } from '../transport.interface';
 import type {
     IConnectorProxyRefreshed,
@@ -35,7 +35,7 @@ export abstract class ATransportResidentialService implements ITransportService 
 
     buildRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -44,185 +44,39 @@ export abstract class ATransportResidentialService implements ITransportService 
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigResidential;
 
-        if (urlOpts.ssl) {
-            // HTTPS request
-            return {
-                method,
-                hostname: config.address.hostname,
-                port: config.address.port,
-                path: httpOptionsToUrl(
+        switch (urlOpts.protocol) {
+            case 'http:': {
+                return this.buildRequestArgsHttp(
+                    method,
                     urlOpts,
-                    false
-                ),
-                headers,
-                timeout,
-                createConnection: (
-                    args,
-                    oncreate
-                ) => {
-                    const token = btoa(`${config.username}:${config.password}`);
-                    headersConnect[ 'Proxy-Authorization' ] = `Basic ${token}`;
-
-                    const proxyReqArgs: ClientRequestArgs = {
-                        method: 'CONNECT',
-                        hostname: args.hostname,
-                        port: args.port,
-                        path: headersConnect.Host as string,
-                        headers: headersConnect,
-                        timeout,
-                        createConnection: (
-                            args2,
-                            oncreate2
-                        ) => createConnectionAuto(
-                            args2,
-                            oncreate2,
-                            sockets,
-                            'ATransportResidential:https:buildRequestArgs',
-                            void 0
-                        ),
-                    };
-                    const proxyReq = request(proxyReqArgs);
-                    proxyReq.on(
-                        'error',
-                        (err: any) => {
-                            oncreate(
-                                err,
-                                void 0 as any
-                            );
-                        }
-                    );
-
-                    proxyReq.on(
-                        'connect',
-                        (
-                            proxyRes: IncomingMessage, proxySocket: Socket
-                        ) => {
-                            proxyRes.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            proxySocket.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            proxyReq.on(
-                                'close',
-                                () => {
-                                    sockets.remove(proxySocket);
-                                }
-                            );
-
-                            if (proxyRes.statusCode !== 200) {
-                                parseBodyError(
-                                    proxyRes,
-                                    (err: any) => {
-                                        oncreate(
-                                            err,
-                                            void 0 as any
-                                        );
-                                    }
-                                );
-
-                                return;
-                            }
-
-                            const options: ConnectionOptions = {
-                                socket: proxySocket,
-                                requestCert: true,
-                                rejectUnauthorized: false,
-                                timeout,
-                            };
-
-                            if (isUrl(urlOpts.hostname)) {
-                                options.servername = urlOpts.hostname as string;
-                            }
-
-                            const returnedSocket = connect(options);
-                            returnedSocket.on(
-                                'error',
-                                (err: any) => {
-                                    oncreate(
-                                        err,
-                                        void 0 as any
-                                    );
-                                }
-                            );
-
-                            returnedSocket.on(
-                                'close',
-                                () => {
-                                    sockets.remove(returnedSocket);
-                                }
-                            );
-                            sockets.add(
-                                returnedSocket,
-                                'ATransportResidential:buildRequestArgs:createConnection:connect'
-                            );
-
-                            returnedSocket.on(
-                                'timeout',
-                                () => {
-                                    returnedSocket.destroy();
-                                    returnedSocket.emit('close');
-                                }
-                            );
-
-                            oncreate(
-                                void 0 as any,
-                                returnedSocket
-                            );
-                        }
-                    );
-
-                    proxyReq.end();
-
-                    return void 0 as any;
-                },
-            };
-        } else {
-            // HTTP request
-            const token = btoa(`${config.username}:${config.password}`);
-            headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
-
-            return {
-                method,
-                hostname: config.address.hostname,
-                port: config.address.port,
-                path: httpOptionsToUrl(
-                    urlOpts,
-                    true
-                ),
-                headers,
-                timeout,
-                createConnection: (
-                    args,
-                    oncreate
-                ): Socket => createConnectionAuto(
-                    args,
-                    oncreate,
+                    headers,
+                    config,
                     sockets,
-                    'ATransportResidential:buildRequestArgs:createConnection',
-                    void 0
-                ),
-            };
+                    timeout
+                );
+            }
+
+            case 'https:': {
+                return this.buildRequestArgsHttps(
+                    method,
+                    urlOpts,
+                    headers,
+                    headersConnect,
+                    config,
+                    sockets,
+                    timeout
+                );
+            }
+
+            default: {
+                throw new Error(`Residential: Unsupported protocol: ${urlOpts.protocol}`);
+            }
         }
     }
 
     buildFingerprintRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -268,6 +122,196 @@ export abstract class ATransportResidentialService implements ITransportService 
                 'ATransportResidential:buildConnectArgs',
                 void 0
             ),
+        };
+    }
+
+    private buildRequestArgsHttp(
+        method: string | undefined,
+        urlOpts: IUrlOptions,
+        headers: OutgoingHttpHeaders,
+        config: IProxyToConnectConfigResidential,
+        sockets: ISockets,
+        timeout: number
+    ): ClientRequestArgs {
+        const token = btoa(`${config.username}:${config.password}`);
+        headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
+
+        return {
+            method,
+            hostname: config.address.hostname,
+            port: config.address.port,
+            path: urlOptionsToUrl(
+                urlOpts,
+                true
+            ),
+            headers,
+            timeout,
+            createConnection: (
+                args,
+                oncreate
+            ): Socket => createConnectionAuto(
+                args,
+                oncreate,
+                sockets,
+                'ATransportResidential:buildRequestArgs:createConnection',
+                void 0
+            ),
+        };
+    }
+
+    private buildRequestArgsHttps(
+        method: string | undefined,
+        urlOpts: IUrlOptions,
+        headers: OutgoingHttpHeaders,
+        headersConnect: OutgoingHttpHeaders,
+        config: IProxyToConnectConfigResidential,
+        sockets: ISockets,
+        timeout: number
+    ): ClientRequestArgs {
+        return {
+            method,
+            hostname: config.address.hostname,
+            port: config.address.port,
+            path: urlOptionsToUrl(
+                urlOpts,
+                false
+            ),
+            headers,
+            timeout,
+            createConnection: (
+                args,
+                oncreate
+            ) => {
+                const token = btoa(`${config.username}:${config.password}`);
+                headersConnect[ 'Proxy-Authorization' ] = `Basic ${token}`;
+
+                const proxyReqArgs: ClientRequestArgs = {
+                    method: 'CONNECT',
+                    hostname: args.hostname,
+                    port: args.port,
+                    path: headersConnect.Host as string,
+                    headers: headersConnect,
+                    timeout,
+                    createConnection: (
+                        args2,
+                        oncreate2
+                    ) => createConnectionAuto(
+                        args2,
+                        oncreate2,
+                        sockets,
+                        'ATransportResidential:https:buildRequestArgs',
+                        void 0
+                    ),
+                };
+                const proxyReq = request(proxyReqArgs);
+                proxyReq.on(
+                    'error',
+                    (err: any) => {
+                        oncreate(
+                            err,
+                            void 0 as any
+                        );
+                    }
+                );
+
+                proxyReq.on(
+                    'connect',
+                    (
+                        proxyRes: IncomingMessage, proxySocket: Socket
+                    ) => {
+                        proxyRes.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        proxySocket.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        proxyReq.on(
+                            'close',
+                            () => {
+                                sockets.remove(proxySocket);
+                            }
+                        );
+
+                        if (proxyRes.statusCode !== 200) {
+                            parseBodyError(
+                                proxyRes,
+                                (err: any) => {
+                                    oncreate(
+                                        err,
+                                        void 0 as any
+                                    );
+                                }
+                            );
+
+                            return;
+                        }
+
+                        const options: ConnectionOptions = {
+                            socket: proxySocket,
+                            requestCert: true,
+                            rejectUnauthorized: false,
+                            timeout,
+                        };
+
+                        if (isUrl(urlOpts.hostname)) {
+                            options.servername = urlOpts.hostname as string;
+                        }
+
+                        const returnedSocket = connect(options);
+                        returnedSocket.on(
+                            'error',
+                            (err: any) => {
+                                oncreate(
+                                    err,
+                                    void 0 as any
+                                );
+                            }
+                        );
+
+                        returnedSocket.on(
+                            'close',
+                            () => {
+                                sockets.remove(returnedSocket);
+                            }
+                        );
+                        sockets.add(
+                            returnedSocket,
+                            'ATransportResidential:buildRequestArgs:createConnection:connect'
+                        );
+
+                        returnedSocket.on(
+                            'timeout',
+                            () => {
+                                returnedSocket.destroy();
+                                returnedSocket.emit('close');
+                            }
+                        );
+
+                        oncreate(
+                            void 0 as any,
+                            returnedSocket
+                        );
+                    }
+                );
+
+                proxyReq.end();
+
+                return void 0 as any;
+            },
         };
     }
 }

@@ -337,14 +337,14 @@ export function testConnector(
     jest.it(
         'should get a response without proxy',
         async() => {
-            const res = await instance.get('https://fingerprint.scrapoxy.io/api/json');
+            const res = await instance.get('https://api.ipify.org');
 
             jest.expect(res.status)
                 .toBe(200);
 
             jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-            myIp = res.data.ip;
+            myIp = res.data;
             jest.expect(myIp.length)
                 .toBeGreaterThan(0);
 
@@ -355,7 +355,7 @@ export function testConnector(
         'should get different IPs with HTTP over HTTP',
         async() => {
             const res = await instance.get(
-                'http://fingerprint.scrapoxy.io/api/json',
+                'http://api.ipify.org',
                 {
                     headers: {
                         'Proxy-Authorization': `Basic ${token}`,
@@ -374,7 +374,7 @@ export function testConnector(
             jest.expect(res.headers)
                 .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-            const ip = res.data.ip;
+            const ip = res.data;
 
             jest.expect(ip.length)
                 .toBeGreaterThan(0);
@@ -387,7 +387,7 @@ export function testConnector(
         'should get different IPs with HTTPS over HTTP',
         async() => {
             const res = await instance.get(
-                'https://fingerprint.scrapoxy.io/api/json',
+                'https://api.ipify.org',
                 {
                     headers: {
                         'Proxy-Authorization': `Basic ${token}`,
@@ -406,7 +406,7 @@ export function testConnector(
             jest.expect(res.headers)
                 .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-            const ip = res.data.ip;
+            const ip = res.data;
 
             jest.expect(ip.length)
                 .toBeGreaterThan(0);
@@ -429,7 +429,7 @@ export function testConnector(
 
             try {
                 const res = await instance.get(
-                    'https://fingerprint.scrapoxy.io/api/json',
+                    'https://api.ipify.org',
                     {
                         httpsAgent,
                     }
@@ -441,7 +441,7 @@ export function testConnector(
                 jest.expect(res.headers)
                     .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-                const ip = res.data.ip;
+                const ip = res.data;
 
                 jest.expect(ip.length)
                     .toBeGreaterThan(0);
@@ -469,7 +469,7 @@ export function testConnector(
 
             try {
                 const res = await instance.get(
-                    'https://fingerprint.scrapoxy.io/api/json',
+                    'https://api.ipify.org',
                     {
                         httpsAgent,
                     }
@@ -480,7 +480,7 @@ export function testConnector(
 
                 jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-                const ip = res.data.ip;
+                const ip = res.data;
 
                 jest.expect(ip.length)
                     .toBeGreaterThan(0);
@@ -489,6 +489,30 @@ export function testConnector(
             } finally {
                 httpsAgent.close();
             }
+        }
+    );
+
+    jest.it(
+        'should not make a unknown protocol request',
+        async() => {
+            const res = await instance.get(
+                'file://c:/windows/win.ini',
+                {
+                    headers: {
+                        'Proxy-Authorization': `Basic ${token}`,
+                    },
+                    proxy: {
+                        host: 'localhost',
+                        port,
+                        protocol: 'http',
+                    },
+                }
+            );
+
+            jest.expect(res.status)
+                .toBe(500);
+            jest.expect(res.data.message)
+                .toContain('Unsupported protocol: file:');
         }
     );
 

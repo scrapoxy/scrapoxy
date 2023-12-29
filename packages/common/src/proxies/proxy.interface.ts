@@ -6,6 +6,17 @@ import type {
 import type { IFingerprintResponse } from '../fingerprint';
 
 
+export enum EProxyType {
+    HTTP = 'http',
+    HTTPS = 'https',
+    SOCKS4 = 'socks4',
+    SOCKS5 = 'socks5',
+}
+
+
+export const PROXY_TYPE_KEYS = Object.values(EProxyType) as string[];
+
+
 export enum EProxyStatus {
     STARTED = 'STARTED',
     STARTING = 'STARTING',
@@ -250,6 +261,7 @@ export interface IProxyTransportAuth {
 
 
 export interface IProxyTransport {
+    type: EProxyType;
     address: IAddress;
     auth: IProxyTransportAuth | null;
 }

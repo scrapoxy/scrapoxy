@@ -27,7 +27,6 @@ import {
     schemaProjectUserEmailToAdd,
     schemaTaskToCreate,
 } from './frontend.validation';
-import { generateCertificateSelfSigned } from '../../certificate';
 import {
     ConnectorCertificateNotUsedError,
     ConnectorRemoveError,
@@ -46,6 +45,7 @@ import {
 import { ConnectorprovidersService } from '../../connectors';
 import {
     generateBasicAuthToken,
+    generateCertificateSelfSigned,
     validate,
 } from '../../helpers';
 import { StorageprovidersService } from '../../storages';

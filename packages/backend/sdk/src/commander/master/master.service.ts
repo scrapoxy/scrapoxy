@@ -9,16 +9,16 @@ import {
 } from '@scrapoxy/common';
 import { pki } from 'node-forge';
 import { COMMANDER_MASTER_MODULE_CONFIG } from './master.constants';
-import { generateCertificateFromCa } from '../../certificate';
 import {
     CertificateNotFoundError,
     NoProjectProxyError,
 } from '../../commander-client';
-import { StorageprovidersService } from '../../storages';
 import {
+    generateCertificateFromCa,
     readCaCert,
     readCaKey,
-} from '../ca-certificate';
+} from '../../helpers';
+import { StorageprovidersService } from '../../storages';
 import type { ICommanderMasterModuleConfig } from './master.module';
 import type { OnModuleInit } from '@nestjs/common';
 import type {

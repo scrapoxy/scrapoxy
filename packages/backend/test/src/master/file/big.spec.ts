@@ -2,12 +2,12 @@ import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import {
     CommanderMasterClientService,
+    generateCertificateSelfSignedForTest,
     MasterModule,
     MasterService,
 } from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
-    generateCertificateSelfSignedForTest,
     generateData,
     GeneratorCheckStream,
     TestServers,

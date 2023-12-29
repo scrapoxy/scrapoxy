@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
 import {
     EProxyStatus,
+    EProxyType,
     safeJoin,
 } from '@scrapoxy/common';
 import { CONNECTOR_RAYOBYTE_TYPE } from '@scrapoxy/connector-rayobyte-sdk';
@@ -46,6 +47,7 @@ function convertToProxy(line: string): IConnectorProxyRefreshed | undefined {
     }
 
     const config: IProxyTransport = {
+        type: EProxyType.HTTP,
         address: {
             hostname,
             port,

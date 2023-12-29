@@ -8,7 +8,7 @@ import {
 } from '@scrapoxy/backend-test-sdk';
 import {
     countProxiesOnlineViews,
-    EFreeproxyType,
+    EProxyType,
     EventsFreeproxiesClient,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
@@ -157,7 +157,7 @@ describe(
                     connector.id,
                     [
                         {
-                            type: EFreeproxyType.HTTP,
+                            type: EProxyType.HTTP,
                             key: `localhost:${proxy.port}`,
                             address: {
                                 hostname: 'localhost',
@@ -179,7 +179,7 @@ describe(
 
                     const freeproxy = client.freeproxies[ 0 ];
                     expect(freeproxy.type)
-                        .toBe(EFreeproxyType.HTTP);
+                        .toBe(EProxyType.HTTP);
                     expect(freeproxy.key)
                         .toBe(`localhost:${proxy.port}`);
                     expect(freeproxy.address)
@@ -203,7 +203,7 @@ describe(
 
                     const freeproxy = freeproxies[ 0 ];
                     expect(freeproxy.type)
-                        .toBe(EFreeproxyType.HTTP);
+                        .toBe(EProxyType.HTTP);
                     expect(freeproxy.key)
                         .toBe(`localhost:${proxy.port}`);
                     expect(freeproxy.address)
@@ -226,7 +226,7 @@ describe(
                     connector.id,
                     [
                         {
-                            type: EFreeproxyType.HTTP,
+                            type: EProxyType.HTTP,
                             key: '1.2.3.4:1337',
                             address: {
                                 hostname: '1.2.3.4',

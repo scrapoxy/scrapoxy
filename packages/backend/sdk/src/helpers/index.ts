@@ -1,3 +1,5 @@
+export * from './certificate';
+
 export * from './config';
 
 export * from './connection';

@@ -4,13 +4,13 @@ import { createSecureContext } from 'tls';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import { generateCertificateSelfSignedForTest } from '@scrapoxy/backend-sdk';
 import * as express from 'express';
 import { FingerprintServer } from './fingerprint';
 import {
     WebModule,
     WebServer,
 } from './web';
-import { generateCertificateSelfSignedForTest } from '../certificate.helper';
 import type { SecureContext } from 'tls';
 
 

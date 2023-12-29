@@ -6,7 +6,7 @@ import {
 import { TRANSPORT_CLOUDLOCAL_TYPE } from './cloudlocal.constants';
 import type { IProxyToConnectConfigCloudlocal } from './cloudlocal.interface';
 import type { IConnectorCloudlocalConfig } from '../cloudlocal.interface';
-import type { IHttpOptions } from '@scrapoxy/backend-sdk';
+import type { IUrlOptions } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -58,7 +58,7 @@ export class TransportCloudlocalService extends ATransportCloudService {
 
     override buildFingerprintRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,

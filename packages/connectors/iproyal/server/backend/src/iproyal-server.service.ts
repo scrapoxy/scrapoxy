@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
 import {
     EProxyStatus,
+    EProxyType,
     safeJoin,
 } from '@scrapoxy/common';
 import { CONNECTOR_IPROYAL_SERVER_TYPE } from '@scrapoxy/connector-iproyal-server-sdk';
@@ -12,7 +13,7 @@ import type {
     IIproyalServerProxy,
 } from './iproyal-server.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
-import type{
+import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
     IProxyTransport,
@@ -47,6 +48,7 @@ function convertToProxy(session: IIproyalServerProxy): IConnectorProxyRefreshed 
     }
 
     const config: IProxyTransport = {
+        type: EProxyType.HTTP,
         address: {
             hostname,
             port,

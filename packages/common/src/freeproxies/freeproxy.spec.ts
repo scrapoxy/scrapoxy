@@ -1,6 +1,6 @@
 import { parseFreeproxy } from './freeproxy.helpers';
-import { EFreeproxyType } from '../freeproxies';
-import type { IFreeproxyBase } from '../freeproxies';
+import { EProxyType } from '../proxies/proxy.interface';
+import type { IFreeproxyBase } from './freeproxy.interface';
 
 
 describe(
@@ -46,7 +46,7 @@ describe(
             () => {
                 expect(parseFreeproxy('myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.HTTP,
+                        type: EProxyType.HTTP,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -57,7 +57,7 @@ describe(
 
                 expect(parseFreeproxy('myhostname:2'))
                     .toEqual({
-                        type: EFreeproxyType.HTTP,
+                        type: EProxyType.HTTP,
                         key: 'myhostname:2',
                         address: {
                             hostname: 'myhostname',
@@ -73,7 +73,7 @@ describe(
             () => {
                 expect(parseFreeproxy('http://myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.HTTP,
+                        type: EProxyType.HTTP,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -84,7 +84,7 @@ describe(
 
                 expect(parseFreeproxy('https://myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.HTTPS,
+                        type: EProxyType.HTTPS,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -93,9 +93,9 @@ describe(
                         auth: null,
                     } as IFreeproxyBase);
 
-                expect(parseFreeproxy('socks://myhostname:1234'))
+                expect(parseFreeproxy('socks4://myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.SOCKS,
+                        type: EProxyType.SOCKS4,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -111,7 +111,7 @@ describe(
             () => {
                 expect(parseFreeproxy('http://mylogin:mypassword@myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.HTTP,
+                        type: EProxyType.HTTP,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -125,7 +125,7 @@ describe(
 
                 expect(parseFreeproxy('https://mylogin:@myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.HTTPS,
+                        type: EProxyType.HTTPS,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -139,7 +139,7 @@ describe(
 
                 expect(parseFreeproxy('https://mylogin@myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.HTTPS,
+                        type: EProxyType.HTTPS,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -151,9 +151,9 @@ describe(
                         },
                     } as IFreeproxyBase);
 
-                expect(parseFreeproxy('socks://:mypassword@myhostname:1234'))
+                expect(parseFreeproxy('socks5://:mypassword@myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.SOCKS,
+                        type: EProxyType.SOCKS5,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',
@@ -165,9 +165,9 @@ describe(
                         },
                     } as IFreeproxyBase);
 
-                expect(parseFreeproxy('socks://mylogin:mypassword:mypassword2@myhostname:1234'))
+                expect(parseFreeproxy('socks5://mylogin:mypassword:mypassword2@myhostname:1234'))
                     .toEqual({
-                        type: EFreeproxyType.SOCKS,
+                        type: EProxyType.SOCKS5,
                         key: 'myhostname:1234',
                         address: {
                             hostname: 'myhostname',

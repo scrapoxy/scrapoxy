@@ -73,6 +73,7 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     requests: 0,
                 };
                 const config: IProxyTransport = {
+                    type: freeproxy.type,
                     address: freeproxy.address,
                     auth: freeproxy.auth,
                 };

@@ -7,12 +7,12 @@ import { connect } from 'tls';
 import { SCRAPOXY_HEADER_PREFIX } from '@scrapoxy/common';
 import {
     createConnectionAuto,
-    httpOptionsToUrl,
     isUrl,
     parseBodyError,
+    urlOptionsToUrl,
 } from '../../helpers';
 import type { IProxyToConnectConfigCloud } from './cloud.interface';
-import type { IHttpOptions } from '../../helpers';
+import type { IUrlOptions } from '../../helpers';
 import type { ITransportService } from '../transport.interface';
 import type {
     IConnectorProxyRefreshed,
@@ -37,7 +37,7 @@ export abstract class ATransportCloudService implements ITransportService {
 
     buildRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
@@ -45,12 +45,28 @@ export abstract class ATransportCloudService implements ITransportService {
         timeout: number
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigCloud;
+        let ssl: boolean;
+        switch (urlOpts.protocol) {
+            case 'http:': {
+                ssl = false;
+                break;
+            }
+
+            case 'https:': {
+                ssl = true;
+                break;
+            }
+
+            default: {
+                throw new Error(`Cloud: Unsupported protocol: ${urlOpts.protocol}`);
+            }
+        }
 
         return {
             method,
             hostname: config.address.hostname,
             port: config.address.port,
-            path: httpOptionsToUrl(
+            path: urlOptionsToUrl(
                 urlOpts,
                 false
             ),
@@ -141,7 +157,7 @@ export abstract class ATransportCloudService implements ITransportService {
 
                         let returnedSocket: Socket;
 
-                        if (urlOpts.ssl) {
+                        if (ssl) {
                             const options: ConnectionOptions = {
                                 socket: proxySocket,
                                 requestCert: true,
@@ -202,7 +218,7 @@ export abstract class ATransportCloudService implements ITransportService {
 
     buildFingerprintRequestArgs(
         method: string | undefined,
-        urlOpts: IHttpOptions,
+        urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,

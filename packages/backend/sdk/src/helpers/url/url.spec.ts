@@ -1,7 +1,7 @@
 import {
-    httpOptionsToUrl,
     isUrl,
-    urlToHttpOptions,
+    urlOptionsToUrl,
+    urlToUrlOptions,
 } from './url';
 
 
@@ -11,7 +11,7 @@ describe(
         it(
             'should not accept url without protocol',
             () => {
-                expect(urlToHttpOptions('scrapoxy.io'))
+                expect(urlToUrlOptions('scrapoxy.io'))
                     .toBeUndefined();
             }
         );
@@ -19,10 +19,9 @@ describe(
         it(
             'should parse a simple url',
             () => {
-                expect(urlToHttpOptions('http://scrapoxy.io'))
+                expect(urlToUrlOptions('http://scrapoxy.io'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -37,10 +36,9 @@ describe(
         it(
             'should parse duplicate port information in a url',
             () => {
-                expect(urlToHttpOptions('http://scrapoxy.io:80'))
+                expect(urlToUrlOptions('http://scrapoxy.io:80'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -55,10 +53,9 @@ describe(
         it(
             'should parse port in a http url',
             () => {
-                expect(urlToHttpOptions('http://scrapoxy.io:443'))
+                expect(urlToUrlOptions('http://scrapoxy.io:443'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -73,10 +70,9 @@ describe(
         it(
             'should parse port in a https url',
             () => {
-                expect(urlToHttpOptions('https://scrapoxy.io:80'))
+                expect(urlToUrlOptions('https://scrapoxy.io:80'))
                     .toEqual({
                         protocol: 'https:',
-                        ssl: true,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -91,10 +87,9 @@ describe(
         it(
             'should parse a username in a url',
             () => {
-                expect(urlToHttpOptions('http://john@scrapoxy.io:443'))
+                expect(urlToUrlOptions('http://john@scrapoxy.io:443'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: 'john',
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -109,10 +104,9 @@ describe(
         it(
             'should parse a password in a url',
             () => {
-                expect(urlToHttpOptions('http://:123@scrapoxy.io'))
+                expect(urlToUrlOptions('http://:123@scrapoxy.io'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: '123',
                         hostname: 'scrapoxy.io',
@@ -127,10 +121,9 @@ describe(
         it(
             'should parse a username and password in a url',
             () => {
-                expect(urlToHttpOptions('http://john:123@scrapoxy.io'))
+                expect(urlToUrlOptions('http://john:123@scrapoxy.io'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: 'john',
                         password: '123',
                         hostname: 'scrapoxy.io',
@@ -145,10 +138,9 @@ describe(
         it(
             'should parse a pathname in a url',
             () => {
-                expect(urlToHttpOptions('http://john:123@scrapoxy.io/blog/index/1'))
+                expect(urlToUrlOptions('http://john:123@scrapoxy.io/blog/index/1'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: 'john',
                         password: '123',
                         hostname: 'scrapoxy.io',
@@ -163,10 +155,9 @@ describe(
         it(
             'should parse a search in a url',
             () => {
-                expect(urlToHttpOptions('http://scrapoxy.io?index=44&page=33'))
+                expect(urlToUrlOptions('http://scrapoxy.io?index=44&page=33'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -181,10 +172,9 @@ describe(
         it(
             'should parse a pathname and a search in a url',
             () => {
-                expect(urlToHttpOptions('http://scrapoxy.io/index/blog?index=44&page=33'))
+                expect(urlToUrlOptions('http://scrapoxy.io/index/blog?index=44&page=33'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -199,10 +189,9 @@ describe(
         it(
             'should parse a pathname and a search with a hash in a url',
             () => {
-                expect(urlToHttpOptions('http://scrapoxy.io/index/blog?index=44&page=33#my'))
+                expect(urlToUrlOptions('http://scrapoxy.io/index/blog?index=44&page=33#my'))
                     .toEqual({
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -223,9 +212,8 @@ describe(
         it(
             'should format a simple url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: void 0,
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -241,9 +229,8 @@ describe(
         it(
             'should format a port in a http url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: void 0,
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -259,9 +246,8 @@ describe(
         it(
             'should format a port in a https url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'https:',
-                    ssl: true,
                     username: void 0,
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -277,9 +263,8 @@ describe(
         it(
             'should format a username in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: 'john',
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -295,9 +280,8 @@ describe(
         it(
             'should format a password in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: void 0,
                     password: '123',
                     hostname: 'scrapoxy.io',
@@ -313,9 +297,8 @@ describe(
         it(
             'should format a username and password in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: 'john',
                     password: '123',
                     hostname: 'scrapoxy.io',
@@ -331,9 +314,8 @@ describe(
         it(
             'should format a pathname in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: 'john',
                     password: '123',
                     hostname: 'scrapoxy.io',
@@ -349,9 +331,8 @@ describe(
         it(
             'should format a search in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: void 0,
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -367,9 +348,8 @@ describe(
         it(
             'should format a pathname and a search in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: void 0,
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -385,9 +365,8 @@ describe(
         it(
             'should format a pathname and a search with a hash in a url',
             () => {
-                expect(httpOptionsToUrl({
+                expect(urlOptionsToUrl({
                     protocol: 'http:',
-                    ssl: false,
                     username: void 0,
                     password: void 0,
                     hostname: 'scrapoxy.io',
@@ -403,10 +382,9 @@ describe(
         it(
             'should format a pathname and a search with a hash in a url without hostname',
             () => {
-                expect(httpOptionsToUrl(
+                expect(urlOptionsToUrl(
                     {
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',
@@ -424,10 +402,9 @@ describe(
         it(
             'should format a search in a url without hostname',
             () => {
-                expect(httpOptionsToUrl(
+                expect(urlOptionsToUrl(
                     {
                         protocol: 'http:',
-                        ssl: false,
                         username: void 0,
                         password: void 0,
                         hostname: 'scrapoxy.io',

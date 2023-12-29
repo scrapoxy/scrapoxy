@@ -7,7 +7,7 @@ import {
     parseError,
     Sockets,
 } from '@scrapoxy/proxy-sdk';
-import { urlToHttpOptions } from '../helpers';
+import { urlToUrlOptions } from '../helpers';
 import type { ITransportService } from '../transports';
 import type {
     IFingerprint,
@@ -140,7 +140,7 @@ function fingerprintImpl(
     followRedirectCount: number,
     retry: number
 ): Promise<IFingerprint> {
-    const urlOpts = urlToHttpOptions(url);
+    const urlOpts = urlToUrlOptions(url);
 
     if (!urlOpts) {
         throw new Error('Invalid url');
