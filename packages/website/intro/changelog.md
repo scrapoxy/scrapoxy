@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.2.0
+
+### Features
+
+- **freeproxies**: support HTTPS proxies
+- **freeproxies**: support SOCKS4/SOCKS5 proxies
+
+### Bug fixes
+
+- **protocol**: Accept only HTTP and HTTPS requests from master
+
+
 ## 4.1.6
 
 ### Bug fixes
