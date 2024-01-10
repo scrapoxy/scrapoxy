@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.2.1
+
+### Features
+
+- **fingerprint**: add useragent for all http calls (fingerprint and api)
+- **frontend**: split token in username and password in project settings
+
+### Bug fixes
+
+- **package.json**: add missing socks package
+
+
 ## 4.2.0
 
 ### Features
