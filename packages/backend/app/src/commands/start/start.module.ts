@@ -59,6 +59,7 @@ import type { DynamicModule } from '@nestjs/common';
 
 
 export interface IAppStartModuleConfig {
+    version: string;
     standalone?: boolean;
     master?: boolean;
     commander?: boolean;
@@ -180,7 +181,7 @@ export class AppStartModule {
                 CommanderCaCertificateModule,
                 CommanderMasterModule.forRoot(),
                 CommanderRefreshModule.forRootFromEnv(),
-                CommanderFrontendModule.forRoot(),
+                CommanderFrontendModule.forRoot(options.version),
                 CommanderScraperModule,
                 CommanderUsersModule.forRoot()
             );
@@ -219,32 +220,46 @@ export class AppStartModule {
         if (options.master) {
             imports.push(MasterModule.forRootFromEnv(
                 commanderUrl,
+                options.version,
                 trackSockets
             ));
         }
 
         // Refresh
         if (options.refreshConnectors) {
-            imports.push(RefreshConnectorsModule.forRoot(commanderUrl));
+            imports.push(RefreshConnectorsModule.forRoot(
+                commanderUrl,
+                options.version
+            ));
         }
 
         if (options.refreshFreeproxies) {
-            imports.push(RefreshFreeproxiesModule.forRoot(commanderUrl));
+            imports.push(RefreshFreeproxiesModule.forRoot(
+                commanderUrl,
+                options.version
+            ));
         }
 
         if (options.refreshMetrics) {
-            imports.push(RefreshMetricsModule.forRoot(commanderUrl));
+            imports.push(RefreshMetricsModule.forRoot(
+                commanderUrl,
+                options.version
+            ));
         }
 
         if (options.refreshProxies) {
             imports.push(RefreshProxiesModule.forRoot(
                 commanderUrl,
+                options.version,
                 trackSockets
             ));
         }
 
         if (options.refreshTasks) {
-            imports.push(RefreshTasksModule.forRoot(commanderUrl));
+            imports.push(RefreshTasksModule.forRoot(
+                commanderUrl,
+                options.version
+            ));
         }
 
         return {

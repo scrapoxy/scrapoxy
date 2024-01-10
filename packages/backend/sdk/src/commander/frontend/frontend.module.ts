@@ -24,10 +24,16 @@ export interface ICommanderFrontendModuleConfig {
 
 @Module({})
 export class CommanderFrontendModule {
-    static forRoot(fingerprintUrl?: string): DynamicModule {
+    static forRoot(
+        version: string,
+        fingerprintUrl?: string
+    ): DynamicModule {
         const config: ICommanderFrontendModuleConfig = {
             jwt: getEnvFrontendJwtConfig(),
-            fingerprint: getEnvFingerprintConfig(fingerprintUrl),
+            fingerprint: getEnvFingerprintConfig(
+                version,
+                fingerprintUrl
+            ),
         };
 
         return {

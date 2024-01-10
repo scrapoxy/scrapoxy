@@ -34,15 +34,17 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Prepare command line
+const version = getPackageVersion();
 const program = new Command();
 program
     .name('scrapoxy')
-    .version(getPackageVersion())
+    .version(version)
     .description('Scrapoxy');
 
 
 addCommandStart(
     program,
+    version,
     logger
 );
 addCommandCheckConnectors(

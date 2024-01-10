@@ -332,6 +332,7 @@ class AwsInstallCommand extends ATaskCommand {
                 // Update connector configuration
                 const commander = new CommanderFrontendClient(
                     context.url,
+                    context.useragent,
                     this.task.jwt,
                     this.agents
                 );

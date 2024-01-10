@@ -17,6 +17,7 @@ import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backen
 import { ConnectorProxylocalModule } from '@scrapoxy/connector-proxylocal-backend';
 import { AStorageLocal } from '@scrapoxy/storage-local';
 import { CommanderUsersClient } from '../commander-users-client';
+import { USERAGENT_TEST } from '../info';
 import { buildStorageModules } from '../storageproviders.helpers';
 import type {
     DynamicModule,
@@ -151,10 +152,14 @@ export class CommanderApp {
         await storageModules.connect(this.app);
         await this.app.listen(0);
 
-        this.commanderUsersClient = await CommanderUsersClient.generateUser(this.url);
+        this.commanderUsersClient = await CommanderUsersClient.generateUser(
+            this.url,
+            USERAGENT_TEST
+        );
 
         this.commanderFrontendClient = new CommanderFrontendClient(
             this.url,
+            USERAGENT_TEST,
             this.commanderUsersClient.jwtToken,
             this.agents
         );

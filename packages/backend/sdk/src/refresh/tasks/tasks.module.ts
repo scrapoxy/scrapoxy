@@ -4,7 +4,10 @@ import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import { REFRESH_TASKS_MODULE_CONFIG } from './tasks.constants';
 import { RefreshTasksService } from './tasks.service';
 import { CommanderRefreshClientModule } from '../../commander-client';
-import { getEnvBackendJwtConfig } from '../../helpers';
+import {
+    formatUseragent,
+    getEnvBackendJwtConfig,
+} from '../../helpers';
 import { TasksModule } from '../../tasks';
 import type { ICommanderRefreshClientModuleConfig } from '../../commander-client';
 import type { IRefreshConfig } from '../refresh.abstract';
@@ -16,9 +19,13 @@ export interface IRefreshTasksModuleConfig extends ICommanderRefreshClientModule
 
 @Module({})
 export class RefreshTasksModule {
-    static forRoot(url: string): DynamicModule {
+    static forRoot(
+        url: string,
+        version: string
+    ): DynamicModule {
         const config: IRefreshTasksModuleConfig = {
             url,
+            useragent: formatUseragent(version),
             jwt: getEnvBackendJwtConfig(),
             emptyDelay: parseInt(
                 process.env.TASKS_REFRESH_EMPTY_DELAY ?? ONE_SECOND_IN_MS.toString(),

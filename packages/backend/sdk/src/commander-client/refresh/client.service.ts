@@ -2,7 +2,6 @@ import {
     Inject,
     Injectable,
 } from '@nestjs/common';
-import { SCRAPOXY_USER_AGENT } from '@scrapoxy/common';
 import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import { COMMANDER_REFRESH_CLIENT_MODULE_CONFIG } from './client.constants';
@@ -42,7 +41,7 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
             ...this.agents.axiosDefaults,
             baseURL: `${this.config.url}/refresh`,
             headers: {
-                'User-Agent': SCRAPOXY_USER_AGENT,
+                'User-Agent': this.config.useragent,
             },
         });
 

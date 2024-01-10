@@ -8,6 +8,8 @@ export * from './commander-scraper-client';
 
 export * from './commander-users-client';
 
+export * from './info';
+
 export * from './proxy-reverse';
 
 export * from './storageproviders.helpers';

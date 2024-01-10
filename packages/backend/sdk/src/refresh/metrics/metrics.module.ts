@@ -4,7 +4,10 @@ import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import { REFRESH_METRICS_CONFIG } from './metrics.constants';
 import { RefreshMetricsService } from './metrics.service';
 import { CommanderRefreshClientModule } from '../../commander-client';
-import { getEnvBackendJwtConfig } from '../../helpers';
+import {
+    formatUseragent,
+    getEnvBackendJwtConfig,
+} from '../../helpers';
 import type { IRefreshMetricsConfig } from './metrics.service';
 import type { ICommanderRefreshClientModuleConfig } from '../../commander-client';
 import type { DynamicModule } from '@nestjs/common';
@@ -16,10 +19,13 @@ export interface IRefreshMetricsModuleConfig extends ICommanderRefreshClientModu
 @Module({})
 export class RefreshMetricsModule {
     static forRoot(
-        url: string, refreshDelay?: number
+        url: string,
+        version: string,
+        refreshDelay?: number
     ): DynamicModule {
         const config: IRefreshMetricsModuleConfig = {
             url,
+            useragent: formatUseragent(version),
             jwt: getEnvBackendJwtConfig(),
             refreshDelay: refreshDelay ?? parseInt(
                 process.env.METRICS_REFRESH_REFRESH_DELAY ?? (10 * ONE_SECOND_IN_MS).toString(),

@@ -4,7 +4,6 @@ import {
 } from '@scrapoxy/backend-sdk';
 import {
     randomName,
-    SCRAPOXY_USER_AGENT,
     toUserToken,
 } from '@scrapoxy/common';
 import axios from 'axios';
@@ -24,12 +23,14 @@ import type {
 
 export class CommanderUsersClient {
     static async generateUser(
-        apiUrl: string, email?: string
+        apiUrl: string,
+        useragent: string,
+        email?: string
     ): Promise<CommanderUsersClient> {
         const instance = axios.create({
             baseURL: `${apiUrl}/users`,
             headers: {
-                'User-Agent': SCRAPOXY_USER_AGENT,
+                'User-Agent': useragent,
             },
         });
         instance.interceptors.response.use(

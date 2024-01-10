@@ -14,6 +14,7 @@ import {
     CommanderApp,
     CommanderUsersClient,
     TestServers,
+    USERAGENT_TEST,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import { CloudlocalApp } from '@scrapoxy/cloudlocal';
@@ -163,12 +164,16 @@ describe(
                     'should signup, login and connect both users',
                     async() => {
                     // User A
-                        authClientA = await CommanderUsersClient.generateUser(commanderApp.url);
+                        authClientA = await CommanderUsersClient.generateUser(
+                            commanderApp.url,
+                            USERAGENT_TEST
+                        );
                         expect(authClientA.jwtToken.length)
                             .toBeGreaterThan(0);
 
                         commanderA = new CommanderFrontendClient(
                             commanderApp.url,
+                            USERAGENT_TEST,
                             authClientA.jwtToken,
                             agents
                         );
@@ -193,12 +198,16 @@ describe(
                         });
 
                         // User B
-                        authClientB = await CommanderUsersClient.generateUser(commanderApp.url);
+                        authClientB = await CommanderUsersClient.generateUser(
+                            commanderApp.url,
+                            USERAGENT_TEST
+                        );
                         expect(authClientB.jwtToken.length)
                             .toBeGreaterThan(0);
 
                         commanderB = new CommanderFrontendClient(
                             commanderApp.url,
+                            USERAGENT_TEST,
                             authClientB.jwtToken,
                             agents
                         );
@@ -250,7 +259,10 @@ describe(
                     'should disallow user A with an expired token',
                     async() => {
                         const
-                            authClient = await CommanderUsersClient.generateUser(commanderApp.url),
+                            authClient = await CommanderUsersClient.generateUser(
+                                commanderApp.url,
+                                USERAGENT_TEST
+                            ),
                             config = getEnvFrontendJwtConfig();
 
                         authClient.changeJwtExpiration(
@@ -260,6 +272,7 @@ describe(
 
                         const commander = new CommanderFrontendClient(
                             commanderApp.url,
+                            USERAGENT_TEST,
                             authClient.jwtToken,
                             agents
                         );
@@ -355,10 +368,12 @@ describe(
                     async() => {
                         const authClient = await CommanderUsersClient.generateUser(
                             commanderApp.url,
+                            USERAGENT_TEST,
                             'invalidemail'
                         );
                         const commander = new CommanderFrontendClient(
                             commanderApp.url,
+                            USERAGENT_TEST,
                             authClient.jwtToken,
                             agents
                         );
@@ -419,6 +434,7 @@ describe(
                     async() => {
                         const commander = new CommanderFrontendClient(
                             commanderApp.url,
+                            USERAGENT_TEST,
                             '',
                             agents
                         );

@@ -35,6 +35,10 @@ import { SCRAPOXY_PROXY_HEADER_PREFIX_LC } from '@scrapoxy/proxy-sdk';
 import axios from 'axios';
 import { AgentProxyHttpsTunnel } from './agent-proxy-https-tunnel';
 import { CommanderUsersClient } from './commander-users-client';
+import {
+    USERAGENT_TEST,
+    VERSION_TEST,
+} from './info';
 import { buildStorageModules } from './storageproviders.helpers';
 import { waitFor } from './wait-for';
 import type {
@@ -103,7 +107,7 @@ async function createCommanderApp(
             CommanderEventsModule.forRoot(),
             CommanderMasterModule.forRoot(),
             CommanderRefreshModule.forRootFromEnv(),
-            CommanderFrontendModule.forRoot(),
+            CommanderFrontendModule.forRoot(VERSION_TEST),
             CommanderScraperModule,
             CommanderUsersModule.forRoot(),
         ],
@@ -132,17 +136,28 @@ async function createMasterApp(
             ...connectorModules,
             MasterModule.forRootFromEnv(
                 commanderAppUrl,
+                VERSION_TEST,
                 true,
                 0,
                 ONE_SECOND_IN_MS
             ),
-            RefreshConnectorsModule.forRoot(commanderAppUrl),
-            RefreshFreeproxiesModule.forRoot(commanderAppUrl),
+            RefreshConnectorsModule.forRoot(
+                commanderAppUrl,
+                VERSION_TEST
+            ),
+            RefreshFreeproxiesModule.forRoot(
+                commanderAppUrl,
+                VERSION_TEST
+            ),
             RefreshProxiesModule.forRoot(
                 commanderAppUrl,
+                VERSION_TEST,
                 true
             ),
-            RefreshTasksModule.forRoot(commanderAppUrl),
+            RefreshTasksModule.forRoot(
+                commanderAppUrl,
+                VERSION_TEST
+            ),
         ],
     })
         .setLogger(logger)
@@ -204,9 +219,13 @@ export function testConnector(
         port = masterApp.get<MasterService>(MasterService).port as number;
 
         // Initiate client
-        const authClient = await CommanderUsersClient.generateUser(commanderAppUrl);
+        const authClient = await CommanderUsersClient.generateUser(
+            commanderAppUrl,
+            USERAGENT_TEST
+        );
         commander = new CommanderFrontendClient(
             commanderAppUrl,
+            USERAGENT_TEST,
             authClient.jwtToken,
             agents
         );

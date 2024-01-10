@@ -34,6 +34,7 @@ export class RefreshTasksService extends ARefresh<ITaskData> {
 
         this.context = {
             url: config.url,
+            useragent: config.useragent,
         };
     }
 

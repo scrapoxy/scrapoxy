@@ -197,6 +197,7 @@ async function command(
 
 export function addCommand(
     program: Command,
+    version: string,
     logger: LoggerService
 ) {
     program
@@ -265,8 +266,12 @@ export function addCommand(
             '--test',
             'Activate test connectors'
         ))
-        .action((config) => command(
-            config,
-            logger
-        ));
+        .action((config: IAppStartModuleConfig) => {
+            config.version = version;
+
+            return command(
+                config,
+                logger
+            );
+        });
 }

@@ -1,7 +1,4 @@
-import {
-    EProjectStatus,
-    SCRAPOXY_USER_AGENT,
-} from '@scrapoxy/common';
+import { EProjectStatus } from '@scrapoxy/common';
 import axios from 'axios';
 import type {
     IConnectorProxiesView,
@@ -18,12 +15,13 @@ export class CommanderScraperClient {
 
     constructor(
         apiUrl: string,
+        useragent: string,
         tokenB64: string
     ) {
         this.instance = axios.create({
             baseURL: `${apiUrl}/scraper`,
             headers: {
-                'User-Agent': SCRAPOXY_USER_AGENT,
+                'User-Agent': useragent,
                 Authorization: `Basic ${tokenB64}`,
             },
         });

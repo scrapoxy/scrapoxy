@@ -18,4 +18,6 @@ export * from './token';
 
 export * from './url';
 
+export * from './useragent';
+
 export * from './validation';

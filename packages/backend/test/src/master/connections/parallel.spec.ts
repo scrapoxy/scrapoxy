@@ -11,6 +11,7 @@ import {
 import {
     AgentProxyHttpsTunnel,
     TestServers,
+    USERAGENT_TEST,
 } from '@scrapoxy/backend-test-sdk';
 import {
     EConnectMode,
@@ -96,6 +97,7 @@ describe(
             // Start master
             const fakeConfig = {
                 url: 'http://unused_url',
+                useragent: USERAGENT_TEST,
                 jwt: {
                     secret: 'unused_secret',
                     expiration: '60s',

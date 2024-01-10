@@ -9,7 +9,10 @@ import {
     MasterModule,
     MasterService,
 } from '@scrapoxy/backend-sdk';
-import { TestServers } from '@scrapoxy/backend-test-sdk';
+import {
+    TestServers,
+    USERAGENT_TEST,
+} from '@scrapoxy/backend-test-sdk';
 import {
     EConnectMode,
     EProjectStatus,
@@ -139,6 +142,7 @@ describe(
             // Start master
             const fakeConfig = {
                 url: 'http://unused_url',
+                useragent: USERAGENT_TEST,
                 jwt: {
                     secret: 'unused_secret',
                     expiration: '60s',

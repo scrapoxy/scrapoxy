@@ -4,6 +4,7 @@ import {
     DEFAULT_FINGERPRINT,
     MasterApp,
     TestServers,
+    VERSION_TEST,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
@@ -13,6 +14,7 @@ import {
 import {
     countProxiesOnlineViews,
     ONE_MINUTE_IN_MS,
+    SCRAPOXY_USER_AGENT_PREFIX,
 } from '@scrapoxy/common';
 import {
     CONNECTOR_CLOUDLOCAL_TYPE,
@@ -263,9 +265,11 @@ describe(
                     async() => {
                         const res = await axios.post<IFingerprint>(
                             servers.urlFingerprint,
+                            {},
                             {
                                 headers: {
                                     'Proxy-Authorization': `Basic ${token!}`,
+                                    'User-Agent': `${SCRAPOXY_USER_AGENT_PREFIX}/${VERSION_TEST} (test; test; test)`,
                                 },
                                 proxy: {
                                     host: 'localhost',

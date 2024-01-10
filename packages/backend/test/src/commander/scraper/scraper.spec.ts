@@ -4,6 +4,7 @@ import {
     CommanderScraperClient,
     MasterApp,
     TestServers,
+    USERAGENT_TEST,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
@@ -108,6 +109,7 @@ describe(
                 const token = await commanderApp.frontendClient.getProjectTokenById(project.id);
                 client = new CommanderScraperClient(
                     commanderApp.url,
+                    USERAGENT_TEST,
                     token
                 );
             });

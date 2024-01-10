@@ -8,13 +8,18 @@ import type { DynamicModule } from '@nestjs/common';
 
 export interface ICommanderRefreshClientModuleConfig {
     url: string;
+    useragent: string;
     jwt: IJwtConfig;
 }
 
 
-export function getEnvCommanderRefreshClientModuleConfig(commanderUrl: string): ICommanderRefreshClientModuleConfig {
+export function getEnvCommanderRefreshClientModuleConfig(
+    commanderUrl: string,
+    useragent: string
+): ICommanderRefreshClientModuleConfig {
     return {
         url: commanderUrl,
+        useragent,
         jwt: getEnvBackendJwtConfig(),
     };
 }

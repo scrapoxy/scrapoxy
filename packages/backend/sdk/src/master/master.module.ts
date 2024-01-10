@@ -12,6 +12,7 @@ import {
     getEnvCommanderRefreshClientModuleConfig,
 } from '../commander-client';
 import { ConnectorprovidersModule } from '../connectors';
+import { formatUseragent } from '../helpers';
 import { TransportprovidersModule } from '../transports';
 import type {
     ICommanderMasterClientModuleConfig,
@@ -57,11 +58,15 @@ export class MasterModule {
 
     static forRootFromEnv(
         url: string,
+        version: string,
         trackSockets: boolean,
         port?: number,
         refreshDelay?: number
     ): DynamicModule {
-        const refreshMetrics = getEnvCommanderRefreshClientModuleConfig(url) as IMasterRefreshClientModuleConfig;
+        const refreshMetrics = getEnvCommanderRefreshClientModuleConfig(
+            url,
+            formatUseragent(version)
+        ) as IMasterRefreshClientModuleConfig;
         refreshMetrics.delay = refreshDelay ?? parseInt(
             process.env.MASTER_REFRESH_METRICS_DELAY ?? (10 * ONE_SECOND_IN_MS).toString(10),
             10
@@ -76,7 +81,10 @@ export class MasterModule {
                 process.env.MASTER_TIMEOUT ?? ONE_MINUTE_IN_MS.toString(10),
                 10
             ),
-            master: getEnvCommanderMasterClientModuleConfig(url),
+            master: getEnvCommanderMasterClientModuleConfig(
+                url,
+                version
+            ),
             refreshMetrics,
             trackSockets,
         };

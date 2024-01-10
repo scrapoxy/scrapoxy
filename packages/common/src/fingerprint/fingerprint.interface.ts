@@ -39,6 +39,7 @@ export interface IFingerprintResponse {
 
 
 export interface IFingerprintOptions {
+    useragent: string;
     timeout: number;
     url: string;
     followRedirectMax: number;

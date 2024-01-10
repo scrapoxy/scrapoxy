@@ -13,6 +13,7 @@ import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backend';
 import { ConnectorProxylocalModule } from '@scrapoxy/connector-proxylocal-backend';
 import { CommanderApp } from './commander';
+import { VERSION_TEST } from '../info';
 import type {
     DynamicModule,
     ForwardReference,
@@ -41,28 +42,38 @@ export class MasterApp {
             options.imports.push(
                 MasterModule.forRootFromEnv(
                     options.commanderApp.url,
+                    VERSION_TEST,
                     true,
                     0,
                     ONE_SECOND_IN_MS
 
                 ),
-                RefreshConnectorsModule.forRoot(options.commanderApp.url),
+                RefreshConnectorsModule.forRoot(
+                    options.commanderApp.url,
+                    VERSION_TEST
+                ),
                 RefreshMetricsModule.forRoot(
                     options.commanderApp.url,
+                    VERSION_TEST,
                     ONE_SECOND_IN_MS
                 ),
-                RefreshTasksModule.forRoot(options.commanderApp.url)
+                RefreshTasksModule.forRoot(
+                    options.commanderApp.url,
+                    VERSION_TEST
+                )
             );
 
             if (options.fingerprintUrl) {
                 options.imports.push(
                     RefreshFreeproxiesModule.forRoot(
                         options.commanderApp.url,
+                        VERSION_TEST,
                         options.fingerprintUrl,
                         options.fingerprintTimeout
                     ),
                     RefreshProxiesModule.forRoot(
                         options.commanderApp.url,
+                        VERSION_TEST,
                         true,
                         options.fingerprintUrl,
                         options.fingerprintTimeout

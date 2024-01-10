@@ -5,7 +5,10 @@ import { REFRESH_FREEPROXIES_CONFIG } from './freeproxies.constants';
 import { RefreshFreeproxiesService } from './freeproxies.service';
 import { CommanderRefreshClientModule } from '../../commander-client';
 import { getEnvFingerprintConfig } from '../../fingerprint';
-import { getEnvBackendJwtConfig } from '../../helpers';
+import {
+    formatUseragent,
+    getEnvBackendJwtConfig,
+} from '../../helpers';
 import { TransportprovidersModule } from '../../transports';
 import type { ICommanderRefreshClientModuleConfig } from '../../commander-client';
 import type { IRefreshConfig } from '../refresh.abstract';
@@ -22,11 +25,13 @@ export interface IRefreshFreeproxiesModuleConfig extends ICommanderRefreshClient
 export class RefreshFreeproxiesModule {
     static forRoot(
         url: string,
+        version: string,
         fingerprintUrl?: string,
         fingerprintTimeout?: number
     ): DynamicModule {
         const config: IRefreshFreeproxiesModuleConfig = {
             url,
+            useragent: formatUseragent(version),
             jwt: getEnvBackendJwtConfig(),
             emptyDelay: parseInt(
                 process.env.FREEPROXIES_REFRESH_EMPTY_DELAY ?? ONE_SECOND_IN_MS.toString(),
@@ -37,6 +42,7 @@ export class RefreshFreeproxiesModule {
                 10
             ),
             fingerprint: getEnvFingerprintConfig(
+                version,
                 fingerprintUrl,
                 fingerprintTimeout
             ),

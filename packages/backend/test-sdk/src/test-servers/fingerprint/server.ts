@@ -1,6 +1,7 @@
 import { createServer } from 'http';
 import { Server } from 'net';
 import {
+    BadRequestException,
     Controller,
     HttpCode,
     Module,
@@ -16,11 +17,22 @@ import type { Request } from 'express';
 import type { AddressInfo } from 'net';
 
 
+const USERAGENT_REGEXP = new RegExp('^Scrapoxy\/[^ ]+ \([^;]+; [^;]+; [^;]+\)$');
+
+
 @Controller()
 class FingerprintController {
     @Post('json')
     @HttpCode(200)
     async getFingerprint(@Req() req: Request): Promise<IFingerprint | undefined> {
+        // Check useragent
+        const userAgent = req.headers[ 'user-agent' ] as string;
+
+        if (!USERAGENT_REGEXP.exec(userAgent)) {
+            throw new BadRequestException('Invalid useragent');
+        }
+
+        // Parse and return fingerprint
         let fingerprint: IFingerprint | undefined;
         const fingerprintRaw = req.headers[ 'x-fingerprint' ] as string;
 

@@ -8,6 +8,7 @@ import {
     CommanderApp,
     MasterApp,
     TestServers,
+    VERSION_TEST,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
@@ -196,7 +197,14 @@ describe(
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
                 imports: [
-                    RefreshConnectorsModule.forRoot(commanderApp.url), RefreshTasksModule.forRoot(commanderApp.url),
+                    RefreshConnectorsModule.forRoot(
+                        commanderApp.url,
+                        VERSION_TEST
+                    ),
+                    RefreshTasksModule.forRoot(
+                        commanderApp.url,
+                        VERSION_TEST
+                    ),
                 ],
                 logger,
             });

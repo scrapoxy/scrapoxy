@@ -1,7 +1,4 @@
-import {
-    EProjectStatus,
-    SCRAPOXY_USER_AGENT,
-} from '@scrapoxy/common';
+import { EProjectStatus } from '@scrapoxy/common';
 import axios from 'axios';
 import { Agents } from '../../helpers';
 import { catchError } from '../client.helpers';
@@ -47,6 +44,7 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
 
     constructor(
         url: string,
+        useragent: string,
         token: string,
         agents: Agents
     ) {
@@ -54,7 +52,7 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
             ...agents.axiosDefaults,
             baseURL: `${url}/frontend`,
             headers: {
-                'User-Agent': SCRAPOXY_USER_AGENT,
+                'User-Agent': useragent,
                 Authorization: `Bearer ${token}`,
             },
         });

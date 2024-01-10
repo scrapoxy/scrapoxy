@@ -5,7 +5,10 @@ import { REFRESH_CONNECTORS_MODULE_CONFIG } from './connectors.constants';
 import { RefreshConnectorsService } from './connectors.service';
 import { CommanderRefreshClientModule } from '../../commander-client';
 import { ConnectorprovidersModule } from '../../connectors';
-import { getEnvBackendJwtConfig } from '../../helpers';
+import {
+    formatUseragent,
+    getEnvBackendJwtConfig,
+} from '../../helpers';
 import { TransportprovidersModule } from '../../transports';
 import type { ICommanderRefreshClientModuleConfig } from '../../commander-client';
 import type { IRefreshConfig } from '../refresh.abstract';
@@ -17,9 +20,13 @@ export interface IRefreshConnectorsModuleConfig extends ICommanderRefreshClientM
 
 @Module({})
 export class RefreshConnectorsModule {
-    static forRoot(url: string): DynamicModule {
+    static forRoot(
+        url: string,
+        version: string
+    ): DynamicModule {
         const config: IRefreshConnectorsModuleConfig = {
             url,
+            useragent: formatUseragent(version),
             jwt: getEnvBackendJwtConfig(),
             emptyDelay: parseInt(
                 process.env.CONNECTORS_REFRESH_EMPTY_DELAY ?? ONE_SECOND_IN_MS.toString(),

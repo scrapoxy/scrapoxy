@@ -2,10 +2,7 @@ import {
     Inject,
     Injectable,
 } from '@nestjs/common';
-import {
-    EConnectMode,
-    SCRAPOXY_USER_AGENT,
-} from '@scrapoxy/common';
+import { EConnectMode } from '@scrapoxy/common';
 import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import { COMMANDER_MASTER_CLIENT_MODULE_CONFIG } from './client.constants';
@@ -36,7 +33,7 @@ export class CommanderMasterClientService implements OnModuleDestroy {
             ...this.agents.axiosDefaults,
             baseURL: `${this.config.url}/master`,
             headers: {
-                'User-Agent': SCRAPOXY_USER_AGENT,
+                'User-Agent': config.useragent,
             },
         });
 
@@ -56,7 +53,7 @@ export class CommanderMasterClientService implements OnModuleDestroy {
             ...this.agents.axiosDefaults,
             baseURL: `${this.config.url}/master`,
             headers: {
-                'User-Agent': SCRAPOXY_USER_AGENT,
+                'User-Agent': this.config.useragent,
             },
         });
 

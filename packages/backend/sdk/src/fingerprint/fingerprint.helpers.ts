@@ -7,7 +7,10 @@ import {
     parseError,
     Sockets,
 } from '@scrapoxy/proxy-sdk';
-import { urlToUrlOptions } from '../helpers';
+import {
+    formatUseragent,
+    urlToUrlOptions,
+} from '../helpers';
 import type { ITransportService } from '../transports';
 import type {
     IFingerprint,
@@ -136,6 +139,7 @@ function fingerprintImpl(
     proxy: IProxyToConnect,
     payload: IFingerprintRequest,
     sockets: Sockets,
+    useragent: string,
     timeout: number,
     followRedirectCount: number,
     retry: number
@@ -152,6 +156,7 @@ function fingerprintImpl(
         {
             Host: urlOpts.hostname,
             'Content-Type': 'application/json',
+            'User-Agent': useragent,
         },
         {
             Host: `${urlOpts.hostname}:${urlOpts.port}`,
@@ -183,6 +188,7 @@ function fingerprintImpl(
                     proxy,
                     payload,
                     sockets,
+                    useragent,
                     timeout,
                     followRedirectCount - 1,
                     retry
@@ -196,6 +202,7 @@ function fingerprintImpl(
                     proxy,
                     payload,
                     sockets,
+                    useragent,
                     timeout,
                     followRedirectCount,
                     retry - 1
@@ -220,6 +227,7 @@ export function fingerprint(
         proxy,
         payload,
         sockets,
+        options.useragent,
         options.timeout,
         options.followRedirectMax,
         options.retryMax
@@ -228,11 +236,13 @@ export function fingerprint(
 
 
 export function getEnvFingerprintConfig(
+    version: string,
     url?: string,
     timeout?: number
 ): IFingerprintOptions {
     return {
         url: url && url.length > 0 ? url : process.env.FINGERPRINT_URL ?? 'https://fingerprint.scrapoxy.io/api/json',
+        useragent: formatUseragent(version),
         timeout: timeout ?? timeout === 0 ? timeout : parseInt(
             process.env.FINGERPRINT_TIMEOUT ?? (5 * ONE_SECOND_IN_MS).toString(),
             10

@@ -25,6 +25,8 @@ import {
     CommanderUsersClient,
     ProxyReverse,
     TestServers,
+    USERAGENT_TEST,
+    VERSION_TEST,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
@@ -152,6 +154,7 @@ async function createMaster(
             }),
             MasterModule.forRootFromEnv(
                 url,
+                VERSION_TEST,
                 true,
                 0,
                 ONE_SECOND_IN_MS
@@ -179,21 +182,29 @@ async function createRefresh(
             ConnectorCloudlocalModule.forRoot({
                 url: cloudlocalApp.url,
             }),
-            RefreshConnectorsModule.forRoot(url),
+            RefreshConnectorsModule.forRoot(
+                url,
+                VERSION_TEST
+            ),
             RefreshFreeproxiesModule.forRoot(
                 url,
                 fingerprintUrl
             ),
             RefreshProxiesModule.forRoot(
                 url,
+                VERSION_TEST,
                 true,
                 fingerprintUrl
             ),
             RefreshMetricsModule.forRoot(
                 url,
+                VERSION_TEST,
                 ONE_SECOND_IN_MS
             ),
-            RefreshTasksModule.forRoot(url),
+            RefreshTasksModule.forRoot(
+                url,
+                VERSION_TEST
+            ),
         ],
     })
         .setLogger(logger)
@@ -301,9 +312,13 @@ describe(
             );
 
             // Initiate client
-            const authClient = await CommanderUsersClient.generateUser(rpUrl);
+            const authClient = await CommanderUsersClient.generateUser(
+                rpUrl,
+                USERAGENT_TEST
+            );
             commander = new CommanderFrontendClient(
                 rpUrl,
+                USERAGENT_TEST,
                 authClient.jwtToken,
                 agents
             );

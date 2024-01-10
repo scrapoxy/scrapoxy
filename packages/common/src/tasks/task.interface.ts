@@ -73,6 +73,7 @@ export interface ITaskFactory {
 
 export interface ITaskContext {
     url: string;
+    useragent: string;
 }
 
 
