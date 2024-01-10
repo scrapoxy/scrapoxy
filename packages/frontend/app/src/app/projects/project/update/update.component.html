@@ -47,7 +47,7 @@
                         }
 
                         <c-row>
-                            <label cLabel cCol md="4" for="token">Token</label>
+                            <label cLabel cCol md="4" for="username">Username</label>
 
                             <c-col md="8">
                                 <c-input-group>
@@ -56,17 +56,43 @@
                                         color="secondary"
                                         variant="outline"
                                         type="button"
-                                        cTooltip="Copy token to clipboard"
+                                        cTooltip="Copy username to clipboard"
                                         cTooltipPlacement="top"
-                                        (click)="copyToken()">
+                                        (click)="copyUsername()">
+                                        <svg cIcon name="cilClipboard"></svg>
+                                    </button>
+
+                                    <input
+                                        type="text"
+                                        cFormControl
+                                        id="username"
+                                        value="{{ username }}"
+                                        data-form-type="other" />
+                                </c-input-group>
+                            </c-col>
+                        </c-row>
+
+                        <c-row>
+                            <label cLabel cCol md="4" for="password">Password</label>
+
+                            <c-col md="8">
+                                <c-input-group>
+                                    <button
+                                        cButton
+                                        color="secondary"
+                                        variant="outline"
+                                        type="button"
+                                        cTooltip="Copy password to clipboard"
+                                        cTooltipPlacement="top"
+                                        (click)="copyPassword()">
                                         <svg cIcon name="cilClipboard"></svg>
                                     </button>
 
                                     <input
                                         type="password"
                                         cFormControl
-                                        id="token"
-                                        value="{{ token }}"
+                                        id="password"
+                                        value="{{ password }}"
                                         data-form-type="other" />
 
                                     <button

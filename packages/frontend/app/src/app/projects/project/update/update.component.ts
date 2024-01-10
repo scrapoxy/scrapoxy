@@ -44,7 +44,9 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
     projectId: string;
 
-    token = '';
+    username = '';
+
+    password = '';
 
     constructor(
         @Inject(CommanderFrontendClientService)
@@ -105,7 +107,7 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
         try {
             const [
-                project, token,
+                project, tokenB64,
             ] = await Promise.all([
                 this.commander.getProjectById(this.projectId), this.commander.getProjectTokenById(this.projectId),
             ]);
@@ -116,7 +118,10 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
             this.onChangeAutoRotate();
             this.onChangeAutoScaleDown();
 
-            this.token = window.atob(token); // Decode base64 token
+            const tokenSplit = window.atob(tokenB64)
+                .split(':');
+            this.username = tokenSplit[ 0 ];
+            this.password = tokenSplit[ 1 ];
         } catch (err: any) {
             console.error(err);
 
@@ -189,20 +194,38 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
         await this.removeProject();
     }
 
-    async copyToken(): Promise<void> {
+    async copyUsername(): Promise<void> {
         try {
-            await navigator.clipboard.writeText(this.token);
+            await navigator.clipboard.writeText(this.username);
 
             this.toastsService.success(
-                'Token',
-                'Token copied to clipboard'
+                'Username',
+                'Username copied to clipboard'
             );
         } catch (err: any) {
             console.error(err);
 
             this.toastsService.error(
                 'Project Update',
-                'Cannot copy token to clipboard'
+                'Cannot copy username to clipboard'
+            );
+        }
+    }
+
+    async copyPassword(): Promise<void> {
+        try {
+            await navigator.clipboard.writeText(this.password);
+
+            this.toastsService.success(
+                'Password',
+                'Password copied to clipboard'
+            );
+        } catch (err: any) {
+            console.error(err);
+
+            this.toastsService.error(
+                'Project Update',
+                'Cannot copy password to clipboard'
             );
         }
     }
@@ -269,9 +292,11 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
     private async renewProjectToken(): Promise<void> {
         try {
-            const token = await this.commander.renewProjectToken(this.projectId);
-
-            this.token = window.atob(token);
+            const tokenB64 = await this.commander.renewProjectToken(this.projectId);
+            const tokenSplit = window.atob(tokenB64)
+                .split(':');
+            this.username = tokenSplit[ 0 ];
+            this.password = tokenSplit[ 1 ];
 
             this.toastsService.success(
                 'Token',

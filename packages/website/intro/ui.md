@@ -34,14 +34,16 @@ The administration interface includes the following components:
 
 During the initial connection, Scrapoxy will guide you through the creation of a new project with the following settings:
 1. **Name**: Unique identifier for the project;
-2. **Token**: Authentication token used for proxy authentication in requests;
-3. **Minimum proxies**: The minimum number of proxies online when the project status is CALM;
-4. **Auto Rotate Proxies**: If enabled, proxies are automatically rotated at random intervals within the specified **Delay range**; 
-5. **Auto Scale Up**: When enabled, the project status switches to `HOT` upon receiving a request, and all proxies are started;
-6. **Auto Scale Down**: When enabled, the project status switches to `CALM` if no requests are received after a specified delay, and all proxies are stopped;
-7. **Intercept HTTPS requests with MITM**: If enabled, Scrapoxy intercepts and modifies HTTPS requests and responses. Use the CA certificate to avoid security warnings;
-8. **Keep the same proxy with cookie injection**: If enabled, Scrapoxy injects a cookie to maintain the same proxy for a browser session (sticky cookie);
-9. **Override User-Agent**: If enabled, Scrapoxy overrides the User-Agent header with the value assigned to a proxy instance. All requests made with this instance will have the same User-Agent header;
+2. **Username**: Authentication username used for proxy authentication in requests;
+3. **Password**: Authentication password used for proxy authentication in requests;
+4. **Renew token**: Click on this button to renew username and password;
+5. **Minimum proxies**: The minimum number of proxies online when the project status is CALM;
+6. **Auto Rotate Proxies**: If enabled, proxies are automatically rotated at random intervals within the specified **Delay range**; 
+7. **Auto Scale Up**: When enabled, the project status switches to `HOT` upon receiving a request, and all proxies are started;
+8. **Auto Scale Down**: When enabled, the project status switches to `CALM` if no requests are received after a specified delay, and all proxies are stopped;
+9. **Intercept HTTPS requests with MITM**: If enabled, Scrapoxy intercepts and modifies HTTPS requests and responses. Use the CA certificate to avoid security warnings;
+10. **Keep the same proxy with cookie injection**: If enabled, Scrapoxy injects a cookie to maintain the same proxy for a browser session (sticky cookie);
+11. **Override User-Agent**: If enabled, Scrapoxy overrides the User-Agent header with the value assigned to a proxy instance. All requests made with this instance will have the same User-Agent header;
 
 After saving these settings, Scrapoxy will prompt you to create the first credential for the project.
 
