@@ -33,12 +33,20 @@ async function command(
     logger: LoggerService
 ) {
     // Update and check options
-    const hasNoOptions = Object.keys(config).length <= 0;
-
     config.storage = getEnvStorageType(config.storage);
     config.distributed = config.distributed ?? process.env.DISTRIBUTED_MODE ?? 'both';
 
-    if (hasNoOptions) {
+    if (!config.standalone &&
+        !config.master &&
+        !config.commander &&
+        !config.frontend &&
+        !config.refreshAll &&
+        !config.refreshConnectors &&
+        !config.refreshFreeproxies &&
+        !config.refreshMetrics &&
+        !config.refreshProxies &&
+        !config.refreshTasks
+    ) {
         config.standalone = true;
     }
 
