@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.2.2
+
+### Bug fixes
+
+- **standalone**: force standalone mode when no option is selected
+
+
 ## 4.2.1
 
 ### Features
