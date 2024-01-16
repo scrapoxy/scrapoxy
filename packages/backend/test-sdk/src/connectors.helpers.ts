@@ -10,6 +10,7 @@ import {
     CommanderRefreshModule,
     CommanderScraperModule,
     CommanderUsersModule,
+    LogExceptionFilter,
     MasterModule,
     MasterService,
     readCaCert,
@@ -119,6 +120,7 @@ async function createCommanderApp(
 
     const app = moduleRefApi.createNestApplication(new ScrapoxyExpressAdapter());
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
     await storageModules.connect(app);
     await app.listen(0);
 
@@ -164,6 +166,7 @@ async function createMasterApp(
         .compile();
     const app = moduleRefProxy.createNestApplication();
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
     await app.init();
 
     return app;

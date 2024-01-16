@@ -9,6 +9,7 @@ import {
     CommanderRefreshModule,
     CommanderScraperModule,
     CommanderUsersModule,
+    LogExceptionFilter,
     ScrapoxyExpressAdapter,
     StorageprovidersService,
 } from '@scrapoxy/backend-sdk';
@@ -149,6 +150,7 @@ export class CommanderApp {
 
         this.app = moduleRef.createNestApplication(new ScrapoxyExpressAdapter());
         this.app.enableShutdownHooks();
+        this.app.useGlobalFilters(new LogExceptionFilter());
         await storageModules.connect(this.app);
         await this.app.listen(0);
 

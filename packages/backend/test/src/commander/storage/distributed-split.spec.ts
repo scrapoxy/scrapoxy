@@ -12,6 +12,7 @@ import {
     CommanderScraperModule,
     CommanderUsersModule,
     getEnvStorageType,
+    LogExceptionFilter,
     MasterModule,
     MasterService,
     RefreshConnectorsModule,
@@ -90,6 +91,7 @@ async function createDb(
         },
     });
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
     await app.listen();
 
     return app;
@@ -122,6 +124,7 @@ async function createApi(
         .compile();
     const app = moduleRef.createNestApplication(new ScrapoxyExpressAdapter());
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
 
     const config = getEnvStorageDistributedModuleConfig();
     app.connectMicroservice({
@@ -165,6 +168,7 @@ async function createMaster(
         .compile();
     const app = moduleRef.createNestApplication();
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
     await app.init();
 
     return app;
@@ -211,6 +215,7 @@ async function createRefresh(
         .compile();
     const app = moduleRef.createNestApplication();
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
     await app.init();
 
     return app;

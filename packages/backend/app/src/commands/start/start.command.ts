@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import {
     getEnvStorageType,
+    LogExceptionFilter,
     ScrapoxyExpressAdapter,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -128,6 +129,7 @@ async function command(
         }
     );
     app.enableShutdownHooks();
+    app.useGlobalFilters(new LogExceptionFilter());
     app.use(json({
         limit: '50mb',
     }));

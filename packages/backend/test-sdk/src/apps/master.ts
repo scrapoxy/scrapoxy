@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import {
+    LogExceptionFilter,
     MasterModule,
     MasterService,
     RefreshConnectorsModule,
@@ -132,6 +133,7 @@ export class MasterApp {
 
         this.app = moduleRef.createNestApplication();
         this.app.enableShutdownHooks();
+        this.app.useGlobalFilters(new LogExceptionFilter());
         await this.app.init();
     }
 

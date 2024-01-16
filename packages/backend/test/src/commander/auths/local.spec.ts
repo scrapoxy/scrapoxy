@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import { AuthLocalModule } from '@scrapoxy/auth-local';
 import {
     CommanderUsersModule,
+    LogExceptionFilter,
     ScrapoxyExpressAdapter,
 } from '@scrapoxy/backend-sdk';
 import { buildStorageModules } from '@scrapoxy/backend-test-sdk';
@@ -36,6 +37,7 @@ describe(
                 .compile();
             app = moduleRef.createNestApplication(new ScrapoxyExpressAdapter());
             app.enableShutdownHooks();
+            app.useGlobalFilters(new LogExceptionFilter());
             await app.listen(0);
 
             const address = app.getHttpServer()

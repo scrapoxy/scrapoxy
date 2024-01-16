@@ -1,8 +1,6 @@
 import {
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    UnauthorizedException,
+    HttpException,
+    HttpStatus,
 } from '@nestjs/common';
 import {
     ECommanderError,
@@ -10,8 +8,28 @@ import {
 } from '@scrapoxy/common';
 
 
+//////////// BASE ////////////
+export class HttpBaseException extends HttpException {
+    constructor(
+        status: HttpStatus,
+        id: ECommanderError,
+        message: string,
+        public loggable: boolean,
+        payload?: { [key: string]: any }
+    ) {
+        super(
+            {
+                id,
+                message,
+                ...payload ?? {},
+            },
+            status
+        );
+    }
+}
+
 //////////// USERS ////////////
-export class AuthNotFoundError extends UnauthorizedException {
+export class AuthNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.AuthNotFound;
 
     static from(data: any): AuthNotFoundError {
@@ -19,16 +37,17 @@ export class AuthNotFoundError extends UnauthorizedException {
     }
 
     constructor(type?: string) {
-        super({
-            id: AuthNotFoundError.id,
-            message: `Cannot find auth (type=${type})`,
-            type,
-        });
+        super(
+            HttpStatus.UNAUTHORIZED,
+            AuthNotFoundError.id,
+            `Cannot find auth (type=${type})`,
+            true
+        );
     }
 }
 
 
-export class JwtInvalidError extends UnauthorizedException {
+export class JwtInvalidError extends HttpBaseException {
     static readonly id = ECommanderError.JwtInvalid;
 
     static from(data: any): JwtInvalidError {
@@ -36,16 +55,20 @@ export class JwtInvalidError extends UnauthorizedException {
     }
 
     constructor(reason: string) {
-        super({
-            id: JwtInvalidError.id,
-            message: `JWT is invalid: ${reason}`,
-            reason,
-        });
+        super(
+            HttpStatus.UNAUTHORIZED,
+            JwtInvalidError.id,
+            `JWT is invalid: ${reason}`,
+            true,
+            {
+                reason,
+            }
+        );
     }
 }
 
 
-export class UserNotFoundError extends BadRequestException {
+export class UserNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.UserNotFound;
 
     static from(data: any): UserNotFoundError {
@@ -53,16 +76,20 @@ export class UserNotFoundError extends BadRequestException {
     }
 
     constructor(userId: string) {
-        super({
-            id: UserNotFoundError.id,
-            message: `Cannot find user (userId=${userId})`,
-            userId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            UserNotFoundError.id,
+            `Cannot find user (userId=${userId})`,
+            true,
+            {
+                userId,
+            }
+        );
     }
 }
 
 
-export class UserNotFoundByEmailError extends BadRequestException {
+export class UserNotFoundByEmailError extends HttpBaseException {
     static readonly id = ECommanderError.UserNotFoundByEmail;
 
     static from(data: any): UserNotFoundByEmailError {
@@ -70,16 +97,20 @@ export class UserNotFoundByEmailError extends BadRequestException {
     }
 
     constructor(email: string) {
-        super({
-            id: UserNotFoundByEmailError.id,
-            message: `Cannot find user (email=${email})`,
-            email,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            UserNotFoundByEmailError.id,
+            `Cannot find user (email=${email})`,
+            true,
+            {
+                email,
+            }
+        );
     }
 }
 
 
-export class UserEmailAlreadyExistsError extends BadRequestException {
+export class UserEmailAlreadyExistsError extends HttpBaseException {
     static readonly id = ECommanderError.UserEmailAlreadyExists;
 
     static from(data: any): UserEmailAlreadyExistsError {
@@ -87,16 +118,21 @@ export class UserEmailAlreadyExistsError extends BadRequestException {
     }
 
     constructor(email: string) {
-        super({
-            id: UserEmailAlreadyExistsError.id,
-            message: `Already found user (email=${email})`,
-            email,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            UserEmailAlreadyExistsError.id,
+            `Already found user (email=${email})`,
+            true,
+            {
+                email,
+            }
+
+        );
     }
 }
 
 
-export class UserProfileIncompleteError extends ForbiddenException {
+export class UserProfileIncompleteError extends HttpBaseException {
     static readonly id = ECommanderError.UserProfileIncomplete;
 
     static from(data: any): UserProfileIncompleteError {
@@ -104,17 +140,21 @@ export class UserProfileIncompleteError extends ForbiddenException {
     }
 
     constructor(userId: string) {
-        super({
-            id: UserProfileIncompleteError.id,
-            message: `User has incomplete profile (userId=${userId})`,
-            userId,
-        });
+        super(
+            HttpStatus.FORBIDDEN,
+            UserProfileIncompleteError.id,
+            `User has incomplete profile (userId=${userId})`,
+            true,
+            {
+                userId,
+            }
+        );
     }
 }
 
 
 //////////// PROJECTS ////////////
-export class ProjectNotFoundError extends BadRequestException {
+export class ProjectNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ProjectNotFound;
 
     static from(data: any): ProjectNotFoundError {
@@ -122,16 +162,20 @@ export class ProjectNotFoundError extends BadRequestException {
     }
 
     constructor(projectId: string) {
-        super({
-            id: ProjectNotFoundError.id,
-            message: `Cannot find project (projectId=${projectId})`,
-            projectId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ProjectNotFoundError.id,
+            `Cannot find project (projectId=${projectId})`,
+            true,
+            {
+                projectId,
+            }
+        );
     }
 }
 
 
-export class ProjectNameAlreadyExistsError extends BadRequestException {
+export class ProjectNameAlreadyExistsError extends HttpBaseException {
     static readonly id = ECommanderError.ProjectNameAlreadyExists;
 
     static from(data: any): ProjectNameAlreadyExistsError {
@@ -139,16 +183,20 @@ export class ProjectNameAlreadyExistsError extends BadRequestException {
     }
 
     constructor(name: string) {
-        super({
-            id: ProjectNameAlreadyExistsError.id,
-            message: `Already found project (name=${name})`,
-            name,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ProjectNameAlreadyExistsError.id,
+            `Already found project (name=${name})`,
+            true,
+            {
+                name,
+            }
+        );
     }
 }
 
 
-export class ProjectTokenNotFoundError extends UnauthorizedException {
+export class ProjectTokenNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ProjectTokenNotFound;
 
     static from(data: any): ProjectTokenNotFoundError {
@@ -156,16 +204,20 @@ export class ProjectTokenNotFoundError extends UnauthorizedException {
     }
 
     constructor(token: string | undefined) {
-        super({
-            id: ProjectTokenNotFoundError.id,
-            message: token ? `Cannot find project (token=${token})` : 'Cannot find project (no token)',
-            token,
-        });
+        super(
+            HttpStatus.UNAUTHORIZED,
+            ProjectTokenNotFoundError.id,
+            token ? `Cannot find project (token=${token})` : 'Cannot find project (no token)',
+            true,
+            {
+                token,
+            }
+        );
     }
 }
 
 
-export class ProjectInaccessibleError extends ForbiddenException {
+export class ProjectInaccessibleError extends HttpBaseException {
     static readonly id = ECommanderError.ProjectInaccessible;
 
     static from(data: any): ProjectInaccessibleError {
@@ -178,17 +230,21 @@ export class ProjectInaccessibleError extends ForbiddenException {
     constructor(
         projectId: string, userId: string
     ) {
-        super({
-            id: ProjectInaccessibleError.id,
-            message: `User cannot access to project (userId=${userId}, projectId=${projectId})`,
-            projectId,
-            userId,
-        });
+        super(
+            HttpStatus.FORBIDDEN,
+            ProjectInaccessibleError.id,
+            `User cannot access to project (userId=${userId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                userId,
+            }
+        );
     }
 }
 
 
-export class ProjectRemoveError extends BadRequestException {
+export class ProjectRemoveError extends HttpBaseException {
     static readonly id = ECommanderError.ProjectRemove;
 
     static from(data: any): ProjectRemoveError {
@@ -202,17 +258,21 @@ export class ProjectRemoveError extends BadRequestException {
         projectId: string,
         reason: string
     ) {
-        super({
-            id: ProjectRemoveError.id,
-            message: `Cannot remove project (projectId=${projectId}): ${reason}`,
-            projectId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ProjectRemoveError.id,
+            `Cannot remove project (projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class ProjectUserAccessError extends BadRequestException {
+export class ProjectUserAccessError extends HttpBaseException {
     static readonly id = ECommanderError.ProjectUserAccess;
 
     static from(data: any): ProjectUserAccessError {
@@ -226,18 +286,22 @@ export class ProjectUserAccessError extends BadRequestException {
         projectId: string,
         reason: string
     ) {
-        super({
-            id: ProjectUserAccessError.id,
-            message: reason,
-            projectId,
+        super(
+            HttpStatus.BAD_REQUEST,
+            ProjectUserAccessError.id,
             reason,
-        });
+            true,
+            {
+                projectId,
+                reason,
+            }
+        );
     }
 }
 
 
 //////////// CREDENTIALS ////////////
-export class CredentialNotFoundError extends BadRequestException {
+export class CredentialNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.CredentialNotFound;
 
     static from(data: any): CredentialNotFoundError {
@@ -250,17 +314,21 @@ export class CredentialNotFoundError extends BadRequestException {
     constructor(
         projectId: string, credentialId: string
     ) {
-        super({
-            id: CredentialNotFoundError.id,
-            message: `Cannot find credential (credentialId=${credentialId}, projectId=${projectId})`,
-            projectId,
-            credentialId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            CredentialNotFoundError.id,
+            `Cannot find credential (credentialId=${credentialId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                credentialId,
+            }
+        );
     }
 }
 
 
-export class CredentialNameAlreadyExistsError extends BadRequestException {
+export class CredentialNameAlreadyExistsError extends HttpBaseException {
     static readonly id = ECommanderError.CredentialNameAlreadyExists;
 
     static from(data: any): CredentialNameAlreadyExistsError {
@@ -274,17 +342,21 @@ export class CredentialNameAlreadyExistsError extends BadRequestException {
         projectId: string,
         name: string
     ) {
-        super({
-            id: CredentialNameAlreadyExistsError.id,
-            message: `Already found credential (name=${name}, projectId=${projectId})`,
-            projectId,
-            name,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            CredentialNameAlreadyExistsError.id,
+            `Already found credential (name=${name}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                name,
+            }
+        );
     }
 }
 
 
-export class CredentialUpdateError extends BadRequestException {
+export class CredentialUpdateError extends HttpBaseException {
     static readonly id = ECommanderError.CredentialUpdate;
 
     static from(data: any): CredentialUpdateError {
@@ -300,17 +372,21 @@ export class CredentialUpdateError extends BadRequestException {
         credentialId: string,
         reason: string
     ) {
-        super({
-            id: CredentialUpdateError.id,
-            message: `Cannot update credential (credentialId=${credentialId}, projectId=${projectId}): ${reason}`,
-            credentialId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            CredentialUpdateError.id,
+            `Cannot update credential (credentialId=${credentialId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                credentialId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class CredentialRemoveError extends BadRequestException {
+export class CredentialRemoveError extends HttpBaseException {
     static readonly id = ECommanderError.CredentialRemove;
 
     static from(data: any): CredentialRemoveError {
@@ -326,18 +402,22 @@ export class CredentialRemoveError extends BadRequestException {
         credentialId: string,
         reason: string
     ) {
-        super({
-            id: CredentialRemoveError.id,
-            message: `Cannot remove credential (credentialId=${credentialId}, projectId=${projectId}): ${reason}`,
-            projectId,
-            credentialId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            CredentialRemoveError.id,
+            `Cannot remove credential (credentialId=${credentialId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                credentialId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class CredentialInvalidError extends BadRequestException {
+export class CredentialInvalidError extends HttpBaseException {
     static readonly id = ECommanderError.CredentialInvalid;
 
     static from(data: any): CredentialInvalidError {
@@ -345,15 +425,17 @@ export class CredentialInvalidError extends BadRequestException {
     }
 
     constructor(message: any) {
-        super({
-            id: CredentialInvalidError.id,
+        super(
+            HttpStatus.BAD_REQUEST,
+            CredentialInvalidError.id,
             message,
-        });
+            true
+        );
     }
 }
 
 
-export class CredentialQueryNotFoundError extends BadRequestException {
+export class CredentialQueryNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.CredentialQueryNotFound;
 
     static from(data: any): CredentialQueryNotFoundError {
@@ -361,17 +443,21 @@ export class CredentialQueryNotFoundError extends BadRequestException {
     }
 
     constructor(command: string) {
-        super({
-            id: CredentialQueryNotFoundError.id,
-            message: `Credential query ${command} not found`,
-            command,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            CredentialQueryNotFoundError.id,
+            `Credential query ${command} not found`,
+            true,
+            {
+                command,
+            }
+        );
     }
 }
 
 
 //////////// CONNECTORS ////////////
-export class ConnectorNotFoundError extends BadRequestException {
+export class ConnectorNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorNotFound;
 
     static from(data: any): ConnectorNotFoundError {
@@ -385,17 +471,21 @@ export class ConnectorNotFoundError extends BadRequestException {
         projectId: string,
         connectorId: string
     ) {
-        super({
-            id: ConnectorNotFoundError.id,
-            message: `Cannot find connector (connectorId=${connectorId}, projectId=${projectId})`,
-            projectId,
-            connectorId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorNotFoundError.id,
+            `Cannot find connector (connectorId=${connectorId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                connectorId,
+            }
+        );
     }
 }
 
 
-export class ConnectorNameAlreadyExistsError extends BadRequestException {
+export class ConnectorNameAlreadyExistsError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorNameAlreadyExists;
 
     static from(data: any): ConnectorNameAlreadyExistsError {
@@ -408,17 +498,21 @@ export class ConnectorNameAlreadyExistsError extends BadRequestException {
     constructor(
         projectId: string, name: string
     ) {
-        super({
-            id: ConnectorNameAlreadyExistsError.id,
-            message: `Already found connector (name=${name}, projectId=${projectId})`,
-            projectId,
-            name,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorNameAlreadyExistsError.id,
+            `Already found connector (name=${name}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                name,
+            }
+        );
     }
 }
 
 
-export class ConnectorUpdateError extends BadRequestException {
+export class ConnectorUpdateError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorUpdate;
 
     static from(data: any): ConnectorUpdateError {
@@ -434,18 +528,22 @@ export class ConnectorUpdateError extends BadRequestException {
         connectorId: string,
         reason: string
     ) {
-        super({
-            id: ConnectorUpdateError.id,
-            message: `Cannot update connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
-            projectId,
-            connectorId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorUpdateError.id,
+            `Cannot update connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                connectorId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class ConnectorCertificateNotFoundError extends BadRequestException {
+export class ConnectorCertificateNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorCertificateNotFound;
 
     static from(data: any): ConnectorCertificateNotUsedError {
@@ -459,17 +557,21 @@ export class ConnectorCertificateNotFoundError extends BadRequestException {
         projectId: string,
         connectorId: string
     ) {
-        super({
-            id: ConnectorCertificateNotFoundError.id,
-            message: `Connector certificate not found (connectorId=${connectorId}, projectId=${projectId})`,
-            projectId,
-            connectorId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorCertificateNotFoundError.id,
+            `Connector certificate not found (connectorId=${connectorId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                connectorId,
+            }
+        );
     }
 }
 
 
-export class ConnectorCertificateNotUsedError extends BadRequestException {
+export class ConnectorCertificateNotUsedError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorCertificateNotUsed;
 
     static from(data: any): ConnectorCertificateNotUsedError {
@@ -485,17 +587,21 @@ export class ConnectorCertificateNotUsedError extends BadRequestException {
         connectorId: string,
         type: string
     ) {
-        super({
-            id: ConnectorCertificateNotUsedError.id,
-            message: `Cannot use a certificate with this type of connector (type=${type}, connectorId=${connectorId}, projectId=${projectId})`,
-            projectId,
-            connectorId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorCertificateNotUsedError.id,
+            `Cannot use a certificate with this type of connector (type=${type}, connectorId=${connectorId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                connectorId,
+            }
+        );
     }
 }
 
 
-export class ConnectorRemoveError extends BadRequestException {
+export class ConnectorRemoveError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorRemove;
 
     static from(data: any): ConnectorRemoveError {
@@ -511,18 +617,22 @@ export class ConnectorRemoveError extends BadRequestException {
         connectorId: string,
         reason: string
     ) {
-        super({
-            id: ConnectorRemoveError.id,
-            message: `Cannot remove connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
-            projectId,
-            connectorId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorRemoveError.id,
+            `Cannot remove connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                connectorId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class ConnectorInvalidError extends BadRequestException {
+export class ConnectorInvalidError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorInvalid;
 
     static from(data: any): ConnectorInvalidError {
@@ -530,15 +640,17 @@ export class ConnectorInvalidError extends BadRequestException {
     }
 
     constructor(message: string) {
-        super({
-            id: ConnectorInvalidError.id,
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorInvalidError.id,
             message,
-        });
+            true
+        );
     }
 }
 
 
-export class NoConnectorToRefreshError extends BadRequestException {
+export class NoConnectorToRefreshError extends HttpBaseException {
     static readonly id = ECommanderError.NoConnectorToRefresh;
 
     static from(): NoConnectorToRefreshError {
@@ -546,15 +658,17 @@ export class NoConnectorToRefreshError extends BadRequestException {
     }
 
     constructor() {
-        super({
-            id: NoConnectorToRefreshError.id,
-            message: 'No connector to refresh',
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            NoConnectorToRefreshError.id,
+            'No connector to refresh',
+            false
+        );
     }
 }
 
 
-export class ConnectorFactoryNotFoundError extends BadRequestException {
+export class ConnectorFactoryNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ConnectorFactoryNotFound;
 
     static from(data: any): ConnectorFactoryNotFoundError {
@@ -562,16 +676,20 @@ export class ConnectorFactoryNotFoundError extends BadRequestException {
     }
 
     constructor(type: string) {
-        super({
-            id: ConnectorFactoryNotFoundError.id,
-            message: `Cannot find connector factory (type=${type})`,
-            type,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorFactoryNotFoundError.id,
+            `Cannot find connector factory (type=${type})`,
+            true,
+            {
+                type,
+            }
+        );
     }
 }
 
 
-export class TransportNotFoundError extends BadRequestException {
+export class TransportNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.TransportNotFound;
 
     static from(data: any): TransportNotFoundError {
@@ -579,17 +697,21 @@ export class TransportNotFoundError extends BadRequestException {
     }
 
     constructor(type: string) {
-        super({
-            id: TransportNotFoundError.id,
-            message: `Cannot find transport (type=${type})`,
-            type,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            TransportNotFoundError.id,
+            `Cannot find transport (type=${type})`,
+            true,
+            {
+                type,
+            }
+        );
     }
 }
 
 
 //////////// PROXIES ////////////
-export class ProxyNotFoundError extends BadRequestException {
+export class ProxyNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ProxyNotFound;
 
     static from(data: any): ProxyNotFoundError {
@@ -605,18 +727,22 @@ export class ProxyNotFoundError extends BadRequestException {
         connectorId: string,
         proxyId: string
     ) {
-        super({
-            id: ProxyNotFoundError.id,
-            message: `Cannot find proxy (proxyId=${proxyId}, connectorId=${connectorId}, projectId=${projectId})`,
-            projectId,
-            connectorId,
-            proxyId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ProxyNotFoundError.id,
+            `Cannot find proxy (proxyId=${proxyId}, connectorId=${connectorId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                connectorId,
+                proxyId,
+            }
+        );
     }
 }
 
 
-export class ProxiesNotFoundError extends BadRequestException {
+export class ProxiesNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ProxiesNotFound;
 
     static from(data: any): ProxiesNotFoundError {
@@ -624,16 +750,20 @@ export class ProxiesNotFoundError extends BadRequestException {
     }
 
     constructor(proxiesIds: string[]) {
-        super({
-            id: ProxiesNotFoundError.id,
-            message: `Cannot find proxies (proxiesIds=${safeJoin(proxiesIds)})`,
-            proxiesIds,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ProxiesNotFoundError.id,
+            `Cannot find proxies (proxiesIds=${safeJoin(proxiesIds)})`,
+            true,
+            {
+                proxiesIds,
+            }
+        );
     }
 }
 
 
-export class NoProjectProxyError extends BadRequestException {
+export class NoProjectProxyError extends HttpBaseException {
     static readonly id = ECommanderError.NoProjectProxy;
 
     static from(data: any): NoProjectProxyError {
@@ -641,16 +771,20 @@ export class NoProjectProxyError extends BadRequestException {
     }
 
     constructor(projectId: string) {
-        super({
-            id: NoProjectProxyError.id,
-            message: `Cannot find any proxy (projectId=${projectId})`,
-            projectId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            NoProjectProxyError.id,
+            `Cannot find any proxy (projectId=${projectId})`,
+            true,
+            {
+                projectId,
+            }
+        );
     }
 }
 
 
-export class NoProxyToRefreshError extends BadRequestException {
+export class NoProxyToRefreshError extends HttpBaseException {
     static readonly id = ECommanderError.NoProxyToRefresh;
 
     static from(): NoProxyToRefreshError {
@@ -658,16 +792,18 @@ export class NoProxyToRefreshError extends BadRequestException {
     }
 
     constructor() {
-        super({
-            id: NoProxyToRefreshError.id,
-            message: 'No proxy to refresh',
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            NoProxyToRefreshError.id,
+            'No proxy to refresh',
+            false
+        );
     }
 }
 
 
 //////////// FREEPROXIES ////////////
-export class FreeproxiesNotFoundError extends BadRequestException {
+export class FreeproxiesNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.FreeproxiesNotFound;
 
     static from(data: any): FreeproxiesNotFoundError {
@@ -675,16 +811,20 @@ export class FreeproxiesNotFoundError extends BadRequestException {
     }
 
     constructor(proxiesIds: string[]) {
-        super({
-            id: FreeproxiesNotFoundError.id,
-            message: `Cannot find freeproxies (proxiesIds=${safeJoin(proxiesIds)})`,
-            proxiesIds,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            FreeproxiesNotFoundError.id,
+            `Cannot find freeproxies (proxiesIds=${safeJoin(proxiesIds)})`,
+            true,
+            {
+                proxiesIds,
+            }
+        );
     }
 }
 
 
-export class NoFreeproxyToRefreshError extends BadRequestException {
+export class NoFreeproxyToRefreshError extends HttpBaseException {
     static readonly id = ECommanderError.NoFreeproxyToRefresh;
 
     static from(): NoFreeproxyToRefreshError {
@@ -692,16 +832,18 @@ export class NoFreeproxyToRefreshError extends BadRequestException {
     }
 
     constructor() {
-        super({
-            id: NoFreeproxyToRefreshError.id,
-            message: 'No freeproxy to refresh',
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            NoFreeproxyToRefreshError.id,
+            'No freeproxy to refresh',
+            false
+        );
     }
 }
 
 
 //////////// TASKS ////////////
-export class TaskNotFoundError extends BadRequestException {
+export class TaskNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.TaskNotFound;
 
     static from(data: any): TaskNotFoundError {
@@ -715,17 +857,21 @@ export class TaskNotFoundError extends BadRequestException {
         projectId: string,
         taskId: string
     ) {
-        super({
-            id: TaskNotFoundError.id,
-            message: `Cannot find task (taskId=${taskId}, projectId=${projectId})`,
-            projectId,
-            taskId,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            TaskNotFoundError.id,
+            `Cannot find task (taskId=${taskId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                taskId,
+            }
+        );
     }
 }
 
 
-export class TaskCreateError extends BadRequestException {
+export class TaskCreateError extends HttpBaseException {
     static readonly id = ECommanderError.TaskCreate;
 
     static from(data: any): TaskCreateError {
@@ -741,18 +887,22 @@ export class TaskCreateError extends BadRequestException {
         connectorId: string,
         reason: string
     ) {
-        super({
-            id: TaskCreateError.id,
-            message: `Cannot create task for this connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
-            projectId,
-            connectorId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            TaskCreateError.id,
+            `Cannot create task for this connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                connectorId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class TaskCancelError extends BadRequestException {
+export class TaskCancelError extends HttpBaseException {
     static readonly id = ECommanderError.TaskCancel;
 
     static from(data: any): TaskCancelError {
@@ -768,18 +918,22 @@ export class TaskCancelError extends BadRequestException {
         connectorId: string,
         reason: string
     ) {
-        super({
-            id: TaskCancelError.id,
-            message: `Cannot cancel task for this connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
-            projectId,
-            connectorId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            TaskCancelError.id,
+            `Cannot cancel task for this connector (connectorId=${connectorId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                connectorId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class TaskRemoveError extends BadRequestException {
+export class TaskRemoveError extends HttpBaseException {
     static readonly id = ECommanderError.TaskRemove;
 
     static from(data: any): TaskRemoveError {
@@ -795,18 +949,22 @@ export class TaskRemoveError extends BadRequestException {
         taskId: string,
         reason: string
     ) {
-        super({
-            id: TaskRemoveError.id,
-            message: `Cannot remove task (taskId=${taskId}, projectId=${projectId}): ${reason}`,
-            projectId,
-            taskId,
-            reason,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            TaskRemoveError.id,
+            `Cannot remove task (taskId=${taskId}, projectId=${projectId}): ${reason}`,
+            true,
+            {
+                projectId,
+                taskId,
+                reason,
+            }
+        );
     }
 }
 
 
-export class TaskStepError extends InternalServerErrorException {
+export class TaskStepError extends HttpBaseException {
     static readonly id = ECommanderError.TaskStep;
 
     static from(data: any): TaskStepError {
@@ -820,17 +978,21 @@ export class TaskStepError extends InternalServerErrorException {
         step: number,
         reason: string
     ) {
-        super({
-            id: TaskStepError.id,
-            message: `Task error (step=${step}): ${reason}`,
-            step,
-            reason,
-        });
+        super(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            TaskStepError.id,
+            `Task error (step=${step}): ${reason}`,
+            true,
+            {
+                step,
+                reason,
+            }
+        );
     }
 }
 
 
-export class TaskFactoryNotFoundError extends BadRequestException {
+export class TaskFactoryNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.TaskFactoryNotFound;
 
     static from(data: any): TaskFactoryNotFoundError {
@@ -838,16 +1000,20 @@ export class TaskFactoryNotFoundError extends BadRequestException {
     }
 
     constructor(type: string) {
-        super({
-            id: TaskFactoryNotFoundError.id,
-            message: `Cannot find task factory (type=${type})`,
-            type,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            TaskFactoryNotFoundError.id,
+            `Cannot find task factory (type=${type})`,
+            true,
+            {
+                type,
+            }
+        );
     }
 }
 
 
-export class NoTaskToRefreshError extends BadRequestException {
+export class NoTaskToRefreshError extends HttpBaseException {
     static readonly id = ECommanderError.NoTaskToRefresh;
 
     static from(): NoTaskToRefreshError {
@@ -855,16 +1021,18 @@ export class NoTaskToRefreshError extends BadRequestException {
     }
 
     constructor() {
-        super({
-            id: NoTaskToRefreshError.id,
-            message: 'No task to refresh',
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            NoTaskToRefreshError.id,
+            'No task to refresh',
+            false
+        );
     }
 }
 
 
 //////////// PARAMS ////////////
-export class ParamNotFoundError extends BadRequestException {
+export class ParamNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.ParamNotFound;
 
     static from(data: any): ParamNotFoundError {
@@ -872,17 +1040,21 @@ export class ParamNotFoundError extends BadRequestException {
     }
 
     constructor(key: string) {
-        super({
-            id: ParamNotFoundError.id,
-            message: `Cannot find param (key=${key})`,
-            key,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            ParamNotFoundError.id,
+            `Cannot find param (key=${key})`,
+            true,
+            {
+                key,
+            }
+        );
     }
 }
 
 
 //////////// CERTIFICATES ////////////
-export class CertificateNotFoundError extends BadRequestException {
+export class CertificateNotFoundError extends HttpBaseException {
     static readonly id = ECommanderError.CertificateNotFound;
 
     static from(data: any): CertificateNotFoundError {
@@ -890,17 +1062,21 @@ export class CertificateNotFoundError extends BadRequestException {
     }
 
     constructor(hostname: string) {
-        super({
-            id: CertificateNotFoundError.id,
-            message: `Cannot find certificate (hostname=${hostname})`,
-            hostname,
-        });
+        super(
+            HttpStatus.BAD_REQUEST,
+            CertificateNotFoundError.id,
+            `Cannot find certificate (hostname=${hostname})`,
+            true,
+            {
+                hostname,
+            }
+        );
     }
 }
 
 
 //////////// MISC ////////////
-export class InconsistencyDataError extends InternalServerErrorException {
+export class InconsistencyDataError extends HttpBaseException {
     static readonly id = ECommanderError.InconsistencyData;
 
     static from(data: any): InconsistencyDataError {
@@ -908,9 +1084,11 @@ export class InconsistencyDataError extends InternalServerErrorException {
     }
 
     constructor(message: string) {
-        super({
-            id: InconsistencyDataError.id,
+        super(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            InconsistencyDataError.id,
             message,
-        });
+            true
+        );
     }
 }

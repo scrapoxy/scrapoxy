@@ -1,9 +1,10 @@
-import { BadRequestException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { ECommanderError } from '@scrapoxy/common';
 import * as Joi from 'joi';
+import { HttpBaseException } from '../errors';
 
 
-export class ValidationError extends BadRequestException {
+export class ValidationError extends HttpBaseException {
     static readonly id = ECommanderError.Validation;
 
     static from(data: any): ValidationError {
@@ -11,10 +12,12 @@ export class ValidationError extends BadRequestException {
     }
 
     constructor(message: string) {
-        super({
-            id: ValidationError.id,
+        super(
+            HttpStatus.BAD_REQUEST,
+            ValidationError.id,
             message,
-        });
+            false
+        );
     }
 }
 
