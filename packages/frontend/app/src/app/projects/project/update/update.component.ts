@@ -15,6 +15,7 @@ import {
 import {
     CommanderFrontendClientService,
     ConfirmService,
+    copyToClipboard,
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
 import { ValidatorRange } from '../../../sharedspx/input-range/input-range.component';
@@ -196,7 +197,7 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
     async copyUsername(): Promise<void> {
         try {
-            await navigator.clipboard.writeText(this.username);
+            await copyToClipboard(this.username);
 
             this.toastsService.success(
                 'Username',
@@ -214,7 +215,7 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
     async copyPassword(): Promise<void> {
         try {
-            await navigator.clipboard.writeText(this.password);
+            await copyToClipboard(this.password);
 
             this.toastsService.success(
                 'Password',

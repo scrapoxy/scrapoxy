@@ -1,5 +1,7 @@
 export * from './clients';
 
+export * from './clipboard';
+
 export * from './connectors';
 
 export * from './confirm';
