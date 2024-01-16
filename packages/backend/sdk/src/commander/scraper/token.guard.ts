@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { ProjectTokenNotFoundError } from '../../commander-client';
+import { ProjectTokenNotFoundError } from '../../errors';
 import { parseBasicFromAuthorizationHeader } from '../../helpers';
 import type {
     CanActivate,

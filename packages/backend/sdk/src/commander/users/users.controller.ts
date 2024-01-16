@@ -21,7 +21,7 @@ import { AuthprovidersService } from '../../auths';
 import {
     JwtInvalidError,
     UserNotFoundError,
-} from '../../commander-client';
+} from '../../errors';
 import {
     addAuthCookie,
     removeAuthCookie,

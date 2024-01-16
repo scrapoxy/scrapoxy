@@ -7,7 +7,7 @@ import {
     safeJoin,
     toProjectView,
 } from '@scrapoxy/common';
-import { ProxiesNotFoundError } from '../../commander-client';
+import { ProxiesNotFoundError } from '../../errors';
 import { validate } from '../../helpers';
 import { StorageprovidersService } from '../../storages';
 import {

@@ -3,7 +3,7 @@ import { CommanderFrontendService } from './frontend.service';
 import {
     ProjectInaccessibleError,
     UserProfileIncompleteError,
-} from '../../commander-client';
+} from '../../errors';
 import type {
     CanActivate,
     ExecutionContext,

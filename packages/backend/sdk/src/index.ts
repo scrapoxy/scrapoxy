@@ -6,6 +6,8 @@ export * from './commander';
 
 export * from './commander-client';
 
+export * from './errors';
+
 export * from './events';
 
 export * from './fingerprint';

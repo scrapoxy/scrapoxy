@@ -8,7 +8,7 @@ import { COMMANDER_MASTER_MODULE_CONFIG } from './master.constants';
 import {
     JwtInvalidError,
     ProjectTokenNotFoundError,
-} from '../../commander-client';
+} from '../../errors';
 import {
     parseBasicFromAuthorizationHeader,
     parserAuthFromHeaders,

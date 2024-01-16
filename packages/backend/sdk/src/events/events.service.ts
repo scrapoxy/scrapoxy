@@ -10,7 +10,7 @@ import {
     Socket,
 } from 'socket.io';
 import { schemaProjectNamespace } from './events.validation';
-import { ProjectInaccessibleError } from '../commander-client';
+import { ProjectInaccessibleError } from '../errors';
 import { validate } from '../helpers';
 import { StorageprovidersService } from '../storages';
 import type {

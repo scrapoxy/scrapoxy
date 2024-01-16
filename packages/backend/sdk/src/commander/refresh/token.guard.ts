@@ -5,7 +5,7 @@ import {
 import * as jwt from 'jsonwebtoken';
 import { Observable } from 'rxjs';
 import { COMMANDER_REFRESH_MODULE_CONFIG } from './refresh.constants';
-import { JwtInvalidError } from '../../commander-client';
+import { JwtInvalidError } from '../../errors';
 import { parserAuthFromHeaders } from '../../helpers';
 import type { ICommanderRefreshModuleConfig } from './refresh.module';
 import type {

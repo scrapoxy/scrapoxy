@@ -4,11 +4,9 @@ import {
     Logger,
 } from '@nestjs/common';
 import { REFRESH_CONNECTORS_MODULE_CONFIG } from './connectors.constants';
-import {
-    CommanderRefreshClientService,
-    NoConnectorToRefreshError,
-} from '../../commander-client';
+import { CommanderRefreshClientService } from '../../commander-client';
 import { ConnectorprovidersService } from '../../connectors';
+import { NoConnectorToRefreshError } from '../../errors';
 import { TransportprovidersService } from '../../transports';
 import { ARefresh } from '../refresh.abstract';
 import type { IRefreshConnectorsModuleConfig } from './connectors.module';

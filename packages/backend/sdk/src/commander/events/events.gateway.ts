@@ -15,7 +15,7 @@ import {
     Socket,
 } from 'socket.io';
 import { COMMANDER_EVENTS_MODULE_CONFIG } from './events.constants';
-import { JwtInvalidError } from '../../commander-client';
+import { JwtInvalidError } from '../../errors';
 import { EventsService } from '../../events';
 import { parserAuthFromHeaders } from '../../helpers';
 import type { ICommanderEventsModuleConfig } from './events.module';

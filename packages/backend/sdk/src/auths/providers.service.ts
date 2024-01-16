@@ -2,7 +2,7 @@ import {
     Injectable,
     Logger,
 } from '@nestjs/common';
-import { AuthNotFoundError } from '../commander-client';
+import { AuthNotFoundError } from '../errors';
 import type { IAuthService } from '@scrapoxy/common';
 
 

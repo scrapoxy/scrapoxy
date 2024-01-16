@@ -2,7 +2,7 @@ import {
     Injectable,
     Logger,
 } from '@nestjs/common';
-import { TransportNotFoundError } from '../commander-client';
+import { TransportNotFoundError } from '../errors';
 import type { ITransportService } from './transport.interface';
 
 

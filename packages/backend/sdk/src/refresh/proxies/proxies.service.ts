@@ -6,11 +6,9 @@ import {
 import { EFingerprintMode } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import { REFRESH_PROXIES_CONFIG } from './proxies.constants';
-import {
-    CommanderRefreshClientService,
-    NoProxyToRefreshError,
-} from '../../commander-client';
+import { CommanderRefreshClientService } from '../../commander-client';
 import { ConnectorprovidersService } from '../../connectors';
+import { NoProxyToRefreshError } from '../../errors';
 import { fingerprint } from '../../fingerprint';
 import { TransportprovidersService } from '../../transports';
 import { ARefresh } from '../refresh.abstract';

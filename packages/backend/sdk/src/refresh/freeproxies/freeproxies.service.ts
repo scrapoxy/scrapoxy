@@ -7,10 +7,8 @@ import { EFingerprintMode } from '@scrapoxy/common';
 import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/connector-freeproxies-sdk';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import { REFRESH_FREEPROXIES_CONFIG } from './freeproxies.constants';
-import {
-    CommanderRefreshClientService,
-    NoFreeproxyToRefreshError,
-} from '../../commander-client';
+import { CommanderRefreshClientService } from '../../commander-client';
+import { NoFreeproxyToRefreshError } from '../../errors';
 import { fingerprint } from '../../fingerprint';
 import {
     TRANSPORT_PROXY_TYPE,

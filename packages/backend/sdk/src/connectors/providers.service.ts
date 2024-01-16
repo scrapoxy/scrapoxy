@@ -2,7 +2,7 @@ import {
     Injectable,
     Logger,
 } from '@nestjs/common';
-import { ConnectorFactoryNotFoundError } from '../commander-client';
+import { ConnectorFactoryNotFoundError } from '../errors';
 import type { IConnectorFactory } from './providers.interface';
 
 

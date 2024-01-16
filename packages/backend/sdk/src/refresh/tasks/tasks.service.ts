@@ -4,10 +4,8 @@ import {
     Logger,
 } from '@nestjs/common';
 import { REFRESH_TASKS_MODULE_CONFIG } from './tasks.constants';
-import {
-    CommanderRefreshClientService,
-    NoTaskToRefreshError,
-} from '../../commander-client';
+import { CommanderRefreshClientService } from '../../commander-client';
+import { NoTaskToRefreshError } from '../../errors';
 import { TasksService } from '../../tasks';
 import { ARefresh } from '../refresh.abstract';
 import type { IRefreshTasksModuleConfig } from './tasks.module';

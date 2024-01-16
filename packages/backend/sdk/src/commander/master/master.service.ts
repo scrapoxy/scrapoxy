@@ -12,7 +12,7 @@ import { COMMANDER_MASTER_MODULE_CONFIG } from './master.constants';
 import {
     CertificateNotFoundError,
     NoProjectProxyError,
-} from '../../commander-client';
+} from '../../errors';
 import {
     generateCertificateFromCa,
     readCaCert,

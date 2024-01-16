@@ -10,7 +10,7 @@ import {
     schemaUserToCreate,
     schemaUserToUpdate,
 } from './users.validation';
-import { UserNotFoundError } from '../../commander-client';
+import { UserNotFoundError } from '../../errors';
 import { validate } from '../../helpers';
 import { StorageprovidersService } from '../../storages';
 import type {

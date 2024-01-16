@@ -42,7 +42,7 @@ import {
     UserNotFoundByEmailError,
     UserNotFoundError,
     UserProfileIncompleteError,
-} from './client.errors';
+} from '../errors';
 import { ValidationError } from '../helpers';
 
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 import { AuthprovidersService } from '../../auths';
-import { AuthNotFoundError } from '../../commander-client';
+import { AuthNotFoundError } from '../../errors';
 import type {
     CanActivate,
     ExecutionContext,

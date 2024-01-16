@@ -27,6 +27,7 @@ import {
     schemaProjectUserEmailToAdd,
     schemaTaskToCreate,
 } from './frontend.validation';
+import { ConnectorprovidersService } from '../../connectors';
 import {
     ConnectorCertificateNotUsedError,
     ConnectorRemoveError,
@@ -41,8 +42,7 @@ import {
     TaskRemoveError,
     UserNotFoundByEmailError,
     UserNotFoundError,
-} from '../../commander-client';
-import { ConnectorprovidersService } from '../../connectors';
+} from '../../errors';
 import {
     generateBasicAuthToken,
     generateCertificateSelfSigned,

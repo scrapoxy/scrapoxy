@@ -2,7 +2,7 @@ import {
     Injectable,
     Logger,
 } from '@nestjs/common';
-import { TaskFactoryNotFoundError } from '../commander-client';
+import { TaskFactoryNotFoundError } from '../errors';
 import type { ITaskFactory } from '@scrapoxy/common';
 
 

@@ -17,11 +17,11 @@ import {
 import { deepEqual } from 'fast-equals';
 import { COMMANDER_REFRESH_MODULE_CONFIG } from './refresh.constants';
 import { schemaTaskToUpdate } from './refresh.validation';
+import { ConnectorprovidersService } from '../../connectors';
 import {
     NoFreeproxyToRefreshError,
     NoProxyToRefreshError,
-} from '../../commander-client';
-import { ConnectorprovidersService } from '../../connectors';
+} from '../../errors';
 import { validate } from '../../helpers';
 import { StorageprovidersService } from '../../storages';
 import { TasksService } from '../../tasks';

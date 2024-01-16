@@ -8,7 +8,7 @@ import { COMMANDER_FRONTEND_MODULE_CONFIG } from './frontend.constants';
 import {
     JwtInvalidError,
     UserProfileIncompleteError,
-} from '../../commander-client';
+} from '../../errors';
 import { parserAuthFromHeaders } from '../../helpers';
 import type { ICommanderFrontendModuleConfig } from './frontend.module';
 import type {

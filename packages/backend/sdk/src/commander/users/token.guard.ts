@@ -5,7 +5,7 @@ import {
 import * as jwt from 'jsonwebtoken';
 import { Observable } from 'rxjs';
 import { COMMANDER_USERS_MODULE_CONFIG } from './users.constants';
-import { JwtInvalidError } from '../../commander-client';
+import { JwtInvalidError } from '../../errors';
 import { parserAuthFromHeaders } from '../../helpers';
 import type { ICommanderUsersModuleConfig } from './users.module';
 import type {
