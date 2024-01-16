@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.2.3
+
+### Bug fixes
+
+- **commander**: log commander http error on console
+- **frontend**: more stable clipboard copy
+
+
 ## 4.2.2
 
 ### Bug fixes
