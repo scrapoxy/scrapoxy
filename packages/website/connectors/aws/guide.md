@@ -14,8 +14,105 @@ An active subscription to Amazon Web Services (AWS) is required.
 
 Connect to [AWS Console](https://console.aws.amazon.com).
 
+There are 2 methods for generating a new credential with AWS:
 
-### Create new credential
+1. With an IAM user, a more secure approach albeit with increased complexity.
+2. With the Root user, which is easier but not recommended for security reasons.
+
+
+## With an IAM user
+
+This is the recommended method for generating a new credential with AWS.
+
+![AWS Credentials](aws_credentials.png)
+
+1. On the top right, click on your name to open the menu;
+2. And click on `Security credentials`.
+
+---
+
+![AWS Usergroup Add Select](aws_usergroup_add_select.png)
+
+1. On the left, click on `User groups`;
+2. And click on `Create group`.
+
+---
+
+![AWS Usergroup Add](aws_usergroup_add.png)
+
+1. Enter `scrapoxy` as group name;
+2. Search for `AmazonEC2FullAccess`;
+3. Select it;
+4. And click on `Create group`.
+
+---
+
+![AWS User Add Select](aws_user_add_select.png)
+
+1. On the left, click on `Users`;
+2. And click on `Create user`.
+
+---
+
+![AWS User Add Step 1](aws_user_add_step1.png)
+
+1. Enter `scrapoxy` as user name;
+2. And click on `Next`.
+
+---
+
+![AWS User Add Step 2](aws_user_add_step2.png)
+
+1. Select `Add user to group`;
+2. Select `scrapoxy` as group;
+3. And click on `Next`.
+
+---
+
+![AWS User Add Step 3](aws_user_add_step3.png)
+
+Click on `Create user`.
+
+---
+
+![AWS User Select](aws_user_select.png)
+
+Click on the user `scrapoxy`.
+
+---
+
+![AWS User Credentials Create Step 1](aws_user_credentials_create_step1.png)
+
+1. Select `Security credentials` tab;
+2. And click on `Create access key`.
+
+---
+
+![AWS User Credentials Create Step 2](aws_user_credentials_create_step2.png)
+
+1. Select `Command Line Interface (CLI)`;
+2. Check the confirmation box;
+3. And click on `Next`.
+
+---
+
+![AWS User Credentials Create Step 3](aws_user_credentials_create_step3.png)
+
+Click on `Create access key`.
+
+---
+
+![AWS User Credentials Create Step 4](aws_user_credentials_create_step4.png)
+
+1. Remember the `Access key`;
+2. Remember the `Secret access key`;
+3. And click on `Done`.
+
+
+
+## With the Root user
+
+This method is not recommended for security reasons.
 
 ![AWS Credentials](aws_credentials.png)
 
