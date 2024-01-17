@@ -65,6 +65,10 @@ export class CredentialGcpComponent implements ICredentialComponent, OnInit {
         }
     }
 
+    hasClipboard(): boolean {
+        return !!navigator.clipboard;
+    }
+
     async pasteCredentials() {
         const dataRaw = await navigator.clipboard.readText();
         try {
