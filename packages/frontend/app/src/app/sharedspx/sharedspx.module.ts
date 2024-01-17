@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import {
     ButtonGroupModule,
     ButtonModule,
+    TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { InputRangeComponent } from './input-range/input-range.component';
@@ -18,21 +19,22 @@ import {
 
 const DECLARATIONS = [
     FileUnit,
-    NumberUnit,
-    TimeUnit,
-    LoadingButtonComponent,
     InputRangeComponent,
+    LoadingButtonComponent,
+    NumberUnit,
     ProjectStatusComponent,
+    TimeUnit,
 ];
 
 
 @NgModule({
     imports: [
-        ButtonModule,
         ButtonGroupModule,
+        ButtonModule,
         CommonModule,
         IconModule,
         RouterModule,
+        TooltipModule,
     ],
     declarations: [
         ...DECLARATIONS,
