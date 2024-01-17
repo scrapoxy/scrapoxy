@@ -32,11 +32,18 @@
                                     cButton
                                     color="secondary"
                                     variant="outline"
+                                    cTooltip="Remove offline proxies"
+                                    cTooltipPlacement="top"
                                     (click)="removeFreeproxiesOfflineWithConfirm()">
                                     <svg cIcon name="cilPowerStandby"></svg>
                                 </button>
 
-                                <button cButton color="primary" (click)="removeFreeproxiesAllWithConfirm()">
+                                <button
+                                    cButton
+                                    color="primary"
+                                    cTooltip="Remove all proxies"
+                                    cTooltipPlacement="top"
+                                    (click)="removeFreeproxiesAllWithConfirm()">
                                     <svg cIcon name="cilTrash"></svg>
                                 </button>
                             </th>

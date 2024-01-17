@@ -8,6 +8,7 @@ import {
     ButtonModule,
     GridModule,
     TableModule,
+    TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { MapComponent } from './map.component';
@@ -24,6 +25,7 @@ import { SharedSpxModule } from '../sharedspx/sharedspx.module';
         RouterModule,
         SharedSpxModule,
         TableModule,
+        TooltipModule,
     ],
     declarations: [
         MapComponent,

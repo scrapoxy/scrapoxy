@@ -7,6 +7,7 @@ import {
     ButtonModule,
     FormModule,
     GridModule,
+    TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
@@ -24,6 +25,7 @@ import { ConnectorProxylocalFactory } from './proxylocal.factory';
         GridModule,
         IconModule,
         ReactiveFormsModule,
+        TooltipModule,
     ],
     declarations: [
         ConnectorProxylocalComponent, CredentialProxylocalComponent,

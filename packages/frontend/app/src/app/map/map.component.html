@@ -12,7 +12,14 @@
         <div class="header-buttons">
             <project-status></project-status>
 
-            <button cButton color="secondary" variant="outline" size="sm" (click)="openFullScreen()">
+            <button
+                cButton
+                color="secondary"
+                variant="outline"
+                size="sm"
+                cTooltip="Open in full screen"
+                cTooltipPlacement="top"
+                (click)="openFullScreen()">
                 <svg cIcon name="cilFullscreen"></svg>
             </button>
         </div>

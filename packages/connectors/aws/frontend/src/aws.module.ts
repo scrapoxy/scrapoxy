@@ -7,6 +7,7 @@ import {
     ButtonModule,
     FormModule,
     GridModule,
+    TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
@@ -25,6 +26,7 @@ import { InstallAwsComponent } from './install/install.component';
         GridModule,
         IconModule,
         ReactiveFormsModule,
+        TooltipModule,
     ],
     declarations: [
         ConnectorAwsComponent, CredentialAwsComponent, InstallAwsComponent,

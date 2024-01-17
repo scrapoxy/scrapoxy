@@ -8,6 +8,7 @@ import {
     FormModule,
     GridModule,
     TableModule,
+    TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import {
@@ -32,6 +33,7 @@ import { ConnectorFreeproxiesFactory } from './freeproxies.factory';
         ReactiveFormsModule,
         TableModule,
         TablePaginationModule,
+        TooltipModule,
     ],
     declarations: [
         ConnectorFreeproxiesComponent, CredentialFreeproxiesComponent,
