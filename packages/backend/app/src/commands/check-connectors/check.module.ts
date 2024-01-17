@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConnectorprovidersModule } from '@scrapoxy/backend-sdk';
 import { ConnectorAwsModule } from '@scrapoxy/connector-aws-backend';
 import { ConnectorAzureModule } from '@scrapoxy/connector-azure-backend';
 import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-backend';
@@ -80,7 +79,6 @@ export class CheckConnectorsModule {
         return {
             module: CheckConnectorsModule,
             imports: [
-                ConnectorprovidersModule,
                 ConnectorAwsModule,
                 ConnectorAzureModule,
                 ConnectorDigitaloceanModule,
