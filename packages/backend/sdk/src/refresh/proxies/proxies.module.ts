@@ -55,10 +55,10 @@ export class RefreshProxiesModule {
         return {
             module: RefreshProxiesModule,
             imports: [
-                ConnectorprovidersModule,
                 CommanderRefreshClientModule.forRoot(config),
-                TransportprovidersModule,
+                ConnectorprovidersModule,
                 ScheduleModule.forRoot(),
+                TransportprovidersModule,
             ],
             providers: [
                 {

@@ -24,14 +24,14 @@ import { ConnectorNinjasproxyFactory } from './ninjasproxy.factory';
     imports: [
         ButtonModule,
         ConnectorprovidersModule,
+        FingerprintModule,
         FormModule,
         FormsModule,
         GridModule,
         IconModule,
+        ReactiveFormsModule,
         TableModule,
         TooltipModule,
-        ReactiveFormsModule,
-        FingerprintModule,
     ],
     declarations: [
         ConnectorNinjasproxyComponent, CredentialNinjasproxyComponent,

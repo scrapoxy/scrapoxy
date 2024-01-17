@@ -9,7 +9,7 @@ import { ConnectorDigitaloceanFactory } from './digitalocean.factory';
 
 @Module({
     imports: [
-        ConnectorprovidersModule, TransportCloudModule, TasksModule,
+        ConnectorprovidersModule, TasksModule, TransportCloudModule,
     ],
     providers: [
         ConnectorDigitaloceanFactory,

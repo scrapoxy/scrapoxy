@@ -89,9 +89,9 @@ export class AppStartModule {
             ConnectorAzureModule,
             ConnectorDigitaloceanModule,
             ConnectorFreeproxiesModule,
+            ConnectorGcpModule,
             ConnectorIproyalResidentialModule,
             ConnectorIproyalServerModule,
-            ConnectorGcpModule,
             ConnectorNinjasproxyModule,
             ConnectorOvhModule,
             ConnectorProxidizeModule,
@@ -177,11 +177,11 @@ export class AppStartModule {
 
         if (options.commander) {
             imports.push(
-                CommanderEventsModule.forRoot(),
                 CommanderCaCertificateModule,
+                CommanderEventsModule.forRoot(),
+                CommanderFrontendModule.forRoot(options.version),
                 CommanderMasterModule.forRoot(),
                 CommanderRefreshModule.forRootFromEnv(),
-                CommanderFrontendModule.forRoot(options.version),
                 CommanderScraperModule,
                 CommanderUsersModule.forRoot()
             );

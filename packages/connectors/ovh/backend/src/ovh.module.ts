@@ -9,7 +9,7 @@ import { ConnectorOvhFactory } from './ovh.factory';
 
 @Module({
     imports: [
-        ConnectorprovidersModule, TransportCloudModule, TasksModule,
+        ConnectorprovidersModule, TasksModule, TransportCloudModule,
     ],
     providers: [
         ConnectorOvhFactory,

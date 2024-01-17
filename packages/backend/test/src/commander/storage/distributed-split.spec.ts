@@ -112,9 +112,9 @@ async function createApi(
                 url: cloudlocalApp.url,
             }),
             CommanderEventsModule.forRoot(),
+            CommanderFrontendModule.forRoot(fingerprintUrl),
             CommanderMasterModule.forRoot(),
             CommanderRefreshModule.forRootFromEnv(),
-            CommanderFrontendModule.forRoot(fingerprintUrl),
             CommanderScraperModule,
             CommanderUsersModule.forRoot(),
             StorageDistributedConnModule.forRoot(),
@@ -194,16 +194,16 @@ async function createRefresh(
                 url,
                 fingerprintUrl
             ),
+            RefreshMetricsModule.forRoot(
+                url,
+                VERSION_TEST,
+                ONE_SECOND_IN_MS
+            ),
             RefreshProxiesModule.forRoot(
                 url,
                 VERSION_TEST,
                 true,
                 fingerprintUrl
-            ),
-            RefreshMetricsModule.forRoot(
-                url,
-                VERSION_TEST,
-                ONE_SECOND_IN_MS
             ),
             RefreshTasksModule.forRoot(
                 url,

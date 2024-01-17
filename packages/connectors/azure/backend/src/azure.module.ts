@@ -9,7 +9,7 @@ import { ConnectorAzureFactory } from './azure.factory';
 
 @Module({
     imports: [
-        ConnectorprovidersModule, TransportCloudModule, TasksModule,
+        ConnectorprovidersModule, TasksModule, TransportCloudModule,
     ],
     providers: [
         ConnectorAzureFactory,

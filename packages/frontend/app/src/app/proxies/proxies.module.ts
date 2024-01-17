@@ -43,7 +43,6 @@ import { SharedSpxModule } from '../sharedspx/sharedspx.module';
         TableModule,
         TablePaginationModule,
         TooltipModule,
-        TablePaginationModule,
     ],
     declarations: [
         ProxiesComponent, ProxyStatusComponent,

@@ -36,9 +36,9 @@ import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 @NgModule({
     imports: [
         BadgeModule,
+        BreadcrumbModule,
         ButtonModule,
         ButtonGroupModule,
-        BreadcrumbModule,
         CardModule,
         ConnectorprovidersModule,
         CommonModule,
@@ -57,10 +57,10 @@ import { SharedSpxModule } from '../sharedspx/sharedspx.module';
         ConnectorCreateComponent,
         ConnectorInstallComponent,
         ConnectorLayoutComponent,
-        ConnectorViewComponent,
-        ConnectorsComponent,
         ConnectorScaleComponent,
         ConnectorUpdateComponent,
+        ConnectorViewComponent,
+        ConnectorsComponent,
     ],
     providers: [
         provideRouter(routes),

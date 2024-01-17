@@ -41,10 +41,10 @@ export class RefreshConnectorsModule {
         return {
             module: RefreshConnectorsModule,
             imports: [
-                ConnectorprovidersModule,
                 CommanderRefreshClientModule.forRoot(config),
-                TransportprovidersModule,
+                ConnectorprovidersModule,
                 ScheduleModule.forRoot(),
+                TransportprovidersModule,
             ],
             providers: [
                 {

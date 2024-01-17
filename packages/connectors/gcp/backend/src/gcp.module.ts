@@ -9,7 +9,7 @@ import { ConnectorGcpFactory } from './gcp.factory';
 
 @Module({
     imports: [
-        ConnectorprovidersModule, TransportCloudModule, TasksModule,
+        ConnectorprovidersModule, TasksModule, TransportCloudModule,
     ],
     providers: [
         ConnectorGcpFactory,

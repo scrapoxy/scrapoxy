@@ -24,14 +24,14 @@ import { ConnectorProxyrackFactory } from './proxyrack.factory';
     imports: [
         ButtonModule,
         ConnectorprovidersModule,
+        FingerprintModule,
         FormModule,
         FormsModule,
         GridModule,
         IconModule,
+        ReactiveFormsModule,
         TableModule,
         TooltipModule,
-        ReactiveFormsModule,
-        FingerprintModule,
     ],
     declarations: [
         ConnectorProxyrackComponent, CredentialProxyrackComponent,

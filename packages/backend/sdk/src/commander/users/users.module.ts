@@ -35,8 +35,8 @@ export class CommanderUsersModule {
                     provide: COMMANDER_USERS_MODULE_CONFIG,
                     useValue: config,
                 },
-                CommanderUsersService,
                 CommanderUsersDispatchGuard,
+                CommanderUsersService,
                 CommanderUsersTokenGuard,
             ],
             controllers: [

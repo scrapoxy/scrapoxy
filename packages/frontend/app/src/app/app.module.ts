@@ -52,14 +52,15 @@ import { LoginComponent } from './login/login.component';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        CallbackComponent,
         ConnectorAwsModule,
         ConnectorAzureModule,
         ConnectorCloudlocalModule,
         ConnectorDigitaloceanModule,
         ConnectorFreeproxiesModule,
+        ConnectorGcpModule,
         ConnectorIproyalResidentialModule,
         ConnectorIproyalServerModule,
-        ConnectorGcpModule,
         ConnectorNinjasproxyModule,
         ConnectorOvhModule,
         ConnectorProxidizeModule,
@@ -71,6 +72,8 @@ import { LoginComponent } from './login/login.component';
         HttpClientModule,
         IconModule,
         LayoutModule,
+        LoginComponent,
+        P404Component,
         RouterModule.forRoot(
             routes,
             {
@@ -81,9 +84,6 @@ import { LoginComponent } from './login/login.component';
                 initialNavigation: 'enabledBlocking',
             }
         ),
-        CallbackComponent,
-        LoginComponent,
-        P404Component,
     ],
     declarations: [
         AppComponent,
@@ -99,9 +99,9 @@ import { LoginComponent } from './login/login.component';
             useClass: PathLocationStrategy,
         },
         CommanderFrontendClientService,
-        ConfirmService,
-        ConfirmGuard,
         CommanderUsersClientService,
+        ConfirmGuard,
+        ConfirmService,
         EventsService,
         ProjectCurrentService,
         ToastsService,

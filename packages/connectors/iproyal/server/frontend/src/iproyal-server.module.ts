@@ -24,14 +24,14 @@ import { ConnectorIproyalServerFactory } from './iproyal-server.factory';
     imports: [
         ButtonModule,
         ConnectorprovidersModule,
+        FingerprintModule,
         FormModule,
         FormsModule,
         GridModule,
         IconModule,
+        ReactiveFormsModule,
         TableModule,
         TooltipModule,
-        ReactiveFormsModule,
-        FingerprintModule,
     ],
     declarations: [
         ConnectorIproyalServerComponent, CredentialIproyalServerComponent,

@@ -9,7 +9,7 @@ import { ConnectorAwsFactory } from './aws.factory';
 
 @Module({
     imports: [
-        ConnectorprovidersModule, TransportCloudModule, TasksModule,
+        ConnectorprovidersModule, TasksModule, TransportCloudModule,
     ],
     providers: [
         ConnectorAwsFactory,

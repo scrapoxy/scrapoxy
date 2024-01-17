@@ -24,14 +24,14 @@ import { ConnectorProxidizeFactory } from './proxidize.factory';
     imports: [
         ButtonModule,
         ConnectorprovidersModule,
+        FingerprintModule,
         FormModule,
         FormsModule,
         GridModule,
         IconModule,
+        ReactiveFormsModule,
         TableModule,
         TooltipModule,
-        ReactiveFormsModule,
-        FingerprintModule,
     ],
     declarations: [
         ConnectorProxidizeComponent, CredentialProxidizeComponent,

@@ -40,7 +40,7 @@ export class RefreshTasksModule {
         return {
             module: RefreshTasksModule,
             imports: [
-                ScheduleModule.forRoot(), TasksModule, CommanderRefreshClientModule.forRoot(config),
+                CommanderRefreshClientModule.forRoot(config), ScheduleModule.forRoot(), TasksModule,
             ],
             providers: [
                 {

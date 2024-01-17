@@ -41,17 +41,17 @@ export class CommanderFrontendModule {
             imports: [
                 AuthprovidersModule,
                 ConnectorprovidersModule,
+                StorageprovidersModule,
                 TransportprovidersModule,
                 TasksModule,
-                StorageprovidersModule,
             ],
             providers: [
                 {
                     provide: COMMANDER_FRONTEND_MODULE_CONFIG,
                     useValue: config,
                 },
-                CommanderFrontendService,
                 CommanderFrontendRoleGuard,
+                CommanderFrontendService,
                 CommanderFrontendTokenGuard,
             ],
             controllers: [

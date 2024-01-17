@@ -24,9 +24,9 @@ export class ConnectorCloudlocalModule {
             module: ConnectorCloudlocalModule,
             imports: [
                 ConnectorprovidersModule,
-                TransportCloudlocalModule,
                 StorageprovidersModule,
                 TasksModule,
+                TransportCloudlocalModule,
             ],
             providers: [
                 {

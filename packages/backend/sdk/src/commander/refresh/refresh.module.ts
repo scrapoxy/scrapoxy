@@ -74,15 +74,15 @@ export class CommanderRefreshModule {
         return {
             module: CommanderRefreshModule,
             imports: [
-                ConnectorprovidersModule, TasksModule, StorageprovidersModule,
+                ConnectorprovidersModule, StorageprovidersModule, TasksModule,
             ],
             providers: [
                 {
                     provide: COMMANDER_REFRESH_MODULE_CONFIG,
                     useValue: config,
                 },
-                CommanderRefreshTokenGuard,
                 CommanderRefreshService,
+                CommanderRefreshTokenGuard,
             ],
             controllers: [
                 CommanderRefreshController,

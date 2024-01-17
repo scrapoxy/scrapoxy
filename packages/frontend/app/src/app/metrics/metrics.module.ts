@@ -23,8 +23,8 @@ import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 @NgModule({
     imports: [
-        ButtonModule,
         ButtonGroupModule,
+        ButtonModule,
         BreadcrumbModule,
         CardModule,
         ChartjsModule,

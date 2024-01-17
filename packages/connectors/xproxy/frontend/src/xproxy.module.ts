@@ -24,14 +24,14 @@ import { ConnectorXProxyFactory } from './xproxy.factory';
     imports: [
         ButtonModule,
         ConnectorprovidersModule,
+        FingerprintModule,
         FormModule,
         FormsModule,
         GridModule,
         IconModule,
+        ReactiveFormsModule,
         TableModule,
         TooltipModule,
-        ReactiveFormsModule,
-        FingerprintModule,
     ],
     declarations: [
         ConnectorXProxyComponent, CredentialXProxyComponent,
