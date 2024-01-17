@@ -49,6 +49,8 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
     password = '';
 
+    passwordType = 'password';
+
     constructor(
         @Inject(CommanderFrontendClientService)
         private readonly commander: ICommanderFrontendClient,
@@ -271,6 +273,14 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
             this.form.controls.autoScaleDownDelay.enable();
         } else {
             this.form.controls.autoScaleDownDelay.disable();
+        }
+    }
+
+    togglePasswordType() {
+        if (this.passwordType === 'password') {
+            this.passwordType = 'text';
+        } else {
+            this.passwordType = 'password';
         }
     }
 

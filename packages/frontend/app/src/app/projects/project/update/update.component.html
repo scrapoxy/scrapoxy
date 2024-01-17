@@ -51,6 +51,13 @@
 
                             <c-col md="8">
                                 <c-input-group>
+                                    <input
+                                        type="text"
+                                        cFormControl
+                                        id="username"
+                                        value="{{ username }}"
+                                        data-form-type="other" />
+
                                     <button
                                         cButton
                                         color="secondary"
@@ -61,13 +68,6 @@
                                         (click)="copyUsername()">
                                         <svg cIcon name="cilClipboard"></svg>
                                     </button>
-
-                                    <input
-                                        type="text"
-                                        cFormControl
-                                        id="username"
-                                        value="{{ username }}"
-                                        data-form-type="other" />
                                 </c-input-group>
                             </c-col>
                         </c-row>
@@ -77,23 +77,22 @@
 
                             <c-col md="8">
                                 <c-input-group>
-                                    <button
-                                        cButton
-                                        color="secondary"
-                                        variant="outline"
-                                        type="button"
-                                        cTooltip="Copy password to clipboard"
-                                        cTooltipPlacement="top"
-                                        (click)="copyPassword()">
-                                        <svg cIcon name="cilClipboard"></svg>
-                                    </button>
-
                                     <input
-                                        type="password"
+                                        [type]="passwordType"
                                         cFormControl
                                         id="password"
                                         value="{{ password }}"
                                         data-form-type="other" />
+
+                                    <button
+                                        cButton
+                                        color="secondary"
+                                        variant="outline"
+                                        cTooltip="Show password"
+                                        cTooltipPlacement="top"
+                                        (click)="togglePasswordType()">
+                                        <svg cIcon name="cilZoom"></svg>
+                                    </button>
 
                                     <button
                                         cButton
@@ -104,6 +103,17 @@
                                         cTooltipPlacement="top"
                                         (click)="renewProjectTokenWithConfirm()">
                                         <svg cIcon name="cilLoopCircular"></svg>
+                                    </button>
+
+                                    <button
+                                        cButton
+                                        color="secondary"
+                                        variant="outline"
+                                        type="button"
+                                        cTooltip="Copy password to clipboard"
+                                        cTooltipPlacement="top"
+                                        (click)="copyPassword()">
+                                        <svg cIcon name="cilClipboard"></svg>
                                     </button>
                                 </c-input-group>
                             </c-col>
