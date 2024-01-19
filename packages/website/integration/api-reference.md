@@ -25,7 +25,7 @@ For example, if the username/password is `admin:password`, the header will be `A
 
 ### Request 
 
-URL: `/api/scrapers/project`
+URL: `/api/scraper/project`
 
 Method: `GET`
 
@@ -52,7 +52,7 @@ Response payload:
 
 ### Request
 
-URL: `/api/scrapers/project/status`
+URL: `/api/scraper/project/status`
 
 Method: `POST`
 
@@ -76,7 +76,7 @@ The response has no content.
 
 ### Request
 
-URL: `/api/scrapers/project/connectors`
+URL: `/api/scraper/project/connectors`
 
 Method: `GET`
 
@@ -127,7 +127,7 @@ Response payload:
 
 ### Request
 
-URL: `/api/scrapers/project/proxies/remove`
+URL: `/api/scraper/project/proxies/remove`
 
 Method: `POST`
 
