@@ -41,10 +41,10 @@ import type {
 
 
 interface IStore {
-    migrations: string[];
-    params: { [key: string]: string };
-    projects: IProjectStore[];
-    users: IUserStore[];
+    migrations?: string[];
+    params?: { [key: string]: string };
+    projects?: IProjectStore[];
+    users?: IUserStore[];
 }
 
 
@@ -263,7 +263,7 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
         // Load params
         for (const [
             key, value,
-        ] of Object.entries(store.params)) {
+        ] of Object.entries(store.params ?? {})) {
             this.params.set(
                 key,
                 value
@@ -272,7 +272,7 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
 
         // Load projects
         const usersProjects = new Map<string, Set<string>>();
-        for (const projectStore of store.projects) {
+        for (const projectStore of store.projects ?? []) {
             const projectModel = fromProjectStore(projectStore);
             this.projects.set(
                 projectModel.id,
@@ -315,7 +315,7 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
         }
 
         // Load users
-        for (const userStore of store.users) {
+        for (const userStore of store.users ?? []) {
             const projectsIds = usersProjects.get(userStore.id) ?? new Set<string>();
             const userModel = fromUserStore(
                 userStore,
