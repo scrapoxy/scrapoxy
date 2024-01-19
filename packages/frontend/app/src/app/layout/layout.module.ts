@@ -19,6 +19,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ConnectionComponent } from './connection/connection.component';
+import { SidebarBrandAltComponent } from './header/brand/brand.component';
 import { LayoutHeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout.component';
 import { ToastMessageComponent } from './toasts/message.component';
@@ -48,6 +49,7 @@ import { ToastMessageComponent } from './toasts/message.component';
         ConnectionComponent,
         LayoutComponent,
         LayoutHeaderComponent,
+        SidebarBrandAltComponent,
         ToastMessageComponent,
     ],
 })
