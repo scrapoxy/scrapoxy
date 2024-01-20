@@ -27,7 +27,7 @@ hero:
 features:
   - icon: 🕸️
     title: All-in-One Providers
-    details: Support cloud providers, proxies services, hardware providers and free proxies list.
+    details: Support datacenter providers, proxies services, hardware providers and free proxies list.
   - icon: ✋
     title: Anti-Ban
     details: Smart traffic routing with stickies sessions, geo-targeting, and os-targeting.
@@ -72,7 +72,7 @@ providers:
         - name: 'XProxy'
           url: 'https://xproxy.io'
           img: '/assets/images/xproxy.svg'
-    - tier: 'Cloud Providers'
+    - tier: 'Datacenter Providers'
       size: 'medium'
       items:
         - name: 'AWS'

@@ -10,8 +10,8 @@ import {
     EProxyStatus,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_PROXYLOCAL_TYPE } from '@scrapoxy/connector-proxylocal-sdk';
-import { ProxyLocalApp } from '@scrapoxy/proxylocal';
+import { CONNECTOR_PROXY_LOCAL_TYPE } from '@scrapoxy/connector-proxy-local-sdk';
+import { ProxyLocalApp } from '@scrapoxy/proxy-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -20,9 +20,9 @@ import type {
     IProjectData,
 } from '@scrapoxy/common';
 import type {
-    IConnectorProxylocalConfig,
-    IConnectorProxylocalCredential,
-} from '@scrapoxy/connector-proxylocal-backend';
+    IConnectorProxyLocalConfig,
+    IConnectorProxyLocalCredential,
+} from '@scrapoxy/connector-proxy-local-backend';
 
 
 describe(
@@ -33,12 +33,12 @@ describe(
             instance = axios.create({
                 validateStatus: () => true,
             }),
-            proxylocalToken = btoa(uuid()),
+            proxyLocalToken = btoa(uuid()),
             servers = new TestServers();
-        const proxylocalApp = new ProxyLocalApp(
+        const proxyLocalApp = new ProxyLocalApp(
             logger,
             ONE_MINUTE_IN_MS,
-            proxylocalToken
+            proxyLocalToken
         );
         let
             commanderApp: CommanderApp,
@@ -49,22 +49,22 @@ describe(
             token: string;
 
         beforeAll(async() => {
-            // Start target & local cloud
+            // Start target & local datacenter
             await Promise.all([
-                servers.listen(), proxylocalApp.listen(),
+                servers.listen(), proxyLocalApp.listen(),
             ]);
 
             // Start app
             commanderApp = CommanderApp.defaults({
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
-                proxylocalAppUrl: proxylocalApp.url,
+                proxyLocalAppUrl: proxyLocalApp.url,
             });
             await commanderApp.start();
             masterApp = MasterApp.defaults({
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
-                proxylocalAppUrl: proxylocalApp.url,
+                proxyLocalAppUrl: proxyLocalApp.url,
                 logger,
             });
             await masterApp.start();
@@ -87,14 +87,14 @@ describe(
             });
 
             // Create credential
-            const credentialConfig: IConnectorProxylocalCredential = {
-                token: proxylocalToken,
+            const credentialConfig: IConnectorProxyLocalCredential = {
+                token: proxyLocalToken,
             };
             credential = await commanderApp.frontendClient.createCredential(
                 project.id,
                 {
                     name: 'mycredential',
-                    type: CONNECTOR_PROXYLOCAL_TYPE,
+                    type: CONNECTOR_PROXY_LOCAL_TYPE,
                     config: credentialConfig,
                 }
             );
@@ -113,14 +113,14 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                masterApp.stop(), proxylocalApp.close(), servers.close(),
+                masterApp.stop(), proxyLocalApp.close(), servers.close(),
             ]);
         });
 
         it(
             'should create and activate connector in asia',
             async() => {
-                const connectorConfig: IConnectorProxylocalConfig = {
+                const connectorConfig: IConnectorProxyLocalConfig = {
                     region: 'asia',
                 };
                 connector = await commanderApp.frontendClient.createConnector(
@@ -192,7 +192,7 @@ describe(
         it(
             'should create and activate connector in europe',
             async() => {
-                const connectorConfig: IConnectorProxylocalConfig = {
+                const connectorConfig: IConnectorProxyLocalConfig = {
                     region: 'europe',
                 };
                 const connector2 = await commanderApp.frontendClient.createConnector(

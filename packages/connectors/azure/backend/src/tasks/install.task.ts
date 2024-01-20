@@ -3,7 +3,7 @@ import {
     fingerprint,
     InstallScriptBuilder,
     TaskStepError,
-    TransportCloudServiceImpl,
+    TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -13,7 +13,7 @@ import {
     formatProxyId,
     generateUseragent,
     randomName,
-    SCRAPOXY_CLOUD_PREFIX,
+    SCRAPOXY_DATACENTER_PREFIX,
 } from '@scrapoxy/common';
 import { CONNECTOR_AZURE_TYPE } from '@scrapoxy/connector-azure-sdk';
 import { Sockets } from '@scrapoxy/proxy-sdk';
@@ -34,7 +34,7 @@ import {
     AzureVmsTemplateBuilder,
 } from '../template';
 import type { IConnectorAzureCredential } from '../azure.interface';
-import type { IProxyToConnectConfigCloud } from '@scrapoxy/backend-sdk';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     IFingerprintOptions,
@@ -99,7 +99,7 @@ const schemaData = schemaCredential.keys({
 class AzureInstallCommand extends ATaskCommand {
     private readonly data: IAzureInstallCommandData;
 
-    private readonly transport = new TransportCloudServiceImpl();
+    private readonly transport = new TransportDatacenterServiceImpl();
 
     constructor(
         task: ITaskData,
@@ -254,7 +254,7 @@ class AzureInstallCommand extends ATaskCommand {
 
             case 3: {
                 // Wait for a reachable VM
-                const config: IProxyToConnectConfigCloud = {
+                const config: IProxyToConnectConfigDatacenter = {
                     address: {
                         hostname: this.data.hostname as string,
                         port: this.data.port,
@@ -349,7 +349,7 @@ class AzureInstallCommand extends ATaskCommand {
                                     value: this.data.location,
                                 },
                                 galleryName: {
-                                    value: SCRAPOXY_CLOUD_PREFIX,
+                                    value: SCRAPOXY_DATACENTER_PREFIX,
                                 },
                                 storageAccountType: {
                                     value: this.data.storageAccountType,

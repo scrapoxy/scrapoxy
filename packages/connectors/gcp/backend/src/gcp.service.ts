@@ -16,7 +16,7 @@ import type {
 } from './gcp.interface';
 import type {
     IConnectorService,
-    ITransportProxyRefreshedConfigCloud,
+    ITransportProxyRefreshedConfigDatacenter,
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -55,7 +55,7 @@ function convertToProxy(
     instance: IGcpInstance, port: number
 ): IConnectorProxyRefreshed {
     const hostname = getGcpExternalIp(instance);
-    const config: ITransportProxyRefreshedConfigCloud = {
+    const config: ITransportProxyRefreshedConfigDatacenter = {
         address: hostname ? {
             hostname,
             port,

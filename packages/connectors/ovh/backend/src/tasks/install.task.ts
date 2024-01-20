@@ -4,7 +4,7 @@ import {
     fingerprint,
     InstallScriptBuilder,
     TaskStepError,
-    TransportCloudServiceImpl,
+    TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -30,7 +30,7 @@ import type {
     IConnectorOvhConfig,
     IConnectorOvhCredential,
 } from '../ovh.interface';
-import type { IProxyToConnectConfigCloud } from '@scrapoxy/backend-sdk';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     IFingerprintOptions,
@@ -87,7 +87,7 @@ const schemaData = schemaCredential.keys({
 class OvhInstallCommand extends ATaskCommand {
     private readonly data: IOvhInstallCommandData;
 
-    private readonly transport = new TransportCloudServiceImpl();
+    private readonly transport = new TransportDatacenterServiceImpl();
 
     constructor(
         task: ITaskData,
@@ -177,7 +177,7 @@ class OvhInstallCommand extends ATaskCommand {
 
             case 2: {
                 // Wait for a reachable instance
-                const config: IProxyToConnectConfigCloud = {
+                const config: IProxyToConnectConfigDatacenter = {
                     address: {
                         hostname: this.data.hostname as string,
                         port: this.data.port,

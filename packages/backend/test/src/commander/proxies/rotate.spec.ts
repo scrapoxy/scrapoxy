@@ -6,15 +6,15 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     sleep,
 } from '@scrapoxy/common';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
 import type {
     IConnectorView,
@@ -23,9 +23,9 @@ import type {
     IProjectToCreate,
 } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(
@@ -33,7 +33,7 @@ describe(
     () => {
         const logger = new Logger();
         const
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             projectToCreate: IProjectToCreate = {
                 name: 'myproject',
                 autoRotate: false,
@@ -60,24 +60,24 @@ describe(
         beforeAll(async() => {
             // Start target & local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
             const subscriptionId = uuid();
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
 
             // Start app
             commanderApp = CommanderApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
             });
             await commanderApp.start();
             masterApp = MasterApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
@@ -88,7 +88,7 @@ describe(
             project = await commanderApp.frontendClient.createProject(projectToCreate);
 
             // Create credential
-            const credentialConfig: IConnectorCloudlocalCredential = {
+            const credentialConfig: IConnectorDatacenterLocalCredential = {
                 subscriptionId,
             };
 
@@ -96,13 +96,13 @@ describe(
                 project.id,
                 {
                     name: 'mycredential',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: credentialConfig,
                 }
             );
 
             // Create, install and activate connector
-            const connectorConfig: IConnectorCloudlocalConfig = {
+            const connectorConfig: IConnectorDatacenterLocalConfig = {
                 region: 'europe',
                 size: 'small',
                 imageId: void 0,
@@ -131,7 +131,7 @@ describe(
                     project.id,
                     connector.id
                 );
-                const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                 expect(connectorConfigFound.imageId?.length)
                     .toBeGreaterThan(0);
             });
@@ -147,7 +147,7 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                masterApp.stop(), cloudlocalApp.close(), servers.close(),
+                masterApp.stop(), datacenterLocalApp.close(), servers.close(),
             ]);
         });
 

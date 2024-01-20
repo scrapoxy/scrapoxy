@@ -110,7 +110,7 @@ export default defineConfig({
                         link: 'freeproxies/guide'
                     },
                     {
-                        text: 'Cloud Providers',
+                        text: 'Datacenter/Cloud',
                         base: '/connectors/',
                         items: [
                             {text: 'AWS', link: 'aws/guide'},

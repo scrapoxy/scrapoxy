@@ -68,7 +68,7 @@ If you come back to the `Projects` section, Scrapoxy will display a list of all 
 Upon the first connection:
 1. Scrapoxy will redirect you to the `Marketplace` section;
 2. Search for a provider by name or type;
-3. Providers are categorized by type (e.g., cloud provider, proxies services, etc.);
+3. Providers are categorized by type (e.g., datacenter provider, proxies services, etc.);
 4. Click on `Create` to commence the configuration the chosen provider.
 
 
@@ -139,7 +139,7 @@ If you open the connector, Scrapoxy will present the associated settings:
 
 Upon opening the connector, Scrapoxy provides the following options:
 1. **Update**: Modify the connector with new settings;
-2. **Validate**: Confirm the validity of the connector configuration. Particularly useful for cloud providers, as Scrapoxy checks for the existence of the template image;
+2. **Validate**: Confirm the validity of the connector configuration. Particularly useful for datacenter providers, as Scrapoxy checks for the existence of the template image;
 3. **Delete**: Remove the connector only if the project's status is OFF.
 
 ::: info

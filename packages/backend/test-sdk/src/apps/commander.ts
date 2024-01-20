@@ -14,8 +14,8 @@ import {
     StorageprovidersService,
 } from '@scrapoxy/backend-sdk';
 import { EventsService } from '@scrapoxy/common';
-import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backend';
-import { ConnectorProxylocalModule } from '@scrapoxy/connector-proxylocal-backend';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
+import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-backend';
 import { AStorageLocal } from '@scrapoxy/storage-local';
 import { CommanderUsersClient } from '../commander-users-client';
 import { USERAGENT_TEST } from '../info';
@@ -27,19 +27,19 @@ import type {
     LoggerService,
     Type,
 } from '@nestjs/common';
-import type { IProxyTest } from '@scrapoxy/cloudlocal';
 import type { ICommanderFrontendClient } from '@scrapoxy/common';
+import type { IProxyTest } from '@scrapoxy/datacenter-local';
 import type { IStorageLocalModuleConfig } from '@scrapoxy/storage-local';
 import type { AddressInfo } from 'net';
 
 
 export interface ICommanderAppOptions {
-    cloudlocalAppUrl?: string;
+    datacenterLocalAppUrl?: string;
     fingerprintUrl?: string;
     fingerprintTimeout?: number;
     imports?: (Type | DynamicModule | Promise<DynamicModule> | ForwardReference)[];
     logger: LoggerService;
-    proxylocalAppUrl?: string;
+    proxyLocalAppUrl?: string;
 
 }
 
@@ -128,15 +128,15 @@ export class CommanderApp {
             ...storageModules.modules, ...this.options.imports ?? [],
         ];
 
-        if (this.options.cloudlocalAppUrl) {
-            imports.push(ConnectorCloudlocalModule.forRoot({
-                url: this.options.cloudlocalAppUrl,
+        if (this.options.datacenterLocalAppUrl) {
+            imports.push(ConnectorDatacenterLocalModule.forRoot({
+                url: this.options.datacenterLocalAppUrl,
             }));
         }
 
-        if (this.options.proxylocalAppUrl) {
-            imports.push(ConnectorProxylocalModule.forRoot({
-                url: this.options.proxylocalAppUrl,
+        if (this.options.proxyLocalAppUrl) {
+            imports.push(ConnectorProxyLocalModule.forRoot({
+                url: this.options.proxyLocalAppUrl,
             }));
         }
 

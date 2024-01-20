@@ -27,7 +27,7 @@ export class ConnectorAzureFactory implements IConnectorFactory {
         name: 'Azure',
         description: 'Azure is a cloud computing service created by Microsoft. In 2023, Azure has 160 data centers in 60 regions.',
         url: 'https://azure.microsoft.com',
-        group: EConnectorFactoryGroup.CloudProvider,
+        group: EConnectorFactoryGroup.DatacenterProvider,
         canInstall: true,
         canUninstall: true,
         canReplaceProxy: false,

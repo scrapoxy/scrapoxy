@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import {
     ConnectorprovidersModule,
     TasksModule,
-    TransportCloudModule,
+    TransportDatacenterModule,
 } from '@scrapoxy/backend-sdk';
 import { ConnectorOvhFactory } from './ovh.factory';
 
 
 @Module({
     imports: [
-        ConnectorprovidersModule, TasksModule, TransportCloudModule,
+        ConnectorprovidersModule, TasksModule, TransportDatacenterModule,
     ],
     providers: [
         ConnectorOvhFactory,

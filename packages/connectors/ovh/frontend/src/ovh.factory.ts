@@ -27,7 +27,7 @@ export class ConnectorOvhFactory implements IConnectorFactory {
        name: 'OVH Cloud',
        description: 'OVH Cloud is a french cloud computing service created by OVH. In 2023, OVH Cloud has 34 data centers in 8 regions.',
        url: 'https://www.ovhcloud.com',
-       group: EConnectorFactoryGroup.CloudProvider,
+       group: EConnectorFactoryGroup.DatacenterProvider,
        canInstall: true,
        canUninstall: true,
        canReplaceProxy: false,

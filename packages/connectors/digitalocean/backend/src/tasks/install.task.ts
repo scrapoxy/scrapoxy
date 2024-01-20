@@ -4,7 +4,7 @@ import {
     fingerprint,
     InstallScriptBuilder,
     TaskStepError,
-    TransportCloudServiceImpl,
+    TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -28,7 +28,7 @@ import {
     EDigitalOceanDropletStatus,
 } from '../digitalocean.interface';
 import type { IConnectorDigitalOceanConfig } from '../digitalocean.interface';
-import type { IProxyToConnectConfigCloud } from '@scrapoxy/backend-sdk';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     IFingerprintOptions,
@@ -85,7 +85,7 @@ const schemaData = Joi.object({
 class DigitalOceanInstallCommand extends ATaskCommand {
     private readonly data: IDigitalOceanInstallCommandData;
 
-    private readonly transport = new TransportCloudServiceImpl();
+    private readonly transport = new TransportDatacenterServiceImpl();
 
     constructor(
         task: ITaskData,
@@ -149,7 +149,7 @@ class DigitalOceanInstallCommand extends ATaskCommand {
 
             case 2: {
                 // Wait for a reachable droplet
-                const config: IProxyToConnectConfigCloud = {
+                const config: IProxyToConnectConfigDatacenter = {
                     address: {
                         hostname: this.data.hostname as string,
                         port: this.data.port,

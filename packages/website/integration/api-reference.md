@@ -100,7 +100,7 @@ Response payload:
             "active": "<true if the connector is active>",
             "proxiesMax": "<maximum number of proxies to use>",
             "error": "<error message if the connector is in error>",
-            "certificateEndAt": "<date of the end of the certificate for cloud provider>"
+            "certificateEndAt": "<date of the end of the certificate for datacenter provider>"
         },
         "proxies": [
             {

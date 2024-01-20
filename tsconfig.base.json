@@ -33,8 +33,8 @@
             "@scrapoxy/backend-test-sdk": [
                 "packages/backend/test-sdk/src/index.ts"
             ],
-            "@scrapoxy/cloudlocal": [
-                "packages/cloudlocal/src/index.ts"
+            "@scrapoxy/datacenter-local": [
+                "packages/datacenter-local/src/index.ts"
             ],
             "@scrapoxy/common": [
                 "packages/common/src/index.ts"
@@ -57,14 +57,14 @@
             "@scrapoxy/connector-azure-sdk": [
                 "packages/connectors/azure/sdk/src/index.ts"
             ],
-            "@scrapoxy/connector-cloudlocal-backend": [
-                "packages/connectors/cloudlocal/backend/src/index.ts"
+            "@scrapoxy/connector-datacenter-local-backend": [
+                "packages/connectors/datacenter-local/backend/src/index.ts"
             ],
-            "@scrapoxy/connector-cloudlocal-frontend": [
-                "packages/connectors/cloudlocal/frontend/src/index.ts"
+            "@scrapoxy/connector-datacenter-local-frontend": [
+                "packages/connectors/datacenter-local/frontend/src/index.ts"
             ],
-            "@scrapoxy/connector-cloudlocal-sdk": [
-                "packages/connectors/cloudlocal/sdk/src/index.ts"
+            "@scrapoxy/connector-datacenter-local-sdk": [
+                "packages/connectors/datacenter-local/sdk/src/index.ts"
             ],
             "@scrapoxy/connector-digitalocean-backend": [
                 "packages/connectors/digitalocean/backend/src/index.ts"
@@ -138,14 +138,14 @@
             "@scrapoxy/connector-proxidize-sdk": [
                 "packages/connectors/proxidize/sdk/src/index.ts"
             ],
-            "@scrapoxy/connector-proxylocal-backend": [
-                "packages/connectors/proxylocal/backend/src/index.ts"
+            "@scrapoxy/connector-proxy-local-backend": [
+                "packages/connectors/proxy-local/backend/src/index.ts"
             ],
-            "@scrapoxy/connector-proxylocal-frontend": [
-                "packages/connectors/proxylocal/frontend/src/index.ts"
+            "@scrapoxy/connector-proxy-local-frontend": [
+                "packages/connectors/proxy-local/frontend/src/index.ts"
             ],
-            "@scrapoxy/connector-proxylocal-sdk": [
-                "packages/connectors/proxylocal/sdk/src/index.ts"
+            "@scrapoxy/connector-proxy-local-sdk": [
+                "packages/connectors/proxy-local/sdk/src/index.ts"
             ],
             "@scrapoxy/connector-proxyrack-backend": [
                 "packages/connectors/proxyrack/backend/src/index.ts"
@@ -189,8 +189,8 @@
             "@scrapoxy/proxy-sdk": [
                 "packages/proxy/sdk/src/index.ts"
             ],
-            "@scrapoxy/proxylocal": [
-                "packages/proxylocal/src/index.ts"
+            "@scrapoxy/proxy-local": [
+                "packages/proxy-local/src/index.ts"
             ],
             "@scrapoxy/storage-distributed": [
                 "packages/storages/distributed/src/index.ts"

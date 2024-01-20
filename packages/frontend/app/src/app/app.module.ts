@@ -16,7 +16,7 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { ConnectorAwsModule } from '@scrapoxy/connector-aws-frontend';
 import { ConnectorAzureModule } from '@scrapoxy/connector-azure-frontend';
-import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-frontend';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-frontend';
 import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-frontend';
 import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-frontend';
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-frontend';
@@ -25,7 +25,7 @@ import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-frontend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-frontend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-frontend';
-import { ConnectorProxylocalModule } from '@scrapoxy/connector-proxylocal-frontend';
+import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-frontend';
 import { ConnectorProxyrackModule } from '@scrapoxy/connector-proxyrack-frontend';
 import { ConnectorRayobyteModule } from '@scrapoxy/connector-rayobyte-frontend';
 import { ConnectorXProxyModule } from '@scrapoxy/connector-xproxy-frontend';
@@ -55,7 +55,7 @@ import { LoginComponent } from './login/login.component';
         CallbackComponent,
         ConnectorAwsModule,
         ConnectorAzureModule,
-        ConnectorCloudlocalModule,
+        ConnectorDatacenterLocalModule,
         ConnectorDigitaloceanModule,
         ConnectorFreeproxiesModule,
         ConnectorGcpModule,
@@ -64,7 +64,7 @@ import { LoginComponent } from './login/login.component';
         ConnectorNinjasproxyModule,
         ConnectorOvhModule,
         ConnectorProxidizeModule,
-        ConnectorProxylocalModule,
+        ConnectorProxyLocalModule,
         ConnectorProxyrackModule,
         ConnectorRayobyteModule,
         ConnectorXProxyModule,

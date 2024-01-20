@@ -3,7 +3,7 @@ import {
     fingerprint,
     InstallScriptBuilder,
     TaskStepError,
-    TransportCloudServiceImpl,
+    TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -21,7 +21,7 @@ import { getGcpExternalIp } from '../gcp.helpers';
 import { EGcpOperationStatus } from '../gcp.interface';
 import { schemaCredential } from '../gcp.validation';
 import type { IConnectorGcpCredential } from '../gcp.interface';
-import type { IProxyToConnectConfigCloud } from '@scrapoxy/backend-sdk';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     IFingerprintOptions,
@@ -98,7 +98,7 @@ const schemaData = schemaCredential.keys({
 class GcpInstallCommand extends ATaskCommand {
     private readonly data: IGcpInstallCommandData;
 
-    private readonly transport = new TransportCloudServiceImpl();
+    private readonly transport = new TransportDatacenterServiceImpl();
 
     constructor(
         task: ITaskData,
@@ -231,7 +231,7 @@ class GcpInstallCommand extends ATaskCommand {
 
             case 3: {
                 // Wait for a reachable instance
-                const config: IProxyToConnectConfigCloud = {
+                const config: IProxyToConnectConfigDatacenter = {
                     address: {
                         hostname: this.data.hostname as string,
                         port: this.data.port,

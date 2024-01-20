@@ -73,8 +73,8 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
             providers: [],
         },
         {
-            group: EConnectorFactoryGroup.CloudProvider,
-            name: 'Cloud Providers',
+            group: EConnectorFactoryGroup.DatacenterProvider,
+            name: 'Datacenter Providers',
             providers: [],
         },
         {

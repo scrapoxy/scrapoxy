@@ -8,7 +8,7 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { SCRAPOXY_CLOUD_PREFIX } from '@scrapoxy/common';
+import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import {
     CONNECTOR_GCP_TYPE,
     EGcpQueryCredential,
@@ -107,10 +107,10 @@ export class ConnectorGcpComponent implements IConnectorComponent, OnInit {
                 zone: GCP_DEFAULT_ZONE,
                 port: 3128,
                 machineType: GCP_DEFAULT_MACHINE_TYPE,
-                templateName: `${SCRAPOXY_CLOUD_PREFIX}-template`,
+                templateName: `${SCRAPOXY_DATACENTER_PREFIX}-template`,
                 networkName: 'default',
                 label: 'spx',
-                firewallName: `${SCRAPOXY_CLOUD_PREFIX}-fw`,
+                firewallName: `${SCRAPOXY_DATACENTER_PREFIX}-fw`,
             });
         }
 

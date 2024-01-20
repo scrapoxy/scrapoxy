@@ -16,7 +16,7 @@ import type {
 } from './digitalocean.interface';
 import type {
     IConnectorService,
-    ITransportProxyRefreshedConfigCloud,
+    ITransportProxyRefreshedConfigDatacenter,
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -46,7 +46,7 @@ function convertToProxy(
     droplet: IDigitalOceanDroplet, port: number
 ): IConnectorProxyRefreshed {
     const hostname = getDigitalOceanPublicAddress(droplet);
-    const config: ITransportProxyRefreshedConfigCloud = {
+    const config: ITransportProxyRefreshedConfigDatacenter = {
         address: hostname ? {
             hostname,
             port,

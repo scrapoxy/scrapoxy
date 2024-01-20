@@ -32,7 +32,7 @@ import {
 } from '@scrapoxy/backend-sdk';
 import { ConnectorAwsModule } from '@scrapoxy/connector-aws-backend';
 import { ConnectorAzureModule } from '@scrapoxy/connector-azure-backend';
-import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backend';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
 import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-backend';
 import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-backend';
@@ -41,7 +41,7 @@ import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-backend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-backend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-backend';
-import { ConnectorProxylocalModule } from '@scrapoxy/connector-proxylocal-backend';
+import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-backend';
 import { ConnectorProxyrackModule } from '@scrapoxy/connector-proxyrack-backend';
 import { ConnectorRayobyteModule } from '@scrapoxy/connector-rayobyte-backend';
 import { ConnectorXProxyModule } from '@scrapoxy/connector-xproxy-backend';
@@ -73,8 +73,8 @@ export interface IAppStartModuleConfig {
     refreshTasks?: boolean;
     storage?: string;
     test?: boolean;
-    cloudlocalAppUrl?: string;
-    proxylocalAppUrl?: string;
+    datacenterLocalAppUrl?: string;
+    proxyLocalAppUrl?: string;
 }
 
 
@@ -102,15 +102,15 @@ export class AppStartModule {
             ProbeModule.forRootFromEnv(),
         ];
 
-        if (options.cloudlocalAppUrl) {
-            imports.push(ConnectorCloudlocalModule.forRoot({
-                url: options.cloudlocalAppUrl,
+        if (options.datacenterLocalAppUrl) {
+            imports.push(ConnectorDatacenterLocalModule.forRoot({
+                url: options.datacenterLocalAppUrl,
             }));
         }
 
-        if (options.proxylocalAppUrl) {
-            imports.push(ConnectorProxylocalModule.forRoot({
-                url: options.proxylocalAppUrl,
+        if (options.proxyLocalAppUrl) {
+            imports.push(ConnectorProxyLocalModule.forRoot({
+                url: options.proxyLocalAppUrl,
             }));
         }
 

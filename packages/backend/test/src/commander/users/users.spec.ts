@@ -17,7 +17,6 @@ import {
     USERAGENT_TEST,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
-import { CloudlocalApp } from '@scrapoxy/cloudlocal';
 import {
     ECommanderError,
     EEventScope,
@@ -27,6 +26,7 @@ import {
     ONE_MINUTE_IN_MS,
     sleep,
 } from '@scrapoxy/common';
+import { DatacenterLocalApp } from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
 import type {
     ICommanderFrontendClient,
@@ -44,7 +44,7 @@ describe(
         const logger = new Logger();
         const
             agents = new Agents(),
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             projectToCreate: IProjectToCreate = {
                 name: 'project A',
                 autoRotate: true,
@@ -80,14 +80,14 @@ describe(
             userB: IUserView;
 
         beforeAll(async() => {
-            // Start target & local cloud
+            // Start target & local datacenter
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
             // Start app
             commanderApp = CommanderApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
             });
@@ -130,7 +130,7 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                cloudlocalApp.close(), servers.close(),
+                datacenterLocalApp.close(), servers.close(),
             ]);
 
             agents.close();

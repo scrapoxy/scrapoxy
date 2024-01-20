@@ -16,7 +16,7 @@ import type {
 } from './azure.interface';
 import type {
     IConnectorService,
-    ITransportProxyRefreshedConfigCloud,
+    ITransportProxyRefreshedConfigDatacenter,
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -66,7 +66,7 @@ export class ConnectorAzureService implements IConnectorService {
         await this.api.cleanResourceGroupState(state);
 
         return state.virtualMachines.map((vm) => {
-            const config: ITransportProxyRefreshedConfigCloud = {
+            const config: ITransportProxyRefreshedConfigDatacenter = {
                 address: vm.hostname ? {
                     hostname: vm.hostname,
                     port: this.connectorConfig.port,

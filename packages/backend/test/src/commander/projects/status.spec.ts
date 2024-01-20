@@ -6,10 +6,6 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     EEventScope,
     EProjectStatus,
     EventsConnectorsClient,
@@ -19,7 +15,11 @@ import {
     randomName,
     sleep,
 } from '@scrapoxy/common';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -29,10 +29,10 @@ import type {
     IProjectToCreate,
 } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
-import type { ISubscriptionCloudlocalToCreate } from '@scrapoxy/connector-cloudlocal-sdk';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
+import type { ISubscriptionDatacenterLocalToCreate } from '@scrapoxy/connector-datacenter-local-sdk';
 import type { RawAxiosRequestHeaders } from 'axios';
 
 
@@ -70,7 +70,7 @@ describe(
     () => {
         const logger = new Logger();
         const
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             instance = axios.create({
                 validateStatus: () => true,
             }),
@@ -103,10 +103,10 @@ describe(
         beforeAll(async() => {
             // Start target & local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
-            const subscriptions: ISubscriptionCloudlocalToCreate[] = [
+            const subscriptions: ISubscriptionDatacenterLocalToCreate[] = [
                 {
                     id: uuid(),
                     ...SUBSCRIPTION_LOCAL_DEFAULTS,
@@ -116,12 +116,12 @@ describe(
                     ...SUBSCRIPTION_LOCAL_DEFAULTS,
                 },
             ];
-            const promisesSubscriptions = subscriptions.map((s) => cloudlocalApp.client.createSubscription(s));
+            const promisesSubscriptions = subscriptions.map((s) => datacenterLocalApp.client.createSubscription(s));
             await Promise.all(promisesSubscriptions);
 
             // Start app
             commanderApp = CommanderApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
             });
@@ -131,7 +131,7 @@ describe(
             clientConnectors = new EventsConnectorsClient(commanderApp.events);
 
             masterApp = MasterApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
@@ -142,14 +142,14 @@ describe(
             project = await commanderApp.frontendClient.createProject(projectToCreate);
 
             // Create credential
-            const credentialConfigs: IConnectorCloudlocalCredential[] = subscriptions.map((s) => ({
+            const credentialConfigs: IConnectorDatacenterLocalCredential[] = subscriptions.map((s) => ({
                 subscriptionId: s.id,
             }));
             const promisesCredentials = credentialConfigs.map((cfg) => commanderApp.frontendClient.createCredential(
                 project.id,
                 {
                     name: randomName(),
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: cfg,
                 }
             ));
@@ -191,14 +191,14 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                masterApp.stop(), cloudlocalApp.close(), servers.close(),
+                masterApp.stop(), datacenterLocalApp.close(), servers.close(),
             ]);
         });
 
         it(
             'should create, install and activate 2 connectors and 2 proxies by connector',
             async() => {
-                const connectorConfigs: IConnectorCloudlocalConfig[] = [
+                const connectorConfigs: IConnectorDatacenterLocalConfig[] = [
                     {
                         region: 'europe',
                         size: 'small',
@@ -237,7 +237,7 @@ describe(
                             project.id,
                             connector.id
                         );
-                        const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                        const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                         expect(connectorConfigFound.imageId?.length)
                             .toBeGreaterThan(0);
                     });

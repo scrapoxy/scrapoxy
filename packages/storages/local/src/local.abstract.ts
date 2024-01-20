@@ -93,7 +93,6 @@ import type {
     IProbeService,
     IStorageService,
 } from '@scrapoxy/backend-sdk';
-import type { IProxyTest } from '@scrapoxy/cloudlocal';
 import type {
     ICertificate,
     ICertificateInfo,
@@ -125,6 +124,7 @@ import type {
     IUserProject,
     IWindow,
 } from '@scrapoxy/common';
+import type { IProxyTest } from '@scrapoxy/datacenter-local';
 
 
 export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> implements IStorageService, IProbeService {

@@ -7,7 +7,7 @@ import {
     CredentialInvalidError,
     CredentialQueryNotFoundError,
     TasksService,
-    TRANSPORT_CLOUD_TYPE,
+    TRANSPORT_DATACENTER_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -64,7 +64,7 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_CLOUD_TYPE,
+        transportType: TRANSPORT_DATACENTER_TYPE,
         useCertificate: true,
     };
 
@@ -200,7 +200,7 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         const taskToCreate: ITaskToCreate = {
             type: AwsUninstallFactory.type,
             stepMax: AwsUninstallFactory.stepMax,
-            message: 'Uninstalling Aws cloud...',
+            message: 'Uninstalling Aws datacenter...',
             data,
         };
 

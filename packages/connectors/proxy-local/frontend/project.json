@@ -1,0 +1,49 @@
+{
+    "name": "connector-proxy-local-frontend",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/proxy-local/frontend",
+    "sourceRoot": "packages/connectors/proxy-local/frontend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-proxy-local-frontend",
+                "main": "packages/connectors/proxy-local/frontend/src/index.ts",
+                "tsConfig": "packages/connectors/proxy-local/frontend/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/proxy-local/frontend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/proxy-local/frontend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/connectors/proxy-local/frontend/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/connectors/proxy-local/frontend/src/**/{*,*.*}.html"
+            }
+        }
+    },
+    "tags": []
+}

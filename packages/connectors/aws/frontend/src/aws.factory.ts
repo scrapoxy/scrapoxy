@@ -27,7 +27,7 @@ export class ConnectorAwsFactory implements IConnectorFactory {
         name: 'Amazon Web Services',
         description: 'Amazon Web Services is a subsidiary of Amazon that provides on-demand cloud computing. In 2023, AWS has 100 data centers in 31 regions.',
         url: 'https://aws.amazon.com',
-        group: EConnectorFactoryGroup.CloudProvider,
+        group: EConnectorFactoryGroup.DatacenterProvider,
         canInstall: true,
         canUninstall: true,
         canReplaceProxy: false,

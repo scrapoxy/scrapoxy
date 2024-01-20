@@ -28,7 +28,7 @@ export class ConnectorGcpFactory implements IConnectorFactory {
        name: 'Google Cloud Platform',
        description: 'Google Cloud Platform is a cloud computing services that runs on the same infrastructure that Google uses internally. In 2023, GCP has 148 data centers in 49 regions.',
        url: 'https://cloud.google.com',
-       group: EConnectorFactoryGroup.CloudProvider,
+       group: EConnectorFactoryGroup.DatacenterProvider,
        canInstall: true,
        canUninstall: true,
        canReplaceProxy: false,

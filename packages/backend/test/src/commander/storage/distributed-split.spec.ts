@@ -31,16 +31,16 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     countProxiesOnlineViews,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
 } from '@scrapoxy/common';
-import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backend';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import {
     getEnvStorageDistributedModuleConfig,
     StorageDistributedConnModule,
@@ -57,20 +57,20 @@ import type {
 import type { MicroserviceOptions } from '@nestjs/microservices';
 import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
 import type { AddressInfo } from 'net';
 
 
 async function createDb(
-    cloudlocalApp: CloudlocalApp,
+    datacenterLocalApp: DatacenterLocalApp,
     logger: LoggerService
 ): Promise<INestMicroservice> {
     const moduleRef = await Test.createTestingModule({
         imports: [
-            ConnectorCloudlocalModule.forRoot({
-                url: cloudlocalApp.url,
+            ConnectorDatacenterLocalModule.forRoot({
+                url: datacenterLocalApp.url,
             }),
             StorageDistributedMsModule.forRoot(),
         ],
@@ -99,7 +99,7 @@ async function createDb(
 
 
 async function createApi(
-    cloudlocalApp: CloudlocalApp,
+    datacenterLocalApp: DatacenterLocalApp,
     fingerprintUrl: string,
     logger: LoggerService
 ): Promise<INestApplication> {
@@ -108,8 +108,8 @@ async function createApi(
             AuthLocalModule.forRoot({
                 test: true,
             }),
-            ConnectorCloudlocalModule.forRoot({
-                url: cloudlocalApp.url,
+            ConnectorDatacenterLocalModule.forRoot({
+                url: datacenterLocalApp.url,
             }),
             CommanderEventsModule.forRoot(),
             CommanderFrontendModule.forRoot(fingerprintUrl),
@@ -146,14 +146,14 @@ async function createApi(
 
 
 async function createMaster(
-    cloudlocalApp: CloudlocalApp,
+    datacenterLocalApp: DatacenterLocalApp,
     url: string,
     logger: LoggerService
 ): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
         imports: [
-            ConnectorCloudlocalModule.forRoot({
-                url: cloudlocalApp.url,
+            ConnectorDatacenterLocalModule.forRoot({
+                url: datacenterLocalApp.url,
             }),
             MasterModule.forRootFromEnv(
                 url,
@@ -177,14 +177,14 @@ async function createMaster(
 
 async function createRefresh(
     url: string,
-    cloudlocalApp: CloudlocalApp,
+    datacenterLocalApp: DatacenterLocalApp,
     fingerprintUrl: string,
     logger: LoggerService
 ): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
         imports: [
-            ConnectorCloudlocalModule.forRoot({
-                url: cloudlocalApp.url,
+            ConnectorDatacenterLocalModule.forRoot({
+                url: datacenterLocalApp.url,
             }),
             RefreshConnectorsModule.forRoot(
                 url,
@@ -240,7 +240,7 @@ describe(
             appsApi: INestApplication[] = [],
             appsDb: INestMicroservice[] = [],
             appsMaster: INestApplication[] = [],
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             instance = axios.create({
                 validateStatus: () => true,
             }),
@@ -256,10 +256,10 @@ describe(
         beforeAll(async() => {
             // Start target & local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
@@ -267,7 +267,7 @@ describe(
             // Storage app
             for (let i = 0; i < 2; ++i) {
                 const app = await createDb(
-                    cloudlocalApp,
+                    datacenterLocalApp,
                     logger
                 );
                 appsDb.push(app);
@@ -282,7 +282,7 @@ describe(
 
             for (let i = 0; i < 2; ++i) {
                 const app = await createApi(
-                    cloudlocalApp,
+                    datacenterLocalApp,
                     servers.urlFingerprint,
                     logger
                 );
@@ -299,7 +299,7 @@ describe(
 
             for (let i = 0; i < 2; ++i) {
                 const app = await createMaster(
-                    cloudlocalApp,
+                    datacenterLocalApp,
                     rpUrl,
                     logger
                 );
@@ -311,7 +311,7 @@ describe(
             // Refresh app
             appRefresh = await createRefresh(
                 rpUrl,
-                cloudlocalApp,
+                datacenterLocalApp,
                 servers.urlFingerprint,
                 logger
             );
@@ -338,7 +338,7 @@ describe(
                 rpMaster.close(),
                 rpApi.close(),
                 ...appsDb.map((app) => app.close()),
-                cloudlocalApp.close(),
+                datacenterLocalApp.close(),
                 servers.close(),
             ]);
 
@@ -365,14 +365,14 @@ describe(
                     useragentOverride: false,
                 });
                 // Create credential
-                const credentialConfigConfig: IConnectorCloudlocalCredential = {
+                const credentialConfigConfig: IConnectorDatacenterLocalCredential = {
                     subscriptionId,
                 };
                 const credential = await commander.createCredential(
                     project.id,
                     {
                         name: 'mycredential',
-                        type: CONNECTOR_CLOUDLOCAL_TYPE,
+                        type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                         config: credentialConfigConfig,
                     }
                 );
@@ -387,7 +387,7 @@ describe(
                 });
 
                 // Create, install and activate connector
-                const connectorConfig: IConnectorCloudlocalConfig = {
+                const connectorConfig: IConnectorDatacenterLocalConfig = {
                     region: 'europe',
                     size: 'small',
                     imageId: void 0,
@@ -416,7 +416,7 @@ describe(
                         project.id,
                         connector.id
                     );
-                    const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                    const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                     expect(connectorConfigFound.imageId?.length)
                         .toBeGreaterThan(0);
                 });

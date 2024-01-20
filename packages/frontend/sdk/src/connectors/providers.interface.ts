@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 
 
 export enum EConnectorFactoryGroup {
-    CloudProvider = 'cloud_provider',
+    DatacenterProvider = 'datacenter_provider',
     ProxiesServiceStatic = 'proxies_service_static',
     ProxiesServiceDynamic = 'proxies_service_dynamic',
     Hardware = 'hardware',

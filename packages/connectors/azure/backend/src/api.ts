@@ -2,7 +2,7 @@ import {
     Agents,
     AxiosFormData,
 } from '@scrapoxy/backend-sdk';
-import { SCRAPOXY_CLOUD_PREFIX } from '@scrapoxy/common';
+import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import axios, { AxiosError } from 'axios';
 import { getAzureErrorMessage } from './azure.helpers';
 import { EAzureProvisioningState } from './azure.interface';
@@ -434,7 +434,7 @@ export class AzureApi {
         resourceGroupName: string, prefix: string
     ): Promise<IAzureImage> {
         const response = await this.instanceManagement.get<IAzureImage>(
-            `resourceGroups/${resourceGroupName}/providers/Microsoft.Compute/galleries/${prefix}img_${SCRAPOXY_CLOUD_PREFIX}_gal/images/${prefix}img_${SCRAPOXY_CLOUD_PREFIX}_def/versions/1.0.0`,
+            `resourceGroups/${resourceGroupName}/providers/Microsoft.Compute/galleries/${prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_gal/images/${prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_def/versions/1.0.0`,
             {
                 params: {
                     'api-version': '2023-07-03',

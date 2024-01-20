@@ -91,7 +91,7 @@
 ### Features
 
 - **iproyal**: add support for Royal Residential proxies
-- **marketplace**: add marketplace menu with static proxies, dynamic proxies, hardware, cloud providers and other
+- **marketplace**: add marketplace menu with static proxies, dynamic proxies, hardware, datacenter providers and other
 
 ### Bug fixes
 
@@ -118,7 +118,7 @@ Scrapoxy 4 represents a complete rewrite, now developed in Typescript.
 Scrapoxy 4 is not compatible with previous versions.
 :::
 
-- **cloud providers**: it supports main cloud providers like AWS, Azure, GCP and more;
+- **datacenter providers**: it supports main datacenter providers like AWS, Azure, GCP and more;
 - **proxy services**: it is compatible with proxy provider like Zyte, IPRoyal, Rayobyte and more;
 - **hardware materials**: it orchestrates 4G proxy farms hardware types, like Proxidize or XProxy.io;
 - **free proxy lists**: it handles manual lists of HTTP/HTTPS proxies;

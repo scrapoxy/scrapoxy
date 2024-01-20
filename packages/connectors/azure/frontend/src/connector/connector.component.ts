@@ -8,7 +8,7 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { SCRAPOXY_CLOUD_PREFIX } from '@scrapoxy/common';
+import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import {
     AZURE_DEFAULT_LOCATION,
     AZURE_DEFAULT_STORAGE_ACCOUNT_TYPE,
@@ -110,11 +110,11 @@ export class ConnectorAzureComponent implements IConnectorComponent, OnInit {
             this.subForm.patchValue({
                 location: AZURE_DEFAULT_LOCATION,
                 port: 3128,
-                resourceGroupName: `${SCRAPOXY_CLOUD_PREFIX}_rg`,
+                resourceGroupName: `${SCRAPOXY_DATACENTER_PREFIX}_rg`,
                 vmSize: AZURE_DEFAULT_VM_SIZE,
                 storageAccountType: AZURE_DEFAULT_STORAGE_ACCOUNT_TYPE,
                 prefix: 'spx',
-                imageResourceGroupName: `${SCRAPOXY_CLOUD_PREFIX}_image_rg`,
+                imageResourceGroupName: `${SCRAPOXY_DATACENTER_PREFIX}_image_rg`,
             });
         }
 

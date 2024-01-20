@@ -27,7 +27,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory {
         name: 'Digital Ocean',
         description: 'Digital Ocean is an US multinational cloud provider. In 2023, Digital Ocean has 15 data centers in 9 regions.',
         url: 'https://www.digitalocean.com',
-        group: EConnectorFactoryGroup.CloudProvider,
+        group: EConnectorFactoryGroup.DatacenterProvider,
         canInstall: true,
         canUninstall: true,
         canReplaceProxy: false,

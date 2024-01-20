@@ -8,16 +8,16 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     countProxiesOnlineViews,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     SCRAPOXY_HEADER_PREFIX,
 } from '@scrapoxy/common';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -25,9 +25,9 @@ import type {
     IProjectData,
 } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
 import type { OutgoingHttpHeaders } from 'http';
 
 
@@ -36,7 +36,7 @@ describe(
     () => {
         const logger = new Logger();
         const
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             instance = axios.create({
                 validateStatus: () => true,
             }),
@@ -55,24 +55,24 @@ describe(
 
             // Start target and local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
             const subscriptionId = uuid();
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
 
             // Start app
             commanderApp = CommanderApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
             });
             await commanderApp.start();
             masterApp = MasterApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
@@ -97,14 +97,14 @@ describe(
             });
 
             // Create credential
-            const credentialConfigConfig: IConnectorCloudlocalCredential = {
+            const credentialConfigConfig: IConnectorDatacenterLocalCredential = {
                 subscriptionId,
             };
             const credential = await commanderApp.frontendClient.createCredential(
                 project.id,
                 {
                     name: 'mycredential',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: credentialConfigConfig,
                 }
             );
@@ -117,7 +117,7 @@ describe(
             });
 
             // Create, install and activate connector
-            const connectorConfig: IConnectorCloudlocalConfig = {
+            const connectorConfig: IConnectorDatacenterLocalConfig = {
                 region: 'europe',
                 size: 'small',
                 imageId: void 0,
@@ -146,7 +146,7 @@ describe(
                     project.id,
                     connector.id
                 );
-                const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                 expect(connectorConfigFound.imageId?.length)
                     .toBeGreaterThan(0);
             });
@@ -168,7 +168,7 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                masterApp.stop(), cloudlocalApp.close(), servers.close(),
+                masterApp.stop(), datacenterLocalApp.close(), servers.close(),
             ]);
         });
 
@@ -491,7 +491,7 @@ describe(
                             project.id,
                             connector.id
                         );
-                        const imageIdRef = (connectorRef.config as IConnectorCloudlocalConfig).imageId;
+                        const imageIdRef = (connectorRef.config as IConnectorDatacenterLocalConfig).imageId;
                         await commanderApp.frontendClient.renewConnectorCertificate(
                             project.id,
                             connector.id,
@@ -511,7 +511,7 @@ describe(
                                 project.id,
                                 connector.id
                             );
-                            const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                            const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                             expect(connectorConfigFound.imageId?.length)
                                 .toBeGreaterThan(0);
                             expect(connectorConfigFound.imageId)
@@ -662,7 +662,7 @@ describe(
                             project.id,
                             connector.id
                         );
-                        const imageIdRef = (connectorRef.config as IConnectorCloudlocalConfig).imageId;
+                        const imageIdRef = (connectorRef.config as IConnectorDatacenterLocalConfig).imageId;
                         await commanderApp.frontendClient.renewConnectorCertificate(
                             project.id,
                             connector.id,
@@ -682,7 +682,7 @@ describe(
                                 project.id,
                                 connector.id
                             );
-                            const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                            const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                             expect(connectorConfigFound.imageId?.length)
                                 .toBeGreaterThan(0);
                             expect(connectorConfigFound.imageId)

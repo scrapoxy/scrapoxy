@@ -8,7 +8,7 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { SCRAPOXY_CLOUD_PREFIX } from '@scrapoxy/common';
+import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import {
     AWS_DEFAULT_INSTANCE_TYPE,
     AWS_DEFAULT_REGION,
@@ -104,7 +104,7 @@ export class ConnectorAwsComponent implements IConnectorComponent, OnInit {
                 port: 3128,
                 instanceType: AWS_DEFAULT_INSTANCE_TYPE,
                 imageId: 'spximage',
-                securityGroupName: SCRAPOXY_CLOUD_PREFIX,
+                securityGroupName: SCRAPOXY_DATACENTER_PREFIX,
                 tag: 'spx',
             });
         }

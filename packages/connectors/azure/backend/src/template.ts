@@ -1,4 +1,4 @@
-import { SCRAPOXY_CLOUD_PREFIX } from '@scrapoxy/common';
+import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type { IAzureImageReference } from './azure.interface';
 
@@ -58,9 +58,9 @@ export class AzureVmsTemplateBuilder {
             properties: {
                 securityRules: [
                     {
-                        name: SCRAPOXY_CLOUD_PREFIX,
+                        name: SCRAPOXY_DATACENTER_PREFIX,
                         properties: {
-                            description: SCRAPOXY_CLOUD_PREFIX,
+                            description: SCRAPOXY_DATACENTER_PREFIX,
                             protocol: 'Tcp',
                             sourcePortRange: '*',
                             destinationPortRange: port.toString(),
@@ -222,7 +222,7 @@ export class AzureVmsTemplateBuilder {
                 },
                 storageProfile: {
                     imageReference: {
-                        id: `[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('imageResourceGroupName'), '/providers/Microsoft.Compute/galleries/', '${this.prefix}img_${SCRAPOXY_CLOUD_PREFIX}_gal/images/${this.prefix}img_${SCRAPOXY_CLOUD_PREFIX}_def/versions/1.0.0')]`,
+                        id: `[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('imageResourceGroupName'), '/providers/Microsoft.Compute/galleries/', '${this.prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_gal/images/${this.prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_def/versions/1.0.0')]`,
                     },
                     osDisk: {
                         name: `${this.prefix}-${name}-disk`,
@@ -310,7 +310,7 @@ export class AzureImageTemplateBuilder {
                         osType: 'Linux',
                         osState: 'Specialized',
                         identifier: {
-                            publisher: SCRAPOXY_CLOUD_PREFIX,
+                            publisher: SCRAPOXY_DATACENTER_PREFIX,
                             offer: `${this.prefix}offer`,
                             sku: `${this.prefix}sku`,
                         },

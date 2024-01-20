@@ -24,13 +24,13 @@ import {
     randomName,
     SCRAPOXY_HEADER_PREFIX,
 } from '@scrapoxy/common';
-import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backend';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
 import { Proxy } from '@scrapoxy/proxy-sdk';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type { INestApplication } from '@nestjs/common';
-import type { IProxyToConnectConfigCloud } from '@scrapoxy/backend-sdk';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     IProjectToConnect,
@@ -76,7 +76,7 @@ describe(
                 servers.listen(), proxyServer.listen(),
             ]);
 
-            const config: IProxyToConnectConfigCloud = {
+            const config: IProxyToConnectConfigDatacenter = {
                 address: {
                     hostname: 'localhost',
                     port: proxyServer.port as number,
@@ -90,7 +90,7 @@ describe(
                 ),
                 connectorId: connectorId,
                 projectId: uuid(),
-                type: CONNECTOR_CLOUDLOCAL_TYPE,
+                type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                 key,
                 config,
                 useragent: generateUseragent(),
@@ -108,7 +108,7 @@ describe(
             };
             const moduleRef = await Test.createTestingModule({
                 imports: [
-                    ConnectorCloudlocalModule.forRoot({
+                    ConnectorDatacenterLocalModule.forRoot({
                         url: fakeConfig.url,
                     }),
                     MasterModule.forRoot({

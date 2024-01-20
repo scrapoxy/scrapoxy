@@ -1,4 +1,4 @@
-export * from './cloud';
+export * from './datacenter';
 
 export * from './hardware';
 

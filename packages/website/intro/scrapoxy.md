@@ -43,7 +43,7 @@ so I open-sourced the project under the [MIT license](licence).
 Several users requested the addition of new providers, 
 and the project grew 🌱. 
 
-Now, Scrapoxy smartly manages both **cloud providers** and **proxy services**. 
+Now, Scrapoxy smartly manages both **datacenter providers** and **proxy services**. 
 It intercepts and modifies requests to ensure consistency in your scraping stack,
 which is crucial when facing ban issues 🚨. 
 
@@ -53,11 +53,11 @@ and Scrapoxy helps you achieve that 🎯.
 
 ## Features
 
-### ☁️ Cloud Providers with easy installation ☁️
+### ☁️ Datacenter Providers with easy installation ☁️
 
-Scrapoxy supports many cloud providers like [AWS](https://aws.amazon.com), [Azure](https://azure.com), or [GCP](https://cloud.google.com).
+Scrapoxy supports many datacenter providers like [AWS](https://aws.amazon.com), [Azure](https://azure.com), or [GCP](https://cloud.google.com).
 
-It installs a proxy image on each cloud, helping the quick launch of a proxy instance. 
+It installs a proxy image on each datacenter, helping the quick launch of a proxy instance. 
 Traffic is routed to proxy instances to provide many IP addresses. 
 
 Scrapoxy handles the startup/shutdown of proxy instances to rotate IP addresses effectively.

@@ -12,7 +12,7 @@ import type {
 } from './aws.interface';
 import type {
     IConnectorService,
-    ITransportProxyRefreshedConfigCloud,
+    ITransportProxyRefreshedConfigDatacenter,
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -70,7 +70,7 @@ export class ConnectorAwsService implements IConnectorService {
         });
 
         return instances.map((i) => {
-            const config: ITransportProxyRefreshedConfigCloud = {
+            const config: ITransportProxyRefreshedConfigDatacenter = {
                 address: i.ipAddress && i.ipAddress.length > 0 ? {
                     hostname: i.ipAddress[ 0 ],
                     port: this.connectorConfig.port,
@@ -101,7 +101,7 @@ export class ConnectorAwsService implements IConnectorService {
         });
 
         return instances.map((i) => {
-            const config: ITransportProxyRefreshedConfigCloud = {
+            const config: ITransportProxyRefreshedConfigDatacenter = {
                 address: i.ipAddress && i.ipAddress.length > 0 ? {
                     hostname: i.ipAddress[ 0 ],
                     port: this.connectorConfig.port,

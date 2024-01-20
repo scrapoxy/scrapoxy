@@ -11,8 +11,8 @@ import {
     RefreshTasksModule,
 } from '@scrapoxy/backend-sdk';
 import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
-import { ConnectorCloudlocalModule } from '@scrapoxy/connector-cloudlocal-backend';
-import { ConnectorProxylocalModule } from '@scrapoxy/connector-proxylocal-backend';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
+import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-backend';
 import { CommanderApp } from './commander';
 import { VERSION_TEST } from '../info';
 import type {
@@ -25,13 +25,13 @@ import type {
 
 
 export interface IMasterAppOptions {
-    cloudlocalAppUrl?: string;
+    datacenterLocalAppUrl?: string;
     commanderApp?: CommanderApp;
     fingerprintUrl?: string;
     fingerprintTimeout?: number;
     imports?: (Type | DynamicModule | Promise<DynamicModule> | ForwardReference)[];
     logger: LoggerService;
-    proxylocalAppUrl?: string;
+    proxyLocalAppUrl?: string;
 }
 
 
@@ -113,15 +113,15 @@ export class MasterApp {
             ...this.options.imports ?? [],
         ];
 
-        if (this.options.cloudlocalAppUrl) {
-            imports.push(ConnectorCloudlocalModule.forRoot({
-                url: this.options.cloudlocalAppUrl,
+        if (this.options.datacenterLocalAppUrl) {
+            imports.push(ConnectorDatacenterLocalModule.forRoot({
+                url: this.options.datacenterLocalAppUrl,
             }));
         }
 
-        if (this.options.proxylocalAppUrl) {
-            imports.push(ConnectorProxylocalModule.forRoot({
-                url: this.options.proxylocalAppUrl,
+        if (this.options.proxyLocalAppUrl) {
+            imports.push(ConnectorProxyLocalModule.forRoot({
+                url: this.options.proxyLocalAppUrl,
             }));
         }
 

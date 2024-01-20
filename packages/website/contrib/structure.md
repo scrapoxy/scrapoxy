@@ -40,36 +40,36 @@ The `packages` folder in Scrapoxy's repository is structured as follows:
 
 ```text
 packages 
-|-- auths          | Authentication methods 
-  |-- github       | Github OAuth authentication
-  |-- google       | Google OAuth authentication
-  |-- local        | Local authentication (username / password)
-|-- backend        | Backend application
-  |-- app          | Main application in NestJS
-  |-- sdk          | Shared library between backend and connectors module
-  |-- test         | End-to-end tests
-  |-- test-sdk     | Shared library for tests
-|-- charts         | Helm charts
-|-- cloudlocal     | Emulate a cloud provider locally (for tests purpose)
-|-- common           Shared library for the whole project
-|-- connectors     | All the connectors logic
-  |-- aws          | AWS connector
-    |-- backend    | Backend part of the connector
-    |-- frontend   | Connector's configuration in the UI
-    |-- sdk        | Shared library for AWS
-    |-- test       | End-to-end tests for the connector
-  |-- azure        | Azure connector
-  ...              | Other connectors
-|-- frontend       | Frontend application
-  |-- app          | Main Angular Application
-  |-- sdk          | Shared library between frontend and connectors module
-|-- proxy          | Proxy application for VM deployment (cloud provider only)
-|-- proxylocal     | Emulate a proxies service locally (for tests purpose)
-|-- python-api     | PyPI (for Python and Scrapy) 
-|-- storages       | Storage methods
-  |-- distributed  | Distributed storage with CQRS architecture
-  |-- local        | File and memory storage
-|-- website        | Scrapoxy's website
+|-- auths            | Authentication methods 
+  |-- github         | Github OAuth authentication
+  |-- google         | Google OAuth authentication
+  |-- local          | Local authentication (username / password)
+|-- backend          | Backend application
+  |-- app            | Main application in NestJS
+  |-- sdk            | Shared library between backend and connectors module
+  |-- test           | End-to-end tests
+  |-- test-sdk       | Shared library for tests
+|-- charts           | Helm charts
+|-- datacenter-local | Emulate a datacenter provider locally (for tests purpose)
+|-- common           | Shared library for the whole project
+|-- connectors       | All the connectors logic
+  |-- aws            | AWS connector
+    |-- backend      | Backend part of the connector
+    |-- frontend     | Connector's configuration in the UI
+    |-- sdk          | Shared library for AWS
+    |-- test         | End-to-end tests for the connector
+  |-- azure          | Azure connector
+  ...                | Other connectors
+|-- frontend         | Frontend application
+  |-- app            | Main Angular Application
+  |-- sdk            | Shared library between frontend and connectors module
+|-- proxy            | Proxy application for VM deployment (datacenter provider only)
+|-- proxy-local      | Emulate a proxies service locally (for tests purpose)
+|-- python-api       | PyPI (for Python and Scrapy) 
+|-- storages         | Storage methods
+  |-- distributed    | Distributed storage with CQRS architecture
+  |-- local          | File and memory storage
+|-- website          | Scrapoxy's website
 ```
 
 This structure organizes Scrapoxy's codebase into different modules, each responsible for specific functionality,

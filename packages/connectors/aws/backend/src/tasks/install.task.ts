@@ -4,7 +4,7 @@ import {
     fingerprint,
     InstallScriptBuilder,
     TaskStepError,
-    TransportCloudServiceImpl,
+    TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -20,7 +20,7 @@ import * as Joi from 'joi';
 import { v4 as uuid } from 'uuid';
 import { AwsApi } from '../api';
 import type { IConnectorAwsConfig } from '../aws.interface';
-import type { IProxyToConnectConfigCloud } from '@scrapoxy/backend-sdk';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     IFingerprintOptions,
@@ -80,7 +80,7 @@ const schemaData = Joi.object({
 class AwsInstallCommand extends ATaskCommand {
     private readonly data: IAwsInstallCommandData;
 
-    private readonly transport = new TransportCloudServiceImpl();
+    private readonly transport = new TransportDatacenterServiceImpl();
 
     constructor(
         task: ITaskData,
@@ -221,7 +221,7 @@ class AwsInstallCommand extends ATaskCommand {
 
             case 3: {
                 // Wait for a reachable instance
-                const config: IProxyToConnectConfigCloud = {
+                const config: IProxyToConnectConfigDatacenter = {
                     address: {
                         hostname: this.data.hostname as string,
                         port: this.data.port,

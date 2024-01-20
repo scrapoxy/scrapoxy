@@ -26,7 +26,7 @@ For instance, a user may have two AWS connectors in different regions using the 
 ### Connector 🔌
 
 A connector is a **provider**. They are different sorts of connectors:
-for cloud provider, for proxy services, for hardware provider, and free proxies list.
+for datacenter provider, for proxy services, for hardware provider, and free proxies list.
 
 Each connector has a type, which defines how proxies are retrieved.
 
@@ -47,7 +47,7 @@ It shares similarities with the proxy concept but is manually managed.
 
 ### Task 📆
 
-A task corresponds to an installation or uninstallation task for a cloud connector.
+A task corresponds to an installation or uninstallation task for a datacenter connector.
 
 
 ## Modules
@@ -75,7 +75,7 @@ There are various types of refresh modules:
 
 - **Refresh Connectors**: This module calls connectors' APIs (AWS, Azure, etc.) to retrieve proxies' information.
 - **Refresh Proxies**: This module pings or fingerprints proxies to obtain their status.
-- **Refresh Task**: This module executes installation tasks for cloud connectors.
+- **Refresh Task**: This module executes installation tasks for datacenter connectors.
 
 
 ## Internal Architecture
@@ -97,7 +97,7 @@ Subsequently, the master module routes the request to the connector endpoint usi
 
 Periodically, the refresh module queries the connector to update the list of proxies. 
 
-On cloud providers, Scrapoxy instructs the start or removal of VM instances.
+On datacenter providers, Scrapoxy instructs the start or removal of VM instances.
 
 Additionally, Scrapoxy leverages the master module to query [fingerprint.scrapoxy.io](https://fingerprint.scrapoxy.io) to obtain proxies' status. 
 This server provides details such as the real IP address, geo-localization, and other information about the proxy.

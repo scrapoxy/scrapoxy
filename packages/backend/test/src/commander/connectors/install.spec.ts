@@ -12,16 +12,16 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     EEventScope,
     EventsTasksClient,
     isTaskSucceed,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
 import type {
     IConnectorToInstall,
@@ -31,9 +31,9 @@ import type {
     ITaskView,
 } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(
@@ -41,7 +41,7 @@ describe(
     () => {
         const logger = new Logger();
         const
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             servers = new TestServers();
         let
             client: EventsTasksClient,
@@ -57,11 +57,11 @@ describe(
         beforeAll(async() => {
             // Start target & local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
             const subscriptionId = uuid();
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
                 installDelay: 2000,
@@ -69,7 +69,7 @@ describe(
 
             // Start app
             commanderApp = CommanderApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
             });
@@ -78,7 +78,7 @@ describe(
             client = new EventsTasksClient(commanderApp.events);
 
             masterApp = MasterApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
@@ -103,7 +103,7 @@ describe(
             });
 
             // Create credential
-            const credentialConfig: IConnectorCloudlocalCredential = {
+            const credentialConfig: IConnectorDatacenterLocalCredential = {
                 subscriptionId,
             };
 
@@ -111,13 +111,13 @@ describe(
                 project.id,
                 {
                     name: 'mycredential',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: credentialConfig,
                 }
             );
 
             // Create 2 connectors
-            const connectorConfig: IConnectorCloudlocalConfig = {
+            const connectorConfig: IConnectorDatacenterLocalConfig = {
                 region: 'europe',
                 size: 'small',
                 imageId: void 0,
@@ -133,7 +133,7 @@ describe(
                 }
             );
 
-            const connectorConfig2: IConnectorCloudlocalConfig = {
+            const connectorConfig2: IConnectorDatacenterLocalConfig = {
                 region: 'europe',
                 size: 'small',
                 imageId: void 0,
@@ -182,7 +182,7 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                masterApp.stop(), cloudlocalApp.close(), servers.close(),
+                masterApp.stop(), datacenterLocalApp.close(), servers.close(),
             ]);
         });
 
@@ -236,7 +236,7 @@ describe(
                         expect(task.connectorId)
                             .toBe(connector.id);
                         expect(task.type)
-                            .toBe('imagecreate::cloudlocal');
+                            .toBe('imagecreate::datacenter-local');
                         expect(task.running)
                             .toBeTruthy();
                         expect(task.cancelled)
@@ -258,7 +258,7 @@ describe(
                             expect(taskFound.connectorId)
                                 .toBe(connector.id);
                             expect(taskFound.type)
-                                .toBe('imagecreate::cloudlocal');
+                                .toBe('imagecreate::datacenter-local');
                             expect(taskFound.running)
                                 .toBeTruthy();
                             expect(taskFound.cancelled)
@@ -355,7 +355,7 @@ describe(
                             ),
                         ]);
                         for (const connectorFound of connectorsFound) {
-                            const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                            const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                             expect(connectorConfigFound.imageId?.length)
                                 .toBeGreaterThan(0);
                         }

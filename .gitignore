@@ -46,5 +46,5 @@ Thumbs.db
 
 # Configuration
 .env
-clouds-local.json
+datacenters-local.json
 scrapoxy*.json

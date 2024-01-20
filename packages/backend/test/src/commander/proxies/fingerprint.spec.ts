@@ -8,18 +8,18 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     countProxiesOnlineViews,
     ONE_MINUTE_IN_MS,
     SCRAPOXY_USER_AGENT_PREFIX,
 } from '@scrapoxy/common';
 import {
-    CONNECTOR_CLOUDLOCAL_TYPE,
-    ECloudlocalQueryCredential,
-} from '@scrapoxy/connector-cloudlocal-sdk';
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
+    EDatacenterLocalQueryCredential,
+} from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -29,14 +29,14 @@ import type {
     IProjectData,
 } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
 import type {
-    ICloudlocalQueryRegionSizes,
-    IRegionCloudlocal,
-    IRegionSizeCloudlocal,
-} from '@scrapoxy/connector-cloudlocal-sdk';
+    IDatacenterLocalQueryRegionSizes,
+    IRegionDatacenterLocal,
+    IRegionSizeDatacenterLocal,
+} from '@scrapoxy/connector-datacenter-local-sdk';
 
 
 async function installConnector(
@@ -45,18 +45,18 @@ async function installConnector(
     commanderApp: CommanderApp,
     region: string
 ): Promise<IConnectorView> {
-    const parameters: ICloudlocalQueryRegionSizes = {
+    const parameters: IDatacenterLocalQueryRegionSizes = {
         region,
     };
-    const sizes: IRegionSizeCloudlocal[] = await commanderApp.frontendClient.queryCredential(
+    const sizes: IRegionSizeDatacenterLocal[] = await commanderApp.frontendClient.queryCredential(
         projectId,
         credentialId,
         {
-            type: ECloudlocalQueryCredential.RegionSizes,
+            type: EDatacenterLocalQueryCredential.RegionSizes,
             parameters,
         }
     );
-    const connectorConfig: IConnectorCloudlocalConfig = {
+    const connectorConfig: IConnectorDatacenterLocalConfig = {
         region,
         size: sizes[ 0 ].id,
         imageId: void 0,
@@ -85,7 +85,7 @@ async function installConnector(
             projectId,
             connector.id
         );
-        const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+        const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
         expect(connectorConfigFound.imageId?.length)
             .toBeGreaterThan(0);
     });
@@ -105,17 +105,17 @@ describe(
     () => {
         const logger = new Logger();
         const
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             servers = new TestServers(),
             subscriptionId = uuid();
 
         beforeAll(async() => {
             // Start target & local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
@@ -123,7 +123,7 @@ describe(
 
         afterAll(async() => {
             await Promise.all([
-                cloudlocalApp.close(), servers.close(),
+                datacenterLocalApp.close(), servers.close(),
             ]);
         });
 
@@ -136,20 +136,20 @@ describe(
                     credential: ICredentialView,
                     masterApp: MasterApp,
                     project: IProjectData,
-                    regions: IRegionCloudlocal[],
+                    regions: IRegionDatacenterLocal[],
                     token: string;
 
                 beforeAll(async() => {
                     // Start app
                     commanderApp = CommanderApp.defaults({
-                        cloudlocalAppUrl: cloudlocalApp.url,
+                        datacenterLocalAppUrl: datacenterLocalApp.url,
                         fingerprintUrl: servers.urlFingerprint,
                         logger,
                     });
                     await commanderApp.start();
 
                     masterApp = MasterApp.defaults({
-                        cloudlocalAppUrl: cloudlocalApp.url,
+                        datacenterLocalAppUrl: datacenterLocalApp.url,
                         commanderApp,
                         fingerprintUrl: servers.urlFingerprint,
                         logger,
@@ -181,14 +181,14 @@ describe(
                     });
 
                     // Create credential
-                    const credentialConfigConfig: IConnectorCloudlocalCredential = {
+                    const credentialConfigConfig: IConnectorDatacenterLocalCredential = {
                         subscriptionId,
                     };
                     credential = await commanderApp.frontendClient.createCredential(
                         project.id,
                         {
                             name: 'mycredential',
-                            type: CONNECTOR_CLOUDLOCAL_TYPE,
+                            type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                             config: credentialConfigConfig,
                         }
                     );
@@ -204,7 +204,7 @@ describe(
                         project.id,
                         credential.id,
                         {
-                            type: ECloudlocalQueryCredential.Regions,
+                            type: EDatacenterLocalQueryCredential.Regions,
                         }
                     );
                 });
@@ -309,12 +309,12 @@ describe(
                     credential: ICredentialView,
                     masterApp: MasterApp,
                     project: IProjectData,
-                    regions: IRegionCloudlocal[];
+                    regions: IRegionDatacenterLocal[];
 
                 beforeAll(async() => {
                     // Start app
                     commanderApp = CommanderApp.defaults({
-                        cloudlocalAppUrl: cloudlocalApp.url,
+                        datacenterLocalAppUrl: datacenterLocalApp.url,
                         fingerprintUrl: `${servers.urlHttp}/timeout`,
                         fingerprintTimeout: 500,
                         logger,
@@ -322,7 +322,7 @@ describe(
                     await commanderApp.start();
 
                     masterApp = MasterApp.defaults({
-                        cloudlocalAppUrl: cloudlocalApp.url,
+                        datacenterLocalAppUrl: datacenterLocalApp.url,
                         commanderApp,
                         fingerprintUrl: `${servers.urlHttp}/timeout`,
                         fingerprintTimeout: 500,
@@ -355,14 +355,14 @@ describe(
                     });
 
                     // Create credential
-                    const credentialConfigConfig: IConnectorCloudlocalCredential = {
+                    const credentialConfigConfig: IConnectorDatacenterLocalCredential = {
                         subscriptionId,
                     };
                     credential = await commanderApp.frontendClient.createCredential(
                         project.id,
                         {
                             name: 'mycredential',
-                            type: CONNECTOR_CLOUDLOCAL_TYPE,
+                            type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                             config: credentialConfigConfig,
                         }
                     );
@@ -378,7 +378,7 @@ describe(
                         project.id,
                         credential.id,
                         {
-                            type: ECloudlocalQueryCredential.Regions,
+                            type: EDatacenterLocalQueryCredential.Regions,
                         }
                     );
                 });

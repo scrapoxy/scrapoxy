@@ -14,16 +14,16 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
-import {
     EEventScope,
     EventsConnectorsClient,
     EventsCredentialsClient,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_CLOUDLOCAL_TYPE } from '@scrapoxy/connector-cloudlocal-sdk';
+import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
 import type {
     IConnectorToCreate,
@@ -35,9 +35,9 @@ import type {
     IProjectData,
 } from '@scrapoxy/common';
 import type {
-    IConnectorCloudlocalConfig,
-    IConnectorCloudlocalCredential,
-} from '@scrapoxy/connector-cloudlocal-backend';
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(
@@ -45,15 +45,15 @@ describe(
     () => {
         const logger = new Logger();
         const
-            cloudlocalApp = new CloudlocalApp(logger),
+            datacenterLocalApp = new DatacenterLocalApp(logger),
             servers = new TestServers(),
             subscriptionId = uuid(),
             subscriptionId2 = uuid();
         const
-            credentialConfig: IConnectorCloudlocalCredential = {
+            credentialConfig: IConnectorDatacenterLocalCredential = {
                 subscriptionId: subscriptionId,
             },
-            credentialConfig2: IConnectorCloudlocalCredential = {
+            credentialConfig2: IConnectorDatacenterLocalCredential = {
                 subscriptionId: subscriptionId2,
             };
         const
@@ -61,12 +61,12 @@ describe(
             credentialsToCreate: ICredentialToCreate[] = [
                 {
                     name: 'mycredential1',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: credentialConfig,
                 },
                 {
                     name: 'mycredential2',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: credentialConfig2,
                 },
             ];
@@ -86,22 +86,22 @@ describe(
         beforeAll(async() => {
             // Start target & local connector
             await Promise.all([
-                servers.listen(), cloudlocalApp.start(),
+                servers.listen(), datacenterLocalApp.start(),
             ]);
 
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
 
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: subscriptionId2,
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
 
             // Start app
             commanderApp = CommanderApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
             });
@@ -111,7 +111,7 @@ describe(
             clientConnectors = new EventsConnectorsClient(commanderApp.events);
 
             masterApp = MasterApp.defaults({
-                cloudlocalAppUrl: cloudlocalApp.url,
+                datacenterLocalAppUrl: datacenterLocalApp.url,
                 commanderApp,
                 fingerprintUrl: servers.urlFingerprint,
                 logger,
@@ -162,7 +162,7 @@ describe(
             await commanderApp.stop();
 
             await Promise.all([
-                masterApp.stop(), cloudlocalApp.close(), servers.close(),
+                masterApp.stop(), datacenterLocalApp.close(), servers.close(),
             ]);
         });
 
@@ -183,7 +183,7 @@ describe(
             async() => {
                 const create: any = {
                     name: void 0,
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                 };
 
                 await expect(commanderApp.frontendClient.createCredential(
@@ -200,7 +200,7 @@ describe(
             async() => {
                 const create: ICredentialToCreate = {
                     name: 'empty token',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: {},
                 };
 
@@ -218,7 +218,7 @@ describe(
             async() => {
                 const create: ICredentialToCreate = {
                     name: 'invalid token',
-                    type: CONNECTOR_CLOUDLOCAL_TYPE,
+                    type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: {
                         subscriptionId: uuid(),
                     },
@@ -295,7 +295,7 @@ describe(
                         .toEqual(credentialToCreate.config);
                 }
 
-                const connectorConfig: IConnectorCloudlocalConfig = {
+                const connectorConfig: IConnectorDatacenterLocalConfig = {
                     region: 'europe',
                     size: 'small',
                     imageId: void 0,
@@ -316,7 +316,7 @@ describe(
             async() => {
                 const credentialsFound = await commanderApp.frontendClient.getAllProjectCredentials(
                     project.id,
-                    'cloudlocal'
+                    'datacenter-local'
                 );
                 expect(credentialsFound)
                     .toHaveLength(2);
@@ -356,7 +356,7 @@ describe(
                         project.id,
                         connector.id
                     );
-                    const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                    const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                     expect(connectorConfigFound.imageId?.length)
                         .toBeGreaterThan(0);
 
@@ -460,7 +460,7 @@ describe(
                         project.id,
                         connector.id
                     );
-                    const connectorConfigFound = connectorFound.config as IConnectorCloudlocalConfig;
+                    const connectorConfigFound = connectorFound.config as IConnectorDatacenterLocalConfig;
                     expect(connectorConfigFound.imageId?.length)
                         .toBeGreaterThan(0);
                 });

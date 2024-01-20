@@ -5,13 +5,13 @@ import {
     LogExceptionFilter,
     ScrapoxyExpressAdapter,
 } from '@scrapoxy/backend-sdk';
-import {
-    CloudlocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/cloudlocal';
 import { ONE_MINUTE_IN_MS } from '@scrapoxy/common';
+import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/datacenter-local';
+import { ProxyLocalApp } from '@scrapoxy/proxy-local';
 import { sigstop } from '@scrapoxy/proxy-sdk';
-import { ProxyLocalApp } from '@scrapoxy/proxylocal';
 import { getEnvStorageDistributedModuleConfig } from '@scrapoxy/storage-distributed';
 import {
     Command,
@@ -80,25 +80,25 @@ async function command(
         }
     }
 
-    // Start local cloud and create a default project if needed
-    let cloudlocalApp: CloudlocalApp | undefined;
-    let proxylocalApp: ProxyLocalApp | undefined;
+    // Start local datacenter and create a default project if needed
+    let datacenterLocalApp: DatacenterLocalApp | undefined;
+    let proxyLocalApp: ProxyLocalApp | undefined;
 
     if (config.test) {
-        const filename = process.env.CLOUDLOCAL_FILENAME ?? 'clouds-local.json';
-        cloudlocalApp = new CloudlocalApp(
+        const filename = process.env.DATACENTER_LOCAL_FILENAME ?? 'datacenters-local.json';
+        datacenterLocalApp = new DatacenterLocalApp(
             logger,
             filename
         );
 
-        await cloudlocalApp.start();
+        await datacenterLocalApp.start();
 
-        config.cloudlocalAppUrl = cloudlocalApp.url;
+        config.datacenterLocalAppUrl = datacenterLocalApp.url;
 
-        const subscriptions = await cloudlocalApp.client.getAllSubscriptions();
+        const subscriptions = await datacenterLocalApp.client.getAllSubscriptions();
 
         if (subscriptions.length <= 0) {
-            await cloudlocalApp.client.createSubscription({
+            await datacenterLocalApp.client.createSubscription({
                 id: uuid(),
                 ...SUBSCRIPTION_LOCAL_DEFAULTS,
             });
@@ -109,15 +109,15 @@ async function command(
             process.env.MASTER_TIMEOUT ?? ONE_MINUTE_IN_MS.toString(10),
             10
         );
-        proxylocalApp = new ProxyLocalApp(
+        proxyLocalApp = new ProxyLocalApp(
             logger,
             timeout,
-            'proxylocal'
+            'proxy-local'
         );
 
-        await proxylocalApp.listen();
+        await proxyLocalApp.listen();
 
-        config.proxylocalAppUrl = proxylocalApp.url;
+        config.proxyLocalAppUrl = proxyLocalApp.url;
     }
 
     // Start Scrapoxy
@@ -182,12 +182,12 @@ async function command(
 
             const promises: Promise<void>[] = [];
 
-            if (cloudlocalApp) {
-                promises.push(cloudlocalApp.close());
+            if (datacenterLocalApp) {
+                promises.push(datacenterLocalApp.close());
             }
 
-            if (proxylocalApp) {
-                promises.push(proxylocalApp.close());
+            if (proxyLocalApp) {
+                promises.push(proxyLocalApp.close());
             }
 
             await Promise.all(promises);

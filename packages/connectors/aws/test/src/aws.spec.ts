@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
-import { SCRAPOXY_CLOUD_PREFIX } from '@scrapoxy/common';
+import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import {
     AwsApi,
     ConnectorAwsModule,
@@ -27,7 +27,7 @@ describe(
                 port: 3128,
                 instanceType: AWS_DEFAULT_INSTANCE_TYPE,
                 imageId: '',
-                securityGroupName: `${SCRAPOXY_CLOUD_PREFIX}-test-${suffix}`,
+                securityGroupName: `${SCRAPOXY_DATACENTER_PREFIX}-test-${suffix}`,
                 tag: 'spxtest',
 
             },
