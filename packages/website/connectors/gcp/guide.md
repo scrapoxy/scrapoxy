@@ -70,6 +70,20 @@ Click on `ENABLE`.
 
 ---
 
+![GCP API Credentials Select](gcp_credentials_select.png)
+
+1. On the top left, click on the hamburger menu;
+2. Click on `APIs & Services`;
+3. And click on `Credentials`.
+
+---
+
+![GCP API Credential Select](gcp_credential_select.png)
+
+1. Click on `Credentials`
+2. And click on the first service account
+---
+
 ![GCP Credential Newkey Select](gcp_credential_newkey_select.png)
 
 1. Select `KEYS` tab;
@@ -89,6 +103,10 @@ Click on `ENABLE`.
 
 Open the downloaded file and copy the content in the clipboard.
 
+::: info
+The copied content will be paste into Scrapoxy with the `Clipboard` button (see below).
+:::
+
 
 ## Scrapoxy
 
@@ -106,8 +124,12 @@ Select `GCP` as provider to create a new credential (use search if necessary).
 ![Credential Form](spx_credential_create.png)
 
 1. Complete the **Name** of the credential;
-2. Click on the `Clipboard` icon to paste the JSON content. It will complete the form;
+2. Click on the `Clipboard` icon to paste the JSON content previously copied. It will automatically complete the form;
 3. Click on `Create`.
+
+::: tip
+It is recommended to copy and paste the credential from the JSON file to prevent any potential typing errors.
+:::
 
 
 ### Step 2: Create a new connector
