@@ -25,7 +25,6 @@ export class ConnectorProxylocalFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Local proxies API',
         description: 'Local proxies API is test proxies service for Scrapoxy internal use.',
-        url: 'https://scrapoxy.io',
         group: EConnectorFactoryGroup.ProxiesServiceDynamic,
         canInstall: false,
         canUninstall: false,

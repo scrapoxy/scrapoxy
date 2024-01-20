@@ -59,7 +59,11 @@
                                     Create
                                 </a>
 
-                                <a [href]="provider.config.url" target="_blank">Website</a>
+                                <div></div>
+
+                                @if (provider.config.url) {
+                                    <a [href]="provider.config.url" target="_blank">Website</a>
+                                }
                             </div>
                         </c-card-body>
                     </c-card>

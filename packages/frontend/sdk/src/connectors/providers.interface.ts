@@ -16,7 +16,7 @@ export interface IConnectorConfig {
 
     description: string;
 
-    url: string;
+    url?: string;
 
     group: EConnectorFactoryGroup;
 

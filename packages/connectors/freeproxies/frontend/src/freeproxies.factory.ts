@@ -25,7 +25,6 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Free Proxies List',
         description: 'Free proxies list is a type of connector to hold a manual list of proxies.',
-        url: 'https://scrapoxy.io',
         group: EConnectorFactoryGroup.Other,
         canInstall: false,
         canUninstall: false,
