@@ -21,6 +21,7 @@ import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
     IProxyToConnect,
+    IProxyToRefresh,
     IProxyTransport,
 } from '@scrapoxy/common';
 import type { ISockets } from '@scrapoxy/proxy-sdk';
@@ -165,7 +166,7 @@ export abstract class ATransportProxyService implements ITransportService {
         urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
-        proxy: IProxyToConnect,
+        proxy: IProxyToRefresh,
         sockets: ISockets,
         timeout: number
     ): ClientRequestArgs {

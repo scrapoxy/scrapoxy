@@ -27,6 +27,7 @@ import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
     IProxyToConnect,
+    IProxyToRefresh,
 } from '@scrapoxy/common';
 import type { ISockets } from '@scrapoxy/proxy-sdk';
 import type {
@@ -125,7 +126,7 @@ export class TransportProxyLocalService implements ITransportService {
         urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
-        proxy: IProxyToConnect,
+        proxy: IProxyToRefresh,
         sockets: ISockets,
         timeout: number
     ): ClientRequestArgs {

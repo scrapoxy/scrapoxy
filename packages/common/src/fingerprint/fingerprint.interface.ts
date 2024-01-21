@@ -26,6 +26,10 @@ export interface IFingerprintRequest {
     mode: EFingerprintMode;
     connectorType: string;
     proxyId: string;
+}
+
+
+export interface IFingerprintPayload extends IFingerprintRequest {
     bytesReceived: number;
     bytesSent: number;
     requests: number;

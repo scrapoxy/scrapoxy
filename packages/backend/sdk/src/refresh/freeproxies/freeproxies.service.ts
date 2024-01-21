@@ -20,7 +20,7 @@ import type {
     IFingerprintRequest,
     IFreeproxiesToRefresh,
     IFreeproxyRefreshed,
-    IProxyToConnect,
+    IProxyToRefresh,
     IProxyTransport,
 } from '@scrapoxy/common';
 
@@ -66,16 +66,13 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     mode: EFingerprintMode.FREEPROXIES,
                     connectorType: CONNECTOR_FREEPROXIES_TYPE,
                     proxyId: freeproxy.id,
-                    bytesReceived: 0,
-                    bytesSent: 0,
-                    requests: 0,
                 };
                 const config: IProxyTransport = {
                     type: freeproxy.type,
                     address: freeproxy.address,
                     auth: freeproxy.auth,
                 };
-                const proxy: IProxyToConnect = {
+                const proxy: IProxyToRefresh = {
                     id: freeproxy.id,
                     projectId: freeproxy.projectId,
                     connectorId: freeproxy.connectorId,
@@ -83,6 +80,9 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     config,
                     key: freeproxy.key,
                     useragent: 'not_used',
+                    bytesReceived: 0,
+                    bytesSent: 0,
+                    requests: 0,
                 };
 
                 return fingerprint(

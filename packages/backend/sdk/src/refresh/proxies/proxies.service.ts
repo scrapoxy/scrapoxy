@@ -77,9 +77,6 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
                     mode: EFingerprintMode.CONNECTOR,
                     connectorType: proxy.type,
                     proxyId: proxy.id,
-                    bytesReceived: proxy.bytesReceived,
-                    bytesSent: proxy.bytesSent,
-                    requests: proxy.requests,
                 };
 
                 return fingerprint(

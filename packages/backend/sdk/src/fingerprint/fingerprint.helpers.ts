@@ -15,8 +15,9 @@ import type { ITransportService } from '../transports';
 import type {
     IFingerprint,
     IFingerprintOptions,
+    IFingerprintPayload,
     IFingerprintRequest,
-    IProxyToConnect,
+    IProxyToRefresh,
 } from '@scrapoxy/common';
 import type { ClientRequestArgs } from 'http';
 
@@ -30,7 +31,7 @@ class RedirectError extends Error {
 
 function fingerprintRequest(
     args: ClientRequestArgs,
-    payload: IFingerprintRequest
+    payload: IFingerprintPayload
 ) {
     return new Promise<IFingerprint>((
         resolve, reject
@@ -136,7 +137,7 @@ function fingerprintRequest(
 function fingerprintImpl(
     url: string,
     transport: ITransportService,
-    proxy: IProxyToConnect,
+    proxy: IProxyToRefresh,
     payload: IFingerprintRequest,
     sockets: Sockets,
     useragent: string,
@@ -165,10 +166,16 @@ function fingerprintImpl(
         sockets,
         timeout
     );
+    const fingerprintPayload: IFingerprintPayload = {
+        ...payload,
+        requests: proxy.requests,
+        bytesReceived: proxy.bytesReceived,
+        bytesSent: proxy.bytesSent,
+    };
 
     return fingerprintRequest(
         reqArgs,
-        payload
+        fingerprintPayload
     )
         .catch((err: any) => {
             if (err instanceof RedirectError) {
@@ -216,16 +223,16 @@ function fingerprintImpl(
 
 export function fingerprint(
     transport: ITransportService,
-    proxy: IProxyToConnect,
+    proxy: IProxyToRefresh,
     options: IFingerprintOptions,
-    payload: IFingerprintRequest,
+    fingerprintPayload: IFingerprintRequest,
     sockets: Sockets
 ): Promise<IFingerprint> {
     return fingerprintImpl(
         options.url,
         transport,
         proxy,
-        payload,
+        fingerprintPayload,
         sockets,
         options.useragent,
         options.timeout,
