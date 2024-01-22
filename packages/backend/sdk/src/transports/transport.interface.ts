@@ -25,7 +25,6 @@ export interface ITransportService {
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number
     ) => ClientRequestArgs;
 
     buildFingerprintRequestArgs: (
@@ -35,7 +34,6 @@ export interface ITransportService {
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets,
-        timeout: number
     ) => ClientRequestArgs;
 
     connect: (
@@ -43,7 +41,6 @@ export interface ITransportService {
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number,
         callback: (err: Error, socket: Socket) => void
     ) => void;
 }

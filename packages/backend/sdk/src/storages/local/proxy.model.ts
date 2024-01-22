@@ -37,6 +37,7 @@ export function toProxyToRefresh(proxy: IProxyModel): IProxyToRefresh {
         key: proxy.key,
         config: proxy.config,
         useragent: proxy.useragent,
+        timeout: proxy.timeout,
         bytesReceived: proxy.bytesReceived,
         bytesSent: proxy.bytesSent,
         requests: proxy.requests,

@@ -2,7 +2,6 @@ import {
     IncomingMessage,
     request,
 } from 'http';
-import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import {
     parseError,
     Sockets,
@@ -141,7 +140,6 @@ function fingerprintImpl(
     payload: IFingerprintRequest,
     sockets: Sockets,
     useragent: string,
-    timeout: number,
     followRedirectCount: number,
     retry: number
 ): Promise<IFingerprint> {
@@ -163,8 +161,7 @@ function fingerprintImpl(
             Host: `${urlOpts.hostname}:${urlOpts.port}`,
         },
         proxy,
-        sockets,
-        timeout
+        sockets
     );
     const fingerprintPayload: IFingerprintPayload = {
         ...payload,
@@ -196,7 +193,6 @@ function fingerprintImpl(
                     payload,
                     sockets,
                     useragent,
-                    timeout,
                     followRedirectCount - 1,
                     retry
                 );
@@ -210,7 +206,6 @@ function fingerprintImpl(
                     payload,
                     sockets,
                     useragent,
-                    timeout,
                     followRedirectCount,
                     retry - 1
                 );
@@ -235,7 +230,6 @@ export function fingerprint(
         fingerprintPayload,
         sockets,
         options.useragent,
-        options.timeout,
         options.followRedirectMax,
         options.retryMax
     );
@@ -244,16 +238,11 @@ export function fingerprint(
 
 export function getEnvFingerprintConfig(
     version: string,
-    url?: string,
-    timeout?: number
+    url?: string
 ): IFingerprintOptions {
     return {
         url: url && url.length > 0 ? url : process.env.FINGERPRINT_URL ?? 'https://fingerprint.scrapoxy.io/api/json',
         useragent: formatUseragent(version),
-        timeout: timeout ?? timeout === 0 ? timeout : parseInt(
-            process.env.FINGERPRINT_TIMEOUT ?? (5 * ONE_SECOND_IN_MS).toString(),
-            10
-        ),
         followRedirectMax: parseInt(
             process.env.FINGERPRINT_FOLLOW_REDIRECT_MAX ?? '3',
             10

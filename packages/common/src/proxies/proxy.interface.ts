@@ -155,6 +155,7 @@ export const PROXY_TO_CONNECT_META = [
     'key',
     'config',
     'useragent',
+    'timeout',
 ];
 
 
@@ -166,6 +167,7 @@ export interface IProxyToConnect {
     key: string;
     config: any;
     useragent: string;
+    timeout: number;
 }
 
 

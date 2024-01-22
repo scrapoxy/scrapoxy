@@ -1,8 +1,5 @@
 import { Module } from '@nestjs/common';
-import {
-    ONE_MINUTE_IN_MS,
-    ONE_SECOND_IN_MS,
-} from '@scrapoxy/common';
+import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import { MASTER_MODULE_CONFIG } from './master.constants';
 import { MasterService } from './master.service';
 import {
@@ -28,7 +25,6 @@ export interface IMasterRefreshClientModuleConfig extends ICommanderRefreshClien
 
 export interface IMasterModuleConfig {
     port: number;
-    timeout: number;
     master: ICommanderMasterClientModuleConfig;
     refreshMetrics: IMasterRefreshClientModuleConfig;
     trackSockets: boolean;
@@ -75,10 +71,6 @@ export class MasterModule {
         const config: IMasterModuleConfig = {
             port: port !== void 0 ? port : parseInt(
                 process.env.MASTER_PORT ?? '8888',
-                10
-            ),
-            timeout: parseInt(
-                process.env.MASTER_TIMEOUT ?? ONE_MINUTE_IN_MS.toString(10),
                 10
             ),
             master: getEnvCommanderMasterClientModuleConfig(

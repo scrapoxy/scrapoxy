@@ -27,9 +27,17 @@ export interface IFreeproxy extends IFreeproxyBase, IFingerprintResponse {
 }
 
 
+export interface IFreeproxyToRefresh extends IFreeproxyBase {
+    id: string;
+    connectorId: string;
+    projectId: string;
+    timeout: number;
+}
+
+
 export interface IFreeproxiesToRefresh {
     installId: string;
-    freeproxies: IFreeproxy[];
+    freeproxies: IFreeproxyToRefresh[];
 }
 
 

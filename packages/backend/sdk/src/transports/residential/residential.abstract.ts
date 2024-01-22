@@ -42,8 +42,7 @@ export abstract class ATransportResidentialService implements ITransportService 
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigResidential;
 
@@ -55,7 +54,7 @@ export abstract class ATransportResidentialService implements ITransportService 
                     headers,
                     config,
                     sockets,
-                    timeout
+                    proxy.timeout
                 );
             }
 
@@ -67,7 +66,7 @@ export abstract class ATransportResidentialService implements ITransportService 
                     headersConnect,
                     config,
                     sockets,
-                    timeout
+                    proxy.timeout
                 );
             }
 
@@ -83,8 +82,7 @@ export abstract class ATransportResidentialService implements ITransportService 
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         return this.buildRequestArgs(
             method,
@@ -92,8 +90,7 @@ export abstract class ATransportResidentialService implements ITransportService 
             headers,
             headersConnect,
             proxy,
-            sockets,
-            timeout
+            sockets
         );
     }
 
@@ -102,7 +99,6 @@ export abstract class ATransportResidentialService implements ITransportService 
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number,
         callback: (err: Error, socket: Socket) => void
     ) {
         const config = proxy.config as IProxyToConnectConfigResidential;
@@ -115,7 +111,7 @@ export abstract class ATransportResidentialService implements ITransportService 
             port: config.address.port,
             path: url,
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 opts,
                 oncreate

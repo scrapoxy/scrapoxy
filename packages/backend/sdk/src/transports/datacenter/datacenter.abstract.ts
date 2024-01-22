@@ -46,8 +46,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigDatacenter;
         let ssl: boolean;
@@ -76,7 +75,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                 false
             ),
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 args,
                 oncreate
@@ -87,7 +86,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                     port: args.port,
                     path: headersConnect.Host as string,
                     headers: headersConnect,
-                    timeout,
+                    timeout: proxy.timeout,
                     createConnection: (
                         args2,
                         oncreate2
@@ -167,7 +166,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                                 socket: proxySocket,
                                 requestCert: true,
                                 rejectUnauthorized: false,
-                                timeout,
+                                timeout: proxy.timeout,
                             };
 
                             if (isUrl(urlOpts.hostname)) {
@@ -227,8 +226,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         headersConnect[ `${SCRAPOXY_HEADER_PREFIX}-Metrics` ] = 'ignore';
 
@@ -238,8 +236,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
             headers,
             headersConnect,
             proxy,
-            sockets,
-            timeout
+            sockets
         );
     }
 
@@ -248,7 +245,6 @@ export abstract class ATransportDatacenterService implements ITransportService {
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number,
         callback: (err: Error, socket: Socket) => void
     ) {
         const config = proxy.config as IProxyToConnectConfigDatacenter;
@@ -258,7 +254,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
             port: config.address.port,
             path: url,
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 args,
                 oncreate

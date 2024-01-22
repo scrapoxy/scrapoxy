@@ -29,8 +29,7 @@ export class RefreshProxiesModule {
         url: string,
         version: string,
         trackSockets: boolean,
-        fingerprintUrl?: string,
-        fingerprintTimeout?: number
+        fingerprintUrl?: string
     ): DynamicModule {
         const config: IRefreshProxiesModuleConfig = {
             url,
@@ -46,8 +45,7 @@ export class RefreshProxiesModule {
             ),
             fingerprint: getEnvFingerprintConfig(
                 version,
-                fingerprintUrl,
-                fingerprintTimeout
+                fingerprintUrl
             ),
             trackSockets,
         };

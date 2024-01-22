@@ -26,8 +26,7 @@ export class RefreshFreeproxiesModule {
     static forRoot(
         url: string,
         version: string,
-        fingerprintUrl?: string,
-        fingerprintTimeout?: number
+        fingerprintUrl?: string
     ): DynamicModule {
         const config: IRefreshFreeproxiesModuleConfig = {
             url,
@@ -43,8 +42,7 @@ export class RefreshFreeproxiesModule {
             ),
             fingerprint: getEnvFingerprintConfig(
                 version,
-                fingerprintUrl,
-                fingerprintTimeout
+                fingerprintUrl
             ),
         };
 

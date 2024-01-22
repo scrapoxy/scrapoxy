@@ -378,7 +378,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 },
                 proxy,
                 sockets,
-                this.config.timeout
             );
 
             reqArgs.headers = reqArgs.headers ?? {};
@@ -540,15 +539,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             }
         );
 
-        socket.on(
-            'timeout',
-            () => {
-                socket.destroy();
-                socket.emit('close');
-            }
-        );
-        socket.setTimeout(this.config.timeout);
-
         const sockets = this.config.trackSockets ? new SocketsDebug(this.sockets) : new Sockets(this.sockets);
         socket.on(
             'close',
@@ -647,15 +637,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         );
 
         tlsSocket.on(
-            'timeout',
-            () => {
-                tlsSocket.destroy();
-                tlsSocket.emit('close');
-            }
-        );
-        tlsSocket.setTimeout(socket.timeout as number);
-
-        tlsSocket.on(
             'close',
             () => {
                 sockets.remove(tlsSocket);
@@ -739,6 +720,15 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             return;
         }
 
+        socket.on(
+            'timeout',
+            () => {
+                socket.destroy();
+                socket.emit('close');
+            }
+        );
+        socket.setTimeout(proxy.timeout);
+
         const sIn = new PassThrough(),
             sOut = new PassThrough();
         // Attach metrics for this connection
@@ -764,7 +754,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 },
                 proxy,
                 sockets,
-                this.config.timeout,
                 (
                     err, pSocket
                 ) => {
