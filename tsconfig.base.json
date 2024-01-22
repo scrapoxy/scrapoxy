@@ -111,6 +111,15 @@
             "@scrapoxy/connector-iproyal-server-sdk": [
                 "packages/connectors/iproyal/server/sdk/src/index.ts"
             ],
+            "@scrapoxy/connector-nimbleway-backend": [
+                "packages/connectors/nimbleway/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-nimbleway-frontend": [
+                "packages/connectors/nimbleway/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-nimbleway-sdk": [
+                "packages/connectors/nimbleway/sdk/src/index.ts"
+            ],
             "@scrapoxy/connector-ninjasproxy-backend": [
                 "packages/connectors/ninjasproxy/backend/src/index.ts"
             ],

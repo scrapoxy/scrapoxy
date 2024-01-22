@@ -22,6 +22,7 @@ import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-fron
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-frontend';
 import { ConnectorIproyalResidentialModule } from '@scrapoxy/connector-iproyal-residential-frontend';
 import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server-frontend';
+import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-frontend';
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-frontend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-frontend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-frontend';
@@ -61,6 +62,7 @@ import { LoginComponent } from './login/login.component';
         ConnectorGcpModule,
         ConnectorIproyalResidentialModule,
         ConnectorIproyalServerModule,
+        ConnectorNimblewayModule,
         ConnectorNinjasproxyModule,
         ConnectorOvhModule,
         ConnectorProxidizeModule,

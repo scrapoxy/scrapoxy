@@ -125,6 +125,7 @@ export default defineConfig({
                         base: '/connectors/',
                         items: [
                             {text: 'IP Royal', link: 'iproyal/guide'},
+                            {text: 'Nimble', link: 'nimbleway/guide'},
                             {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
                             {text: 'Proxy Rack', link: 'proxyrack/guide'},
                             {text: 'Rayobyte', link: 'rayobyte/guide'},

@@ -38,6 +38,7 @@ import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-back
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-backend';
 import { ConnectorIproyalResidentialModule } from '@scrapoxy/connector-iproyal-residential-backend';
 import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server-backend';
+import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-backend';
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-backend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-backend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-backend';
@@ -92,6 +93,7 @@ export class AppStartModule {
             ConnectorGcpModule,
             ConnectorIproyalResidentialModule,
             ConnectorIproyalServerModule,
+            ConnectorNimblewayModule,
             ConnectorNinjasproxyModule,
             ConnectorOvhModule,
             ConnectorProxidizeModule,
