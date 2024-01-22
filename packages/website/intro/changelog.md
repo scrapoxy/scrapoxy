@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.3.0
+
+### Features
+
+- **nimble**: add Nimble connector with Nimble IP
+
+### Bug fixes
+
+- **refactor**: rename cloud to datacenter
+- **frontend**: fix clipboard issue with old browser
+- **misc**: correct some naming, documentation
+- **storage**: allow empty file for file storage
+
+
 ## 4.2.3
 
 ### Bug fixes
