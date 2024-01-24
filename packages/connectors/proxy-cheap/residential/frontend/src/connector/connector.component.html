@@ -1,0 +1,123 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['country']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="country" formControlName="country">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="All">All</option>
+                        <option value="Afghanistan">Afghanistan</option>
+                        <option value="Albania">Albania</option>
+                        <option value="Algeria">Algeria</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Armenia">Armenia</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Austria">Austria</option>
+                        <option value="Azerbaijan">Azerbaijan</option>
+                        <option value="Bahrain">Bahrain</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Belarus">Belarus</option>
+                        <option value="Belgium">Belgium</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Bulgaria">Bulgaria</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Cameroon">Cameroon</option>
+                        <option value="Chile">Chile</option>
+                        <option value="China">China</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="CostaRica">Costa Rica</option>
+                        <option value="Croatia">Croatia</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Cyprus">Cyprus</option>
+                        <option value="Czechia">Czechia</option>
+                        <option value="Denmark">Denmark</option>
+                        <option value="DominicanRepublic">Dominican Republic</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="ElSalvador">El Salvador</option>
+                        <option value="Estonia">Estonia</option>
+                        <option value="Ethiopia">Ethiopia</option>
+                        <option value="Finland">Finland</option>
+                        <option value="France">France</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Ghana">Ghana</option>
+                        <option value="Greece">Greece</option>
+                        <option value="Guatemala">Guatemala</option>
+                        <option value="Guyana">Guyana</option>
+                        <option value="HongKong">Hong Kong</option>
+                        <option value="Hungary">Hungary</option>
+                        <option value="India">India</option>
+                        <option value="Indonesia">Indonesia</option>
+                        <option value="Iran">Iran</option>
+                        <option value="Iraq">Iraq</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Israel">Israel</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Jamaica">Jamaica</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Kazakhstan">Kazakhstan</option>
+                        <option value="Kenya">Kenya</option>
+                        <option value="Kuwait">Kuwait</option>
+                        <option value="Latvia">Latvia</option>
+                        <option value="Liechtenstein">Liechtenstein</option>
+                        <option value="RepublicofLithuania">Republic of Lithuania</option>
+                        <option value="Luxembourg">Luxembourg</option>
+                        <option value="Madagascar">Madagascar</option>
+                        <option value="Malaysia">Malaysia</option>
+                        <option value="Mauritius">Mauritius</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Montenegro">Montenegro</option>
+                        <option value="Morocco">Morocco</option>
+                        <option value="Mozambique">Mozambique</option>
+                        <option value="Myanmar">Myanmar</option>
+                        <option value="Nepal">Nepal</option>
+                        <option value="Netherlands">Netherlands</option>
+                        <option value="NewZealand">New Zealand</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Oman">Oman</option>
+                        <option value="Pakistan">Pakistan</option>
+                        <option value="Panama">Panama</option>
+                        <option value="Paraguay">Paraguay</option>
+                        <option value="Peru">Peru</option>
+                        <option value="Philippines">Philippines</option>
+                        <option value="Poland">Poland</option>
+                        <option value="Portugal">Portugal</option>
+                        <option value="Qatar">Qatar</option>
+                        <option value="Romania">Romania</option>
+                        <option value="Russia">Russia</option>
+                        <option value="SaudiArabia">Saudi Arabia</option>
+                        <option value="Senegal">Senegal</option>
+                        <option value="Serbia">Serbia</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Slovakia">Slovakia</option>
+                        <option value="Slovenia">Slovenia</option>
+                        <option value="Somalia">Somalia</option>
+                        <option value="SouthAfrica">South Africa</option>
+                        <option value="SouthKorea">South Korea</option>
+                        <option value="Spain">Spain</option>
+                        <option value="SriLanka">Sri Lanka</option>
+                        <option value="Sweden">Sweden</option>
+                        <option value="Switzerland">Switzerland</option>
+                        <option value="Taiwan">Taiwan</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="TrinidadandTobago">Trinidad and Tobago</option>
+                        <option value="Tunisia">Tunisia</option>
+                        <option value="Turkey">Turkey</option>
+                        <option value="Uganda">Uganda</option>
+                        <option value="Ukraine">Ukraine</option>
+                        <option value="UnitedArabEmirates">United Arab Emirates</option>
+                        <option value="UnitedKingdom">United Kingdom</option>
+                        <option value="UnitedStates">United States</option>
+                        <option value="Uzbekistan">Uzbekistan</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Vietnam">Vietnam</option>
+                    </select>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+</ng-container>

@@ -1,0 +1,19 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['networkType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="networkType">Type</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="networkType" formControlName="networkType">
+                        <option [ngValue]="null" disabled>----- Select Type ------</option>
+                        <option value="ALL">All</option>
+                        <option value="DATACENTER">Datacenter</option>
+                        <option value="MOBILE">Mobile</option>
+                        <option value="RESIDENTIAL_STATIC">Static Residential</option>
+                    </select>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+</ng-container>

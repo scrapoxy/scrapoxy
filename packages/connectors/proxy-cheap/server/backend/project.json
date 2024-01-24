@@ -1,0 +1,48 @@
+{
+    "name": "connector-proxy-cheap-server-backend",
+    "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/connectors/proxy-cheap/server/backend",
+    "sourceRoot": "packages/connectors/proxy-cheap/server/backend/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/connectors-proxy-cheap-server-backend",
+                "main": "packages/connectors/proxy-cheap/server/backend/src/index.ts",
+                "tsConfig": "packages/connectors/proxy-cheap/server/backend/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/connectors/proxy-cheap/server/backend/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/connectors/proxy-cheap/server/backend/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/connectors/proxy-cheap/server/backend/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

@@ -26,6 +26,8 @@ import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-frontend
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-frontend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-frontend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-frontend';
+import { ConnectorProxyCheapResidentialModule } from '@scrapoxy/connector-proxy-cheap-residential-frontend';
+import { ConnectorProxyCheapServerModule } from '@scrapoxy/connector-proxy-cheap-server-frontend';
 import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-frontend';
 import { ConnectorProxyrackModule } from '@scrapoxy/connector-proxyrack-frontend';
 import { ConnectorRayobyteModule } from '@scrapoxy/connector-rayobyte-frontend';
@@ -66,6 +68,8 @@ import { LoginComponent } from './login/login.component';
         ConnectorNinjasproxyModule,
         ConnectorOvhModule,
         ConnectorProxidizeModule,
+        ConnectorProxyCheapResidentialModule,
+        ConnectorProxyCheapServerModule,
         ConnectorProxyLocalModule,
         ConnectorProxyrackModule,
         ConnectorRayobyteModule,

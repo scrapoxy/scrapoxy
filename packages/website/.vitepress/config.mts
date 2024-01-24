@@ -127,6 +127,7 @@ export default defineConfig({
                             {text: 'IP Royal', link: 'iproyal/guide'},
                             {text: 'Nimble', link: 'nimbleway/guide'},
                             {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
+                            {text: 'Proxy-Cheap', link: 'proxy-cheap/guide'},
                             {text: 'Proxy Rack', link: 'proxyrack/guide'},
                             {text: 'Rayobyte', link: 'rayobyte/guide'},
                             {text: 'Zyte', link: 'zyte/guide'},

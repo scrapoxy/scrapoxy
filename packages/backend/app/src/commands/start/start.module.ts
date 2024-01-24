@@ -42,6 +42,8 @@ import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-backend'
 import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-backend';
 import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-backend';
 import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-backend';
+import { ConnectorProxyCheapResidentialModule } from '@scrapoxy/connector-proxy-cheap-residential-backend';
+import { ConnectorProxyCheapServerModule } from '@scrapoxy/connector-proxy-cheap-server-backend';
 import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-backend';
 import { ConnectorProxyrackModule } from '@scrapoxy/connector-proxyrack-backend';
 import { ConnectorRayobyteModule } from '@scrapoxy/connector-rayobyte-backend';
@@ -96,6 +98,8 @@ export class AppStartModule {
             ConnectorNimblewayModule,
             ConnectorNinjasproxyModule,
             ConnectorOvhModule,
+            ConnectorProxyCheapResidentialModule,
+            ConnectorProxyCheapServerModule,
             ConnectorProxidizeModule,
             ConnectorProxyrackModule,
             ConnectorRayobyteModule,

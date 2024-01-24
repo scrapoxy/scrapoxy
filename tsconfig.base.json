@@ -147,6 +147,24 @@
             "@scrapoxy/connector-proxidize-sdk": [
                 "packages/connectors/proxidize/sdk/src/index.ts"
             ],
+            "@scrapoxy/connector-proxy-cheap-residential-backend": [
+                "packages/connectors/proxy-cheap/residential/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxy-cheap-residential-frontend": [
+                "packages/connectors/proxy-cheap/residential/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxy-cheap-residential-sdk": [
+                "packages/connectors/proxy-cheap/residential/sdk/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxy-cheap-server-backend": [
+                "packages/connectors/proxy-cheap/server/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxy-cheap-server-frontend": [
+                "packages/connectors/proxy-cheap/server/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-proxy-cheap-server-sdk": [
+                "packages/connectors/proxy-cheap/server/sdk/src/index.ts"
+            ],
             "@scrapoxy/connector-proxy-local-backend": [
                 "packages/connectors/proxy-local/backend/src/index.ts"
             ],
