@@ -21,7 +21,7 @@ const proxy = {
 };
 const ca = fs.readFileSync('packages/backend/sdk/src/assets/certificates/scrapoxy-ca.crt')
     .toString();
-const THREADS_COUNT = 1000;
+const THREADS_COUNT = 100;
 
 
 function askFingerprintLoop(
@@ -37,7 +37,7 @@ function askFingerprintLoop(
     switch (mode) {
         case 0: {
             requestPromise = axios.get(
-                'http://fingerprint.scrapoxy.io/api/json',
+                'http://api.ipify.org',
                 {
                     proxy,
                     headers: {
@@ -55,7 +55,7 @@ function askFingerprintLoop(
 
         case 1: {
             requestPromise = axios.get(
-                'https://fingerprint.scrapoxy.io/api/json',
+                'https://api.ipify.org',
                 {
                     proxy,
                     headers: {
@@ -85,7 +85,7 @@ function askFingerprintLoop(
             };
 
             requestPromise = axios.get(
-                'https://fingerprint.scrapoxy.io/api/json',
+                'https://api.ipify.org',
                 {
                     httpsAgent,
                     validateStatus: (statusCode) => statusCode === 200,
@@ -107,7 +107,8 @@ function askFingerprintLoop(
         .then(([
             res, m, name,
         ]) => {
-            console.log(`[${m}] found ip ${res.data.ip} using ${name}`);
+            const ip = res.data;
+            console.log(`[${m}] found ip ${ip} using ${name}`);
         })
         .catch((err: any) => {
             console.error(`get error: ${err.message}`);
