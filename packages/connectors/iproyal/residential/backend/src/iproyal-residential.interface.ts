@@ -11,7 +11,6 @@ export interface IConnectorIproyalResidentialConfig {
     state: string;
     city: string;
     highEndPool: boolean;
-
 }
 
 

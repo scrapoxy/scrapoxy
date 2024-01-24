@@ -17,10 +17,10 @@ import type {
 
 
 function formatPassword(
-    username: string, options: IIproyalResidentialSessionOptions
+    password: string, options: IIproyalResidentialSessionOptions
 ): string {
     const lines = [
-        username, `session-${options.session}`, `lifetime-${options.lifetime}`,
+        password, `session-${options.session}`, `lifetime-${options.lifetime}`,
     ];
 
     if (options.country !== 'all') {

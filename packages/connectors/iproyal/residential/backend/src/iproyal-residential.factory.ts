@@ -125,7 +125,6 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory, On
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-
     }
 
     async listAllProxies(): Promise<IConnectorListProxies> {
