@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { generateRandomString } from '@scrapoxy/backend-sdk';
 import {
     EProxyStatus,
     safeJoin,
@@ -21,22 +22,6 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
     };
 
     return p;
-}
-
-
-const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-
-function generateRandomString(length: number): string {
-
-    let result = '';
-
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * CHARACTERS.length);
-        result += CHARACTERS.charAt(randomIndex);
-    }
-
-    return result;
 }
 
 

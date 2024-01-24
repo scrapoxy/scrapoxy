@@ -12,6 +12,8 @@ export * from './logger';
 
 export * from './sanitize-headers';
 
+export * from './sessions';
+
 export * from './sockets';
 
 export * from './token';
