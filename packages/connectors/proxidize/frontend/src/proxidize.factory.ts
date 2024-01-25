@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_PROXIDIZE_TYPE } from '@scrapoxy/connector-proxidize-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorProxidizeComponent } from './connector/connector.component';
 import { CredentialProxidizeComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorProxidizeFactory implements IConnectorFactory {
        name: 'Proxidize',
        description: 'Proxidize is a revolutionary mobile proxy network creation and management platform built on mobile devices allowing businesses to create ultra-powerful proxies that are incomparable to anything else.',
        url: 'https://proxidize.com',
-       group: EConnectorFactoryGroup.Hardware,
+       type: EConnectorType.Hardware,
        canInstall: false,
        canUninstall: false,
        canReplaceProxy: true,

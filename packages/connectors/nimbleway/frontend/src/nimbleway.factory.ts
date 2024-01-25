@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_NIMBLEWAY_TYPE } from '@scrapoxy/connector-nimbleway-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorNimblewayComponent } from './connector/connector.component';
 import { CredentialNimblewayComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorNimblewayFactory implements IConnectorFactory {
         name: 'Nimble',
         description: 'Nimble is an experience seamless data-gathering with high-performance residential proxies, optimized for superior quality and granular control.',
         url: 'https://tracking.nimbleway.com/SH4a',
-        group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+        type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,
         useCertificate: false,

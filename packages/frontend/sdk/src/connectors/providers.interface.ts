@@ -2,12 +2,12 @@ import { Type } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 
-export enum EConnectorFactoryGroup {
-    DatacenterProvider = 'datacenter_provider',
-    ProxiesServiceStatic = 'proxies_service_static',
-    ProxiesServiceDynamic = 'proxies_service_dynamic',
+export enum EConnectorType {
+    Datacenter = 'datacenter',
+    StaticIp = 'ip_static',
+    DynamicIP = 'ip_dynamic',
     Hardware = 'hardware',
-    Other = 'freeproxies',
+    List = 'list',
 }
 
 
@@ -18,7 +18,7 @@ export interface IConnectorConfig {
 
     url?: string;
 
-    group: EConnectorFactoryGroup;
+    type: EConnectorType;
 
     canInstall: boolean;
 

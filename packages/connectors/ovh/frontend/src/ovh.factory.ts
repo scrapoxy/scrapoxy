@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_OVH_TYPE } from '@scrapoxy/connector-ovh-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorOvhComponent } from './connector/connector.component';
 import { CredentialOvhComponent } from './credential/credential.component';
@@ -27,7 +27,7 @@ export class ConnectorOvhFactory implements IConnectorFactory {
        name: 'OVH Cloud',
        description: 'OVH Cloud is a french cloud computing service created by OVH. In 2023, OVH Cloud has 34 data centers in 8 regions.',
        url: 'https://www.ovhcloud.com',
-       group: EConnectorFactoryGroup.DatacenterProvider,
+       type: EConnectorType.Datacenter,
        canInstall: true,
        canUninstall: true,
        canReplaceProxy: false,

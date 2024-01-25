@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/connector-freeproxies-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorFreeproxiesComponent } from './connector/connector.component';
 import { CredentialFreeproxiesComponent } from './credential/credential.component';
@@ -25,7 +25,7 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Free Proxies List',
         description: 'Free proxies list is a type of connector to hold a manual list of proxies.',
-        group: EConnectorFactoryGroup.Other,
+        type: EConnectorType.List,
         canInstall: false,
         canUninstall: false,
         canReplaceProxy: false,

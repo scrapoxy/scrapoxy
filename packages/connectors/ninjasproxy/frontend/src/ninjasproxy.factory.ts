@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_NINJASPROXY_TYPE } from '@scrapoxy/connector-ninjasproxy-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorNinjasproxyComponent } from './connector/connector.component';
 import { CredentialNinjasproxyComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorNinjasproxyFactory implements IConnectorFactory {
        name: 'Ninjas proxy',
        description: 'Ninjas proxy is a provider that offers static and residential proxies',
        url: 'https://ninjasproxy.com/',
-       group: EConnectorFactoryGroup.ProxiesServiceStatic,
+       type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,
        useCertificate: false,

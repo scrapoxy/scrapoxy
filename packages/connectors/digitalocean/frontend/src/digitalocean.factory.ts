@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_DIGITALOCEAN_TYPE } from '@scrapoxy/connector-digitalocean-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorDigitaloceanComponent } from './connector/connector.component';
 import { CredentialDigitaloceanComponent } from './credential/credential.component';
@@ -27,7 +27,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory {
         name: 'Digital Ocean',
         description: 'Digital Ocean is an US multinational cloud provider. In 2023, Digital Ocean has 15 data centers in 9 regions.',
         url: 'https://www.digitalocean.com',
-        group: EConnectorFactoryGroup.DatacenterProvider,
+        type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,
         canReplaceProxy: false,

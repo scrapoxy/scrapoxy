@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_ZYTE_TYPE } from '@scrapoxy/connector-zyte-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorZyteComponent } from './connector/connector.component';
 import { CredentialZyteComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorZyteFactory implements IConnectorFactory {
         name: 'Zyte Smartproxy Manager API',
         description: 'Zyte (formely Crawlera) is a proxies service for Data Extraction.',
         url: 'https://zyte.com',
-        group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+        type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,
         canReplaceProxy: false,

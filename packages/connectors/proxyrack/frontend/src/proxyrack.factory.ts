@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_PROXYRACK_TYPE } from '@scrapoxy/connector-proxyrack-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorProxyrackComponent } from './connector/connector.component';
 import { CredentialProxyrackComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorProxyrackFactory implements IConnectorFactory {
         name: 'Proxyrack',
         description: 'Proxyrack is an online platform that provides diverse and rotating residential, datacenter, and mobile proxies.',
         url: 'https://proxyrack.com',
-        group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+        type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,
         useCertificate: false,

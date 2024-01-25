@@ -9,7 +9,7 @@ import {
 import {
     CommanderFrontendClientService,
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
     ProjectCurrentService,
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
@@ -29,10 +29,10 @@ import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type { IConnectorConfig } from '@scrapoxy/frontend-sdk';
 
 
-interface IGroupOfProviders {
-    group: string;
+interface ITypeOfConnectors {
+    type: string;
     name: string;
-    providers: {
+    connectors: {
         key: string;
         config: IConnectorConfig;
     }[];
@@ -46,41 +46,41 @@ interface IGroupOfProviders {
     ],
 })
 export class MarketplaceComponent implements OnInit, OnDestroy {
-    EGroup = EConnectorFactoryGroup;
+    EConnectorType = EConnectorType;
 
-    groupsOfProvidersFiltered: IGroupOfProviders[] = [];
+    typesOfConnectorsFiltered: ITypeOfConnectors[] = [];
 
     projectId: string;
 
     projectName = '';
 
-    providersLoaded = false;
+    connectorsLoaded = false;
 
-    private readonly groupsOfProviders: IGroupOfProviders[] = [
+    private readonly typesOfConnectors: ITypeOfConnectors[] = [
         {
-            group: EConnectorFactoryGroup.ProxiesServiceStatic,
-            name: 'Static Proxies Services',
-            providers: [],
+            type: EConnectorType.StaticIp,
+            name: 'Static IP Providers',
+            connectors: [],
         },
         {
-            group: EConnectorFactoryGroup.ProxiesServiceDynamic,
-            name: 'Dynamic Proxies Services',
-            providers: [],
+            type: EConnectorType.DynamicIP,
+            name: 'Dynamic IP Providers',
+            connectors: [],
         },
         {
-            group: EConnectorFactoryGroup.Hardware,
-            name: 'Hardware Materials',
-            providers: [],
+            type: EConnectorType.Hardware,
+            name: 'Hardware Providers',
+            connectors: [],
         },
         {
-            group: EConnectorFactoryGroup.DatacenterProvider,
+            type: EConnectorType.Datacenter,
             name: 'Datacenter Providers',
-            providers: [],
+            connectors: [],
         },
         {
-            group: EConnectorFactoryGroup.Other,
-            name: 'Others',
-            providers: [],
+            type: EConnectorType.List,
+            name: 'Proxies List',
+            connectors: [],
         },
     ];
 
@@ -123,27 +123,27 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
                 .filter((factory) => backendTypes.includes(factory.type));
 
             for (const factory of factories) {
-                const group = this.groupsOfProviders.find((g) => g.group === factory.config.group);
+                const tcs = this.typesOfConnectors.find((g) => g.type === factory.config.type);
 
-                if (group) {
-                    group.providers.push({
+                if (tcs) {
+                    tcs.connectors.push({
                         key: factory.type,
                         config: factory.config,
                     });
                 } else {
-                    console.log(`Group not found for type=${factory.type} and group=${factory.config.group}`);
+                    console.log(`Type not found for ${factory.type} and type=${factory.config.type}`);
                 }
             }
 
-            for (const group of this.groupsOfProviders) {
-                group.providers.sort((
+            for (const tcs of this.typesOfConnectors) {
+                tcs.connectors.sort((
                     a, b
                 ) => a.config.name.localeCompare(b.config.name));
             }
 
             this.update();
 
-            this.providersLoaded = true;
+            this.connectorsLoaded = true;
         } catch (err: any) {
             console.error(err);
 
@@ -164,32 +164,32 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
             .toLowerCase());
     }
 
-    async create(provider: string) {
+    async create(connector: string) {
         await this.router.navigate([
             '/projects',
             this.projectId,
             'credentials',
             'create',
-            provider,
+            connector,
         ]);
     }
 
     private update() {
         if (this.search.length > 0) {
-            this.groupsOfProvidersFiltered = this.groupsOfProviders.map((group) => {
-                const providers = group.providers.filter((provider) => provider.key.toLowerCase()
+            this.typesOfConnectorsFiltered = this.typesOfConnectors.map((tcs) => {
+                const connectors = tcs.connectors.filter((connector) => connector.key.toLowerCase()
                     .includes(this.search) ||
-                        provider.config.name.toLowerCase()
+                        connector.config.name.toLowerCase()
                             .includes(this.search));
 
                 return {
-                    ...group,
-                    providers,
+                    ...tcs,
+                    connectors,
                 };
             })
-                .filter((group) => group.providers.length > 0);
+                .filter((tp) => tp.connectors.length > 0);
         } else {
-            this.groupsOfProvidersFiltered = this.groupsOfProviders;
+            this.typesOfConnectorsFiltered = this.typesOfConnectors;
         }
     }
 }

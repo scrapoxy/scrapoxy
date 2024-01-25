@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_PROXY_CHEAP_SERVER_TYPE } from '@scrapoxy/connector-proxy-cheap-server-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorProxyCheapServerComponent } from './connector/connector.component';
 import { CredentialProxyCheapServerComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorProxyCheapServerFactory implements IConnectorFactory {
        name: 'Proxy-Cheap Server',
        description: 'Proxy-Cheap offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale.',
        url: 'https://proxy-cheap.com',
-       group: EConnectorFactoryGroup.ProxiesServiceStatic,
+       type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,
        useCertificate: false,

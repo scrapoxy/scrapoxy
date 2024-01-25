@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_XPROXY_TYPE } from '@scrapoxy/connector-xproxy-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorXProxyComponent } from './connector/connector.component';
 import { CredentialXProxyComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorXProxyFactory implements IConnectorFactory {
         name: 'XProxy',
         description: 'XProxy creates a secure proxy that supports HTTP, SOCKS5, IPv4, IPv6 with 4G/5G dongles',
         url: 'https://xproxy.io',
-        group: EConnectorFactoryGroup.Hardware,
+        type: EConnectorType.Hardware,
         canInstall: false,
         canUninstall: false,
         canReplaceProxy: true,

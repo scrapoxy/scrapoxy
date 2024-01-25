@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_IPROYAL_RESIDENTIAL_TYPE } from '@scrapoxy/connector-iproyal-residential-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorIproyalResidentialComponent } from './connector/connector.component';
 import { CredentialIproyalResidentialComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory {
        name: 'IPRoyal Residential',
        description: 'IPRoyal is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies',
        url: 'https://iproyal.com',
-       group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+       type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,
        useCertificate: false,

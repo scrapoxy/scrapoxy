@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_GCP_TYPE } from '@scrapoxy/connector-gcp-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorGcpComponent } from './connector/connector.component';
 import { CredentialGcpComponent } from './credential/credential.component';
@@ -28,7 +28,7 @@ export class ConnectorGcpFactory implements IConnectorFactory {
        name: 'Google Cloud Platform',
        description: 'Google Cloud Platform is a cloud computing services that runs on the same infrastructure that Google uses internally. In 2023, GCP has 148 data centers in 49 regions.',
        url: 'https://cloud.google.com',
-       group: EConnectorFactoryGroup.DatacenterProvider,
+       type: EConnectorType.Datacenter,
        canInstall: true,
        canUninstall: true,
        canReplaceProxy: false,

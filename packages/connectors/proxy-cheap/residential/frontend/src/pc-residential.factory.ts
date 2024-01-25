@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE } from '@scrapoxy/connector-proxy-cheap-residential-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorProxyCheapResidentialComponent } from './connector/connector.component';
 import { CredentialProxyCheapResidentialComponent } from './credential/credential.component';
@@ -26,7 +26,7 @@ export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory 
        name: 'Proxy-Cheap Residential',
        description: 'Proxy-Cheap offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale.',
        url: 'https://proxy-cheap.com',
-       group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+       type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,
        useCertificate: false,

@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorDatacenterLocalComponent } from './connector/connector.component';
 import { CredentialDatacenterLocalComponent } from './credential/credential.component';
@@ -27,7 +27,7 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory {
         name: 'Local datacenter',
         description: 'Local datacenter is test datacenter for Scrapoxy internal use.',
         url: 'https://scrapoxy.io',
-        group: EConnectorFactoryGroup.DatacenterProvider,
+        type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,
         canReplaceProxy: false,

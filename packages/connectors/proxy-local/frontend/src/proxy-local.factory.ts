@@ -5,7 +5,7 @@ import {
 import { CONNECTOR_PROXY_LOCAL_TYPE } from '@scrapoxy/connector-proxy-local-sdk';
 import {
     ConnectorprovidersService,
-    EConnectorFactoryGroup,
+    EConnectorType,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorProxyLocalComponent } from './connector/connector.component';
 import { CredentialProxyLocalComponent } from './credential/credential.component';
@@ -25,7 +25,7 @@ export class ConnectorProxyLocalFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Local proxies API',
         description: 'Local proxies API is test proxies service for Scrapoxy internal use.',
-        group: EConnectorFactoryGroup.ProxiesServiceDynamic,
+        type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,
         canReplaceProxy: false,
