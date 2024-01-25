@@ -24,8 +24,8 @@ export class ConnectorNimblewayFactory implements IConnectorFactory {
 
     readonly config: IConnectorConfig = {
         name: 'Nimble',
-        description: 'Nimble is an online platform that provides diverse and rotating residential proxies.',
-        url: 'https://nimbleway.com',
+        description: 'Nimble is an experience seamless data-gathering with high-performance residential proxies, optimized for superior quality and granular control.',
+        url: 'https://tracking.nimbleway.com/SH4a',
         group: EConnectorFactoryGroup.ProxiesServiceDynamic,
         canInstall: false,
         canUninstall: false,

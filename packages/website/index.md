@@ -52,7 +52,7 @@ providers:
           url: 'https://iproyal.com'
           img: '/assets/images/iproyal.svg'
         - name: 'Nimble'
-          url: 'https://nimbleway.com'
+          url: 'https://tracking.nimbleway.com/SH4a'
           img: '/assets/images/nimbleway.svg'
         - name: 'Ninjas Proxy'
           url: 'https://ninjasproxy.com'

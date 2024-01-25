@@ -2,8 +2,7 @@
 
 ![Nimble](/assets/images/nimbleway.svg){width=250 nozoom}
 
-[Nimble](https://www.nimbleway.com) is an online platform that provides diverse and rotating residential proxies.
-
+[Nimble](https://tracking.nimbleway.com/SH4a) is an experience seamless data-gathering with high-performance residential proxies, optimized for superior quality and granular control.
 
 ## Prerequisites
 
