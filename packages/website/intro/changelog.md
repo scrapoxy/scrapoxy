@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.4.1
+
+### Bug fixes
+
+- **github**: add script to build and publish docker image and npm package
+
+
 ## 4.4.0
 
 ### Features
