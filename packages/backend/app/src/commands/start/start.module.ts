@@ -36,6 +36,7 @@ import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-l
 import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-backend';
 import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-backend';
+import { ConnectorHypeproxyModule } from '@scrapoxy/connector-hypeproxy-backend';
 import { ConnectorIproyalResidentialModule } from '@scrapoxy/connector-iproyal-residential-backend';
 import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server-backend';
 import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-backend';
@@ -93,6 +94,7 @@ export class AppStartModule {
             ConnectorDigitaloceanModule,
             ConnectorFreeproxiesModule,
             ConnectorGcpModule,
+            ConnectorHypeproxyModule,
             ConnectorIproyalResidentialModule,
             ConnectorIproyalServerModule,
             ConnectorNimblewayModule,

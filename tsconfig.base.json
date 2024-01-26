@@ -111,6 +111,15 @@
             "@scrapoxy/connector-iproyal-server-sdk": [
                 "packages/connectors/iproyal/server/sdk/src/index.ts"
             ],
+            "@scrapoxy/connector-hypeproxy-backend": [
+                "packages/connectors/hypeproxy/backend/src/index.ts"
+            ],
+            "@scrapoxy/connector-hypeproxy-frontend": [
+                "packages/connectors/hypeproxy/frontend/src/index.ts"
+            ],
+            "@scrapoxy/connector-hypeproxy-sdk": [
+                "packages/connectors/hypeproxy/sdk/src/index.ts"
+            ],
             "@scrapoxy/connector-nimbleway-backend": [
                 "packages/connectors/nimbleway/backend/src/index.ts"
             ],

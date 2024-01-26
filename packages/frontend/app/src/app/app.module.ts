@@ -20,6 +20,7 @@ import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-l
 import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-frontend';
 import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-frontend';
 import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-frontend';
+import { ConnectorHypeproxyModule } from '@scrapoxy/connector-hypeproxy-frontend';
 import { ConnectorIproyalResidentialModule } from '@scrapoxy/connector-iproyal-residential-frontend';
 import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server-frontend';
 import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-frontend';
@@ -62,6 +63,7 @@ import { LoginComponent } from './login/login.component';
         ConnectorDigitaloceanModule,
         ConnectorFreeproxiesModule,
         ConnectorGcpModule,
+        ConnectorHypeproxyModule,
         ConnectorIproyalResidentialModule,
         ConnectorIproyalServerModule,
         ConnectorNimblewayModule,

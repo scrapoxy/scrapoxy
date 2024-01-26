@@ -48,6 +48,9 @@ providers:
     - tier: "Proxies Services"
       size: 'medium'
       items:
+        - name: 'HypeProxy'
+          url: 'https://hypeproxy.io'
+          img: '/assets/images/hypeproxy.svg'
         - name: 'IPRoyal'
           url: 'https://iproyal.com'
           img: '/assets/images/iproyal.svg'

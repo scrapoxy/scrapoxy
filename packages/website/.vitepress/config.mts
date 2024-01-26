@@ -124,6 +124,7 @@ export default defineConfig({
                         text: 'Proxies Services',
                         base: '/connectors/',
                         items: [
+                            {text: 'HypeProxy', link: 'hypeproxy/guide'},
                             {text: 'IP Royal', link: 'iproyal/guide'},
                             {text: 'Nimble', link: 'nimbleway/guide'},
                             {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
