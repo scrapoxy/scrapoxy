@@ -7,8 +7,13 @@
     "description": "Scrapoxy is a super-proxy aggregator for scrapers",
     "url": "https://github.com/fabienvauchelles/scrapoxy",
     "homepage": "https://scrapoxy.io",
-    "repository": "fabienvauchelles/scrapoxy",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fabienvauchelles/scrapoxy"
+    },
     "license": "MIT",
+    "scripts": {
+    },
     "dependencies": {
         "@nestjs/common": "~10.2.0",
         "@nestjs/core": "~10.2.0",

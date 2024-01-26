@@ -8,14 +8,16 @@
     "description": "Scrapoxy is a super-proxy aggregator for scrapers",
     "url": "https://github.com/fabienvauchelles/scrapoxy",
     "homepage": "https://scrapoxy.io",
-    "repository": "fabienvauchelles/scrapoxy",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fabienvauchelles/scrapoxy"
+    },
     "license": "MIT",
     "private": true,
     "scripts": {
         "nx": "nx",
         "build": "nx run-many --target=build",
         "build:production": "nx run-many --target=build --configuration production",
-        "docker-build": "nx run-many --target=docker-build --skip-nx-cache --configuration production",
         "lint": "nx run-many --target=lint",
         "prepare": "husky install",
         "start:frontend-app": "nx serve frontend-app",
