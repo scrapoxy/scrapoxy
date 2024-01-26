@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.4.0
+
+### Features
+
+- **proxy-cheap**: add Proxy-Cheap connectors
+- **hypeproxy**: add HypeProxy connector
+
+
 ## 4.3.0
 
 ### Features
