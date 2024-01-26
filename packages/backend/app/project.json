@@ -60,9 +60,6 @@
                 }
             }
         },
-        "docker-build": {
-            "command": "docker build --no-cache -f packages/backend/app/Dockerfile . -t scrapoxy"
-        },
         "serve": {
             "executor": "@nx/js:node",
             "options": {
