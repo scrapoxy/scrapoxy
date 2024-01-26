@@ -14,7 +14,7 @@ built on mobile devices allowing businesses to create ultra-powerful proxies tha
 
 ## Proxidize Admin
 
-Connect to your proxidize hardware UI and remember the URL.
+Connect to your Proxidize hardware UI and remember the URL.
 
 
 ### Get the credentials
