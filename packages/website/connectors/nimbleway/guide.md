@@ -15,7 +15,7 @@ Scrapoxy supports only `Nimble IP`.
 
 ## Nimble Dashboard
 
-Connect to [Dashboard](https://app.nimbleway.com/).
+Connect to [Dashboard](https://app.nimbleway.com).
 
 
 ### Get the credentials
