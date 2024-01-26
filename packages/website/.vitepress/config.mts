@@ -36,7 +36,7 @@ export default defineConfig({
         ['meta', {name: 'theme-color', content: '#bd5656'}],
         [
             'script',
-            {async: '', src: 'https://www.googletagmanager.com/gtag/js?id=366196835'}
+            {async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-BWMFWJKLCC'}
         ],
         [
             'script',
@@ -44,7 +44,7 @@ export default defineConfig({
             `window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '366196835');`
+          gtag('config', 'G-BWMFWJKLCC');`
         ]
     ],
 
