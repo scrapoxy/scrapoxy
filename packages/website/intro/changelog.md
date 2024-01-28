@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.4.2
+
+### Bug fixes
+
+- **proxy-cheap**: fix website url
+
+
 ## 4.4.1
 
 ### Bug fixes
