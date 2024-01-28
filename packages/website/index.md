@@ -61,7 +61,7 @@ providers:
           url: 'https://ninjasproxy.com'
           img: '/assets/images/ninjasproxy.svg'
         - name: 'Proxy Cheap'
-          url: 'https://proxy-cheap.com'
+          url: 'https://app.proxy-cheap.com/r/lt6xyT'
           img: '/assets/images/proxy-cheap.svg'
         - name: 'Proxyrack'
           url: 'https://www.proxyrack.com'

@@ -2,7 +2,7 @@
 
 ![Proxy-Cheap](/assets/images/proxy-cheap.svg){width=230 nozoom}
 
-[Proxy-Cheap](https://www.proxy-cheap.com) offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale. Theirs solutions serve customers from data scraping to market research and other industries. 
+[Proxy-Cheap](https://app.proxy-cheap.com/r/lt6xyT) offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale. Theirs solutions serve customers from data scraping to market research and other industries. 
 
 Scrapoxy features 2 Proxy-Cheap connectors:
 
