@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import {
-    EventsModule,
-    ProbeprovidersModule,
-    StorageprovidersModule,
-} from '@scrapoxy/backend-sdk';
 import { STORAGE_FILE_MODULE_CONFIG } from './file.constants';
 import { StorageFileService } from './file.service';
+import { EventsModule } from '../../../events';
+import { ProbeprovidersModule } from '../../../probe';
+import { StorageprovidersModule } from '../../providers.module';
 import type { IStorageLocalModuleConfig } from '../local.interface';
 import type { DynamicModule } from '@nestjs/common';
 

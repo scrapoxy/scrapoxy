@@ -1,8 +1,8 @@
-import { StorageFileModule } from './file';
+import { StorageFileModule } from './file/file.module';
 import { StorageFileService } from './file/file.service';
-import { StorageMemoryModule } from './memory';
+import { StorageMemoryModule } from './memory/memory.module';
+import type { IStorageModulesConfig } from '../providers.interface';
 import type { INestApplicationContext } from '@nestjs/common';
-import type { IStorageModulesConfig } from '@scrapoxy/backend-sdk';
 
 
 export function buildStorageMemoryConfig(): IStorageModulesConfig {

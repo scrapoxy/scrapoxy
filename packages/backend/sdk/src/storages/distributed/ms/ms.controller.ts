@@ -7,7 +7,6 @@ import {
     ClientProxy,
     EventPattern,
 } from '@nestjs/microservices';
-import { ProbeprovidersService } from '@scrapoxy/backend-sdk';
 import {
     ConnectorCreatedEvent,
     ConnectorRemovedEvent,
@@ -38,6 +37,7 @@ import {
     UserUpdatedEvent,
 } from '@scrapoxy/common';
 import { lastValueFrom } from 'rxjs';
+import { ProbeprovidersService } from '../../../probe';
 import {
     DISTRIBUTED_MS_SERVICE,
     MESSAGE_CERTIFICATE_CREATE,
@@ -73,13 +73,11 @@ import {
     MESSAGE_USERS_CREATE,
     MESSAGE_USERS_UPDATE,
 } from '../distributed.constants';
-import { StorageMongoService } from '../mongo/mongo.service';
+import { StorageMongoService } from '../mongo';
+import type { IProbeService } from '../../../probe';
+import type { IStorageService } from '../../providers.interface';
 import type { IAmqpConnectionManager } from '../amqp.interface';
 import type { OnModuleInit } from '@nestjs/common';
-import type {
-    IProbeService,
-    IStorageService,
-} from '@scrapoxy/backend-sdk';
 import type {
     ICertificateToCreate,
     IConnectorCertificateToUpdate,

@@ -41,12 +41,6 @@
             ],
             "@scrapoxy/proxy-sdk": [
                 "packages/proxy/sdk/src/index.ts"
-            ],
-            "@scrapoxy/storage-distributed": [
-                "packages/storages/distributed/src/index.ts"
-            ],
-            "@scrapoxy/storage-local": [
-                "packages/storages/local/src/index.ts"
             ]
         },
         "rootDir": ".",

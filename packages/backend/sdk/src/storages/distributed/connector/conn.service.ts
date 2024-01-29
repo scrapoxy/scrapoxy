@@ -4,12 +4,10 @@ import {
     Logger,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import {
-    ProbeprovidersService,
-    StorageprovidersService,
-} from '@scrapoxy/backend-sdk';
 import { safeJoin } from '@scrapoxy/common';
 import { lastValueFrom } from 'rxjs';
+import { ProbeprovidersService } from '../../../probe';
+import { StorageprovidersService } from '../../providers.service';
 import {
     DISTRIBUTED_SERVICE,
     MESSAGE_CERTIFICATE_CREATE,
@@ -45,12 +43,10 @@ import {
     MESSAGE_USERS_UPDATE,
 } from '../distributed.constants';
 import { StorageMongoService } from '../mongo/mongo.service';
+import type { IProbeService } from '../../../probe';
+import type { IStorageService } from '../../providers.interface';
 import type { IAmqpConnectionManager } from '../amqp.interface';
 import type { OnModuleInit } from '@nestjs/common';
-import type {
-    IProbeService,
-    IStorageService,
-} from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     ICertificateInfo,

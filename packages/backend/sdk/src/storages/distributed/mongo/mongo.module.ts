@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
+import { MongoClient } from 'mongodb';
+import { StorageMongoService } from './mongo.service';
 import {
     ProbeprovidersModule,
     ProbeprovidersService,
-} from '@scrapoxy/backend-sdk';
-import { MongoClient } from 'mongodb';
-import { StorageMongoService } from './mongo.service';
+} from '../../../probe';
 import type { IMongoConfig } from '../distributed.interface';
 import type { DynamicModule } from '@nestjs/common';
 

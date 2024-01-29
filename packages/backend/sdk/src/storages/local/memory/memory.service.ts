@@ -2,12 +2,10 @@ import {
     Inject,
     Injectable,
 } from '@nestjs/common';
-import {
-    EventsService,
-    ProbeprovidersService,
-    StorageprovidersService,
-} from '@scrapoxy/backend-sdk';
 import { STORAGE_MEMORY_MODULE_CONFIG } from './memory.constants';
+import { EventsService } from '../../../events';
+import { ProbeprovidersService } from '../../../probe';
+import { StorageprovidersService } from '../../providers.service';
 import { AStorageLocal } from '../local.abstract';
 import type { IStorageMemoryModuleConfig } from './memory.module';
 import type { IStorageFileModuleConfig } from '../file/file.module';

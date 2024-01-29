@@ -3,13 +3,11 @@ import {
     ClientsModule,
     Transport,
 } from '@nestjs/microservices';
-import {
-    EventsModule,
-    ProbeprovidersModule,
-    StorageprovidersModule,
-} from '@scrapoxy/backend-sdk';
 import { StorageDistributedConnController } from './conn.controller';
 import { StorageDistributedConnService } from './conn.service';
+import { EventsModule } from '../../../events';
+import { ProbeprovidersModule } from '../../../probe';
+import { StorageprovidersModule } from '../../providers.module';
 import { DISTRIBUTED_SERVICE } from '../distributed.constants';
 import { getEnvStorageDistributedModuleConfig } from '../distributed.helpers';
 import { StorageDistributedMongoModule } from '../mongo';

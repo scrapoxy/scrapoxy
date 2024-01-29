@@ -49,15 +49,11 @@ import {
     RefreshMetricsModule,
     RefreshProxiesModule,
     RefreshTasksModule,
-} from '@scrapoxy/backend-sdk';
-import {
     StorageDistributedConnModule,
     StorageDistributedMsModule,
-} from '@scrapoxy/storage-distributed';
-import {
     StorageFileModule,
     StorageMemoryModule,
-} from '@scrapoxy/storage-local';
+} from '@scrapoxy/backend-sdk';
 import { getEnvCommanderPort } from './start.helpers';
 import type { DynamicModule } from '@nestjs/common';
 

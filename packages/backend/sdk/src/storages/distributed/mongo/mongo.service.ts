@@ -1,30 +1,5 @@
 import { Logger } from '@nestjs/common';
 import {
-    CertificateNotFoundError,
-    ConnectorNameAlreadyExistsError,
-    ConnectorNotFoundError,
-    CredentialNameAlreadyExistsError,
-    CredentialNotFoundError,
-    FreeproxiesNotFoundError,
-    InconsistencyDataError,
-    LoggerAdapter,
-    NoConnectorToRefreshError,
-    NoProjectProxyError,
-    NoProxyToRefreshError,
-    NoTaskToRefreshError,
-    ParamNotFoundError,
-    ProbeprovidersService,
-    ProjectNameAlreadyExistsError,
-    ProjectNotFoundError,
-    ProjectTokenNotFoundError,
-    ProxiesNotFoundError,
-    ProxyNotFoundError,
-    TaskNotFoundError,
-    UserEmailAlreadyExistsError,
-    UserNotFoundByEmailError,
-    UserNotFoundError,
-} from '@scrapoxy/backend-sdk';
-import {
     EProxyStatus,
     safeJoin,
     toUserData,
@@ -59,6 +34,31 @@ import {
     safeFromMongo,
 } from './mongo.helpers';
 import {
+    CertificateNotFoundError,
+    ConnectorNameAlreadyExistsError,
+    ConnectorNotFoundError,
+    CredentialNameAlreadyExistsError,
+    CredentialNotFoundError,
+    FreeproxiesNotFoundError,
+    InconsistencyDataError,
+    NoConnectorToRefreshError,
+    NoProjectProxyError,
+    NoProxyToRefreshError,
+    NoTaskToRefreshError,
+    ParamNotFoundError,
+    ProjectNameAlreadyExistsError,
+    ProjectNotFoundError,
+    ProjectTokenNotFoundError,
+    ProxiesNotFoundError,
+    ProxyNotFoundError,
+    TaskNotFoundError,
+    UserEmailAlreadyExistsError,
+    UserNotFoundByEmailError,
+    UserNotFoundError,
+} from '../../../errors';
+import { LoggerAdapter } from '../../../helpers';
+import { ProbeprovidersService } from '../../../probe';
+import {
     CONNECTOR_DATA_META_MONGODB,
     CONNECTOR_SYNC_META_MONGODB,
     CONNECTOR_VIEW_META_MONGODB,
@@ -90,6 +90,8 @@ import {
     USER_PROJECT_META_MONGODB,
 } from '../user.model';
 import type { IMongoConnection } from './mongo.interface';
+import type { IProbeService } from '../../../probe';
+import type { IStorageService } from '../../providers.interface';
 import type { ICertificateModel } from '../certificate.model';
 import type { IConnectorModel } from '../connector.model';
 import type { ICredentialModel } from '../credential.model';
@@ -105,10 +107,6 @@ import type {
     OnModuleDestroy,
     OnModuleInit,
 } from '@nestjs/common';
-import type {
-    IProbeService,
-    IStorageService,
-} from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
     ICertificateInfo,

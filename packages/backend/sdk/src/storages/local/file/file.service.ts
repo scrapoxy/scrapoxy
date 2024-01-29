@@ -4,12 +4,6 @@ import {
     Injectable,
     Logger,
 } from '@nestjs/common';
-import {
-    EventsService,
-    LoggerAdapter,
-    ProbeprovidersService,
-    StorageprovidersService,
-} from '@scrapoxy/backend-sdk';
 import { Umzug } from 'umzug';
 import { STORAGE_FILE_MODULE_CONFIG } from './file.constants';
 import { DirectStorage } from './file.helpers';
@@ -22,6 +16,10 @@ import {
     fromUserStore,
     toUserStore,
 } from './user.store';
+import { EventsService } from '../../../events';
+import { LoggerAdapter } from '../../../helpers';
+import { ProbeprovidersService } from '../../../probe';
+import { StorageprovidersService } from '../../providers.service';
 import { AStorageLocal } from '../local.abstract';
 import type { IStorageFileModuleConfig } from './file.module';
 import type { IProjectStore } from './project.store';

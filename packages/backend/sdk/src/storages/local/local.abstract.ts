@@ -1,30 +1,5 @@
 import { Logger } from '@nestjs/common';
 import {
-    CertificateNotFoundError,
-    ConnectorNameAlreadyExistsError,
-    ConnectorNotFoundError,
-    CredentialNameAlreadyExistsError,
-    CredentialNotFoundError,
-    EventsService,
-    FreeproxiesNotFoundError,
-    InconsistencyDataError,
-    NoConnectorToRefreshError,
-    NoFreeproxyToRefreshError,
-    NoProjectProxyError,
-    NoProxyToRefreshError,
-    NoTaskToRefreshError,
-    ParamNotFoundError,
-    ProjectNameAlreadyExistsError,
-    ProjectNotFoundError,
-    ProjectTokenNotFoundError,
-    ProxiesNotFoundError,
-    ProxyNotFoundError,
-    TaskNotFoundError,
-    UserEmailAlreadyExistsError,
-    UserNotFoundByEmailError,
-    UserNotFoundError,
-} from '@scrapoxy/backend-sdk';
-import {
     addRange,
     ConnectorCreatedEvent,
     ConnectorRemovedEvent,
@@ -81,6 +56,31 @@ import {
     toProxyToConnect,
     toProxyToRefresh,
 } from './proxy.model';
+import {
+    CertificateNotFoundError,
+    ConnectorNameAlreadyExistsError,
+    ConnectorNotFoundError,
+    CredentialNameAlreadyExistsError,
+    CredentialNotFoundError,
+    FreeproxiesNotFoundError,
+    InconsistencyDataError,
+    NoConnectorToRefreshError,
+    NoFreeproxyToRefreshError,
+    NoProjectProxyError,
+    NoProxyToRefreshError,
+    NoTaskToRefreshError,
+    ParamNotFoundError,
+    ProjectNameAlreadyExistsError,
+    ProjectNotFoundError,
+    ProjectTokenNotFoundError,
+    ProxiesNotFoundError,
+    ProxyNotFoundError,
+    TaskNotFoundError,
+    UserEmailAlreadyExistsError,
+    UserNotFoundByEmailError,
+    UserNotFoundError,
+} from '../../errors';
+import { EventsService } from '../../events';
 import type { IConnectorModel } from './connector.model';
 import type { ICredentialModel } from './credential.model';
 import type { IFreeproxyModel } from './freeproxy.model';
@@ -89,11 +89,9 @@ import type { IProjectModel } from './project.model';
 import type { IProxyModel } from './proxy.model';
 import type { ITaskModel } from './task.model';
 import type { IUserModel } from './user.model';
-import type {
-    IProbeService,
-    IProxyTest,
-    IStorageService,
-} from '@scrapoxy/backend-sdk';
+import type { IProxyTest } from '../../datacenter-local';
+import type { IProbeService } from '../../probe/providers/providers.interface';
+import type { IStorageService } from '../providers.interface';
 import type {
     ICertificate,
     ICertificateInfo,

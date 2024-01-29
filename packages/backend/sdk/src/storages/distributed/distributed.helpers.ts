@@ -3,11 +3,11 @@ import { StorageDistributedConnModule } from './connector';
 import { StorageMongoService } from './mongo';
 import { StorageDistributedMsModule } from './ms';
 import type { IStorageDistributedModuleConfig } from './distributed.interface';
+import type { IStorageModulesConfig } from '../providers.interface';
 import type {
     INestApplication,
     INestApplicationContext,
 } from '@nestjs/common';
-import type { IStorageModulesConfig } from '@scrapoxy/backend-sdk';
 
 
 export function getEnvStorageDistributedModuleConfig(): IStorageDistributedModuleConfig {

@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import {
     DatacenterLocalApp,
+    getEnvStorageDistributedModuleConfig,
     getEnvStorageType,
     LogExceptionFilter,
     ProxyLocalApp,
@@ -10,7 +11,6 @@ import {
 } from '@scrapoxy/backend-sdk';
 import { ONE_MINUTE_IN_MS } from '@scrapoxy/common';
 import { sigstop } from '@scrapoxy/proxy-sdk';
-import { getEnvStorageDistributedModuleConfig } from '@scrapoxy/storage-distributed';
 import {
     Command,
     Option,

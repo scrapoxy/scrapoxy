@@ -3,8 +3,8 @@ import {
     ClientsModule,
     Transport,
 } from '@nestjs/microservices';
-import { ProbeprovidersModule } from '@scrapoxy/backend-sdk';
 import { StorageDistributedMsController } from './ms.controller';
+import { ProbeprovidersModule } from '../../../probe';
 import { DISTRIBUTED_MS_SERVICE } from '../distributed.constants';
 import { getEnvStorageDistributedModuleConfig } from '../distributed.helpers';
 import { StorageDistributedMongoModule } from '../mongo';
