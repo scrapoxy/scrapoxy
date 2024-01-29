@@ -12,7 +12,7 @@ import {
 import { schemaProjectNamespace } from './events.validation';
 import { ProjectInaccessibleError } from '../errors';
 import { validate } from '../helpers';
-import { StorageprovidersService } from '../storages';
+import { StorageprovidersService } from '../storages/providers.service';
 import type {
     IEvent,
     IProjectNamespace,
