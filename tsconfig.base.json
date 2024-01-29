@@ -18,15 +18,6 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "paths": {
-            "@scrapoxy/auth-github": [
-                "packages/auths/github/src/index.ts"
-            ],
-            "@scrapoxy/auth-google": [
-                "packages/auths/google/src/index.ts"
-            ],
-            "@scrapoxy/auth-local": [
-                "packages/auths/local/src/index.ts"
-            ],
             "@scrapoxy/backend-sdk": [
                 "packages/backend/sdk/src/index.ts"
             ],

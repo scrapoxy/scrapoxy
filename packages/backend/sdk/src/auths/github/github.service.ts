@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AuthprovidersService } from '@scrapoxy/backend-sdk';
 import { AUTH_GITHUB_NAME } from './github.constants';
+import { AuthprovidersService } from '../providers.service';
 import type { IAuthService } from '@scrapoxy/common';
 
 

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuthprovidersModule } from '@scrapoxy/backend-sdk';
 import { AUTH_GITHUB_MODULE_CONFIG } from './github.constants';
 import { AuthGithubService } from './github.service';
 import { GithubStrategy } from './github.strategy';
+import { AuthprovidersModule } from '../providers.module';
 import type { DynamicModule } from '@nestjs/common';
 
 

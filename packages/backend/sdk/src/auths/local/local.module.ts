@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuthprovidersModule } from '@scrapoxy/backend-sdk';
 import { AUTH_LOCAL_MODULE_CONFIG } from './local.constants';
 import { AuthLocalService } from './local.service';
 import { LocalStrategy } from './local.strategy';
+import { AuthprovidersModule } from '../providers.module';
 import type { DynamicModule } from '@nestjs/common';
 
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AuthprovidersService } from '@scrapoxy/backend-sdk';
 import { AUTH_GOOGLE_NAME } from './google.constants';
+import { AuthprovidersService } from '../providers.service';
 import type { IAuthService } from '@scrapoxy/common';
 
 

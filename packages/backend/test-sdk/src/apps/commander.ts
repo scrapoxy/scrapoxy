@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
-import { AuthLocalModule } from '@scrapoxy/auth-local';
 import {
     Agents,
     AStorageLocal,
+    AuthLocalModule,
     CommanderEventsModule,
     CommanderFrontendClient,
     CommanderFrontendModule,

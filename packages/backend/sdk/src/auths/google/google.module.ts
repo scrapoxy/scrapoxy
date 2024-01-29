@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuthprovidersModule } from '@scrapoxy/backend-sdk';
 import { AUTH_GOOGLE_MODULE_CONFIG } from './google.constants';
 import { AuthGoogleService } from './google.service';
 import { GoogleStrategy } from './google.strategy';
+import { AuthprovidersModule } from '../providers.module';
 import type { DynamicModule } from '@nestjs/common';
 
 
