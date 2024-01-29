@@ -1,16 +1,16 @@
 import { Logger } from '@nestjs/common';
-import { ValidationError } from '@scrapoxy/backend-sdk';
 import {
     DatacenterLocalApp,
     SUBSCRIPTION_LOCAL_DEFAULTS,
     SubscriptionDatacenterLocalAlreadyExistsError,
     SubscriptionDatacenterLocalNotFoundError,
-} from '@scrapoxy/datacenter-local';
+    ValidationError,
+} from '@scrapoxy/backend-sdk';
 import { v4 as uuid } from 'uuid';
 import type {
     ISubscriptionDatacenterLocalToCreate,
     ISubscriptionDatacenterLocalToUpdate,
-} from '@scrapoxy/connector-datacenter-local-sdk';
+} from '@scrapoxy/common';
 
 
 describe(

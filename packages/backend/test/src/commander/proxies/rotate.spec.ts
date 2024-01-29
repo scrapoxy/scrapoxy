@@ -1,31 +1,31 @@
 import { Logger } from '@nestjs/common';
 import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/backend-sdk';
+import {
     CommanderApp,
     MasterApp,
     TestServers,
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     sleep,
 } from '@scrapoxy/common';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorView,
     ICredentialView,
     IProjectData,
     IProjectToCreate,
 } from '@scrapoxy/common';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(

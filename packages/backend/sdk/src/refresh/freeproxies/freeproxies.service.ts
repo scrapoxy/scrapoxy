@@ -3,8 +3,10 @@ import {
     Injectable,
     Logger,
 } from '@nestjs/common';
-import { EFingerprintMode } from '@scrapoxy/common';
-import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/connector-freeproxies-sdk';
+import {
+    CONNECTOR_FREEPROXIES_TYPE,
+    EFingerprintMode,
+} from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import { REFRESH_FREEPROXIES_CONFIG } from './freeproxies.constants';
 import { CommanderRefreshClientService } from '../../commander-client';

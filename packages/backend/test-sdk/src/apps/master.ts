@@ -1,5 +1,7 @@
 import { Test } from '@nestjs/testing';
 import {
+    ConnectorDatacenterLocalModule,
+    ConnectorProxyLocalModule,
     LogExceptionFilter,
     MasterModule,
     MasterService,
@@ -11,8 +13,6 @@ import {
     RefreshTasksModule,
 } from '@scrapoxy/backend-sdk';
 import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
-import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
-import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-backend';
 import { CommanderApp } from './commander';
 import { VERSION_TEST } from '../info';
 import type {

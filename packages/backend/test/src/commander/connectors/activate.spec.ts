@@ -1,5 +1,9 @@
 import { Logger } from '@nestjs/common';
-import { ConnectorUpdateError } from '@scrapoxy/backend-sdk';
+import {
+    ConnectorUpdateError,
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/backend-sdk';
 import {
     CommanderApp,
     MasterApp,
@@ -7,25 +11,21 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     EEventScope,
     EventsConnectorsClient,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorView,
     ICredentialView,
     IProjectData,
 } from '@scrapoxy/common';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(

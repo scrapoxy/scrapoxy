@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { ProxyHttp } from '@scrapoxy/backend-sdk';
+import {
+    ConnectorFreeproxiesModule,
+    ProxyHttp,
+} from '@scrapoxy/backend-sdk';
 import {
     CommanderApp,
     MasterApp,
@@ -7,14 +10,13 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_FREEPROXIES_TYPE,
     countProxiesOnlineViews,
     EProxyType,
     EventsFreeproxiesClient,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
 } from '@scrapoxy/common';
-import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
-import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/connector-freeproxies-sdk';
 import axios from 'axios';
 import type {
     IConnectorView,

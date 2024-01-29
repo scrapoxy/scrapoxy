@@ -11,6 +11,9 @@ import {
     CommanderRefreshModule,
     CommanderScraperModule,
     CommanderUsersModule,
+    ConnectorDatacenterLocalModule,
+    DatacenterLocalApp,
+    getEnvStorageDistributedModuleConfig,
     getEnvStorageType,
     LogExceptionFilter,
     MasterModule,
@@ -21,6 +24,11 @@ import {
     RefreshProxiesModule,
     RefreshTasksModule,
     ScrapoxyExpressAdapter,
+
+    StorageDistributedConnModule,
+    StorageDistributedMsModule,
+    StorageMongoService,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
 } from '@scrapoxy/backend-sdk';
 import {
     CommanderUsersClient,
@@ -31,22 +39,11 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     countProxiesOnlineViews,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
 } from '@scrapoxy/common';
-import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
-import {
-    getEnvStorageDistributedModuleConfig,
-    StorageDistributedConnModule,
-    StorageDistributedMsModule,
-    StorageMongoService,
-} from '@scrapoxy/storage-distributed';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -55,11 +52,11 @@ import type {
     LoggerService,
 } from '@nestjs/common';
 import type { MicroserviceOptions } from '@nestjs/microservices';
-import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type {
     IConnectorDatacenterLocalConfig,
     IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
+} from '@scrapoxy/backend-sdk';
+import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type { AddressInfo } from 'net';
 
 

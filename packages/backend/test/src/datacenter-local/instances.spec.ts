@@ -1,30 +1,28 @@
 import { Logger } from '@nestjs/common';
 import {
-    generateCertificateSelfSignedForTest,
-    ValidationError,
-} from '@scrapoxy/backend-sdk';
-import { waitFor } from '@scrapoxy/backend-test-sdk';
-import { randomName } from '@scrapoxy/common';
-import {
-    EImageDatacenterLocalStatus,
-    EInstanceDatacenterLocalStatus,
-} from '@scrapoxy/connector-datacenter-local-sdk';
-import {
     DatacenterLocalApp,
     DatacenterLocalNotFoundError,
+    generateCertificateSelfSignedForTest,
     InstanceDatacenterLocalAlreadyExistsError,
     InstanceDatacenterLocalCreateError,
     RegionDatacenterLocalNotFoundError,
     RegionSizeDatacenterLocalNotFoundError,
     SUBSCRIPTION_LOCAL_DEFAULTS,
     SubscriptionDatacenterLocalNotFoundError,
-} from '@scrapoxy/datacenter-local';
+    ValidationError,
+} from '@scrapoxy/backend-sdk';
+import { waitFor } from '@scrapoxy/backend-test-sdk';
+import {
+    EImageDatacenterLocalStatus,
+    EInstanceDatacenterLocalStatus,
+    randomName,
+} from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
     IImageDatacenterLocalView,
     IInstancesDatacenterLocalToCreate,
     ISubscriptionDatacenterLocalView,
-} from '@scrapoxy/connector-datacenter-local-sdk';
+} from '@scrapoxy/common';
 
 
 describe(

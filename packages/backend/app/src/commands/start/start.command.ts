@@ -1,16 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import {
+    DatacenterLocalApp,
     getEnvStorageType,
     LogExceptionFilter,
+    ProxyLocalApp,
     ScrapoxyExpressAdapter,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
 } from '@scrapoxy/backend-sdk';
 import { ONE_MINUTE_IN_MS } from '@scrapoxy/common';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
-import { ProxyLocalApp } from '@scrapoxy/proxy-local';
 import { sigstop } from '@scrapoxy/proxy-sdk';
 import { getEnvStorageDistributedModuleConfig } from '@scrapoxy/storage-distributed';
 import {

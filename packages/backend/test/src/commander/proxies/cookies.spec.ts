@@ -1,5 +1,9 @@
 import { Logger } from '@nestjs/common';
-import { readCaCert } from '@scrapoxy/backend-sdk';
+import {
+    DatacenterLocalApp,
+    readCaCert,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
     CommanderApp,
@@ -8,27 +12,23 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     countProxiesOnlineViews,
     ONE_MINUTE_IN_MS,
     SCRAPOXY_COOKIE_PREFIX,
     SCRAPOXY_HEADER_PREFIX,
 } from '@scrapoxy/common';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorView,
     IProjectData,
     IProjectToCreate,
 } from '@scrapoxy/common';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
 import type { OutgoingHttpHeaders } from 'http';
 
 

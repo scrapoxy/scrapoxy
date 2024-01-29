@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import {
+    DatacenterLocalApp,
     getEnvBackendJwtConfig,
     getEnvFrontendJwtConfig,
 } from '@scrapoxy/backend-sdk';
@@ -9,7 +10,6 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import { ONE_MINUTE_IN_MS } from '@scrapoxy/common';
-import { DatacenterLocalApp } from '@scrapoxy/datacenter-local';
 import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import type {

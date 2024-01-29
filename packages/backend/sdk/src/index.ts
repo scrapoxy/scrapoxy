@@ -6,6 +6,8 @@ export * from './commander';
 
 export * from './commander-client';
 
+export * from './datacenter-local';
+
 export * from './errors';
 
 export * from './events';
@@ -19,6 +21,8 @@ export * from './master';
 export * from './probe';
 
 export * from './proxy';
+
+export * from './proxy-local';
 
 export * from './transports';
 

@@ -1,5 +1,9 @@
 import { Logger } from '@nestjs/common';
 import {
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
+} from '@scrapoxy/backend-sdk';
+import {
     CommanderApp,
     DEFAULT_FINGERPRINT,
     MasterApp,
@@ -8,35 +12,27 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     countProxiesOnlineViews,
+    EDatacenterLocalQueryCredential,
     ONE_MINUTE_IN_MS,
     SCRAPOXY_USER_AGENT_PREFIX,
 } from '@scrapoxy/common';
-import {
-    CONNECTOR_DATACENTER_LOCAL_TYPE,
-    EDatacenterLocalQueryCredential,
-} from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
-    IConnectorView,
-    ICredentialView,
-    IFingerprint,
-    IProjectData,
-} from '@scrapoxy/common';
-import type {
     IConnectorDatacenterLocalConfig,
     IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
+} from '@scrapoxy/backend-sdk';
 import type {
+    IConnectorView,
+    ICredentialView,
     IDatacenterLocalQueryRegionSizes,
+    IFingerprint,
+    IProjectData,
     IRegionDatacenterLocal,
     IRegionSizeDatacenterLocal,
-} from '@scrapoxy/connector-datacenter-local-sdk';
+} from '@scrapoxy/common';
 
 
 async function installConnector(

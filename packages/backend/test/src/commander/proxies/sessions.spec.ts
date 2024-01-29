@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { ProxyLocalApp } from '@scrapoxy/backend-sdk';
 import {
     CommanderApp,
     MasterApp,
@@ -6,23 +7,22 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_PROXY_LOCAL_TYPE,
     countProxiesOnlineViews,
     EProxyStatus,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_PROXY_LOCAL_TYPE } from '@scrapoxy/connector-proxy-local-sdk';
-import { ProxyLocalApp } from '@scrapoxy/proxy-local';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorProxyLocalConfig,
+    IConnectorProxyLocalCredential,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorView,
     ICredentialView,
     IProjectData,
 } from '@scrapoxy/common';
-import type {
-    IConnectorProxyLocalConfig,
-    IConnectorProxyLocalCredential,
-} from '@scrapoxy/connector-proxy-local-backend';
 
 
 describe(

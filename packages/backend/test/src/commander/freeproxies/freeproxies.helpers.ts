@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { readCaCert } from '@scrapoxy/backend-sdk';
+import {
+    ConnectorFreeproxiesModule,
+    readCaCert,
+} from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
     CommanderApp,
@@ -8,6 +11,7 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_FREEPROXIES_TYPE,
     countProxiesOnlineViews,
     EventsFreeproxiesClient,
     IConnectorView,
@@ -19,8 +23,6 @@ import {
     ONE_SECOND_IN_MS,
     SCRAPOXY_HEADER_PREFIX,
 } from '@scrapoxy/common';
-import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
-import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/connector-freeproxies-sdk';
 import axios from 'axios';
 import type { OutgoingHttpHeaders } from 'http';
 

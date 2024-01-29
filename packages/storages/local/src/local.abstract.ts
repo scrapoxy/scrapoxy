@@ -91,6 +91,7 @@ import type { ITaskModel } from './task.model';
 import type { IUserModel } from './user.model';
 import type {
     IProbeService,
+    IProxyTest,
     IStorageService,
 } from '@scrapoxy/backend-sdk';
 import type {
@@ -124,7 +125,6 @@ import type {
     IUserProject,
     IWindow,
 } from '@scrapoxy/common';
-import type { IProxyTest } from '@scrapoxy/datacenter-local';
 
 
 export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> implements IStorageService, IProbeService {

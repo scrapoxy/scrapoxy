@@ -1,8 +1,10 @@
 import { Logger } from '@nestjs/common';
 import {
+    DatacenterLocalApp,
     getEnvStorageType,
     RefreshConnectorsModule,
     RefreshTasksModule,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
 } from '@scrapoxy/backend-sdk';
 import {
     CommanderApp,
@@ -12,26 +14,22 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     EProxyStatus,
     ONE_MINUTE_IN_MS,
     randomName,
     sleep,
 } from '@scrapoxy/common';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+    IProxyTest,
+} from '@scrapoxy/backend-sdk';
 import type {
     ICredentialView,
     IProjectData,
 } from '@scrapoxy/common';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
-import type { IProxyTest } from '@scrapoxy/datacenter-local';
 
 
 interface ITestState {

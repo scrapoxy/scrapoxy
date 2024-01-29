@@ -21,6 +21,26 @@ import {
     CommanderRefreshModule,
     CommanderScraperModule,
     CommanderUsersModule,
+    ConnectorAwsModule,
+    ConnectorAzureModule,
+    ConnectorDatacenterLocalModule,
+    ConnectorDigitaloceanModule,
+    ConnectorFreeproxiesModule,
+    ConnectorGcpModule,
+    ConnectorHypeproxyModule,
+    ConnectorIproyalResidentialModule,
+    ConnectorIproyalServerModule,
+    ConnectorNimblewayModule,
+    ConnectorNinjasproxyModule,
+    ConnectorOvhModule,
+    ConnectorProxidizeModule,
+    ConnectorProxyCheapResidentialModule,
+    ConnectorProxyCheapServerModule,
+    ConnectorProxyLocalModule,
+    ConnectorProxyrackModule,
+    ConnectorRayobyteModule,
+    ConnectorXProxyModule,
+    ConnectorZyteModule,
     getEnvAssetsPath,
     MasterModule,
     ProbeModule,
@@ -30,26 +50,6 @@ import {
     RefreshProxiesModule,
     RefreshTasksModule,
 } from '@scrapoxy/backend-sdk';
-import { ConnectorAwsModule } from '@scrapoxy/connector-aws-backend';
-import { ConnectorAzureModule } from '@scrapoxy/connector-azure-backend';
-import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
-import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-backend';
-import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
-import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-backend';
-import { ConnectorHypeproxyModule } from '@scrapoxy/connector-hypeproxy-backend';
-import { ConnectorIproyalResidentialModule } from '@scrapoxy/connector-iproyal-residential-backend';
-import { ConnectorIproyalServerModule } from '@scrapoxy/connector-iproyal-server-backend';
-import { ConnectorNimblewayModule } from '@scrapoxy/connector-nimbleway-backend';
-import { ConnectorNinjasproxyModule } from '@scrapoxy/connector-ninjasproxy-backend';
-import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-backend';
-import { ConnectorProxidizeModule } from '@scrapoxy/connector-proxidize-backend';
-import { ConnectorProxyCheapResidentialModule } from '@scrapoxy/connector-proxy-cheap-residential-backend';
-import { ConnectorProxyCheapServerModule } from '@scrapoxy/connector-proxy-cheap-server-backend';
-import { ConnectorProxyLocalModule } from '@scrapoxy/connector-proxy-local-backend';
-import { ConnectorProxyrackModule } from '@scrapoxy/connector-proxyrack-backend';
-import { ConnectorRayobyteModule } from '@scrapoxy/connector-rayobyte-backend';
-import { ConnectorXProxyModule } from '@scrapoxy/connector-xproxy-backend';
-import { ConnectorZyteModule } from '@scrapoxy/connector-zyte-backend';
 import {
     StorageDistributedConnModule,
     StorageDistributedMsModule,

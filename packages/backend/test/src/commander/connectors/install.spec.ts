@@ -1,6 +1,8 @@
 import { Logger } from '@nestjs/common';
 import {
     ConnectorNotFoundError,
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
     TaskCancelError,
     TaskCreateError,
     TaskRemoveError,
@@ -12,17 +14,17 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     EEventScope,
     EventsTasksClient,
     isTaskSucceed,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorToInstall,
     IConnectorView,
@@ -30,10 +32,6 @@ import type {
     IProjectData,
     ITaskView,
 } from '@scrapoxy/common';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(

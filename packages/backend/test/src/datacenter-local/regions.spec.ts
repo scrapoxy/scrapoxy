@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { DatacenterLocalApp } from '@scrapoxy/datacenter-local';
+import { DatacenterLocalApp } from '@scrapoxy/backend-sdk';
 
 
 describe(

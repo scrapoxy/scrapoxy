@@ -1,9 +1,9 @@
-import { getEnvStorageType } from '@scrapoxy/backend-sdk';
-import { buildStorageDistributedConfig } from '@scrapoxy/storage-distributed';
 import {
+    buildStorageDistributedConfig,
     buildStorageFileConfig,
     buildStorageMemoryConfig,
-} from '@scrapoxy/storage-local';
+    getEnvStorageType,
+} from '@scrapoxy/backend-sdk';
 import type { IStorageModulesConfig } from '@scrapoxy/backend-sdk';
 
 

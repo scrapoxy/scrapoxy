@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConnectorAwsModule } from '@scrapoxy/connector-aws-backend';
-import { ConnectorAzureModule } from '@scrapoxy/connector-azure-backend';
-import { ConnectorDigitaloceanModule } from '@scrapoxy/connector-digitalocean-backend';
-import { ConnectorFreeproxiesModule } from '@scrapoxy/connector-freeproxies-backend';
-import { ConnectorGcpModule } from '@scrapoxy/connector-gcp-backend';
-import { ConnectorOvhModule } from '@scrapoxy/connector-ovh-backend';
-import { ConnectorZyteModule } from '@scrapoxy/connector-zyte-backend';
+import {
+    ConnectorAwsModule,
+    ConnectorAzureModule,
+    ConnectorDigitaloceanModule,
+    ConnectorFreeproxiesModule,
+    ConnectorGcpModule,
+    ConnectorOvhModule,
+    ConnectorZyteModule,
+} from '@scrapoxy/backend-sdk';
 import { CHECK_CONNECTORS_MODULE_CONFIG } from './check.constants';
 import { CheckConnectorsService } from './check.service';
 import type { DynamicModule } from '@nestjs/common';

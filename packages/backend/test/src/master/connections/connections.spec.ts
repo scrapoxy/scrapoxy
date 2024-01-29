@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import {
     CommanderMasterClientService,
+    ConnectorDatacenterLocalModule,
     generateCertificateFromCaTest,
     generateCertificateSelfSignedForTest,
     MasterModule,
@@ -16,6 +17,7 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     EConnectMode,
     EProjectStatus,
     formatProxyId,
@@ -27,8 +29,6 @@ import {
     SCRAPOXY_HEADER_PREFIX_LC,
     sleep,
 } from '@scrapoxy/common';
-import { ConnectorDatacenterLocalModule } from '@scrapoxy/connector-datacenter-local-backend';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
 import { Proxy } from '@scrapoxy/proxy-sdk';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';

@@ -5,6 +5,8 @@ import {
     CredentialNotFoundError,
     CredentialRemoveError,
     CredentialUpdateError,
+    DatacenterLocalApp,
+    SUBSCRIPTION_LOCAL_DEFAULTS,
     ValidationError,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -14,17 +16,17 @@ import {
     waitFor,
 } from '@scrapoxy/backend-test-sdk';
 import {
+    CONNECTOR_DATACENTER_LOCAL_TYPE,
     EEventScope,
     EventsConnectorsClient,
     EventsCredentialsClient,
     ONE_MINUTE_IN_MS,
 } from '@scrapoxy/common';
-import { CONNECTOR_DATACENTER_LOCAL_TYPE } from '@scrapoxy/connector-datacenter-local-sdk';
-import {
-    DatacenterLocalApp,
-    SUBSCRIPTION_LOCAL_DEFAULTS,
-} from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
+import type {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorToCreate,
     IConnectorToUpdate,
@@ -34,10 +36,6 @@ import type {
     ICredentialView,
     IProjectData,
 } from '@scrapoxy/common';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/connector-datacenter-local-backend';
 
 
 describe(

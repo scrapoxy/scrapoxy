@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import {
     Agents,
     CommanderFrontendClient,
+    DatacenterLocalApp,
     getEnvFrontendJwtConfig,
     JwtInvalidError,
     ProjectInaccessibleError,
@@ -26,7 +27,6 @@ import {
     ONE_MINUTE_IN_MS,
     sleep,
 } from '@scrapoxy/common';
-import { DatacenterLocalApp } from '@scrapoxy/datacenter-local';
 import { v4 as uuid } from 'uuid';
 import type {
     ICommanderFrontendClient,
