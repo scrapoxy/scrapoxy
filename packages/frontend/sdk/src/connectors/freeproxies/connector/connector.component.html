@@ -13,9 +13,9 @@
         </c-col>
     </c-row>
 
-    <c-row>
-        <c-col md="12">
-            @if (freeproxies.length > 0) {
+    @if (freeproxies.length > 0) {
+        <c-row>
+            <c-col md="12">
                 <table cTable small>
                     <thead>
                         <tr>
@@ -86,7 +86,7 @@
                 </table>
 
                 <table-pagination [(pageCurrent)]="pageCurrent" [pageMax]="pageMax"></table-pagination>
-            }
-        </c-col>
-    </c-row>
+            </c-col>
+        </c-row>
+    }
 }
