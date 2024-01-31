@@ -10,6 +10,8 @@ export interface HeroAction {
     text: string
     link: string
     img?: string
+    typewritter?: boolean
+    shiny?: 'sparkes' | 'confetti'
 }
 
 
@@ -46,6 +48,8 @@ const heroImageSlotExists = inject('hero-image-slot-exists') as Ref<boolean>
                             :text="action.text"
                             :href="action.link"
                             :img="action.img"
+                            :shiny="action.shiny"
+                            :typewritter="action.typewritter"
                         />
                     </div>
                 </div>
