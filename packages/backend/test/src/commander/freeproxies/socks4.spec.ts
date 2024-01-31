@@ -15,7 +15,7 @@ describe(
         const
             freeproxy: IFreeproxyBase = {
                 type: EProxyType.SOCKS4,
-                key: 'freeproxyhttps',
+                key: 'freeproxysocks4',
                 address: {
                     hostname: 'localhost',
                     port: -1,

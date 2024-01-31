@@ -296,7 +296,7 @@ export function testProxy(
 
                 jest.expect(res.status)
                     .toBe(200);
-            } catch (err) {
+            } finally {
                 httpsAgent.close();
             }
         }
@@ -326,7 +326,7 @@ export function testProxy(
 
                 jest.expect(res.status)
                     .toBe(200);
-            } catch (err) {
+            } finally {
                 httpsAgent.close();
             }
         }
