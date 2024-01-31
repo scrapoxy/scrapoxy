@@ -4,12 +4,14 @@ import {
 } from 'http';
 import { Socket } from 'net';
 import { connect } from 'tls';
+import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
 import {
     createConnectionAuto,
     isUrl,
     parseBodyError,
     urlOptionsToUrl,
 } from '../../helpers';
+import { HttpTransportError } from '../errors';
 import type { IProxyToConnectConfigResidential } from './residential.interface';
 import type { IUrlOptions } from '../../helpers';
 import type { ITransportService } from '../transport.interface';
@@ -95,18 +97,19 @@ export abstract class ATransportResidentialService implements ITransportService 
         );
     }
 
-    buildConnectArgs(
+    connect(
         url: string,
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number
-    ): ClientRequestArgs {
+        timeout: number,
+        callback: (err: Error, socket: Socket) => void
+    ) {
         const config = proxy.config as IProxyToConnectConfigResidential;
         const token = btoa(`${config.username}:${config.password}`);
         headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
 
-        return {
+        const proxyReq = request({
             method: 'CONNECT',
             hostname: config.address.hostname,
             port: config.address.port,
@@ -120,10 +123,44 @@ export abstract class ATransportResidentialService implements ITransportService 
                 opts,
                 oncreate,
                 sockets,
-                'ATransportResidential:buildConnectArgs',
+                'ATransportResidential:connect',
                 void 0
             ),
-        };
+        });
+
+        proxyReq.on(
+            'error',
+            (err: any) => {
+                callback(
+                    err,
+                    void 0 as any
+                );
+            }
+        );
+
+        proxyReq.on(
+            'connect',
+            (
+                proxyRes: IncomingMessage, socket: Socket
+            ) => {
+                if (proxyRes.statusCode === 200) {
+                    callback(
+                        void 0 as any,
+                        socket
+                    );
+                } else {
+                    callback(
+                        new HttpTransportError(
+                            proxyRes.statusCode,
+                            proxyRes.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string || proxyRes.statusMessage as string
+                        ),
+                        void 0 as any
+                    );
+                }
+            }
+        );
+
+        proxyReq.end();
     }
 
     private buildRequestArgsHttp(

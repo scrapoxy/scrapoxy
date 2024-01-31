@@ -10,6 +10,7 @@ import type {
     ClientRequestArgs,
     OutgoingHttpHeaders,
 } from 'http';
+import type { Socket } from 'net';
 
 
 export interface ITransportService {
@@ -37,11 +38,12 @@ export interface ITransportService {
         timeout: number
     ) => ClientRequestArgs;
 
-    buildConnectArgs: (
+    connect: (
         url: string,
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number
-    ) => ClientRequestArgs;
+        timeout: number,
+        callback: (err: Error, socket: Socket) => void
+    ) => void;
 }

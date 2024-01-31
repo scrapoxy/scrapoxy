@@ -1,5 +1,7 @@
 export * from './datacenter';
 
+export * from './errors';
+
 export * from './hardware';
 
 export * from './transport.interface';

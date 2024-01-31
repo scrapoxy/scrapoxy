@@ -4,13 +4,17 @@ import {
 } from 'http';
 import { Socket } from 'net';
 import { connect } from 'tls';
-import { SCRAPOXY_HEADER_PREFIX } from '@scrapoxy/common';
+import {
+    SCRAPOXY_HEADER_PREFIX,
+    SCRAPOXY_HEADER_PREFIX_LC,
+} from '@scrapoxy/common';
 import {
     createConnectionAuto,
     isUrl,
     parseBodyError,
     urlOptionsToUrl,
 } from '../../helpers';
+import { HttpTransportError } from '../errors';
 import type { IProxyToConnectConfigDatacenter } from './datacenter.interface';
 import type { IUrlOptions } from '../../helpers';
 import type { ITransportService } from '../transport.interface';
@@ -239,16 +243,16 @@ export abstract class ATransportDatacenterService implements ITransportService {
         );
     }
 
-    buildConnectArgs(
+    connect(
         url: string,
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number
-    ): ClientRequestArgs {
+        timeout: number,
+        callback: (err: Error, socket: Socket) => void
+    ) {
         const config = proxy.config as IProxyToConnectConfigDatacenter;
-
-        return {
+        const proxyReq = request({
             method: 'CONNECT',
             hostname: config.address.hostname,
             port: config.address.port,
@@ -262,13 +266,47 @@ export abstract class ATransportDatacenterService implements ITransportService {
                 args,
                 oncreate,
                 sockets,
-                'ATransportDatacenter:buildConnectArgs',
+                'ATransportDatacenter:connect',
                 {
                     ca: config.certificate.cert,
                     cert: config.certificate.cert,
                     key: config.certificate.key,
                 }
             ),
-        };
+        });
+
+        proxyReq.on(
+            'error',
+            (err: any) => {
+                callback(
+                    err,
+                    void 0 as any
+                );
+            }
+        );
+
+        proxyReq.on(
+            'connect',
+            (
+                proxyRes: IncomingMessage, socket: Socket
+            ) => {
+                if (proxyRes.statusCode === 200) {
+                    callback(
+                        void 0 as any,
+                        socket
+                    );
+                } else {
+                    callback(
+                        new HttpTransportError(
+                            proxyRes.statusCode,
+                            proxyRes.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string || proxyRes.statusMessage as string
+                        ),
+                        void 0 as any
+                    );
+                }
+            }
+        );
+
+        proxyReq.end();
     }
 }

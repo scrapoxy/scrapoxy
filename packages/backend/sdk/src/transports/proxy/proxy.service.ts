@@ -5,7 +5,10 @@ import {
 import { Socket } from 'net';
 import { connect } from 'tls';
 import { Injectable } from '@nestjs/common';
-import { EProxyType } from '@scrapoxy/common';
+import {
+    EProxyType,
+    SCRAPOXY_HEADER_PREFIX_LC,
+} from '@scrapoxy/common';
 import { SocksClient } from 'socks';
 import { TRANSPORT_PROXY_TYPE } from './proxy.constants';
 import {
@@ -14,6 +17,7 @@ import {
     parseBodyError,
     urlOptionsToUrl,
 } from '../../helpers';
+import { HttpTransportError } from '../errors';
 import { TransportprovidersService } from '../providers.service';
 import type { IUrlOptions } from '../../helpers';
 import type { ITransportService } from '../transport.interface';
@@ -77,7 +81,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     }
 
                     default: {
-                        throw new Error(`Proxy: Unsupported protocol: ${urlOpts.protocol}`);
+                        throw new Error(`Unsupported protocol: ${urlOpts.protocol}`);
                     }
                 }
             }
@@ -108,7 +112,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     }
 
                     default: {
-                        throw new Error(`Proxy: Unsupported protocol: ${urlOpts.protocol}`);
+                        throw new Error(`Unsupported protocol: ${urlOpts.protocol}`);
                     }
                 }
             }
@@ -129,7 +133,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     }
 
                     default: {
-                        throw new Error(`Proxy: Unsupported protocol: ${urlOpts.protocol}`);
+                        throw new Error(`Unsupported protocol: ${urlOpts.protocol}`);
                     }
                 }
             }
@@ -150,13 +154,13 @@ export abstract class ATransportProxyService implements ITransportService {
                     }
 
                     default: {
-                        throw new Error(`Proxy: Unsupported protocol: ${urlOpts.protocol}`);
+                        throw new Error(`Unsupported protocol: ${urlOpts.protocol}`);
                     }
                 }
             }
 
             default: {
-                throw new Error(`Proxy: Unsupported proxy type: ${config.type}`);
+                throw new Error(`Unsupported proxy type: ${config.type}`);
             }
         }
     }
@@ -181,29 +185,59 @@ export abstract class ATransportProxyService implements ITransportService {
         );
     }
 
-    buildConnectArgs(
+    connect(
         url: string,
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number
-    ): ClientRequestArgs {
+        timeout: number,
+        callback: (err: Error, socket: Socket) => void
+    ) {
         const config = proxy.config as IProxyTransport;
 
         switch (config.type) {
             case EProxyType.HTTP:
             case EProxyType.HTTPS: {
-                return this.buildConnectArgsImpl(
+                this.connectHttpAndHttps(
                     url,
                     headers,
                     config,
                     sockets,
-                    timeout
+                    timeout,
+                    callback
                 );
+
+                break;
+            }
+
+            case EProxyType.SOCKS4: {
+                this.connectSocks(
+                    url,
+                    config,
+                    sockets,
+                    timeout,
+                    4,
+                    callback
+                );
+
+                break;
+            }
+
+            case EProxyType.SOCKS5: {
+                this.connectSocks(
+                    url,
+                    config,
+                    sockets,
+                    timeout,
+                    5,
+                    callback
+                );
+
+                break;
             }
 
             default: {
-                throw new Error(`Proxy: Unsupported proxy type: ${config.type}`);
+                throw new Error(`Unsupported proxy type: ${config.type}`);
             }
         }
     }
@@ -500,19 +534,20 @@ export abstract class ATransportProxyService implements ITransportService {
         };
     }
 
-    private buildConnectArgsImpl(
+    private connectHttpAndHttps(
         url: string,
         headers: OutgoingHttpHeaders,
         config: IProxyTransport,
         sockets: ISockets,
-        timeout: number
-    ): ClientRequestArgs {
+        timeout: number,
+        callback: (err: Error, socket: Socket) => void
+    ) {
         if (config.auth) {
             const token = btoa(`${config.auth.username}:${config.auth.password}`);
             headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
         }
 
-        return {
+        const proxyReq = request({
             method: 'CONNECT',
             hostname: config.address.hostname,
             port: config.address.port,
@@ -526,10 +561,125 @@ export abstract class ATransportProxyService implements ITransportService {
                 opts,
                 oncreate,
                 sockets,
-                'TransportProxyService:buildConnectArgs',
+                'TransportProxyService:connectHttpAndHttps:createConnection',
                 config.type === EProxyType.HTTPS ? {} : void 0
             ),
+        });
+
+        proxyReq.on(
+            'error',
+            (err: any) => {
+                callback(
+                    err,
+                    void 0 as any
+                );
+            }
+        );
+
+        proxyReq.on(
+            'connect',
+            (
+                proxyRes: IncomingMessage, socket: Socket
+            ) => {
+                if (proxyRes.statusCode === 200) {
+                    callback(
+                        void 0 as any,
+                        socket
+                    );
+                } else {
+                    callback(
+                        new HttpTransportError(
+                            proxyRes.statusCode,
+                            proxyRes.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string || proxyRes.statusMessage as string
+                        ),
+                        void 0 as any
+                    );
+                }
+            }
+        );
+
+        proxyReq.end();
+    }
+
+    private connectSocks(
+        url: string,
+        config: IProxyTransport,
+        sockets: ISockets,
+        timeout: number,
+        type: SocksProxyType,
+        callback: (err: Error, socket: Socket) => void
+    ) {
+        const [
+            host, portRaw,
+        ] = url.split(':');
+        let port: number;
+        try {
+            port = parseInt(
+                portRaw,
+                10
+            );
+        } catch (err: any) {
+            callback(
+                new Error(`Invalid port in ${url}`),
+                void 0 as any
+            );
+
+            return;
+        }
+
+        const options: SocksClientOptions = {
+            proxy: {
+                host: config.address.hostname,
+                port: config.address.port,
+                type,
+            },
+            command: 'connect',
+            destination: {
+                host,
+                port,
+            },
+            timeout,
         };
+
+        if (config.auth) {
+            options.proxy.userId = config.auth.username;
+            options.proxy.password = config.auth.password;
+        }
+
+        SocksClient.createConnection(
+            options,
+            (
+                err, info
+            ) => {
+                if (err) {
+                    callback(
+                        err as any,
+                        void 0 as any
+                    );
+                } else {
+                    const socket = info!.socket as Socket;
+
+                    socket.on(
+                        'close',
+                        () => {
+                            sockets.remove(socket);
+                        }
+                    );
+                    sockets.add(
+                        socket,
+                        'TransportProxyService:connectSocks:createConnection'
+                    );
+
+                    callback(
+                        void 0 as any,
+                        socket
+                    );
+                }
+            }
+        )
+            .catch(() => {
+                // Ignored because already caught by SocksClient.createConnection()
+            });
     }
 }
 

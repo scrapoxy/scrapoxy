@@ -48,7 +48,10 @@ import {
     SocketsDebug,
     urlToUrlOptions,
 } from '../helpers';
-import { TransportprovidersService } from '../transports';
+import {
+    HttpTransportError,
+    TransportprovidersService,
+} from '../transports';
 import type { IMasterModuleConfig } from './master.module';
 import type { ITransportService } from '../transports';
 import type {
@@ -684,7 +687,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         project: IProjectToConnect,
         sockets: ISockets
     ): Promise<void> {
-        let proxyReq: ClientRequest | undefined = void 0;
+        let proxySocket: Socket | undefined = void 0;
         req.on(
             'error',
             (err: any) => {
@@ -695,11 +698,11 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                     err.stack
                 );
 
-                if (!proxyReq || proxyReq.closed || proxyReq.destroyed) {
+                if (!proxySocket || proxySocket.closed || proxySocket.destroyed) {
                     return;
                 }
 
-                proxyReq.end();
+                proxySocket.end();
             }
         );
 
@@ -708,11 +711,11 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             () => {
                 this.logger.error(`request_error: aborted from client (${req.method} ${req.url})`);
 
-                if (!proxyReq || proxyReq.closed || proxyReq.destroyed) {
+                if (!proxySocket || proxySocket.closed || proxySocket.destroyed) {
                     return;
                 }
 
-                proxyReq.end();
+                proxySocket.end();
             }
         );
 
@@ -736,20 +739,123 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             return;
         }
 
-        let reqArgs: ClientRequestArgs,
-            transport: ITransportService;
+        const sIn = new PassThrough(),
+            sOut = new PassThrough();
+        // Attach metrics for this connection
+        const metrics = new ConnectionMetrics(
+            proxy,
+            this.metricsProxies
+        );
+        metrics.register(
+            sIn,
+            sOut
+        );
+
+        let transport: ITransportService;
         try {
             const factory = this.connectorproviders.getFactory(proxy.type);
             transport = this.transportproviders.getTransportByType(factory.config.transportType);
 
-            reqArgs = transport.buildConnectArgs(
+            // Start request
+            transport.connect(
                 req.url as string,
                 {
                     Host: `${socket.hostname}:${socket.port}`,
                 },
                 proxy,
                 sockets,
-                this.config.timeout
+                this.config.timeout,
+                (
+                    err, pSocket
+                ) => {
+                    if (err) {
+                        err = parseError(err);
+
+                        let
+                            message: string,
+                            statusCode: number;
+
+                        if (err instanceof HttpTransportError) {
+                            const errHttp = err as HttpTransportError;
+                            statusCode = errHttp.statusCode ?? 500;
+                            message = errHttp.message;
+                        } else {
+                            statusCode = 500;
+                            message = err.message;
+                        }
+
+                        this.endSocketWithError(
+                            req,
+                            socket,
+                            statusCode,
+                            'build_connect',
+                            message,
+                            proxy
+                        );
+
+                        return;
+                    }
+
+                    proxySocket = pSocket;
+
+                    proxySocket.on(
+                        'error',
+                        (errSocket: any) => {
+                            errSocket = parseError(errSocket);
+
+                            this.endSocketWithError(
+                                req,
+                                socket,
+                                500,
+                                'socket_error',
+                                errSocket.message,
+                                proxy
+                            );
+                        }
+                    );
+
+                    proxySocket.on(
+                        'end',
+                        () => {
+                            socket.end();
+                        }
+                    );
+
+                    proxySocket.on(
+                        'close',
+                        () => {
+                            metrics.unregister();
+                        }
+                    );
+
+                    const proxySocketHeaders: OutgoingHttpHeaders = {};
+
+                    // Add proxy headers
+                    proxySocketHeaders[ `${SCRAPOXY_HEADER_PREFIX}-Proxyname` ] = proxy.id;
+
+                    writeSocketHeaders(
+                        socket,
+                        proxySocketHeaders
+                    )
+                        .then(() => {
+                            proxySocket!
+                                .pipe(sIn)
+                                .pipe(socket);
+                            socket
+                                .pipe(sOut)
+                                .pipe(proxySocket!);
+                        })
+                        .catch((errSocket: any) => {
+                            this.endSocketWithError(
+                                req,
+                                socket,
+                                500,
+                                'write_error',
+                                errSocket.message,
+                                proxy
+                            );
+                        });
+                }
             );
         } catch (err: any) {
             this.endSocketWithError(
@@ -763,116 +869,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
 
             return;
         }
-
-        const sIn = new PassThrough(),
-            sOut = new PassThrough();
-        // Attach metrics for this connection
-        const metrics = new ConnectionMetrics(
-            proxy,
-            this.metricsProxies
-        );
-        metrics.register(
-            sIn,
-            sOut
-        );
-
-        // Start request
-        proxyReq = request(reqArgs);
-        proxyReq.on(
-            'error',
-            (err: any) => {
-                err = parseError(err);
-
-                this.endSocketWithError(
-                    req,
-                    socket,
-                    500,
-                    'request_error',
-                    err.message,
-                    proxy
-                );
-            }
-        );
-
-        proxyReq.on(
-            'connect',
-            (
-                proxyRes: IncomingMessage, proxySocket: Socket
-            ) => {
-                proxySocket.on(
-                    'error',
-                    (err: any) => {
-                        err = parseError(err);
-
-                        this.endSocketWithError(
-                            req,
-                            socket,
-                            500,
-                            'socket_error',
-                            err.message,
-                            proxy
-                        );
-                    }
-                );
-
-                proxySocket.on(
-                    'end',
-                    () => {
-                        socket.end();
-                    }
-                );
-
-                proxySocket.on(
-                    'close',
-                    () => {
-                        metrics.unregister();
-                    }
-                );
-
-                if (proxyRes.statusCode !== 200) {
-                    this.endSocketWithError(
-                        req,
-                        socket,
-                        proxyRes.statusCode as number,
-                        'connect_error',
-                        proxyRes.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string || proxyRes.statusMessage as string,
-                        proxy
-                    );
-
-                    return;
-                }
-
-                const proxySocketHeaders: OutgoingHttpHeaders = {};
-
-                // Add proxy headers
-                proxySocketHeaders[ `${SCRAPOXY_HEADER_PREFIX}-Proxyname` ] = proxy.id;
-
-                writeSocketHeaders(
-                    socket,
-                    proxySocketHeaders
-                )
-                    .then(() => {
-                        proxySocket
-                            .pipe(sIn)
-                            .pipe(socket);
-                        socket
-                            .pipe(sOut)
-                            .pipe(proxySocket);
-                    })
-                    .catch((err: any) => {
-                        this.endSocketWithError(
-                            req,
-                            socket,
-                            500,
-                            'write_error',
-                            err.message,
-                            proxy
-                        );
-                    });
-            }
-        );
-
-        proxyReq.end();
     }
 
     private listen(): Promise<number> {

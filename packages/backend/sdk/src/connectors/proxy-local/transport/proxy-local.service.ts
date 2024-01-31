@@ -5,6 +5,7 @@ import {
 import { Socket } from 'net';
 import { connect } from 'tls';
 import { Injectable } from '@nestjs/common';
+import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
 import { TRANSPORT_PROXY_LOCAL_TYPE } from './proxy-local.constants';
 import {
     createConnectionAuto,
@@ -13,7 +14,10 @@ import {
     urlOptionsToUrl,
     urlToUrlOptions,
 } from '../../../helpers';
-import { TransportprovidersService } from '../../../transports';
+import {
+    HttpTransportError,
+    TransportprovidersService,
+} from '../../../transports';
 import type { IProxyToConnectConfigProxyLocal } from './proxy-local.interface';
 import type { IUrlOptions } from '../../../helpers';
 import type { ITransportService } from '../../../transports';
@@ -147,13 +151,14 @@ export class TransportProxyLocalService implements ITransportService {
         return args;
     }
 
-    buildConnectArgs(
+    connect(
         url: string,
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number
-    ): ClientRequestArgs {
+        timeout: number,
+        callback: (err: Error, socket: Socket) => void
+    ) {
         const config = proxy.config as IProxyToConnectConfigProxyLocal;
         const proxyUrlOpts = urlToUrlOptions(config.url);
 
@@ -165,7 +170,7 @@ export class TransportProxyLocalService implements ITransportService {
         headers[ 'X-Proxy-local-Session-ID' ] = proxy.key;
         headers[ 'X-Proxy-local-Region' ] = config.region;
 
-        return {
+        const proxyReq = request({
             method: 'CONNECT',
             hostname: proxyUrlOpts.hostname,
             port: proxyUrlOpts.port,
@@ -179,9 +184,43 @@ export class TransportProxyLocalService implements ITransportService {
                 opts,
                 oncreate,
                 sockets,
-                'TransportProxyLocal:buildConnectArgs'
+                'TransportProxyLocal:connect'
             ),
-        };
+        });
+
+        proxyReq.on(
+            'error',
+            (err: any) => {
+                callback(
+                    err,
+                    void 0 as any
+                );
+            }
+        );
+
+        proxyReq.on(
+            'connect',
+            (
+                proxyRes: IncomingMessage, socket: Socket
+            ) => {
+                if (proxyRes.statusCode === 200) {
+                    callback(
+                        void 0 as any,
+                        socket
+                    );
+                } else {
+                    callback(
+                        new HttpTransportError(
+                            proxyRes.statusCode,
+                            proxyRes.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string || proxyRes.statusMessage as string
+                        ),
+                        void 0 as any
+                    );
+                }
+            }
+        );
+
+        proxyReq.end();
     }
 
     private buildRequestArgsHttp(
