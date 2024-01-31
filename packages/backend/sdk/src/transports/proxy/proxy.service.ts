@@ -191,16 +191,7 @@ export abstract class ATransportProxyService implements ITransportService {
         const config = proxy.config as IProxyTransport;
 
         switch (config.type) {
-            case EProxyType.HTTP: {
-                return this.buildConnectArgsImpl(
-                    url,
-                    headers,
-                    config,
-                    sockets,
-                    timeout
-                );
-            }
-
+            case EProxyType.HTTP:
             case EProxyType.HTTPS: {
                 return this.buildConnectArgsImpl(
                     url,
