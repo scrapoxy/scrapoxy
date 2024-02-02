@@ -24,6 +24,7 @@ import {
     generateUseragent,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
     randomName,
     SCRAPOXY_HEADER_PREFIX,
     SCRAPOXY_HEADER_PREFIX_LC,
@@ -100,6 +101,7 @@ describe(
                 key,
                 config,
                 useragent: generateUseragent(),
+                timeout: PROXY_TIMEOUT_TEST_DEFAULT,
             };
 
             // Start master
@@ -119,7 +121,6 @@ describe(
                     }),
                     MasterModule.forRoot({
                         port: 0,
-                        timeout: ONE_MINUTE_IN_MS,
                         master: fakeConfig,
                         refreshMetrics: fakeConfig,
                         trackSockets: true,

@@ -200,7 +200,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     config,
                     sockets,
                     proxy.timeout,
-                    callback,
+                    callback
                 );
 
                 break;

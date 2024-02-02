@@ -29,6 +29,7 @@ import {
     ONE_HOUR_IN_MS,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
     SCRAPOXY_HEADER_PREFIX,
     sleep,
 } from '@scrapoxy/common';
@@ -268,6 +269,7 @@ export function testConnector(
             name: 'myconnector',
             credentialId: credential.id,
             proxiesMax: 1,
+            proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
             config: connectorConfig,
             certificateDurationInMs: ONE_HOUR_IN_MS,
         };

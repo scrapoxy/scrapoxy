@@ -17,6 +17,7 @@ import {
     EEventScope,
     EventsConnectorsClient,
     ONE_MINUTE_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
     SCRAPOXY_HEADER_PREFIX,
     sleep,
 } from '@scrapoxy/common';
@@ -166,6 +167,7 @@ describe(
                 {
                     name: 'myconnector',
                     proxiesMax,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     credentialId: credential.id,
                     config: connectorConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,

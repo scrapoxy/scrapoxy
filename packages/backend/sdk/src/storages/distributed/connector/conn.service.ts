@@ -61,9 +61,10 @@ import type {
     ICredentialData,
     ICredentialView,
     IFreeproxiesNextRefreshToUpdate,
+    IFreeproxiesToCreate,
     IFreeproxiesToRemove,
     IFreeproxy,
-    IFreeproxyBase,
+    IFreeproxyToRefresh,
     IProjectData,
     IProjectDataCreate,
     IProjectLastDataToUpdate,
@@ -757,12 +758,12 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         return freeproxies;
     }
 
-    async createFreeproxies(freeproxies: IFreeproxyBase[]): Promise<void> {
-        this.logger.debug(`createFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
+        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
 
         await lastValueFrom(this.proxy.emit(
             MESSAGE_FREEPROXIES_CREATE,
-            freeproxies
+            create
         ));
     }
 
@@ -794,7 +795,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
 
     async getNextFreeproxiesToRefresh(
         nextRefreshTs: number, count: number
-    ): Promise<IFreeproxy[]> {
+    ): Promise<IFreeproxyToRefresh[]> {
         this.logger.debug(`getNextFreeproxiesToRefresh(): nextRefreshTs=${nextRefreshTs} / count=${count}`);
 
         const freeproxies = await this.database.getNextFreeproxiesToRefresh(

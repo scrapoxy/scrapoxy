@@ -20,6 +20,7 @@ import {
     EventsConnectorsClient,
     EventsProjectClient,
     ONE_MINUTE_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -164,6 +165,7 @@ describe(
             connectorToCreate = {
                 name: 'myconnector 2',
                 proxiesMax: 2,
+                proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                 credentialId: credential.id,
                 config: datacenterLocalConfig,
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -171,12 +173,15 @@ describe(
             connectorToUpdate = {
                 name: 'new name for connector',
                 credentialId: credential.id,
+                proxiesMax: connectorToCreate.proxiesMax,
+                proxiesTimeout: connectorToCreate.proxiesTimeout,
                 config: datacenterLocalConfig,
             };
 
             connectorToCreate2 = {
                 name: 'myconnector 1', // Check sort on name
                 proxiesMax: 2,
+                proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                 credentialId: credential.id,
                 config: datacenterLocalConfig2,
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -233,6 +238,7 @@ describe(
                 const create: any = {
                     name: void 0,
                     proxiesMax: 2,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     credentialId: credential.id,
                     config: datacenterLocalConfig,
                 };
@@ -271,6 +277,7 @@ describe(
                     name: 'negative connector',
                     credentialId: credential.id,
                     proxiesMax: -10,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     config: datacenterLocalConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                 };
@@ -290,6 +297,7 @@ describe(
                 const create: IConnectorToCreate = {
                     name: 'misconfigured connector',
                     proxiesMax: 1,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     credentialId: credential2.id,
                     config: {
                         name: void 0,
@@ -360,6 +368,8 @@ describe(
                     .toBe(credential.type);
                 expect(connectorFound.proxiesMax)
                     .toBe(connectorToCreate.proxiesMax);
+                expect(connectorFound.proxiesTimeout)
+                    .toBe(connectorToCreate.proxiesTimeout);
                 expect(connectorFound.active)
                     .toBeFalsy();
                 expect(connectorFound.config)
@@ -450,6 +460,8 @@ describe(
                 const update: IConnectorToUpdate = {
                     name: 'new name for connector',
                     credentialId: credential.id,
+                    proxiesMax: 2,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     config: datacenterLocalConfig,
                 };
 
@@ -501,6 +513,7 @@ describe(
                 const connectorUpdate: any = {
                     name: void 0,
                     proxiesMax: 2,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: datacenterLocalConfig,
                 };
@@ -529,7 +542,7 @@ describe(
                 expect(connector.type)
                     .toBe(credential.type);
                 expect(connector.proxiesMax)
-                    .toBe(connectorToCreate.proxiesMax);
+                    .toBe(connectorToUpdate.proxiesMax);
                 expect(connector.error)
                     .toBeNull();
 
@@ -566,6 +579,8 @@ describe(
                     .toBe(credential.type);
                 expect(connectorFound.proxiesMax)
                     .toBe(connectorToCreate.proxiesMax);
+                expect(connectorFound.proxiesTimeout)
+                    .toBe(connectorToCreate.proxiesTimeout);
                 expect(connectorFound.error)
                     .toBeNull();
                 expect(connectorFound.config)
@@ -631,6 +646,8 @@ describe(
                     .toBe(credential.type);
                 expect(connectorFound.proxiesMax)
                     .toBe(connectorToCreate2.proxiesMax);
+                expect(connectorFound.proxiesTimeout)
+                    .toBe(connectorToCreate2.proxiesTimeout);
                 expect(connectorFound.active)
                     .toBeFalsy();
                 expect(connectorFound.error)

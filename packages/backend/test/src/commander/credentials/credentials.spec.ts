@@ -21,6 +21,7 @@ import {
     EventsConnectorsClient,
     EventsCredentialsClient,
     ONE_MINUTE_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -302,6 +303,7 @@ describe(
                 connectorToCreate = {
                     name: 'myconnector',
                     proxiesMax: 0,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     credentialId: credentials[ 0 ].id,
                     config: connectorConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -427,6 +429,8 @@ describe(
                 const update: IConnectorToUpdate = {
                     name: connectorToCreate.name,
                     credentialId: credentials[ 1 ].id,
+                    proxiesMax: connectorToCreate.proxiesMax,
+                    proxiesTimeout: connectorToCreate.proxiesTimeout,
                     config: connectorToCreate.config,
                 };
 

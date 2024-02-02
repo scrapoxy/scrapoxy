@@ -1,3 +1,4 @@
+import type { IConnectorStore } from './connector.store';
 import type { IFreeproxyModel } from '../freeproxy.model';
 import type { IFreeproxyBase } from '@scrapoxy/common';
 
@@ -24,7 +25,9 @@ export function toFreeproxyStore(fp: IFreeproxyModel): IFreeproxyStore {
 }
 
 
-export function fromFreeproxyStore(fp: IFreeproxyStore): IFreeproxyModel {
+export function fromFreeproxyStore(
+    fp: IFreeproxyStore, c: IConnectorStore
+): IFreeproxyModel {
     const model: IFreeproxyModel = {
         id: fp.id,
         projectId: fp.projectId,
@@ -33,6 +36,7 @@ export function fromFreeproxyStore(fp: IFreeproxyStore): IFreeproxyModel {
         type: fp.type,
         address: fp.address,
         auth: fp.auth,
+        timeout: c.proxiesTimeout,
         fingerprint: null,
         fingerprintError: null,
         nextRefreshTs: 0,

@@ -17,6 +17,7 @@ import {
     CONNECTOR_DATACENTER_LOCAL_TYPE,
     EProxyStatus,
     ONE_MINUTE_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
     randomName,
     sleep,
 } from '@scrapoxy/common';
@@ -260,6 +261,7 @@ describe(
                     name: randomName(),
                     credentialId: credential.id,
                     proxiesMax: test.proxiesMax,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     config: connectorConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                 }

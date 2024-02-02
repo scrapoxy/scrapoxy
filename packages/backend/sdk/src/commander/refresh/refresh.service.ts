@@ -213,6 +213,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                 status: remoteProxy.status,
                 createdTs: nowTime,
                 useragent: generateUseragent(),
+                timeout: localProxies.connector.proxiesTimeout,
                 fingerprint: null,
                 fingerprintError: null,
                 removing: false,
@@ -417,6 +418,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                     status: remoteProxy.status,
                     createdTs: nowTime,
                     useragent: generateUseragent(),
+                    timeout: localProxies.connector.proxiesTimeout,
                     fingerprint: null,
                     fingerprintError: null,
                     removing: false,
@@ -780,6 +782,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                         fingerprintError: localProxy.fingerprintError,
                         createdTs: localProxy.createdTs,
                         useragent: localProxy.useragent,
+                        timeout: localProxy.timeout,
                         disconnectedTs: localProxy.disconnectedTs,
                         autoRotateDelayFactor: localProxy.autoRotateDelayFactor,
                     };

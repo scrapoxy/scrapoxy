@@ -22,6 +22,7 @@ import {
     ProjectUserRemovedEvent,
     ProxiesMetricsAddedEvent,
     ProxiesSynchronizedEvent,
+    PROXY_TIMEOUT_TEST_DEFAULT,
     safeJoin,
     TaskCreatedEvent,
     TaskRemovedEvent,
@@ -47,7 +48,10 @@ import {
     toConnectorProxiesSync,
     toConnectorProxiesView,
 } from './connector.model';
-import { toFreeproxy } from './freeproxy.model';
+import {
+    toFreeproxy,
+    toFreeproxyToRefresh,
+} from './freeproxy.model';
 import {
     toProjectMetricsView,
     toProjectSync,
@@ -103,8 +107,10 @@ import type {
     ICredentialData,
     ICredentialView,
     IEvent,
+    IFreeproxiesToCreate,
     IFreeproxy,
     IFreeproxyRefreshed,
+    IFreeproxyToRefresh,
     IProjectData,
     IProjectDataCreate,
     IProjectMetricsAddView,
@@ -200,6 +206,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 fingerprintError: null,
                 createdTs: nowTime,
                 useragent: generateUseragent(),
+                timeout: PROXY_TIMEOUT_TEST_DEFAULT,
                 disconnectedTs: null,
                 requests: 0,
                 bytesReceived: 0,
@@ -1213,10 +1220,19 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         connectorModel.name = connector.name;
         connectorModel.active = connector.active;
         connectorModel.proxiesMax = connector.proxiesMax;
+        connectorModel.proxiesTimeout = connector.proxiesTimeout;
         connectorModel.error = connector.error;
         connectorModel.certificateEndAt = connector.certificateEndAt;
         connectorModel.credentialId = connector.credentialId;
         connectorModel.config = connector.config;
+
+        for (const proxy of connectorModel.proxies.values()) {
+            proxy.timeout = connector.proxiesTimeout;
+        }
+
+        for (const freeproxy of connectorModel.freeproxies.values()) {
+            freeproxy.timeout = connector.proxiesTimeout;
+        }
 
         const event: IEvent = {
             id: connector.projectId,
@@ -1754,7 +1770,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             const proxyModel = this.proxies.get(id);
 
             if (proxyModel) {
-                proxyModel.nextRefreshTs = nextRefreshTs;
+                proxyModel.nextRefreshTs = nextRefreshTs + proxyModel.timeout;
             } else {
                 idsNotFound.push(id);
             }
@@ -1857,25 +1873,34 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             .map(toFreeproxy);
     }
 
-    async createFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`createFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
+        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
 
-        const freeproxiesByProjects = new Map<string, IFreeproxy[]>();
-        for (const freeproxy of freeproxies) {
-            const projectModel = this.projects.get(freeproxy.projectId);
+        const projectModel = this.projects.get(create.projectId);
 
-            if (!projectModel) {
-                continue;
-            }
+        if (!projectModel) {
+            throw new ProjectNotFoundError(create.projectId);
+        }
 
-            const connectorModel = projectModel.connectors.get(freeproxy.connectorId);
+        const connectorModel = projectModel.connectors.get(create.connectorId);
 
-            if (!connectorModel) {
+        if (!connectorModel) {
+            throw new ConnectorNotFoundError(
+                create.projectId,
+                create.connectorId
+            );
+        }
+
+        const freeproxies: IFreeproxy[] = [];
+        for (const freeproxy of create.freeproxies) {
+            if (freeproxy.projectId !== create.projectId ||
+                freeproxy.connectorId !== create.connectorId) {
                 continue;
             }
 
             const freeproxyModel: IFreeproxyModel = {
                 ...freeproxy,
+                timeout: connectorModel.proxiesTimeout,
                 nextRefreshTs: 0,
             };
 
@@ -1889,37 +1914,16 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 freeproxyModel
             );
 
-            let freeproxiesByProject = freeproxiesByProjects.get(projectModel.id);
-
-            if (freeproxiesByProject) {
-                freeproxiesByProject.push(freeproxy);
-            } else {
-                freeproxiesByProject = [
-                    freeproxy,
-                ];
-                freeproxiesByProjects.set(
-                    projectModel.id,
-                    freeproxiesByProject
-                );
-            }
+            freeproxies.push(toFreeproxy(freeproxyModel));
         }
 
-        if (freeproxiesByProjects.size > 0) {
-            const promises: Promise<void>[] = [];
-            for (const [
-                projectId, freeproxiesByProject,
-            ] of freeproxiesByProjects.entries()) {
-                const event: IEvent = {
-                    id: projectId,
-                    scope: EEventScope.FREEPROXIES,
-                    event: new FreeproxiesCreatedEvent(freeproxiesByProject),
-                };
+        const event: IEvent = {
+            id: create.projectId,
+            scope: EEventScope.FREEPROXIES,
+            event: new FreeproxiesCreatedEvent(freeproxies),
+        };
 
-                promises.push(this.events.emit(event));
-            }
-
-            await Promise.all(promises);
-        }
+        await this.events.emit(event);
     }
 
     async updateFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
@@ -2011,7 +2015,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
     async getNextFreeproxiesToRefresh(
         nextRefreshTs: number, count: number
-    ): Promise<IFreeproxy[]> {
+    ): Promise<IFreeproxyToRefresh[]> {
         this.logger.debug(`getNextFreeproxiesToRefresh(): nextRefreshTs=${nextRefreshTs} / count=${count}`);
 
         const freeproxies: IFreeproxyModel[] = Array.from(this.freeproxies.values())
@@ -2030,7 +2034,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 0,
                 count
             )
-            .map(toFreeproxy);
+            .map(toFreeproxyToRefresh);
 
         return freeproxiesToRefresh;
     }
@@ -2045,7 +2049,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             const freeproxyModel = this.freeproxies.get(id);
 
             if (freeproxyModel) {
-                freeproxyModel.nextRefreshTs = nextRefreshTs;
+                freeproxyModel.nextRefreshTs = nextRefreshTs + freeproxyModel.timeout;
             } else {
                 idsNotFound.push(id);
             }

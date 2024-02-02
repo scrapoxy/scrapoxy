@@ -5,6 +5,7 @@ import {
     EFingerprintMode,
     formatProxyId,
     generateUseragent,
+    PROXY_TIMEOUT_DEFAULT,
     randomName,
 } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
@@ -166,6 +167,7 @@ class DigitalOceanInstallCommand extends ATaskCommand {
                     key,
                     config,
                     useragent: generateUseragent(),
+                    timeout: PROXY_TIMEOUT_DEFAULT,
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,
@@ -266,6 +268,8 @@ class DigitalOceanInstallCommand extends ATaskCommand {
                         name: connector.name,
                         credentialId: connector.credentialId,
                         config: connectorConfig,
+                        proxiesMax: connector.proxiesMax,
+                        proxiesTimeout: connector.proxiesTimeout,
                     }
                 );
 

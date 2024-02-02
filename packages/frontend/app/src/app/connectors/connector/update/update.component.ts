@@ -13,6 +13,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import {
     ConnectorUpdatedEvent,
+    ONE_SECOND_IN_MS,
     ONE_YEAR_IN_MS,
 } from '@scrapoxy/common';
 import {
@@ -92,6 +93,18 @@ export class ConnectorUpdateComponent implements OnInit, OnDestroy, IHasModifica
             ],
             credentialId: [
                 void 0, Validators.required,
+            ],
+            proxiesMax: [
+                void 0,
+                [
+                    Validators.required, Validators.min(1),
+                ],
+            ],
+            proxiesTimeout: [
+                void 0,
+                [
+                    Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                ],
             ],
         });
 

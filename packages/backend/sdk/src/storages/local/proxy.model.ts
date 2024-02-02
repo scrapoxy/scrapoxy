@@ -9,6 +9,7 @@ import type {
 
 export interface IProxyModel extends IProxyData, IProxySync, IProxyView {
     nextRefreshTs: number;
+
     lastConnectionTs: number;
 }
 
@@ -22,6 +23,7 @@ export function toProxyToConnect(proxy: IProxyModel): IProxyToConnect {
         key: proxy.key,
         config: proxy.config,
         useragent: proxy.useragent,
+        timeout: proxy.timeout,
     };
 
     return connect;

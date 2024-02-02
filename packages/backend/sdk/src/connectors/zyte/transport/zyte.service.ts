@@ -63,8 +63,7 @@ export class TransportZyteService implements ITransportService {
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigZyte;
         const auth = btoa(`${config.token}:`);
@@ -79,8 +78,7 @@ export class TransportZyteService implements ITransportService {
                     proxy,
                     config,
                     auth,
-                    sockets,
-                    timeout
+                    sockets
                 );
             }
 
@@ -89,12 +87,10 @@ export class TransportZyteService implements ITransportService {
                     method,
                     urlOpts,
                     headers,
-                    headersConnect,
                     proxy,
                     config,
                     auth,
-                    sockets,
-                    timeout
+                    sockets
                 );
             }
 
@@ -110,8 +106,7 @@ export class TransportZyteService implements ITransportService {
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         return this.buildRequestArgs(
             method,
@@ -119,8 +114,7 @@ export class TransportZyteService implements ITransportService {
             headers,
             headersConnect,
             proxy,
-            sockets,
-            timeout
+            sockets
         );
     }
 
@@ -129,7 +123,6 @@ export class TransportZyteService implements ITransportService {
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number,
         callback: (err: Error, socket: Socket) => void
     ) {
         const config = proxy.config as IProxyToConnectConfigZyte;
@@ -148,7 +141,7 @@ export class TransportZyteService implements ITransportService {
             port: 8011,
             path: url,
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 opts,
                 oncreate
@@ -199,12 +192,10 @@ export class TransportZyteService implements ITransportService {
         method: string | undefined,
         urlOpts: IUrlOptions,
         headers: OutgoingHttpHeaders,
-        headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         config: IProxyToConnectConfigZyte,
         auth: string,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         headers[ 'Proxy-Authorization' ] = `Basic ${auth}`;
         headers[ 'X-Crawlera-Session' ] = proxy.key;
@@ -222,7 +213,7 @@ export class TransportZyteService implements ITransportService {
                 true
             ),
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 opts,
                 oncreate
@@ -243,8 +234,7 @@ export class TransportZyteService implements ITransportService {
         proxy: IProxyToConnect,
         config: IProxyToConnectConfigZyte,
         auth: string,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         return {
             method,
@@ -255,7 +245,7 @@ export class TransportZyteService implements ITransportService {
                 false
             ),
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 args,
                 oncreate
@@ -273,7 +263,7 @@ export class TransportZyteService implements ITransportService {
                     port: args.port,
                     path: headersConnect.Host as string,
                     headers: headersConnect,
-                    timeout,
+                    timeout: proxy.timeout,
                     createConnection: (
                         args2,
                         oncreate2
@@ -345,7 +335,7 @@ export class TransportZyteService implements ITransportService {
                             socket: proxySocket,
                             requestCert: true,
                             rejectUnauthorized: false,
-                            timeout,
+                            timeout: proxy.timeout,
                         };
 
                         if (isUrl(urlOpts.hostname)) {

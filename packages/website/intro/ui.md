@@ -117,7 +117,7 @@ Upon the first connection, Scrapoxy will guide you through the creation of a new
 1. **Credential**: Selection from the list of available credentials from the previous section;
 2. **Name**: Unique identifier for the connector within the project;
 3. **# of proxies**: Maximum number of proxies that the connector can provide and that you intend to use;
-4. **Options**: Configuration options for the connector. In this instance, choose the `Product` and `Country` for IPRoyal.
+4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
 
 ::: info
 When you save the settings, Scrapoxy performs a validation test to ensure that the entered configuration is valid.

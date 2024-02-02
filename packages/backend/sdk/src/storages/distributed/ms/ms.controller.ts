@@ -87,6 +87,7 @@ import type {
     ICredentialData,
     IEvent,
     IFreeproxiesNextRefreshToUpdate,
+    IFreeproxiesToCreate,
     IFreeproxiesToRemove,
     IFreeproxy,
     IFreeproxyRefreshed,
@@ -603,41 +604,22 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
 
     //////////// FREE PROXIES ////////////
     @EventPattern(MESSAGE_FREEPROXIES_CREATE)
-    async createFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`createFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
+        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
 
-        await this.storage.createFreeproxies(freeproxies);
+        await this.storage.createFreeproxies(create);
 
-        const freeproxiesByProjects = new Map<string, IFreeproxy[]>();
-        for (const freeproxy of freeproxies) {
-            let freeproxiesByProject = freeproxiesByProjects.get(freeproxy.projectId);
+        const event: IEvent = {
+            id: create.projectId,
+            scope: EEventScope.FREEPROXIES,
+            event: new FreeproxiesCreatedEvent(create.freeproxies),
+        };
 
-            if (freeproxiesByProject) {
-                freeproxiesByProject.push(freeproxy);
-            } else {
-                freeproxiesByProject = [
-                    freeproxy,
-                ];
-                freeproxiesByProjects.set(
-                    freeproxy.projectId,
-                    freeproxiesByProject
-                );
-            }
-        }
-
-        const events: IEvent[] = [];
-        for (const [
-            projectId, freeproxiesByProject,
-        ] of freeproxiesByProjects.entries()) {
-            events.push({
-                id: projectId,
-                scope: EEventScope.FREEPROXIES,
-                event: new FreeproxiesCreatedEvent(freeproxiesByProject),
-            });
-        }
         await lastValueFrom(this.proxy.emit(
             MESSAGE_EVENTS,
-            events
+            [
+                event,
+            ]
         ));
     }
 

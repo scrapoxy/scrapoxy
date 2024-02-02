@@ -62,8 +62,7 @@ export class TransportDatacenterLocalService extends ATransportDatacenterService
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         const
             args = super.buildFingerprintRequestArgs(
@@ -72,8 +71,7 @@ export class TransportDatacenterLocalService extends ATransportDatacenterService
                 headers,
                 headersConnect,
                 proxy,
-                sockets,
-                timeout
+                sockets
             ),
             config = proxy.config as IProxyToConnectConfigDatacenterLocal;
 

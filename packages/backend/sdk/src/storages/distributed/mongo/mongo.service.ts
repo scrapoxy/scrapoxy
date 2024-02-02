@@ -67,7 +67,10 @@ import {
     CREDENTIAL_DATA_META_MONGODB,
     CREDENTIAL_VIEW_META_MONGODB,
 } from '../credential.model';
-import { FREEPROXY_META_MONGODB } from '../freeproxy.model';
+import {
+    FREEPROXY_META_MONGODB,
+    FREEPROXY_TO_REFRESH_META_MONGODB,
+} from '../freeproxy.model';
 import {
     PROJECT_DATA_META_MONGODB,
     PROJECT_METRICS_META_MONGODB,
@@ -97,7 +100,7 @@ import type { IConnectorModel } from '../connector.model';
 import type { ICredentialModel } from '../credential.model';
 import type { IMongoConfig } from '../distributed.interface';
 import type { IFreeproxyModel } from '../freeproxy.model';
-import type{ IParamModel } from '../param.model';
+import type { IParamModel } from '../param.model';
 import type { IProjectModel } from '../project.model';
 import type { IProxyModel } from '../proxy.model';
 import type { ITaskModel } from '../task.model';
@@ -119,7 +122,9 @@ import type {
     IConnectorView,
     ICredentialData,
     ICredentialView,
+    IFreeproxiesToCreate,
     IFreeproxy,
+    IFreeproxyToRefresh,
     IProjectData,
     IProjectDataCreate,
     IProjectMetrics,
@@ -1447,6 +1452,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             type: connector.type,
             active: connector.active,
             proxiesMax: connector.proxiesMax,
+            proxiesTimeout: connector.proxiesTimeout,
             error: connector.error,
             certificateEndAt: connector.certificateEndAt,
             config: connector.config,
@@ -1461,7 +1467,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async updateConnector(connector: IConnectorData): Promise<void> {
         this.logger.debug(`updateConnector(): connector.id=${connector.id}`);
 
-        const { matchedCount } = await this.colConnector.updateOne(
+        const connectorPromise = this.colConnector.updateOne(
             {
                 _id: connector.id,
                 projectId: connector.projectId,
@@ -1471,6 +1477,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                     name: connector.name,
                     active: connector.active,
                     proxiesMax: connector.proxiesMax,
+                    proxiesTimeout: connector.proxiesTimeout,
                     error: connector.error,
                     certificateEndAt: connector.certificateEndAt,
                     credentialId: connector.credentialId,
@@ -1478,6 +1485,33 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             }
         );
+        const proxiesPromise = this.colProxies.updateMany(
+            {
+                connectorId: connector.id,
+                projectId: connector.projectId,
+            },
+            {
+                $set: {
+                    proxiesTimeout: connector.proxiesTimeout,
+                },
+            }
+        );
+        const freeproxiesPromises = this.colFreeproxies.updateMany(
+            {
+                connectorId: connector.id,
+                projectId: connector.projectId,
+            },
+            {
+                $set: {
+                    proxiesTimeout: connector.proxiesTimeout,
+                },
+            }
+        );
+        const [
+            { matchedCount },
+        ] = await Promise.all([
+            connectorPromise, proxiesPromise, freeproxiesPromises,
+        ]);
 
         if (!matchedCount) {
             throw new ConnectorNotFoundError(
@@ -1739,6 +1773,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 fingerprint: proxy.fingerprint,
                 fingerprintError: proxy.fingerprintError,
                 useragent: proxy.useragent,
+                timeout: proxy.timeout,
                 disconnectedTs: proxy.disconnectedTs,
                 autoRotateDelayFactor: proxy.autoRotateDelayFactor,
                 requests: 0,
@@ -1768,6 +1803,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         status: proxy.status,
                         config: proxy.config,
                         // useragent => not modified
+                        timeout: proxy.timeout,
                         // createdTs => not modified
                         removing: proxy.removing,
                         removingForce: proxy.removingForce,
@@ -1954,17 +1990,24 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     ): Promise<void> {
         this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds=${safeJoin(proxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
 
+
         const { modifiedCount } = await this.colProxies.updateMany(
             {
                 _id: {
                     $in: proxiesIds,
                 },
             },
-            {
-                $set: {
-                    nextRefreshTs,
+            [
+                {
+                    $set: {
+                        nextRefreshTs: {
+                            $add: [
+                                nextRefreshTs, '$timeout',
+                            ],
+                        },
+                    },
                 },
-            }
+            ]
         );
 
         if (modifiedCount !== proxiesIds.length) {
@@ -2078,11 +2121,35 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         return freeproxies;
     }
 
-    async createFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`createFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
+        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
+
+        const connectorModel = await this.colConnector.findOne(
+            {
+                _id: create.connectorId,
+                projectId: create.projectId,
+            },
+            {
+                projection: {
+                    proxiesTimeout: 1,
+                },
+            }
+        );
+
+        if (!connectorModel) {
+            throw new ConnectorNotFoundError(
+                create.projectId,
+                create.connectorId
+            );
+        }
 
         const bulk = this.colFreeproxies.initializeUnorderedBulkOp();
-        for (const freeproxy of freeproxies) {
+        for (const freeproxy of create.freeproxies) {
+            if (freeproxy.projectId !== create.projectId ||
+                freeproxy.connectorId !== create.connectorId) {
+                continue;
+            }
+
             const freeproxyToCreate: IFreeproxyModel = {
                 _id: freeproxy.id,
                 projectId: freeproxy.projectId,
@@ -2091,8 +2158,9 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 key: freeproxy.key,
                 address: freeproxy.address,
                 auth: freeproxy.auth,
-                fingerprint: freeproxy.fingerprint,
-                fingerprintError: freeproxy.fingerprintError,
+                fingerprint: null,
+                fingerprintError: null,
+                timeout: connectorModel.proxiesTimeout,
                 nextRefreshTs: 0,
             };
 
@@ -2139,7 +2207,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
     async getNextFreeproxiesToRefresh(
         nextRefreshTs: number, count: number
-    ): Promise<IFreeproxy[]> {
+    ): Promise<IFreeproxyToRefresh[]> {
         this.logger.debug(`getNextFreeproxiesToRefresh(): nextRefreshTs=${nextRefreshTs} / count=${count}`);
 
         const freeproxies = await this.colFreeproxies.find(
@@ -2150,10 +2218,10 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             },
             {
                 limit: count,
-                projection: FREEPROXY_META_MONGODB,
+                projection: FREEPROXY_TO_REFRESH_META_MONGODB,
             }
         )
-            .map((p) => fromMongo<IFreeproxy>(p))
+            .map((p) => fromMongo<IFreeproxyToRefresh>(p))
             .toArray();
 
         return freeproxies;
@@ -2170,11 +2238,17 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                     $in: freeproxiesIds,
                 },
             },
-            {
-                $set: {
-                    nextRefreshTs,
+            [
+                {
+                    $set: {
+                        nextRefreshTs: {
+                            $add: [
+                                nextRefreshTs, '$timeout',
+                            ],
+                        },
+                    },
                 },
-            }
+            ]
         );
 
         if (modifiedCount !== freeproxiesIds.length) {

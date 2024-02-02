@@ -72,6 +72,7 @@ export function toProxyData(p: IProxyData): IProxyData {
         fingerprintError: p.fingerprintError,
         createdTs: p.createdTs,
         useragent: p.useragent,
+        timeout: p.timeout,
         disconnectedTs: p.disconnectedTs,
         autoRotateDelayFactor: p.autoRotateDelayFactor,
     };
@@ -96,6 +97,7 @@ export function toProxySync(p: IProxySync): IProxySync {
         fingerprintError: p.fingerprintError,
         createdTs: p.createdTs,
         useragent: p.useragent,
+        timeout: p.timeout,
         disconnectedTs: p.disconnectedTs,
         autoRotateDelayFactor: p.autoRotateDelayFactor,
         requests: p.requests,
@@ -121,6 +123,7 @@ export function fromProxySyncToData(p: IProxySync): IProxyData {
         fingerprintError: p.fingerprintError,
         createdTs: p.createdTs,
         useragent: p.useragent,
+        timeout: p.timeout,
         disconnectedTs: p.disconnectedTs,
         autoRotateDelayFactor: p.autoRotateDelayFactor,
     };

@@ -35,7 +35,10 @@ export function toConnectorStore(c: IConnectorModel): IConnectorStore {
 export function fromConnectorStore(c: IConnectorStore): IConnectorModel {
     const freeproxies = new Map<string, IFreeproxyModel>();
     for (const freeproxy of c.freeproxies) {
-        const freeproxyModel = fromFreeproxyStore(freeproxy);
+        const freeproxyModel = fromFreeproxyStore(
+            freeproxy,
+            c
+        );
 
         freeproxies.set(
             freeproxy.id,
@@ -50,6 +53,7 @@ export function fromConnectorStore(c: IConnectorStore): IConnectorModel {
         type: c.type,
         active: c.active,
         proxiesMax: c.proxiesMax,
+        proxiesTimeout: c.proxiesTimeout,
         error: c.error,
         config: c.config,
         credentialId: c.credentialId,

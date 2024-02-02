@@ -1,4 +1,7 @@
-import { FREEPROXY_META } from '@scrapoxy/common';
+import {
+    FREEPROXY_META,
+    FREEPROXY_TO_REFRESH_META,
+} from '@scrapoxy/common';
 import { toMongoMeta } from './mongo/mongo.helpers';
 import type { IFreeproxy } from '@scrapoxy/common';
 
@@ -11,4 +14,6 @@ export interface IFreeproxyModel extends Omit<IFreeproxy, 'id'> {
 }
 
 
-export const FREEPROXY_META_MONGODB = toMongoMeta(FREEPROXY_META);
+export const
+    FREEPROXY_META_MONGODB = toMongoMeta(FREEPROXY_META),
+    FREEPROXY_TO_REFRESH_META_MONGODB = toMongoMeta(FREEPROXY_TO_REFRESH_META);

@@ -12,7 +12,9 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialView,
+    IFreeproxiesToCreate,
     IFreeproxy,
+    IFreeproxyToRefresh,
     IProjectData,
     IProjectDataCreate,
     IProjectMetricsAddView,
@@ -157,13 +159,13 @@ export interface IStorageService {
 
     getNewProjectFreeproxies: (projectId: string, connectorId: string, count: number, excludeKeys: string[]) => Promise<IFreeproxy[]>;
 
-    createFreeproxies: (freeproxies: IFreeproxy[]) => Promise<void>;
+    createFreeproxies: (create: IFreeproxiesToCreate) => Promise<void>;
 
     updateFreeproxies: (freeproxies: IFreeproxy[]) => Promise<void>;
 
     removeFreeproxies: (projectId: string, connectorId: string, freeproxiesIds: string[]) => Promise<void>;
 
-    getNextFreeproxiesToRefresh: (nextRefreshTs: number, count: number) => Promise<IFreeproxy[]>;
+    getNextFreeproxiesToRefresh: (nextRefreshTs: number, count: number) => Promise<IFreeproxyToRefresh[]>;
 
     updateFreeproxiesNextRefreshTs: (proxiesIds: string[], nextRefreshTs: number) => Promise<void>;
 

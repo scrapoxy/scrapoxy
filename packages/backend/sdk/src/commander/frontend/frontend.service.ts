@@ -71,6 +71,7 @@ import type {
     ICredentialToCreateCallback,
     ICredentialToUpdate,
     ICredentialView,
+    IFreeproxiesToCreate,
     IFreeproxiesToRemoveOptions,
     IFreeproxy,
     IFreeproxyBase,
@@ -1069,22 +1070,31 @@ export class CommanderFrontendService {
             return;
         }
 
-        const freeproxiesToCreate: IFreeproxy[] = freeproxies.map((fp) => ({
-            id: formatFreeproxyId(
-                connectorId,
-                fp
-            ),
+        const connector = await this.storageproviders.storage.getConnectorById(
             projectId,
-            connectorId: connectorId,
-            key: fp.key,
-            type: fp.type,
-            address: fp.address,
-            auth: fp.auth,
-            fingerprint: null,
-            fingerprintError: null,
-        }));
+            connectorId
+        );
+        const create: IFreeproxiesToCreate = {
+            projectId,
+            connectorId,
+            freeproxies: freeproxies.map((fp) => ({
+                id: formatFreeproxyId(
+                    connectorId,
+                    fp
+                ),
+                projectId,
+                connectorId: connectorId,
+                key: fp.key,
+                type: fp.type,
+                address: fp.address,
+                auth: fp.auth,
+                timeout: connector.proxiesTimeout,
+                fingerprint: null,
+                fingerprintError: null,
+            })),
+        };
 
-        await this.storageproviders.storage.createFreeproxies(freeproxiesToCreate);
+        await this.storageproviders.storage.createFreeproxies(create);
     }
 
     async removeFreeproxies(

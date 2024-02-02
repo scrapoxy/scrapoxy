@@ -28,7 +28,6 @@ export interface IMasterAppOptions {
     datacenterLocalAppUrl?: string;
     commanderApp?: CommanderApp;
     fingerprintUrl?: string;
-    fingerprintTimeout?: number;
     imports?: (Type | DynamicModule | Promise<DynamicModule> | ForwardReference)[];
     logger: LoggerService;
     proxyLocalAppUrl?: string;
@@ -69,15 +68,13 @@ export class MasterApp {
                     RefreshFreeproxiesModule.forRoot(
                         options.commanderApp.url,
                         VERSION_TEST,
-                        options.fingerprintUrl,
-                        options.fingerprintTimeout
+                        options.fingerprintUrl
                     ),
                     RefreshProxiesModule.forRoot(
                         options.commanderApp.url,
                         VERSION_TEST,
                         true,
-                        options.fingerprintUrl,
-                        options.fingerprintTimeout
+                        options.fingerprintUrl
                     )
                 );
             }

@@ -45,26 +45,35 @@ export interface IConnectorView {
 
 
 export const CONNECTOR_DATA_META = [
-    ...CONNECTOR_VIEW_META, 'credentialId', 'config',
+    ...CONNECTOR_VIEW_META,
+    'proxiesTimeout',
+    'credentialId',
+    'config',
 ];
 
 
 export interface IConnectorData extends IConnectorView {
     credentialId: string;
     config: any;
+    proxiesTimeout: number;
 }
 
 
-export const CONNECTOR_SYNC_META = CONNECTOR_VIEW_META;
+export const CONNECTOR_SYNC_META = [
+    ...CONNECTOR_VIEW_META, 'proxiesTimeout',
+];
 
 
-export type IConnectorSync = IConnectorView;
+export interface IConnectorSync extends IConnectorView {
+    proxiesTimeout: number;
+}
 
 
 export interface IConnectorToCreate {
     name: string;
     credentialId: string;
     proxiesMax: number;
+    proxiesTimeout: number;
     config: any;
     certificateDurationInMs: number;
 }
@@ -79,6 +88,8 @@ export interface IConnectorDataToCreate extends IConnectorData {
 export interface IConnectorToUpdate {
     name: string;
     credentialId: string;
+    proxiesMax: number;
+    proxiesTimeout: number;
     config: any;
 }
 

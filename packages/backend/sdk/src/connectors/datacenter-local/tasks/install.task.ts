@@ -136,6 +136,8 @@ class DatacenterLocalInstallCommand extends ATaskCommand {
                         name: connector.name,
                         credentialId: connector.credentialId,
                         config: connectorConfig,
+                        proxiesMax: connector.proxiesMax,
+                        proxiesTimeout: connector.proxiesTimeout,
                     }
                 );
 

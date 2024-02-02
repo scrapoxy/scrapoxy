@@ -24,7 +24,20 @@ export interface IFreeproxy extends IFreeproxyBase, IFingerprintResponse {
     id: string;
     connectorId: string;
     projectId: string;
+    timeout: number;
 }
+
+
+export const FREEPROXY_TO_REFRESH_META = [
+    'id',
+    'type',
+    'connectorId',
+    'projectId',
+    'key',
+    'address',
+    'auth',
+    'timeout',
+];
 
 
 export interface IFreeproxyToRefresh extends IFreeproxyBase {
@@ -32,6 +45,13 @@ export interface IFreeproxyToRefresh extends IFreeproxyBase {
     connectorId: string;
     projectId: string;
     timeout: number;
+}
+
+
+export interface IFreeproxiesToCreate {
+    projectId: string;
+    connectorId: string;
+    freeproxies: IFreeproxy[];
 }
 
 

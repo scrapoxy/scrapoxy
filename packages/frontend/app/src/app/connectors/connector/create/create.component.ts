@@ -14,7 +14,11 @@ import {
     ActivatedRoute,
     Router,
 } from '@angular/router';
-import { ONE_YEAR_IN_MS } from '@scrapoxy/common';
+import {
+    ONE_SECOND_IN_MS,
+    ONE_YEAR_IN_MS,
+    PROXY_TIMEOUT_DEFAULT,
+} from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
     ConnectorprovidersService,
@@ -75,6 +79,12 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                     Validators.required, Validators.min(1),
                 ],
             ],
+            proxiesTimeout: [
+                void 0,
+                [
+                    Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                ],
+            ],
             certificateDurationInMs: [
                 // Value hidden and set to 1 year
                 void 0,
@@ -113,6 +123,7 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                 name: 'My connector',
                 credentialId: null as any,
                 proxiesMax: 1,
+                proxiesTimeout: PROXY_TIMEOUT_DEFAULT,
                 config: void 0,
                 certificateDurationInMs: ONE_YEAR_IN_MS,
             };

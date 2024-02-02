@@ -68,6 +68,10 @@ export const schemaConnectorToCreate = Joi.object({
     proxiesMax: Joi.number()
         .required()
         .min(0),
+    proxiesTimeout: Joi.number()
+        .required()
+        .min(500)
+        .max(30 * ONE_SECOND_IN_MS),
     config: Joi.any()
         .required(),
     certificateDurationInMs: Joi.number()
@@ -81,6 +85,13 @@ export const schemaConnectorToUpdate = Joi.object({
         .required(),
     credentialId: Joi.string()
         .required(),
+    proxiesMax: Joi.number()
+        .required()
+        .min(0),
+    proxiesTimeout: Joi.number()
+        .required()
+        .min(500)
+        .max(30 * ONE_SECOND_IN_MS),
     config: Joi.any()
         .required(),
 });

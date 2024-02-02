@@ -1,9 +1,15 @@
+import { ONE_SECOND_IN_MS } from '../helpers';
 import type { IAddress } from '../address';
 import type {
     IConnectorSync,
     IConnectorView,
 } from '../connectors';
 import type { IFingerprintResponse } from '../fingerprint';
+
+
+export const
+    PROXY_TIMEOUT_DEFAULT = 5 * ONE_SECOND_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT = 500;
 
 
 export enum EProxyType {
@@ -67,6 +73,7 @@ export const PROXY_DATA_META = [
     ...PROXY_BASE_META,
     'config',
     'useragent',
+    'timeout',
     'autoRotateDelayFactor',
     'disconnectedTs',
 ];
@@ -75,6 +82,7 @@ export const PROXY_DATA_META = [
 export interface IProxyData extends IProxyBase {
     config: any;
     useragent: string;
+    timeout: number;
     disconnectedTs: number | null;
     autoRotateDelayFactor: number;
 }

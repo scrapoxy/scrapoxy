@@ -106,6 +106,37 @@
                                     </c-col>
                                 </c-row>
                             }
+                            @if (form.controls['proxiesTimeout']; as c) {
+                                <c-row>
+                                    <label cLabel cCol md="2" for="proxiesTimeout">Proxies Timeout</label>
+
+                                    <c-col md="10">
+                                        <input
+                                            type="number"
+                                            cFormControl
+                                            id="proxiesTimeout"
+                                            formControlName="proxiesTimeout"
+                                            placeholder="Enter the maximum time to reach proxies (in ms)"
+                                            [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                                        @if (c.dirty || c.touched) {
+                                            <c-form-feedback [valid]="c.valid">
+                                                @if (c.errors; as errs) {
+                                                    @if (errs['required']) {
+                                                        Timeout is required.
+                                                    }
+                                                    @if (errs['min']) {
+                                                        Timeout should be at least 500ms
+                                                    }
+                                                    @if (errs['max']) {
+                                                        Timeout should not exceed 30000ms
+                                                    }
+                                                }
+                                            </c-form-feedback>
+                                        }
+                                    </c-col>
+                                </c-row>
+                            }
 
                             <ng-template #dform></ng-template>
                         </c-card-body>

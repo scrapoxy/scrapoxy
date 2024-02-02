@@ -377,7 +377,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                     Host: `${urlOpts.hostname}:${urlOpts.port}`,
                 },
                 proxy,
-                sockets,
+                sockets
             );
 
             reqArgs.headers = reqArgs.headers ?? {};

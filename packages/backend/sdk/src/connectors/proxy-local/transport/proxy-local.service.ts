@@ -79,8 +79,7 @@ export class TransportProxyLocalService implements ITransportService {
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigProxyLocal;
         const proxyUrlOpts = urlToUrlOptions(config.url);
@@ -90,6 +89,18 @@ export class TransportProxyLocalService implements ITransportService {
         }
 
         switch (urlOpts.protocol) {
+            case 'http:': {
+                return this.buildRequestArgsHttp(
+                    method,
+                    urlOpts,
+                    headers,
+                    proxy,
+                    proxyUrlOpts,
+                    config,
+                    sockets
+                );
+            }
+
             case 'https:': {
                 return this.buildRequestArgsHttps(
                     method,
@@ -99,21 +110,7 @@ export class TransportProxyLocalService implements ITransportService {
                     proxy,
                     proxyUrlOpts,
                     config,
-                    sockets,
-                    timeout
-                );
-            }
-
-            case 'http:': {
-                return this.buildRequestArgsHttp(
-                    method,
-                    urlOpts,
-                    headers,
-                    proxy,
-                    proxyUrlOpts,
-                    config,
-                    sockets,
-                    timeout
+                    sockets
                 );
             }
 
@@ -129,8 +126,7 @@ export class TransportProxyLocalService implements ITransportService {
         headers: OutgoingHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         const
             args = this.buildRequestArgs(
@@ -139,8 +135,7 @@ export class TransportProxyLocalService implements ITransportService {
                 headers,
                 headersConnect,
                 proxy,
-                sockets,
-                timeout
+                sockets
             ),
             config = proxy.config as IProxyToConnectConfigProxyLocal;
 
@@ -156,7 +151,6 @@ export class TransportProxyLocalService implements ITransportService {
         headers: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
-        timeout: number,
         callback: (err: Error, socket: Socket) => void
     ) {
         const config = proxy.config as IProxyToConnectConfigProxyLocal;
@@ -176,7 +170,7 @@ export class TransportProxyLocalService implements ITransportService {
             port: proxyUrlOpts.port,
             path: url,
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 opts,
                 oncreate
@@ -230,8 +224,7 @@ export class TransportProxyLocalService implements ITransportService {
         proxy: IProxyToConnect,
         proxyUrlOpts: IUrlOptions,
         config: IProxyToConnectConfigProxyLocal,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         headers[ 'Proxy-Authorization' ] = `Basic ${config.token}`;
         headers[ 'X-Proxy-local-Session-ID' ] = proxy.key;
@@ -246,7 +239,7 @@ export class TransportProxyLocalService implements ITransportService {
                 true
             ),
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 opts,
                 oncreate
@@ -267,8 +260,7 @@ export class TransportProxyLocalService implements ITransportService {
         proxy: IProxyToConnect,
         proxyUrlOpts: IUrlOptions,
         config: IProxyToConnectConfigProxyLocal,
-        sockets: ISockets,
-        timeout: number
+        sockets: ISockets
     ): ClientRequestArgs {
         return {
             method,
@@ -279,7 +271,7 @@ export class TransportProxyLocalService implements ITransportService {
                 false
             ),
             headers,
-            timeout,
+            timeout: proxy.timeout,
             createConnection: (
                 args,
                 oncreate
@@ -294,7 +286,7 @@ export class TransportProxyLocalService implements ITransportService {
                     port: args.port,
                     path: headersConnect.Host as string,
                     headers: headersConnect,
-                    timeout,
+                    timeout: proxy.timeout,
                     createConnection: (
                         args2,
                         oncreate2
@@ -366,7 +358,7 @@ export class TransportProxyLocalService implements ITransportService {
                             socket: proxySocket,
                             requestCert: true,
                             rejectUnauthorized: false,
-                            timeout,
+                            timeout: proxy.timeout,
                         };
 
                         if (isUrl(urlOpts.hostname)) {

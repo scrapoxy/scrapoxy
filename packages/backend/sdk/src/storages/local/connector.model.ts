@@ -1,4 +1,5 @@
 import {
+    toConnectorSync,
     toConnectorView,
     toProxySync,
     toProxyView,
@@ -37,7 +38,7 @@ export function toConnectorProxiesView(c: IConnectorModel): IConnectorProxiesVie
 
 export function toConnectorProxiesSync(c: IConnectorModel): IConnectorProxiesSync {
     const sync: IConnectorProxiesSync = {
-        connector: toConnectorView(c),
+        connector: toConnectorSync(c),
         proxies: Array.from(c.proxies.values())
             .map(toProxySync),
     };

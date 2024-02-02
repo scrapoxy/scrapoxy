@@ -1,5 +1,6 @@
 import type {
     IConnectorData,
+    IConnectorSync,
     IConnectorView,
 } from './connector.interface';
 
@@ -20,6 +21,23 @@ export function toConnectorView(c: IConnectorView): IConnectorView {
 }
 
 
+export function toConnectorSync(c: IConnectorSync): IConnectorSync {
+    const data: IConnectorSync = {
+        id: c.id,
+        projectId: c.projectId,
+        name: c.name,
+        type: c.type,
+        active: c.active,
+        proxiesMax: c.proxiesMax,
+        proxiesTimeout: c.proxiesTimeout,
+        error: c.error,
+        certificateEndAt: c.certificateEndAt,
+    };
+
+    return data;
+}
+
+
 export function toConnectorData(c: IConnectorData): IConnectorData {
     const data: IConnectorData = {
         id: c.id,
@@ -28,6 +46,7 @@ export function toConnectorData(c: IConnectorData): IConnectorData {
         type: c.type,
         active: c.active,
         proxiesMax: c.proxiesMax,
+        proxiesTimeout: c.proxiesTimeout,
         error: c.error,
         certificateEndAt: c.certificateEndAt,
         credentialId: c.credentialId,

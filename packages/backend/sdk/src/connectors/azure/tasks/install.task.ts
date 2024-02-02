@@ -5,6 +5,7 @@ import {
     EProxyStatus,
     formatProxyId,
     generateUseragent,
+    PROXY_TIMEOUT_DEFAULT,
     randomName,
     SCRAPOXY_DATACENTER_PREFIX,
 } from '@scrapoxy/common';
@@ -273,6 +274,7 @@ class AzureInstallCommand extends ATaskCommand {
                     key,
                     config,
                     useragent: generateUseragent(),
+                    timeout: PROXY_TIMEOUT_DEFAULT,
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,

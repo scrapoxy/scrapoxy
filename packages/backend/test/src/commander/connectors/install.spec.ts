@@ -19,6 +19,7 @@ import {
     EventsTasksClient,
     isTaskSucceed,
     ONE_MINUTE_IN_MS,
+    PROXY_TIMEOUT_TEST_DEFAULT,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -125,6 +126,7 @@ describe(
                 {
                     name: 'myconnector',
                     proxiesMax: 10,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     credentialId: credential.id,
                     config: connectorConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -141,6 +143,7 @@ describe(
                 {
                     name: 'myconnector2',
                     proxiesMax: 10,
+                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
                     credentialId: credential.id,
                     config: connectorConfig2,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,

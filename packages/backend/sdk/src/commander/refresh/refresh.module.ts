@@ -51,7 +51,7 @@ export function getEnvCommanderRefreshModuleConfig(): ICommanderRefreshModuleCon
         ),
         proxyRefresh: {
             delay: parseInt(
-                process.env.PROXY_REFRESH_DELAY ?? (10 * ONE_SECOND_IN_MS).toString(),
+                process.env.PROXY_REFRESH_DELAY ?? ONE_SECOND_IN_MS.toString(),
                 10
             ),
             count: parseInt(
