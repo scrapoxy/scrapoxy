@@ -160,9 +160,12 @@ export class ProxiesComponent implements OnInit, OnDestroy {
     private onProxiesRefreshed() {
         this.pageMax = Math.ceil(this.client.proxies.length / ITEMS_PER_PAGE);
 
-        this.pageCurrent = Math.min(
-            this.pageCurrent,
-            this.pageMax - 1
+        this.pageCurrent = Math.max(
+            0,
+            Math.min(
+                this.pageCurrent,
+                this.pageMax - 1
+            )
         );
     }
 }

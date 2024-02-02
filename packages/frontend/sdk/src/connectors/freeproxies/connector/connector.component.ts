@@ -261,10 +261,13 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
     private onFreeproxiesRefreshed() {
         this.pageMax = Math.ceil(this.client.freeproxies.length / ITEMS_PER_PAGE);
 
-        this.pageCurrent = Math.max(0, Math.min(
-            this.pageCurrent,
-            this.pageMax - 1
-        ));
+        this.pageCurrent = Math.max(
+            0,
+            Math.min(
+                this.pageCurrent,
+                this.pageMax - 1
+            )
+        );
     }
 
     private async removeFreeproxies(options: IFreeproxiesToRemoveOptions): Promise<void> {
