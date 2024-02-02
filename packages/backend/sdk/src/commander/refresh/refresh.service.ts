@@ -765,7 +765,11 @@ export class CommanderRefreshService implements OnModuleDestroy {
                         localProxy.disconnectedTs = null;
                     } else {
                         this.logger.debug(`refreshProxies: update local proxy empty fingerprint ${localProxy.key}`);
-                        localProxy.disconnectedTs = nowTime;
+
+                        if (!localProxy.disconnectedTs ||
+                            localProxy.disconnectedTs < 0) {
+                            localProxy.disconnectedTs = nowTime;
+                        }
                     }
 
                     const proxyUpdated: IProxyData = {
