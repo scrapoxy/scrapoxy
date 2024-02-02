@@ -21,8 +21,8 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
     readonly type = CONNECTOR_FREEPROXIES_TYPE;
 
     readonly config: IConnectorConfig = {
-        name: 'Free Proxies List',
-        description: 'Free proxies list is a type of connector to hold a manual list of proxies.',
+        name: 'Proxy List',
+        description: 'Proxy list is a type of connector to hold a manual list of proxies (public or private).',
         type: EConnectorType.List,
         canInstall: false,
         canUninstall: false,

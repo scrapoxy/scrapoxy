@@ -79,7 +79,7 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
         },
         {
             type: EConnectorType.List,
-            name: 'Proxies List',
+            name: 'Proxy List',
             connectors: [],
         },
     ];

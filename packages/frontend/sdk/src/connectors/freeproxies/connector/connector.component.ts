@@ -98,7 +98,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
                 case FreeproxiesCreatedEvent.id: {
                     const created = event as FreeproxiesCreatedEvent;
                     this.toastsService.success(
-                        'Free proxies',
+                        'Proxy List',
                         `${created.freeproxies.length} proxies added.`
                     );
 
@@ -108,7 +108,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
                 case FreeproxiesRemovedEvent.id: {
                     const removed = event as FreeproxiesRemovedEvent;
                     this.toastsService.success(
-                        'Free proxies',
+                        'Proxy List',
                         `${removed.freeproxiesIdsRemoved.length} proxies removed.`
                     );
 
@@ -149,7 +149,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             console.error(err);
 
             this.toastsService.error(
-                'Free proxies',
+                'Proxy List',
                 err.message
             );
         }
@@ -199,7 +199,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             console.error(err);
 
             this.toastsService.error(
-                'Free proxies',
+                'Proxy List',
                 err.message
             );
         }
@@ -281,7 +281,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             console.error(err);
 
             this.toastsService.error(
-                'Free proxies',
+                'Proxy List',
                 err.message
             );
         }

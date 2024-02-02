@@ -1,11 +1,11 @@
-# Free Proxies List Connector
+# Proxy List Connector
 
-A _Free Proxies List_ is a specific type of connector designed to manage a manual list of proxies. 
-Users have the flexibility to either utilize their own private proxies or incorporate a list of free proxies available on the Internet.
+A _Proxy List_ is a specific type of connector designed to manage a manual list of proxies. 
+Users have the flexibility to either utilize their own private proxies or incorporate a list of public proxies available on the Internet.
 
 Scrapoxy supports HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
 
-For instance, free proxies can be obtained from:
+For instance, public proxies can be obtained from:
 - [ProxyScrape](https://proxyscrape.com/free-proxy-list)
 - [Spys One](https://spys.one)
 - [IPRoyal](https://iproyal.com/free-proxy-list)
@@ -31,7 +31,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Free Proxies List` as provider to create a new credential (use search if necessary).
+Select `Proxy List` as provider to create a new credential (use search if necessary).
 
 ---
 
@@ -43,14 +43,14 @@ Complete the form with the following information:
 And click on `Create`.
 
 ::: info
-This credential is a holder for the free proxies connector
+This credential is a holder for the proxy list connector
 because Scrapoxy always needs a credential to create a connector.
 :::
 
 
 ### Step 2: Create a new connector
 
-Create a new connector and select `Free Proxies List` as provider:
+Create a new connector and select `Proxy List` as provider:
 
 ![Connector Create](spx_connector_create.png)
 

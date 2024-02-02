@@ -105,7 +105,7 @@ export default defineConfig({
                 collapsed: false,
                 items: [
                     {
-                        text: 'Free Proxies',
+                        text: 'Proxy List',
                         base: '/connectors/',
                         link: 'freeproxies/guide'
                     },
