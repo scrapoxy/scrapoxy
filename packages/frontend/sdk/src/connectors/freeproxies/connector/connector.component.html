@@ -40,6 +40,16 @@
 
                                 <button
                                     cButton
+                                    color="secondary"
+                                    variant="outline"
+                                    cTooltip="Remove duplicate outbound IP addresses now"
+                                    cTooltipPlacement="top"
+                                    (click)="removeFreeproxiesDuplicateWithConfirm()">
+                                    <svg cIcon name="cilMoney"></svg>
+                                </button>
+
+                                <button
+                                    cButton
                                     color="primary"
                                     cTooltip="Remove all proxies"
                                     cTooltipPlacement="top"

@@ -212,7 +212,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         const accept = await this
             .confirmService.confirm(
                 'Remove freeproxy',
-                `Do you want to remove freeproxy ${freeproxy.key} ?`
+                `Do you want to remove freeproxy ${freeproxy.key}?`
             );
 
         if (!accept) {
@@ -223,6 +223,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             ids: [
                 freeproxy.id,
             ],
+            duplicate: false,
             onlyOffline: false,
         });
     }
@@ -231,7 +232,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         const accept = await this
             .confirmService.confirm(
                 'Remove all freeproxies',
-                `Do you want to all freeproxies`
+                `Do you want to all freeproxies?`
             );
 
         if (!accept) {
@@ -240,6 +241,25 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
         await this.removeFreeproxies({
             ids: [],
+            duplicate: false,
+            onlyOffline: false,
+        });
+    }
+
+    async removeFreeproxiesDuplicateWithConfirm(): Promise<void> {
+        const accept = await this
+            .confirmService.confirm(
+                'Remove duplicate',
+                `Do you want to remove all duplicate outbound IP addresses now?`
+            );
+
+        if (!accept) {
+            return;
+        }
+
+        await this.removeFreeproxies({
+            ids: [],
+            duplicate: true,
             onlyOffline: false,
         });
     }
@@ -248,7 +268,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         const accept = await this
             .confirmService.confirm(
                 'Remove offline freeproxies',
-                `Do you want to all offline freeproxies`
+                `Do you want to all offline freeproxies now?`
             );
 
         if (!accept) {
@@ -257,6 +277,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
         await this.removeFreeproxies({
             ids: [],
+            duplicate: false,
             onlyOffline: true,
         });
     }

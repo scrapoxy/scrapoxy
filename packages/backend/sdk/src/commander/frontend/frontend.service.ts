@@ -14,6 +14,7 @@ import {
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import { COMMANDER_FRONTEND_MODULE_CONFIG } from './frontend.constants';
+import { filterDuplicateOutboundIpFreeproxies } from './frontend.helpers';
 import {
     schemaConnectorToActivate,
     schemaConnectorToCreate,
@@ -1118,8 +1119,13 @@ export class CommanderFrontendService {
             freeproxies = freeproxies.filter((fp) => options.ids!.includes(fp.id));
         }
 
+
+        if (options.duplicate) {
+            freeproxies = filterDuplicateOutboundIpFreeproxies(freeproxies);
+        }
+
         if (options.onlyOffline) {
-            freeproxies = freeproxies.filter((fp) => !!fp.fingerprintError || !fp.fingerprint);
+            freeproxies = freeproxies.filter((fp) => !fp.fingerprint);
         }
 
         if (freeproxies.length <= 0) {

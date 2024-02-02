@@ -112,6 +112,8 @@ export const schemaFreeproxiesToRemove = Joi.object({
     ids: Joi.array()
         .items(Joi.string())
         .required(),
+    duplicate: Joi.boolean()
+        .required(),
     onlyOffline: Joi.boolean()
         .required(),
 });
