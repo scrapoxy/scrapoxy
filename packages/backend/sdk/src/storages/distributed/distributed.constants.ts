@@ -50,9 +50,7 @@ export const MESSAGE_PROXIES_UPDATE_NEXT_REFRESH = 'proxies.update.next_refresh'
 
 export const MESSAGE_FREEPROXIES_CREATE = 'freeproxies.create';
 
-export const MESSAGE_FREEPROXIES_UPDATE = 'freeproxies.update';
-
-export const MESSAGE_FREEPROXIES_REMOVE = 'freeproxies.remove';
+export const MESSAGE_FREEPROXIES_SYNC = 'freeproxies.sync';
 
 export const MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH = 'freeproxies.update.next_refresh';
 

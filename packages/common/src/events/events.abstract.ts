@@ -13,8 +13,7 @@ import {
     CredentialRemovedEvent,
     CredentialUpdatedEvent,
     FreeproxiesCreatedEvent,
-    FreeproxiesRemovedEvent,
-    FreeproxiesUpdatedEvent,
+    FreeproxiesSynchronizedEvent,
     ProjectMetricsAddedEvent,
     ProjectRemovedEvent,
     ProjectSelectedEvent,
@@ -215,13 +214,8 @@ export abstract class AEventsService {
                 break;
             }
 
-            case FreeproxiesUpdatedEvent.id: {
-                this.emit(FreeproxiesUpdatedEvent.from(event));
-                break;
-            }
-
-            case FreeproxiesRemovedEvent.id: {
-                this.emit(FreeproxiesRemovedEvent.from(event));
+            case FreeproxiesSynchronizedEvent.id: {
+                this.emit(FreeproxiesSynchronizedEvent.from(event));
                 break;
             }
 

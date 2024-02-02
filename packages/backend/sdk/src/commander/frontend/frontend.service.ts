@@ -1070,6 +1070,7 @@ export class CommanderFrontendService {
             return;
         }
 
+        const nowTime = Date.now();
         const connector = await this.storageproviders.storage.getConnectorById(
             projectId,
             connectorId
@@ -1089,6 +1090,7 @@ export class CommanderFrontendService {
                 address: fp.address,
                 auth: fp.auth,
                 timeout: connector.proxiesTimeout,
+                disconnectedTs: nowTime,
                 fingerprint: null,
                 fingerprintError: null,
             })),
@@ -1120,17 +1122,14 @@ export class CommanderFrontendService {
             freeproxies = freeproxies.filter((fp) => !!fp.fingerprintError || !fp.fingerprint);
         }
 
-        const ids = freeproxies.map((fp) => fp.id);
-
-        if (ids.length <= 0) {
+        if (freeproxies.length <= 0) {
             return;
         }
 
-        await this.storageproviders.storage.removeFreeproxies(
-            projectId,
-            connectorId,
-            ids
-        );
+        await this.storageproviders.storage.synchronizeFreeproxies({
+            updated: [],
+            removed: freeproxies,
+        });
     }
 
     //////////// TASKS ////////////

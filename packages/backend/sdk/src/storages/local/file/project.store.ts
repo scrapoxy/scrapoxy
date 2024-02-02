@@ -58,7 +58,9 @@ export function toProjectStore(p: IProjectModel): IProjectStore {
 }
 
 
-export function fromProjectStore(p: IProjectStore): IProjectModel {
+export function fromProjectStore(
+    p: IProjectStore, nowTime: number
+): IProjectModel {
     // Credentials
     const credentials = new Map<string, ICredentialModel>();
     for (const c of p.credentials) {
@@ -71,7 +73,10 @@ export function fromProjectStore(p: IProjectStore): IProjectModel {
     // Connectors
     const connectors = new Map<string, IConnectorModel>();
     for (const c of p.connectors) {
-        const model = fromConnectorStore(c);
+        const model = fromConnectorStore(
+            c,
+            nowTime
+        );
         connectors.set(
             model.id,
             model

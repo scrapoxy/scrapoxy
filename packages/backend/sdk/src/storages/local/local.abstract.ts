@@ -11,8 +11,7 @@ import {
     EProxyStatus,
     formatProxyId,
     FreeproxiesCreatedEvent,
-    FreeproxiesRemovedEvent,
-    FreeproxiesUpdatedEvent,
+    FreeproxiesSynchronizedEvent,
     generateUseragent,
     isProxyOnline,
     ProjectMetricsAddedEvent,
@@ -109,7 +108,6 @@ import type {
     IEvent,
     IFreeproxiesToCreate,
     IFreeproxy,
-    IFreeproxyRefreshed,
     IFreeproxyToRefresh,
     IProjectData,
     IProjectDataCreate,
@@ -122,6 +120,7 @@ import type {
     IProxyMetricsAdd,
     IProxyToConnect,
     IProxyToRefresh,
+    ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
     ITaskView,
@@ -1926,46 +1925,91 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         await this.events.emit(event);
     }
 
-    async updateFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`updateFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async synchronizeFreeproxies(actions: ISynchronizeFreeproxies): Promise<void> {
+        this.logger.debug(`synchronizeFreeproxies(): updated.length=${actions.updated.length} / removed.length=${actions.removed.length}`);
 
-        const freeproxiesByProjects = new Map<string, IFreeproxyRefreshed[]>();
+        const actionsByProjects = new Map<string, ISynchronizeFreeproxies>();
 
-        for (const freeproxy of freeproxies) {
+        // Update
+        for (const freeproxy of actions.updated) {
             const freeproxyFound = this.freeproxies.get(freeproxy.id);
 
             if (!freeproxyFound) {
                 continue;
             }
 
+            freeproxyFound.disconnectedTs = freeproxy.disconnectedTs;
             freeproxyFound.fingerprint = freeproxy.fingerprint;
             freeproxyFound.fingerprintError = freeproxy.fingerprintError;
 
-            let freeproxiesByProject = freeproxiesByProjects.get(freeproxy.projectId);
+            let actionsByProject = actionsByProjects.get(freeproxyFound.projectId);
 
-            if (freeproxiesByProject) {
-                freeproxiesByProject.push(freeproxyFound);
+            if (actionsByProject) {
+                actionsByProject.updated.push(freeproxyFound);
             } else {
-                freeproxiesByProject = [
-                    freeproxyFound,
-                ];
-                freeproxiesByProjects.set(
+                actionsByProject = {
+                    updated: [
+                        freeproxyFound,
+                    ],
+                    removed: [],
+                };
+
+                actionsByProjects.set(
                     freeproxy.projectId,
-                    freeproxiesByProject
+                    actionsByProject
                 );
             }
         }
 
-        // Build event by project
-        if (freeproxiesByProjects.size > 0) {
+        // Remove
+        for (const freeproxy of actions.removed) {
+            const freeproxyFound = this.freeproxies.get(freeproxy.id);
+
+            if (!freeproxyFound) {
+                continue;
+            }
+
+            const projectFound = this.projects.get(freeproxyFound.projectId);
+
+            if (projectFound) {
+                const connectorFound = projectFound.connectors.get(freeproxyFound.connectorId);
+
+                if (connectorFound) {
+                    connectorFound.freeproxies.delete(freeproxyFound.id);
+                }
+            }
+
+            this.freeproxies.delete(freeproxy.id);
+
+            let actionsByProject = actionsByProjects.get(freeproxyFound.projectId);
+
+            if (actionsByProject) {
+                actionsByProject.removed.push(freeproxyFound);
+            } else {
+                actionsByProject = {
+                    updated: [],
+                    removed: [
+                        freeproxyFound,
+                    ],
+                };
+
+                actionsByProjects.set(
+                    freeproxy.projectId,
+                    actionsByProject
+                );
+            }
+        }
+
+        // Events
+        if (actionsByProjects.size > 0) {
             const promises: Promise<void>[] = [];
             for (const [
-                projectId, freeproxiesUpdated,
-            ] of freeproxiesByProjects.entries()) {
+                projectId, actionsByProject,
+            ] of actionsByProjects.entries()) {
                 const event: IEvent = {
                     id: projectId,
                     scope: EEventScope.FREEPROXIES,
-                    event: new FreeproxiesUpdatedEvent(freeproxiesUpdated),
+                    event: new FreeproxiesSynchronizedEvent(actionsByProject),
                 };
 
                 promises.push(this.events.emit(event));
@@ -1973,44 +2017,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
             await Promise.all(promises);
         }
-    }
-
-    async removeFreeproxies(
-        projectId: string, connectorId: string, freeproxiesIds: string[]
-    ): Promise<void> {
-        this.logger.debug(`removeFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxiesIds=${safeJoin(freeproxiesIds)}`);
-
-        const projectModel = this.projects.get(projectId);
-
-        if (!projectModel) {
-            throw new ProjectNotFoundError(projectId);
-        }
-
-        const connectorModel = projectModel.connectors.get(connectorId);
-
-        if (!connectorModel) {
-            throw new ConnectorNotFoundError(
-                projectModel.id,
-                connectorId
-            );
-        }
-
-        for (const id of freeproxiesIds) {
-            connectorModel.freeproxies.delete(id);
-
-            this.freeproxies.delete(id);
-        }
-
-        const event: IEvent = {
-            id: projectId,
-            scope: EEventScope.FREEPROXIES,
-            event: new FreeproxiesRemovedEvent(
-                connectorId,
-                freeproxiesIds
-            ),
-        };
-
-        await this.events.emit(event);
     }
 
     async getNextFreeproxiesToRefresh(

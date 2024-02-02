@@ -31,10 +31,10 @@ import type {
     IConnectorDataToCreate,
     ICredentialData,
     IFreeproxiesToCreate,
-    IFreeproxy,
     IProjectData,
     IProjectDataCreate,
     IProjectUserLink,
+    ISynchronizeFreeproxies,
     IUserData,
 } from '@scrapoxy/common';
 
@@ -203,20 +203,8 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
         await this.saveStore();
     }
 
-    override async updateFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        await super.updateFreeproxies(freeproxies);
-
-        await this.saveStore();
-    }
-
-    override async removeFreeproxies(
-        projectId: string, connectorId: string, freeproxiesIds: string[]
-    ): Promise<void> {
-        await super.removeFreeproxies(
-            projectId,
-            connectorId,
-            freeproxiesIds
-        );
+    override async synchronizeFreeproxies(actions: ISynchronizeFreeproxies): Promise<void> {
+        await super.synchronizeFreeproxies(actions);
 
         await this.saveStore();
     }
@@ -258,8 +246,8 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
             logger: new LoggerAdapter(this.loggerFile),
         });
         const migrationsLog = await migrator.up();
-
         // Load params
+        const nowTime = Date.now();
         for (const [
             key, value,
         ] of Object.entries(store.params ?? {})) {
@@ -272,7 +260,10 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
         // Load projects
         const usersProjects = new Map<string, Set<string>>();
         for (const projectStore of store.projects ?? []) {
-            const projectModel = fromProjectStore(projectStore);
+            const projectModel = fromProjectStore(
+                projectStore,
+                nowTime
+            );
             this.projects.set(
                 projectModel.id,
                 projectModel

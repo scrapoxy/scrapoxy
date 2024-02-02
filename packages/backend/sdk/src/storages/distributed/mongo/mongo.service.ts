@@ -139,6 +139,7 @@ import type {
     IProxyToConnect,
     IProxyToRefresh,
     IProxyView,
+    ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
     ITaskView,
@@ -2158,6 +2159,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 key: freeproxy.key,
                 address: freeproxy.address,
                 auth: freeproxy.auth,
+                disconnectedTs: freeproxy.disconnectedTs,
                 fingerprint: null,
                 fingerprintError: null,
                 timeout: connectorModel.proxiesTimeout,
@@ -2170,39 +2172,35 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         await bulk.execute();
     }
 
-    async updateFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`updateFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async synchronizeFreeproxies(actions: ISynchronizeFreeproxies): Promise<void> {
+        this.logger.debug(`synchronizeFreeproxies(): updated.length=${actions.updated.length} / removed.length=${actions.removed.length}`);
 
-        const bulk = this.colFreeproxies.initializeUnorderedBulkOp();
-        for (const freeproxy of freeproxies) {
-            bulk.find({
+        const vulk = this.colFreeproxies.initializeUnorderedBulkOp();
+        for (const freeproxy of actions.updated) {
+            vulk.find({
                 _id: freeproxy.id,
                 projectId: freeproxy.projectId,
                 connectorId: freeproxy.connectorId,
             })
                 .update({
                     $set: {
+                        disconnectedTs: freeproxy.disconnectedTs,
                         fingerprint: freeproxy.fingerprint,
                         fingerprintError: freeproxy.fingerprintError,
                     },
                 });
         }
 
-        await bulk.execute();
-    }
+        for (const freeproxy of actions.removed) {
+            vulk.find({
+                _id: freeproxy.id,
+                projectId: freeproxy.projectId,
+                connectorId: freeproxy.connectorId,
+            })
+                .deleteOne();
+        }
 
-    async removeFreeproxies(
-        projectId: string, connectorId: string, freeproxiesIds: string[]
-    ): Promise<void> {
-        this.logger.debug(`removeFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxiesIds=${safeJoin(freeproxiesIds)}`);
-
-        await this.colFreeproxies.deleteMany({
-            _id: {
-                $in: freeproxiesIds,
-            },
-            projectId,
-            connectorId,
-        });
+        await vulk.execute();
     }
 
     async getNextFreeproxiesToRefresh(

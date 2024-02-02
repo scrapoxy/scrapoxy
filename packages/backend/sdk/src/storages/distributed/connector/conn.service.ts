@@ -20,8 +20,7 @@ import {
     MESSAGE_CREDENTIALS_REMOVE,
     MESSAGE_CREDENTIALS_UPDATE,
     MESSAGE_FREEPROXIES_CREATE,
-    MESSAGE_FREEPROXIES_REMOVE,
-    MESSAGE_FREEPROXIES_UPDATE,
+    MESSAGE_FREEPROXIES_SYNC,
     MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH,
     MESSAGE_PROJECTS_ADD_USER,
     MESSAGE_PROJECTS_CREATE,
@@ -62,7 +61,6 @@ import type {
     ICredentialView,
     IFreeproxiesNextRefreshToUpdate,
     IFreeproxiesToCreate,
-    IFreeproxiesToRemove,
     IFreeproxy,
     IFreeproxyToRefresh,
     IProjectData,
@@ -80,6 +78,7 @@ import type {
     IProxyMetricsAdd,
     IProxyToConnect,
     IProxyToRefresh,
+    ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
     ITaskToLock,
@@ -767,29 +766,12 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         ));
     }
 
-    async updateFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`updateFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    async synchronizeFreeproxies(actions: ISynchronizeFreeproxies): Promise<void> {
+        this.logger.debug(`synchronizeFreeproxies(): updated.length=${actions.updated.length} / removed.length=${actions.removed.length}`);
 
         await lastValueFrom(this.proxy.emit(
-            MESSAGE_FREEPROXIES_UPDATE,
-            freeproxies
-        ));
-    }
-
-    async removeFreeproxies(
-        projectId: string, connectorId: string, freeproxiesIds: string[]
-    ): Promise<void> {
-        this.logger.debug(`removeFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxiesIds=${safeJoin(freeproxiesIds)}`);
-
-        const remove: IFreeproxiesToRemove = {
-            projectId,
-            connectorId,
-            freeproxiesIds,
-        };
-
-        await lastValueFrom(this.proxy.emit(
-            MESSAGE_FREEPROXIES_REMOVE,
-            remove
+            MESSAGE_FREEPROXIES_SYNC,
+            actions
         ));
     }
 

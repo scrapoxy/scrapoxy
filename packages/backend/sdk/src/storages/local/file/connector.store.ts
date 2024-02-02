@@ -32,12 +32,15 @@ export function toConnectorStore(c: IConnectorModel): IConnectorStore {
 }
 
 
-export function fromConnectorStore(c: IConnectorStore): IConnectorModel {
+export function fromConnectorStore(
+    c: IConnectorStore, nowTime: number
+): IConnectorModel {
     const freeproxies = new Map<string, IFreeproxyModel>();
     for (const freeproxy of c.freeproxies) {
         const freeproxyModel = fromFreeproxyStore(
             freeproxy,
-            c
+            c,
+            nowTime
         );
 
         freeproxies.set(

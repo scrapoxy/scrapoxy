@@ -3,12 +3,11 @@ import { AEventsService } from '../events.abstract';
 import {
     EEventScope,
     FreeproxiesCreatedEvent,
-    FreeproxiesRemovedEvent,
-    FreeproxiesUpdatedEvent,
+    FreeproxiesSynchronizedEvent,
 } from '../events.interface';
 import type {
     IFreeproxy,
-    IFreeproxyRefreshed,
+    ISynchronizeFreeproxies,
 } from '../../freeproxies';
 
 
@@ -26,7 +25,7 @@ export class EventsFreeproxiesClient {
     constructor(
         private readonly events: AEventsService,
         private readonly onFreeproxiesCreated?: (freeproxies: IFreeproxy[]) => void,
-        private readonly onFreeproxiesRemoved?: (freeproxiesIdsRemoved: string[]) => void
+        private readonly onFreeproxiesRemoved?: (freeproxies: IFreeproxy[]) => void
     ) { }
 
     subscribe(
@@ -102,15 +101,9 @@ export class EventsFreeproxiesClient {
                     break;
                 }
 
-                case FreeproxiesUpdatedEvent.id: {
-                    const updated = event as FreeproxiesUpdatedEvent;
-                    this.onFreeproxiesUpdatedImpl(updated.freeproxies);
-                    break;
-                }
-
-                case FreeproxiesRemovedEvent.id: {
-                    const removed = event as FreeproxiesRemovedEvent;
-                    this.onFreeproxiesRemovedImpl(removed.freeproxiesIdsRemoved);
+                case FreeproxiesSynchronizedEvent.id: {
+                    const sync = event as FreeproxiesSynchronizedEvent;
+                    this.onFreeproxiesSyncImpl(sync.actions);
                     break;
                 }
             }
@@ -159,13 +152,13 @@ export class EventsFreeproxiesClient {
         }
     }
 
-    private onFreeproxiesUpdatedImpl(freeproxies: IFreeproxyRefreshed[]) {
+    private onFreeproxiesSyncImpl(actions: ISynchronizeFreeproxies) {
         if (!this.projectId ||
             !this.connectorId) {
             return;
         }
 
-        for (const freeproxy of freeproxies) {
+        for (const freeproxy of actions.updated) {
             if (freeproxy.projectId === this.projectId &&
                 freeproxy.connectorId === this.connectorId) {
                 const freeproxyFound = this.freeproxiesMap.get(freeproxy.id);
@@ -176,31 +169,25 @@ export class EventsFreeproxiesClient {
                 }
             }
         }
-    }
 
-    private onFreeproxiesRemovedImpl(freeproxiesIdsRemoved: string[]) {
-        if (!this.projectId ||
-            !this.connectorId ||
-            freeproxiesIdsRemoved.length <= 0) {
-            return;
-        }
+        if (actions.removed.length > 0) {
+            for (const freeproxy of actions.removed) {
+                const freeproxyFound = this.freeproxiesMap.get(freeproxy.id);
 
-        for (const id of freeproxiesIdsRemoved) {
-            const freeproxyFound = this.freeproxiesMap.get(id);
+                if (freeproxyFound) {
+                    const index = this.freeproxies.findIndex((c) => c.id === freeproxy.id);
+                    this.freeproxies.splice(
+                        index,
+                        1
+                    );
 
-            if (freeproxyFound) {
-                const index = this.freeproxies.findIndex((c) => c.id === id);
-                this.freeproxies.splice(
-                    index,
-                    1
-                );
-
-                this.freeproxiesMap.delete(id);
+                    this.freeproxiesMap.delete(freeproxy.id);
+                }
             }
-        }
 
-        if (this.onFreeproxiesRemoved) {
-            this.onFreeproxiesRemoved(freeproxiesIdsRemoved);
+            if (this.onFreeproxiesRemoved) {
+                this.onFreeproxiesRemoved(actions.removed);
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ import {
     CONNECTOR_FREEPROXIES_TYPE,
     EventsFreeproxiesClient,
     FreeproxiesCreatedEvent,
-    FreeproxiesRemovedEvent,
+    FreeproxiesSynchronizedEvent,
     parseFreeproxy,
 } from '@scrapoxy/common';
 import { Subscription } from 'rxjs';
@@ -105,12 +105,15 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
                     break;
                 }
 
-                case FreeproxiesRemovedEvent.id: {
-                    const removed = event as FreeproxiesRemovedEvent;
-                    this.toastsService.success(
-                        'Proxy List',
-                        `${removed.freeproxiesIdsRemoved.length} proxies removed.`
-                    );
+                case FreeproxiesSynchronizedEvent.id: {
+                    const sync = event as FreeproxiesSynchronizedEvent;
+
+                    if (sync.actions.removed.length > 0) {
+                        this.toastsService.success(
+                            'Proxy List',
+                            `${sync.actions.removed.length} proxies removed.`
+                        );
+                    }
 
                     break;
                 }

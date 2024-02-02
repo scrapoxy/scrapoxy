@@ -26,7 +26,7 @@ export function toFreeproxyStore(fp: IFreeproxyModel): IFreeproxyStore {
 
 
 export function fromFreeproxyStore(
-    fp: IFreeproxyStore, c: IConnectorStore
+    fp: IFreeproxyStore, c: IConnectorStore, nowTime: number
 ): IFreeproxyModel {
     const model: IFreeproxyModel = {
         id: fp.id,
@@ -37,6 +37,7 @@ export function fromFreeproxyStore(
         address: fp.address,
         auth: fp.auth,
         timeout: c.proxiesTimeout,
+        disconnectedTs: nowTime,
         fingerprint: null,
         fingerprintError: null,
         nextRefreshTs: 0,

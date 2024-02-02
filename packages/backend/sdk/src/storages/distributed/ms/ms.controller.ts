@@ -16,8 +16,7 @@ import {
     CredentialUpdatedEvent,
     EEventScope,
     FreeproxiesCreatedEvent,
-    FreeproxiesRemovedEvent,
-    FreeproxiesUpdatedEvent,
+    FreeproxiesSynchronizedEvent,
     ProjectMetricsAddedEvent,
     ProjectRemovedEvent,
     ProjectUpdatedEvent,
@@ -51,8 +50,7 @@ import {
     MESSAGE_CREDENTIALS_UPDATE,
     MESSAGE_EVENTS,
     MESSAGE_FREEPROXIES_CREATE,
-    MESSAGE_FREEPROXIES_REMOVE,
-    MESSAGE_FREEPROXIES_UPDATE,
+    MESSAGE_FREEPROXIES_SYNC,
     MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH,
     MESSAGE_PROJECTS_ADD_USER,
     MESSAGE_PROJECTS_CREATE,
@@ -88,9 +86,6 @@ import type {
     IEvent,
     IFreeproxiesNextRefreshToUpdate,
     IFreeproxiesToCreate,
-    IFreeproxiesToRemove,
-    IFreeproxy,
-    IFreeproxyRefreshed,
     IProjectData,
     IProjectDataCreate,
     IProjectLastDataToUpdate,
@@ -100,6 +95,7 @@ import type {
     IProxiesNextRefreshToUpdate,
     IProxyLastConnectionToUpdate,
     IProxyMetricsAdd,
+    ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
     ITaskToLock,
@@ -623,38 +619,66 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
         ));
     }
 
-    @EventPattern(MESSAGE_FREEPROXIES_UPDATE)
-    async updateFreeproxies(freeproxies: IFreeproxy[]): Promise<void> {
-        this.logger.debug(`updateFreeproxies(): freeproxies.length=${freeproxies.length}`);
+    @EventPattern(MESSAGE_FREEPROXIES_SYNC)
+    async synchronizeFreeproxies(actions: ISynchronizeFreeproxies): Promise<void> {
+        this.logger.debug(`synchronizeFreeproxies(): updated.length=${actions.updated.length} / removed.length=${actions.removed.length}`);
 
-        await this.storage.updateFreeproxies(freeproxies);
+        await this.storage.synchronizeFreeproxies(actions);
 
-        const freeproxiesByProjects = new Map<string, IFreeproxyRefreshed[]>();
-        for (const freeproxy of freeproxies) {
-            let freeproxiesByProject = freeproxiesByProjects.get(freeproxy.projectId);
+        const actionsByProjects = new Map<string, ISynchronizeFreeproxies>();
 
-            if (freeproxiesByProject) {
-                freeproxiesByProject.push(freeproxy);
+        // Update
+        for (const freeproxy of actions.updated) {
+            let actionsByProject = actionsByProjects.get(freeproxy.projectId);
+
+            if (actionsByProject) {
+                actionsByProject.updated.push(freeproxy);
             } else {
-                freeproxiesByProject = [
-                    freeproxy,
-                ];
-                freeproxiesByProjects.set(
+                actionsByProject = {
+                    updated: [
+                        freeproxy,
+                    ],
+                    removed: [],
+                };
+
+                actionsByProjects.set(
                     freeproxy.projectId,
-                    freeproxiesByProject
+                    actionsByProject
                 );
             }
         }
 
-        if (freeproxiesByProjects.size > 0) {
+        // Remove
+        for (const freeproxy of actions.removed) {
+            let actionsByProject = actionsByProjects.get(freeproxy.projectId);
+
+            if (actionsByProject) {
+                actionsByProject.removed.push(freeproxy);
+            } else {
+                actionsByProject = {
+                    updated: [],
+                    removed: [
+                        freeproxy,
+                    ],
+                };
+
+                actionsByProjects.set(
+                    freeproxy.projectId,
+                    actionsByProject
+                );
+            }
+        }
+
+        // Events
+        if (actionsByProjects.size > 0) {
             const events: IEvent[] = [];
             for (const [
-                projectId, freeproxiesByProject,
-            ] of freeproxiesByProjects.entries()) {
+                projectId, actionsByProject,
+            ] of actionsByProjects.entries()) {
                 events.push({
                     id: projectId,
                     scope: EEventScope.FREEPROXIES,
-                    event: new FreeproxiesUpdatedEvent(freeproxiesByProject),
+                    event: new FreeproxiesSynchronizedEvent(actionsByProject),
                 });
             }
             await lastValueFrom(this.proxy.emit(
@@ -662,33 +686,6 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
                 events
             ));
         }
-    }
-
-    @EventPattern(MESSAGE_FREEPROXIES_REMOVE)
-    async removeFreeproxies(remove: IFreeproxiesToRemove): Promise<void> {
-        this.logger.debug(`removeFreeproxies(): projectId=${remove.projectId} / connectorId=${remove.connectorId} / freeproxiesIds=${safeJoin(remove.freeproxiesIds)}`);
-
-        await this.storage.removeFreeproxies(
-            remove.projectId,
-            remove.connectorId,
-            remove.freeproxiesIds
-        );
-
-        const event: IEvent = {
-            id: remove.projectId,
-            scope: EEventScope.FREEPROXIES,
-            event: new FreeproxiesRemovedEvent(
-                remove.connectorId,
-                remove.freeproxiesIds
-            ),
-        };
-
-        await lastValueFrom(this.proxy.emit(
-            MESSAGE_EVENTS,
-            [
-                event,
-            ]
-        ));
     }
 
     @EventPattern(MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH)

@@ -42,6 +42,7 @@ import type {
     IProxyRefreshed,
     IProxySync,
     IRangeMetrics,
+    ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ISynchronizeRemoteProxies,
     ITaskData,
@@ -931,11 +932,17 @@ export class CommanderRefreshService implements OnModuleDestroy {
         }
 
         const localFreeproxies = await this.storageproviders.storage.getFreeproxiesByIds(Array.from(remoteFreeproxiesMap.keys()));
-        const localFreeproxiesUpdated: IFreeproxy[] = [];
+        const nowTime = Date.now();
+        const actions: ISynchronizeFreeproxies = {
+            updated: [],
+            removed: [],
+        };
         for (const localFreeproxy of localFreeproxies) {
             const remoteFreeproxy = remoteFreeproxiesMap.get(localFreeproxy.id);
 
             if (remoteFreeproxy) {
+                let toUpdate: boolean;
+
                 if (
                     !fingerprintEquals(
                         localFreeproxy.fingerprint,
@@ -946,13 +953,31 @@ export class CommanderRefreshService implements OnModuleDestroy {
                     localFreeproxy.fingerprint = remoteFreeproxy.fingerprint;
                     localFreeproxy.fingerprintError = remoteFreeproxy.fingerprintError;
 
-                    localFreeproxiesUpdated.push(localFreeproxy);
+                    if (localFreeproxy.fingerprint) {
+                        localFreeproxy.disconnectedTs = null;
+                    } else {
+                        if (!localFreeproxy.disconnectedTs ||
+                            localFreeproxy.disconnectedTs < 0) {
+                            localFreeproxy.disconnectedTs = nowTime;
+                        }
+                    }
+
+                    toUpdate = true;
+                } else {
+                    toUpdate = false;
+                }
+
+                if (localFreeproxy.disconnectedTs && nowTime - localFreeproxy.disconnectedTs > this.config.proxyUnreachableDelay) {
+                    actions.removed.push(localFreeproxy);
+                } else if (toUpdate) {
+                    actions.updated.push(localFreeproxy);
                 }
             }
         }
 
-        if (localFreeproxiesUpdated.length > 0) {
-            await this.storageproviders.storage.updateFreeproxies(localFreeproxiesUpdated);
+        if (actions.updated.length > 0 ||
+            actions.removed.length > 0) {
+            await this.storageproviders.storage.synchronizeFreeproxies(actions);
         }
     }
 

@@ -15,8 +15,10 @@ export const FREEPROXY_META = [
     'key',
     'address',
     'auth',
+    'timeout',
     'fingerprint',
     'fingerprintError',
+    'disconnectedAt',
 ];
 
 
@@ -25,6 +27,7 @@ export interface IFreeproxy extends IFreeproxyBase, IFingerprintResponse {
     connectorId: string;
     projectId: string;
     timeout: number;
+    disconnectedTs: number | null;
 }
 
 
@@ -52,6 +55,12 @@ export interface IFreeproxiesToCreate {
     projectId: string;
     connectorId: string;
     freeproxies: IFreeproxy[];
+}
+
+
+export interface ISynchronizeFreeproxies {
+    updated: IFreeproxy[];
+    removed: IFreeproxy[];
 }
 
 

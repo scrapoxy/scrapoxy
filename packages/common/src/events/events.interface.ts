@@ -2,7 +2,7 @@ import type { IConnectorView } from '../connectors';
 import type { ICredentialView } from '../credentials';
 import type {
     IFreeproxy,
-    IFreeproxyRefreshed,
+    ISynchronizeFreeproxies,
 } from '../freeproxies';
 import type {
     IProjectData,
@@ -272,34 +272,15 @@ export class FreeproxiesCreatedEvent extends ACommanderEvent {
 }
 
 
-export class FreeproxiesUpdatedEvent extends ACommanderEvent {
-    static readonly id = 'freeproxies_updated_event';
+export class FreeproxiesSynchronizedEvent extends ACommanderEvent {
+    static readonly id = 'freeproxies_synchronized_event';
 
-    static from(data: any): FreeproxiesUpdatedEvent {
-        return new FreeproxiesUpdatedEvent(data.freeproxies);
+    static from(data: any): FreeproxiesSynchronizedEvent {
+        return new FreeproxiesSynchronizedEvent(data.actions);
     }
 
-    constructor(public freeproxies: IFreeproxyRefreshed[]) {
-        super(FreeproxiesUpdatedEvent.id);
-    }
-}
-
-
-export class FreeproxiesRemovedEvent extends ACommanderEvent {
-    static readonly id = 'freeproxies_removed_event';
-
-    static from(data: any): FreeproxiesRemovedEvent {
-        return new FreeproxiesRemovedEvent(
-            data.connectorId,
-            data.freeproxiesIdsRemoved
-        );
-    }
-
-    constructor(
-        public connectorId: string,
-        public freeproxiesIdsRemoved: string[]
-    ) {
-        super(FreeproxiesRemovedEvent.id);
+    constructor(public actions: ISynchronizeFreeproxies) {
+        super(FreeproxiesSynchronizedEvent.id);
     }
 }
 

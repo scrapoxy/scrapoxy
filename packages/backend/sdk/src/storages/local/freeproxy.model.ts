@@ -19,6 +19,7 @@ export function toFreeproxy(p: IFreeproxy): IFreeproxy {
         address: p.address,
         auth: p.auth,
         timeout: p.timeout,
+        disconnectedTs: p.disconnectedTs,
         fingerprint: p.fingerprint,
         fingerprintError: p.fingerprintError,
     };
