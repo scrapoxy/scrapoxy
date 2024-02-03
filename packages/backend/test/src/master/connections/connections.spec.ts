@@ -24,7 +24,7 @@ import {
     generateUseragent,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
-    PROXY_TIMEOUT_TEST_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     randomName,
     SCRAPOXY_HEADER_PREFIX,
     SCRAPOXY_HEADER_PREFIX_LC,
@@ -101,7 +101,7 @@ describe(
                 key,
                 config,
                 useragent: generateUseragent(),
-                timeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
             };
 
             // Start master

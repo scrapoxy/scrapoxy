@@ -99,7 +99,7 @@ Response payload:
             "type": "<type of provider>",
             "active": "<true if the connector is active>",
             "proxiesMax": "<maximum number of proxies to use>",
-            "proxiesTimeout": "<maximum duration for connecting to a proxy before considering it as offline>",
+            "proxiesTimeoutDisconnected": "<maximum duration for connecting to a proxy before considering it as offline>",
             "error": "<error message if the connector is in error>",
             "certificateEndAt": "<date of the end of the certificate for datacenter provider>"
         },

@@ -75,7 +75,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                 false
             ),
             headers,
-            timeout: proxy.timeout,
+            timeout: proxy.timeoutDisconnected,
             createConnection: (
                 args,
                 oncreate
@@ -86,7 +86,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                     port: args.port,
                     path: headersConnect.Host as string,
                     headers: headersConnect,
-                    timeout: proxy.timeout,
+                    timeout: proxy.timeoutDisconnected,
                     createConnection: (
                         args2,
                         oncreate2
@@ -166,7 +166,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                                 socket: proxySocket,
                                 requestCert: true,
                                 rejectUnauthorized: false,
-                                timeout: proxy.timeout,
+                                timeout: proxy.timeoutDisconnected,
                             };
 
                             if (isUrl(urlOpts.hostname)) {
@@ -254,7 +254,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
             port: config.address.port,
             path: url,
             headers,
-            timeout: proxy.timeout,
+            timeout: proxy.timeoutDisconnected,
             createConnection: (
                 args,
                 oncreate

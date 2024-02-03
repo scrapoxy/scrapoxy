@@ -36,7 +36,7 @@ export function fromFreeproxyStore(
         type: fp.type,
         address: fp.address,
         auth: fp.auth,
-        timeout: c.proxiesTimeout,
+        timeoutDisconnected: c.proxiesTimeoutDisconnected,
         disconnectedTs: nowTime,
         fingerprint: null,
         fingerprintError: null,

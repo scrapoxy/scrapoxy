@@ -20,7 +20,7 @@ import {
     EventsConnectorsClient,
     EventsProjectClient,
     ONE_MINUTE_IN_MS,
-    PROXY_TIMEOUT_TEST_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -165,7 +165,7 @@ describe(
             connectorToCreate = {
                 name: 'myconnector 2',
                 proxiesMax: 2,
-                proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                 credentialId: credential.id,
                 config: datacenterLocalConfig,
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -174,14 +174,14 @@ describe(
                 name: 'new name for connector',
                 credentialId: credential.id,
                 proxiesMax: connectorToCreate.proxiesMax,
-                proxiesTimeout: connectorToCreate.proxiesTimeout,
+                proxiesTimeoutDisconnected: connectorToCreate.proxiesTimeoutDisconnected,
                 config: datacenterLocalConfig,
             };
 
             connectorToCreate2 = {
                 name: 'myconnector 1', // Check sort on name
                 proxiesMax: 2,
-                proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                 credentialId: credential.id,
                 config: datacenterLocalConfig2,
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -238,7 +238,7 @@ describe(
                 const create: any = {
                     name: void 0,
                     proxiesMax: 2,
-                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                     credentialId: credential.id,
                     config: datacenterLocalConfig,
                 };
@@ -277,7 +277,7 @@ describe(
                     name: 'negative connector',
                     credentialId: credential.id,
                     proxiesMax: -10,
-                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                     config: datacenterLocalConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                 };
@@ -297,7 +297,7 @@ describe(
                 const create: IConnectorToCreate = {
                     name: 'misconfigured connector',
                     proxiesMax: 1,
-                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                     credentialId: credential2.id,
                     config: {
                         name: void 0,
@@ -368,8 +368,8 @@ describe(
                     .toBe(credential.type);
                 expect(connectorFound.proxiesMax)
                     .toBe(connectorToCreate.proxiesMax);
-                expect(connectorFound.proxiesTimeout)
-                    .toBe(connectorToCreate.proxiesTimeout);
+                expect(connectorFound.proxiesTimeoutDisconnected)
+                    .toBe(connectorToCreate.proxiesTimeoutDisconnected);
                 expect(connectorFound.active)
                     .toBeFalsy();
                 expect(connectorFound.config)
@@ -461,7 +461,7 @@ describe(
                     name: 'new name for connector',
                     credentialId: credential.id,
                     proxiesMax: 2,
-                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                     config: datacenterLocalConfig,
                 };
 
@@ -513,7 +513,7 @@ describe(
                 const connectorUpdate: any = {
                     name: void 0,
                     proxiesMax: 2,
-                    proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                     type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: datacenterLocalConfig,
                 };
@@ -579,8 +579,8 @@ describe(
                     .toBe(credential.type);
                 expect(connectorFound.proxiesMax)
                     .toBe(connectorToCreate.proxiesMax);
-                expect(connectorFound.proxiesTimeout)
-                    .toBe(connectorToCreate.proxiesTimeout);
+                expect(connectorFound.proxiesTimeoutDisconnected)
+                    .toBe(connectorToCreate.proxiesTimeoutDisconnected);
                 expect(connectorFound.error)
                     .toBeNull();
                 expect(connectorFound.config)
@@ -646,8 +646,8 @@ describe(
                     .toBe(credential.type);
                 expect(connectorFound.proxiesMax)
                     .toBe(connectorToCreate2.proxiesMax);
-                expect(connectorFound.proxiesTimeout)
-                    .toBe(connectorToCreate2.proxiesTimeout);
+                expect(connectorFound.proxiesTimeoutDisconnected)
+                    .toBe(connectorToCreate2.proxiesTimeoutDisconnected);
                 expect(connectorFound.active)
                     .toBeFalsy();
                 expect(connectorFound.error)

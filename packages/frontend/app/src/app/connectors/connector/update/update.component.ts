@@ -100,7 +100,7 @@ export class ConnectorUpdateComponent implements OnInit, OnDestroy, IHasModifica
                     Validators.required, Validators.min(1),
                 ],
             ],
-            proxiesTimeout: [
+            proxiesTimeoutDisconnected: [
                 void 0,
                 [
                     Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),

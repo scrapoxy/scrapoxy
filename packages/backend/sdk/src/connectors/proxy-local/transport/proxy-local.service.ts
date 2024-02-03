@@ -170,7 +170,7 @@ export class TransportProxyLocalService implements ITransportService {
             port: proxyUrlOpts.port,
             path: url,
             headers,
-            timeout: proxy.timeout,
+            timeout: proxy.timeoutDisconnected,
             createConnection: (
                 opts,
                 oncreate
@@ -239,7 +239,7 @@ export class TransportProxyLocalService implements ITransportService {
                 true
             ),
             headers,
-            timeout: proxy.timeout,
+            timeout: proxy.timeoutDisconnected,
             createConnection: (
                 opts,
                 oncreate
@@ -271,7 +271,7 @@ export class TransportProxyLocalService implements ITransportService {
                 false
             ),
             headers,
-            timeout: proxy.timeout,
+            timeout: proxy.timeoutDisconnected,
             createConnection: (
                 args,
                 oncreate
@@ -286,7 +286,7 @@ export class TransportProxyLocalService implements ITransportService {
                     port: args.port,
                     path: headersConnect.Host as string,
                     headers: headersConnect,
-                    timeout: proxy.timeout,
+                    timeout: proxy.timeoutDisconnected,
                     createConnection: (
                         args2,
                         oncreate2
@@ -358,7 +358,7 @@ export class TransportProxyLocalService implements ITransportService {
                             socket: proxySocket,
                             requestCert: true,
                             rejectUnauthorized: false,
-                            timeout: proxy.timeout,
+                            timeout: proxy.timeoutDisconnected,
                         };
 
                         if (isUrl(urlOpts.hostname)) {

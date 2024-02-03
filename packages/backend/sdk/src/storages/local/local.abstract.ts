@@ -21,7 +21,7 @@ import {
     ProjectUserRemovedEvent,
     ProxiesMetricsAddedEvent,
     ProxiesSynchronizedEvent,
-    PROXY_TIMEOUT_TEST_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     safeJoin,
     TaskCreatedEvent,
     TaskRemovedEvent,
@@ -205,7 +205,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 fingerprintError: null,
                 createdTs: nowTime,
                 useragent: generateUseragent(),
-                timeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                 disconnectedTs: null,
                 requests: 0,
                 bytesReceived: 0,
@@ -1219,18 +1219,18 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         connectorModel.name = connector.name;
         connectorModel.active = connector.active;
         connectorModel.proxiesMax = connector.proxiesMax;
-        connectorModel.proxiesTimeout = connector.proxiesTimeout;
+        connectorModel.proxiesTimeoutDisconnected = connector.proxiesTimeoutDisconnected;
         connectorModel.error = connector.error;
         connectorModel.certificateEndAt = connector.certificateEndAt;
         connectorModel.credentialId = connector.credentialId;
         connectorModel.config = connector.config;
 
         for (const proxy of connectorModel.proxies.values()) {
-            proxy.timeout = connector.proxiesTimeout;
+            proxy.timeoutDisconnected = connector.proxiesTimeoutDisconnected;
         }
 
         for (const freeproxy of connectorModel.freeproxies.values()) {
-            freeproxy.timeout = connector.proxiesTimeout;
+            freeproxy.timeoutDisconnected = connector.proxiesTimeoutDisconnected;
         }
 
         const event: IEvent = {
@@ -1769,7 +1769,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             const proxyModel = this.proxies.get(id);
 
             if (proxyModel) {
-                proxyModel.nextRefreshTs = nextRefreshTs + proxyModel.timeout;
+                proxyModel.nextRefreshTs = nextRefreshTs + proxyModel.timeoutDisconnected;
             } else {
                 idsNotFound.push(id);
             }
@@ -1899,7 +1899,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
             const freeproxyModel: IFreeproxyModel = {
                 ...freeproxy,
-                timeout: connectorModel.proxiesTimeout,
+                timeoutDisconnected: connectorModel.proxiesTimeoutDisconnected,
                 nextRefreshTs: 0,
             };
 
@@ -2055,7 +2055,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             const freeproxyModel = this.freeproxies.get(id);
 
             if (freeproxyModel) {
-                freeproxyModel.nextRefreshTs = nextRefreshTs + freeproxyModel.timeout;
+                freeproxyModel.nextRefreshTs = nextRefreshTs + freeproxyModel.timeoutDisconnected;
             } else {
                 idsNotFound.push(id);
             }

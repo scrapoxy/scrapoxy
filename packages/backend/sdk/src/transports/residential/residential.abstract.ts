@@ -54,7 +54,7 @@ export abstract class ATransportResidentialService implements ITransportService 
                     headers,
                     config,
                     sockets,
-                    proxy.timeout
+                    proxy.timeoutDisconnected
                 );
             }
 
@@ -66,7 +66,7 @@ export abstract class ATransportResidentialService implements ITransportService 
                     headersConnect,
                     config,
                     sockets,
-                    proxy.timeout
+                    proxy.timeoutDisconnected
                 );
             }
 
@@ -111,7 +111,7 @@ export abstract class ATransportResidentialService implements ITransportService 
             port: config.address.port,
             path: url,
             headers,
-            timeout: proxy.timeout,
+            timeout: proxy.timeoutDisconnected,
             createConnection: (
                 opts,
                 oncreate

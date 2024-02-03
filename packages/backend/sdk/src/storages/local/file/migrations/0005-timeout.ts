@@ -1,4 +1,4 @@
-import { PROXY_TIMEOUT_DEFAULT } from '@scrapoxy/common';
+import { PROXY_TIMEOUT_DISCONNECTED_DEFAULT } from '@scrapoxy/common';
 
 
 export const migration = {
@@ -6,8 +6,8 @@ export const migration = {
     up: async({ context: data }: { context: any }) => {
         for (const project of data.projects ?? []) {
             for (const connector of project.connectors ?? []) {
-                if (!connector.proxiesTimeout) {
-                    connector.proxiesTimeout = PROXY_TIMEOUT_DEFAULT;
+                if (!connector.proxiesTimeoutDisconnected) {
+                    connector.proxiesTimeoutDisconnected = PROXY_TIMEOUT_DISCONNECTED_DEFAULT;
                 }
             }
         }
@@ -15,7 +15,7 @@ export const migration = {
     down: async({ context: data }: { context: any }) => {
         for (const project of data.projects ?? []) {
             for (const connector of project.connectors ?? []) {
-                delete connector.proxiesTimeout;
+                delete connector.proxiesTimeoutDisconnected;
             }
         }
     },

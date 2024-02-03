@@ -9,7 +9,7 @@ export interface IFreeproxyModel extends IFreeproxy {
 }
 
 
-export function toFreeproxy(p: IFreeproxy): IFreeproxy {
+export function toFreeproxy(p: IFreeproxyModel): IFreeproxy {
     const f: IFreeproxy = {
         id: p.id,
         type: p.type,
@@ -18,7 +18,7 @@ export function toFreeproxy(p: IFreeproxy): IFreeproxy {
         key: p.key,
         address: p.address,
         auth: p.auth,
-        timeout: p.timeout,
+        timeoutDisconnected: p.timeoutDisconnected,
         disconnectedTs: p.disconnectedTs,
         fingerprint: p.fingerprint,
         fingerprintError: p.fingerprintError,
@@ -28,7 +28,7 @@ export function toFreeproxy(p: IFreeproxy): IFreeproxy {
 }
 
 
-export function toFreeproxyToRefresh(p: IFreeproxyToRefresh): IFreeproxyToRefresh {
+export function toFreeproxyToRefresh(p: IFreeproxyModel): IFreeproxyToRefresh {
     const f: IFreeproxyToRefresh = {
         id: p.id,
         type: p.type,
@@ -37,7 +37,7 @@ export function toFreeproxyToRefresh(p: IFreeproxyToRefresh): IFreeproxyToRefres
         key: p.key,
         address: p.address,
         auth: p.auth,
-        timeout: p.timeout,
+        timeoutDisconnected: p.timeoutDisconnected,
     };
 
     return f;

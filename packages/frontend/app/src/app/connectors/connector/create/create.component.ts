@@ -17,7 +17,7 @@ import {
 import {
     ONE_SECOND_IN_MS,
     ONE_YEAR_IN_MS,
-    PROXY_TIMEOUT_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
@@ -79,7 +79,7 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                     Validators.required, Validators.min(1),
                 ],
             ],
-            proxiesTimeout: [
+            proxiesTimeoutDisconnected: [
                 void 0,
                 [
                     Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
@@ -123,7 +123,7 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                 name: 'My connector',
                 credentialId: null as any,
                 proxiesMax: 1,
-                proxiesTimeout: PROXY_TIMEOUT_DEFAULT,
+                proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
                 config: void 0,
                 certificateDurationInMs: ONE_YEAR_IN_MS,
             };

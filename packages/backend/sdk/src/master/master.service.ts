@@ -727,7 +727,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 socket.emit('close');
             }
         );
-        socket.setTimeout(proxy.timeout);
+        socket.setTimeout(proxy.timeoutDisconnected);
 
         const sIn = new PassThrough(),
             sOut = new PassThrough();

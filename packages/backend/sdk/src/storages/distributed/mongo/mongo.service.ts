@@ -1453,7 +1453,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             type: connector.type,
             active: connector.active,
             proxiesMax: connector.proxiesMax,
-            proxiesTimeout: connector.proxiesTimeout,
+            proxiesTimeoutDisconnected: connector.proxiesTimeoutDisconnected,
             error: connector.error,
             certificateEndAt: connector.certificateEndAt,
             config: connector.config,
@@ -1478,7 +1478,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                     name: connector.name,
                     active: connector.active,
                     proxiesMax: connector.proxiesMax,
-                    proxiesTimeout: connector.proxiesTimeout,
+                    proxiesTimeoutDisconnected: connector.proxiesTimeoutDisconnected,
                     error: connector.error,
                     certificateEndAt: connector.certificateEndAt,
                     credentialId: connector.credentialId,
@@ -1493,7 +1493,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             },
             {
                 $set: {
-                    proxiesTimeout: connector.proxiesTimeout,
+                    timeoutDisconnected: connector.proxiesTimeoutDisconnected,
                 },
             }
         );
@@ -1504,7 +1504,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             },
             {
                 $set: {
-                    proxiesTimeout: connector.proxiesTimeout,
+                    timeoutDisconnected: connector.proxiesTimeoutDisconnected,
                 },
             }
         );
@@ -1774,7 +1774,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 fingerprint: proxy.fingerprint,
                 fingerprintError: proxy.fingerprintError,
                 useragent: proxy.useragent,
-                timeout: proxy.timeout,
+                timeoutDisconnected: proxy.timeoutDisconnected,
                 disconnectedTs: proxy.disconnectedTs,
                 autoRotateDelayFactor: proxy.autoRotateDelayFactor,
                 requests: 0,
@@ -1804,7 +1804,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         status: proxy.status,
                         config: proxy.config,
                         // useragent => not modified
-                        timeout: proxy.timeout,
+                        timeoutDisconnected: proxy.timeoutDisconnected,
                         // createdTs => not modified
                         removing: proxy.removing,
                         removingForce: proxy.removingForce,
@@ -2003,7 +2003,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                     $set: {
                         nextRefreshTs: {
                             $add: [
-                                nextRefreshTs, '$timeout',
+                                nextRefreshTs, '$timeoutDisconnected',
                             ],
                         },
                     },
@@ -2132,7 +2132,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             },
             {
                 projection: {
-                    proxiesTimeout: 1,
+                    proxiesTimeoutDisconnected: 1,
                 },
             }
         );
@@ -2162,7 +2162,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 disconnectedTs: freeproxy.disconnectedTs,
                 fingerprint: null,
                 fingerprintError: null,
-                timeout: connectorModel.proxiesTimeout,
+                timeoutDisconnected: connectorModel.proxiesTimeoutDisconnected,
                 nextRefreshTs: 0,
             };
 
@@ -2241,7 +2241,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                     $set: {
                         nextRefreshTs: {
                             $add: [
-                                nextRefreshTs, '$timeout',
+                                nextRefreshTs, '$timeoutDisconnected',
                             ],
                         },
                     },

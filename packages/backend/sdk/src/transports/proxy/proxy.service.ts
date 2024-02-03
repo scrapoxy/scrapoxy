@@ -63,7 +63,7 @@ export abstract class ATransportProxyService implements ITransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeout
+                            proxy.timeoutDisconnected
                         );
                     }
 
@@ -75,7 +75,7 @@ export abstract class ATransportProxyService implements ITransportService {
                             headersConnect,
                             config,
                             sockets,
-                            proxy.timeout
+                            proxy.timeoutDisconnected
                         );
                     }
 
@@ -94,7 +94,7 @@ export abstract class ATransportProxyService implements ITransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeout
+                            proxy.timeoutDisconnected
                         );
                     }
 
@@ -106,7 +106,7 @@ export abstract class ATransportProxyService implements ITransportService {
                             headersConnect,
                             config,
                             sockets,
-                            proxy.timeout
+                            proxy.timeoutDisconnected
                         );
                     }
 
@@ -126,7 +126,7 @@ export abstract class ATransportProxyService implements ITransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeout,
+                            proxy.timeoutDisconnected,
                             4
                         );
                     }
@@ -147,7 +147,7 @@ export abstract class ATransportProxyService implements ITransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeout,
+                            proxy.timeoutDisconnected,
                             5
                         );
                     }
@@ -199,7 +199,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     headers,
                     config,
                     sockets,
-                    proxy.timeout,
+                    proxy.timeoutDisconnected,
                     callback
                 );
 
@@ -211,7 +211,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     url,
                     config,
                     sockets,
-                    proxy.timeout,
+                    proxy.timeoutDisconnected,
                     4,
                     callback
                 );
@@ -224,7 +224,7 @@ export abstract class ATransportProxyService implements ITransportService {
                     url,
                     config,
                     sockets,
-                    proxy.timeout,
+                    proxy.timeoutDisconnected,
                     5,
                     callback
                 );

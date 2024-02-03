@@ -4,7 +4,7 @@ import {
     EFingerprintMode,
     formatProxyId,
     generateUseragent,
-    PROXY_TIMEOUT_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
 } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import * as Joi from 'joi';
@@ -251,7 +251,7 @@ class GcpInstallCommand extends ATaskCommand {
                     key,
                     config,
                     useragent: generateUseragent(),
-                    timeout: PROXY_TIMEOUT_DEFAULT,
+                    timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,

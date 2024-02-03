@@ -1090,7 +1090,7 @@ export class CommanderFrontendService {
                 type: fp.type,
                 address: fp.address,
                 auth: fp.auth,
-                timeout: connector.proxiesTimeout,
+                timeoutDisconnected: connector.proxiesTimeoutDisconnected,
                 disconnectedTs: nowTime,
                 fingerprint: null,
                 fingerprintError: null,

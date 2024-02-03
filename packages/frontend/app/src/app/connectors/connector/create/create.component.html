@@ -106,16 +106,16 @@
                                     </c-col>
                                 </c-row>
                             }
-                            @if (form.controls['proxiesTimeout']; as c) {
+                            @if (form.controls['proxiesTimeoutDisconnected']; as c) {
                                 <c-row>
-                                    <label cLabel cCol md="2" for="proxiesTimeout">Proxies Timeout</label>
+                                    <label cLabel cCol md="2" for="proxiesTimeoutDisconnected">Proxies Timeout</label>
 
                                     <c-col md="10">
                                         <input
                                             type="number"
                                             cFormControl
-                                            id="proxiesTimeout"
-                                            formControlName="proxiesTimeout"
+                                            id="proxiesTimeoutDisconnected"
+                                            formControlName="proxiesTimeoutDisconnected"
                                             placeholder="Enter the maximum time to reach proxies (in ms)"
                                             [valid]="c.dirty || c.touched ? c.valid : undefined" />
 

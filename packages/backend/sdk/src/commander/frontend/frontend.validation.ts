@@ -68,7 +68,7 @@ export const schemaConnectorToCreate = Joi.object({
     proxiesMax: Joi.number()
         .required()
         .min(0),
-    proxiesTimeout: Joi.number()
+    proxiesTimeoutDisconnected: Joi.number()
         .required()
         .min(500)
         .max(30 * ONE_SECOND_IN_MS),
@@ -88,7 +88,7 @@ export const schemaConnectorToUpdate = Joi.object({
     proxiesMax: Joi.number()
         .required()
         .min(0),
-    proxiesTimeout: Joi.number()
+    proxiesTimeoutDisconnected: Joi.number()
         .required()
         .min(500)
         .max(30 * ONE_SECOND_IN_MS),

@@ -17,7 +17,7 @@ import {
     EventsProjectClient,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
-    PROXY_TIMEOUT_TEST_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     randomName,
     sleep,
 } from '@scrapoxy/common';
@@ -220,7 +220,7 @@ describe(
                             name: randomName(),
                             credentialId: credentials[ i ].id,
                             proxiesMax: 2,
-                            proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                            proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                             config: cfg,
                             certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                         }

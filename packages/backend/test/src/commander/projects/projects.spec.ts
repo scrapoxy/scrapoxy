@@ -19,7 +19,7 @@ import {
     EProjectStatus,
     EventsProjectClient,
     ONE_MINUTE_IN_MS,
-    PROXY_TIMEOUT_TEST_DEFAULT,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -237,7 +237,7 @@ describe(
                         name: 'myconnector',
                         credentialId: credential.id,
                         proxiesMax: 0,
-                        proxiesTimeout: PROXY_TIMEOUT_TEST_DEFAULT,
+                        proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
                         config: connectorConfig,
                         certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                     }

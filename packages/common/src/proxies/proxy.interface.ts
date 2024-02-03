@@ -8,8 +8,8 @@ import type { IFingerprintResponse } from '../fingerprint';
 
 
 export const
-    PROXY_TIMEOUT_DEFAULT = 5 * ONE_SECOND_IN_MS,
-    PROXY_TIMEOUT_TEST_DEFAULT = 500;
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT = 5 * ONE_SECOND_IN_MS,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST = 500;
 
 
 export enum EProxyType {
@@ -73,7 +73,7 @@ export const PROXY_DATA_META = [
     ...PROXY_BASE_META,
     'config',
     'useragent',
-    'timeout',
+    'timeoutDisconnected',
     'autoRotateDelayFactor',
     'disconnectedTs',
 ];
@@ -82,7 +82,7 @@ export const PROXY_DATA_META = [
 export interface IProxyData extends IProxyBase {
     config: any;
     useragent: string;
-    timeout: number;
+    timeoutDisconnected: number;
     disconnectedTs: number | null;
     autoRotateDelayFactor: number;
 }
@@ -163,7 +163,7 @@ export const PROXY_TO_CONNECT_META = [
     'key',
     'config',
     'useragent',
-    'timeout',
+    'timeoutDisconnected',
 ];
 
 
@@ -175,7 +175,7 @@ export interface IProxyToConnect {
     key: string;
     config: any;
     useragent: string;
-    timeout: number;
+    timeoutDisconnected: number;
 }
 
 
