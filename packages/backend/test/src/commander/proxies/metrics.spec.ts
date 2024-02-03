@@ -18,6 +18,7 @@ import {
     EventsConnectorsClient,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     SCRAPOXY_HEADER_PREFIX,
     sleep,
 } from '@scrapoxy/common';
@@ -168,6 +169,10 @@ describe(
                     name: 'myconnector',
                     proxiesMax,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
                     credentialId: credential.id,
                     config: connectorConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,

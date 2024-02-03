@@ -21,6 +21,7 @@ import {
     EventsProjectClient,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -166,6 +167,10 @@ describe(
                 name: 'myconnector 2',
                 proxiesMax: 2,
                 proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                proxiesTimeoutUnreachable: {
+                    enabled: true,
+                    value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                },
                 credentialId: credential.id,
                 config: datacenterLocalConfig,
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -175,6 +180,7 @@ describe(
                 credentialId: credential.id,
                 proxiesMax: connectorToCreate.proxiesMax,
                 proxiesTimeoutDisconnected: connectorToCreate.proxiesTimeoutDisconnected,
+                proxiesTimeoutUnreachable: connectorToCreate.proxiesTimeoutUnreachable,
                 config: datacenterLocalConfig,
             };
 
@@ -182,6 +188,10 @@ describe(
                 name: 'myconnector 1', // Check sort on name
                 proxiesMax: 2,
                 proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                proxiesTimeoutUnreachable: {
+                    enabled: true,
+                    value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                },
                 credentialId: credential.id,
                 config: datacenterLocalConfig2,
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -239,6 +249,10 @@ describe(
                     name: void 0,
                     proxiesMax: 2,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
                     credentialId: credential.id,
                     config: datacenterLocalConfig,
                 };
@@ -278,6 +292,10 @@ describe(
                     credentialId: credential.id,
                     proxiesMax: -10,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
                     config: datacenterLocalConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                 };
@@ -298,6 +316,10 @@ describe(
                     name: 'misconfigured connector',
                     proxiesMax: 1,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
                     credentialId: credential2.id,
                     config: {
                         name: void 0,
@@ -370,6 +392,8 @@ describe(
                     .toBe(connectorToCreate.proxiesMax);
                 expect(connectorFound.proxiesTimeoutDisconnected)
                     .toBe(connectorToCreate.proxiesTimeoutDisconnected);
+                expect(connectorFound.proxiesTimeoutUnreachable)
+                    .toEqual(connectorToCreate.proxiesTimeoutUnreachable);
                 expect(connectorFound.active)
                     .toBeFalsy();
                 expect(connectorFound.config)
@@ -462,6 +486,10 @@ describe(
                     credentialId: credential.id,
                     proxiesMax: 2,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
                     config: datacenterLocalConfig,
                 };
 
@@ -514,6 +542,10 @@ describe(
                     name: void 0,
                     proxiesMax: 2,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
                     type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                     config: datacenterLocalConfig,
                 };
@@ -581,6 +613,8 @@ describe(
                     .toBe(connectorToCreate.proxiesMax);
                 expect(connectorFound.proxiesTimeoutDisconnected)
                     .toBe(connectorToCreate.proxiesTimeoutDisconnected);
+                expect(connectorFound.proxiesTimeoutUnreachable)
+                    .toEqual(connectorToCreate.proxiesTimeoutUnreachable);
                 expect(connectorFound.error)
                     .toBeNull();
                 expect(connectorFound.config)
@@ -648,6 +682,8 @@ describe(
                     .toBe(connectorToCreate2.proxiesMax);
                 expect(connectorFound.proxiesTimeoutDisconnected)
                     .toBe(connectorToCreate2.proxiesTimeoutDisconnected);
+                expect(connectorFound.proxiesTimeoutUnreachable)
+                    .toEqual(connectorToCreate2.proxiesTimeoutUnreachable);
                 expect(connectorFound.active)
                     .toBeFalsy();
                 expect(connectorFound.error)

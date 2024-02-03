@@ -1,3 +1,4 @@
+import { toOptionalValue } from '@scrapoxy/common';
 import type { IConnectorStore } from './connector.store';
 import type { IFreeproxyModel } from '../freeproxy.model';
 import type { IFreeproxyBase } from '@scrapoxy/common';
@@ -37,6 +38,7 @@ export function fromFreeproxyStore(
         address: fp.address,
         auth: fp.auth,
         timeoutDisconnected: c.proxiesTimeoutDisconnected,
+        timeoutUnreachable: toOptionalValue(c.proxiesTimeoutUnreachable),
         disconnectedTs: nowTime,
         fingerprint: null,
         fingerprintError: null,

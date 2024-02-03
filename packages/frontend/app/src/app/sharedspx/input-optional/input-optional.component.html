@@ -1,0 +1,22 @@
+<c-input-group>
+    <button cButton [color]="optionalEnabled ? 'success' : 'secondary'" variant="outline" (click)="toggleEnabled()">
+        @if (optionalEnabled) {
+            <svg cIcon name="cilCheckAlt"></svg>
+        } @else {
+            <svg cIcon name="cilX"></svg>
+        }
+    </button>
+
+    <input
+        type="text"
+        cFormControl
+        [ngClass]="{
+            'is-invalid': optionalEnabled && validValue === false,
+            'is-valid': optionalEnabled && validValue === true
+        }"
+        [placeholder]="placeholder"
+        [disabled]="disabled || !optionalEnabled"
+        [value]="optionalEnabled ? optionalValue : '-'"
+        (keyup)="onValueChange($event)"
+        (change)="markAsTouched()" />
+</c-input-group>

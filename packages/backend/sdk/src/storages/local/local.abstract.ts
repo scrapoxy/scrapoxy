@@ -22,6 +22,7 @@ import {
     ProxiesMetricsAddedEvent,
     ProxiesSynchronizedEvent,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     safeJoin,
     TaskCreatedEvent,
     TaskRemovedEvent,
@@ -30,6 +31,7 @@ import {
     toConnectorView,
     toCredentialData,
     toCredentialView,
+    toOptionalValue,
     toProjectData,
     toProjectView,
     toProxyData,
@@ -206,6 +208,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 createdTs: nowTime,
                 useragent: generateUseragent(),
                 timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                timeoutUnreachable: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                 disconnectedTs: null,
                 requests: 0,
                 bytesReceived: 0,
@@ -1220,17 +1223,21 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         connectorModel.active = connector.active;
         connectorModel.proxiesMax = connector.proxiesMax;
         connectorModel.proxiesTimeoutDisconnected = connector.proxiesTimeoutDisconnected;
+        connectorModel.proxiesTimeoutUnreachable = connector.proxiesTimeoutUnreachable;
         connectorModel.error = connector.error;
         connectorModel.certificateEndAt = connector.certificateEndAt;
         connectorModel.credentialId = connector.credentialId;
         connectorModel.config = connector.config;
 
+        const timeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
         for (const proxy of connectorModel.proxies.values()) {
             proxy.timeoutDisconnected = connector.proxiesTimeoutDisconnected;
+            proxy.timeoutUnreachable = timeoutUnreachable;
         }
 
         for (const freeproxy of connectorModel.freeproxies.values()) {
             freeproxy.timeoutDisconnected = connector.proxiesTimeoutDisconnected;
+            freeproxy.timeoutUnreachable = timeoutUnreachable;
         }
 
         const event: IEvent = {
@@ -1890,6 +1897,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             );
         }
 
+        const timeoutUnreachable = toOptionalValue(connectorModel.proxiesTimeoutUnreachable);
         const freeproxies: IFreeproxy[] = [];
         for (const freeproxy of create.freeproxies) {
             if (freeproxy.projectId !== create.projectId ||
@@ -1900,6 +1908,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             const freeproxyModel: IFreeproxyModel = {
                 ...freeproxy,
                 timeoutDisconnected: connectorModel.proxiesTimeoutDisconnected,
+                timeoutUnreachable,
                 nextRefreshTs: 0,
             };
 

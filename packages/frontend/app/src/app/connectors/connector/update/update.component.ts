@@ -25,6 +25,7 @@ import {
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
 import { Subscription } from 'rxjs';
+import { ValidatorOptionalNumber } from '../../../sharedspx/input-optional/input-optional-number.component';
 import type {
     OnDestroy,
     OnInit,
@@ -104,6 +105,15 @@ export class ConnectorUpdateComponent implements OnInit, OnDestroy, IHasModifica
                 void 0,
                 [
                     Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                ],
+            ],
+            proxiesTimeoutUnreachable: [
+                void 0,
+                [
+                    Validators.required,
+                    ValidatorOptionalNumber({
+                        min: 500,
+                    }),
                 ],
             ],
         });

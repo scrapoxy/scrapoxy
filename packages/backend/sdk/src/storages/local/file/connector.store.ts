@@ -57,6 +57,7 @@ export function fromConnectorStore(
         active: c.active,
         proxiesMax: c.proxiesMax,
         proxiesTimeoutDisconnected: c.proxiesTimeoutDisconnected,
+        proxiesTimeoutUnreachable: c.proxiesTimeoutUnreachable,
         error: c.error,
         config: c.config,
         credentialId: c.credentialId,

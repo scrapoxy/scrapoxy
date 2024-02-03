@@ -125,7 +125,6 @@ _For RabbitMQ:_
 
 - `PROXY_REFRESH_COUNT` : Number of proxies to fingerprint at once. The default value is `200`.
 - `PROXY_REFRESH_DELAY` : Delay in milliseconds between 2 fingerprint requests of a proxy, adjusted by subtracting the timeout duration. The default value is `1000` (1 seconds).
-- `PROXY_UNREACHABLE_DELAY` : Delay in milliseconds to wait before removing an unreachable proxy. The default value is `600000` (10 minutes).
 - `PROXIES_REFRESH_EMPTY_DELAY` : Delay in milliseconds to wait if there is no proxy to refresh. The default value is `1000` (1 second).
 - `PROXIES_REFRESH_ERROR_DELAY` : Delay in milliseconds to wait if proxy's refresh triggers an error. The default value is `2000` (2 seconds).
 

@@ -19,6 +19,7 @@ export function toFreeproxy(p: IFreeproxyModel): IFreeproxy {
         address: p.address,
         auth: p.auth,
         timeoutDisconnected: p.timeoutDisconnected,
+        timeoutUnreachable: p.timeoutUnreachable,
         disconnectedTs: p.disconnectedTs,
         fingerprint: p.fingerprint,
         fingerprintError: p.fingerprintError,
@@ -38,6 +39,7 @@ export function toFreeproxyToRefresh(p: IFreeproxyModel): IFreeproxyToRefresh {
         address: p.address,
         auth: p.auth,
         timeoutDisconnected: p.timeoutDisconnected,
+        timeoutUnreachable: p.timeoutUnreachable,
     };
 
     return f;

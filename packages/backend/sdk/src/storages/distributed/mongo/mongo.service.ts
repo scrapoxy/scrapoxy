@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import {
     EProxyStatus,
     safeJoin,
+    toOptionalValue,
     toUserData,
     WINDOWS_CONFIG,
 } from '@scrapoxy/common';
@@ -1454,6 +1455,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             active: connector.active,
             proxiesMax: connector.proxiesMax,
             proxiesTimeoutDisconnected: connector.proxiesTimeoutDisconnected,
+            proxiesTimeoutUnreachable: connector.proxiesTimeoutUnreachable,
             error: connector.error,
             certificateEndAt: connector.certificateEndAt,
             config: connector.config,
@@ -1479,6 +1481,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                     active: connector.active,
                     proxiesMax: connector.proxiesMax,
                     proxiesTimeoutDisconnected: connector.proxiesTimeoutDisconnected,
+                    proxiesTimeoutUnreachable: connector.proxiesTimeoutUnreachable,
                     error: connector.error,
                     certificateEndAt: connector.certificateEndAt,
                     credentialId: connector.credentialId,
@@ -1486,6 +1489,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             }
         );
+        const timeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
         const proxiesPromise = this.colProxies.updateMany(
             {
                 connectorId: connector.id,
@@ -1494,6 +1498,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             {
                 $set: {
                     timeoutDisconnected: connector.proxiesTimeoutDisconnected,
+                    timeoutUnreachable,
                 },
             }
         );
@@ -1505,6 +1510,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             {
                 $set: {
                     timeoutDisconnected: connector.proxiesTimeoutDisconnected,
+                    timeoutUnreachable,
                 },
             }
         );
@@ -1775,6 +1781,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 fingerprintError: proxy.fingerprintError,
                 useragent: proxy.useragent,
                 timeoutDisconnected: proxy.timeoutDisconnected,
+                timeoutUnreachable: proxy.timeoutUnreachable,
                 disconnectedTs: proxy.disconnectedTs,
                 autoRotateDelayFactor: proxy.autoRotateDelayFactor,
                 requests: 0,
@@ -1805,6 +1812,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         config: proxy.config,
                         // useragent => not modified
                         timeoutDisconnected: proxy.timeoutDisconnected,
+                        timeoutUnreachable: proxy.timeoutUnreachable,
                         // createdTs => not modified
                         removing: proxy.removing,
                         removingForce: proxy.removingForce,
@@ -2133,6 +2141,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             {
                 projection: {
                     proxiesTimeoutDisconnected: 1,
+                    proxiesTimeoutUnreachable: 1,
                 },
             }
         );
@@ -2144,6 +2153,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             );
         }
 
+        const timeoutUnreachable = toOptionalValue(connectorModel.proxiesTimeoutUnreachable);
         const bulk = this.colFreeproxies.initializeUnorderedBulkOp();
         for (const freeproxy of create.freeproxies) {
             if (freeproxy.projectId !== create.projectId ||
@@ -2163,6 +2173,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 fingerprint: null,
                 fingerprintError: null,
                 timeoutDisconnected: connectorModel.proxiesTimeoutDisconnected,
+                timeoutUnreachable,
                 nextRefreshTs: 0,
             };
 

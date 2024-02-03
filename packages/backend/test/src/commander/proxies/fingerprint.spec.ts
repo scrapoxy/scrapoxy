@@ -17,6 +17,7 @@ import {
     EDatacenterLocalQueryCredential,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     SCRAPOXY_USER_AGENT_PREFIX,
 } from '@scrapoxy/common';
 import axios from 'axios';
@@ -64,6 +65,10 @@ async function installConnector(
             name: `myconnector ${region}`,
             proxiesMax: 1,
             proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+            proxiesTimeoutUnreachable: {
+                enabled: true,
+                value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+            },
             credentialId,
             config: connectorConfig,
             certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,

@@ -64,9 +64,6 @@ describe(
             });
 
             // Start app
-            const configRefresh = getEnvCommanderRefreshModuleConfig();
-            configRefresh.proxyUnreachableDelay = 3000;
-
             commanderApp = new CommanderApp({
                 datacenterLocalAppUrl: datacenterLocalApp.url,
                 imports: [
@@ -76,7 +73,7 @@ describe(
                     CommanderEventsModule.forRoot(),
                     CommanderFrontendModule.forRoot(servers.urlFingerprint),
                     CommanderMasterModule.forRoot(),
-                    CommanderRefreshModule.forRoot(configRefresh),
+                    CommanderRefreshModule.forRoot(getEnvCommanderRefreshModuleConfig()),
                     CommanderScraperModule,
                     CommanderUsersModule.forRoot(),
                 ],
@@ -140,6 +137,10 @@ describe(
                     name: 'myconnector',
                     proxiesMax: 0,
                     proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: 3000,
+                    },
                     credentialId: credential.id,
                     config: connectorConfig,
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,

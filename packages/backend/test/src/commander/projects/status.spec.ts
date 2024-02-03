@@ -18,6 +18,7 @@ import {
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     randomName,
     sleep,
 } from '@scrapoxy/common';
@@ -221,6 +222,10 @@ describe(
                             credentialId: credentials[ i ].id,
                             proxiesMax: 2,
                             proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                            proxiesTimeoutUnreachable: {
+                                enabled: true,
+                                value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                            },
                             config: cfg,
                             certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                         }

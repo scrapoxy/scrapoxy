@@ -13,6 +13,7 @@ import {
     generateUseragent,
     safeJoin,
     sleep,
+    toOptionalValue,
 } from '@scrapoxy/common';
 import { deepEqual } from 'fast-equals';
 import { COMMANDER_REFRESH_MODULE_CONFIG } from './refresh.constants';
@@ -215,6 +216,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                 createdTs: nowTime,
                 useragent: generateUseragent(),
                 timeoutDisconnected: localProxies.connector.proxiesTimeoutDisconnected,
+                timeoutUnreachable: toOptionalValue(localProxies.connector.proxiesTimeoutUnreachable),
                 fingerprint: null,
                 fingerprintError: null,
                 removing: false,
@@ -420,6 +422,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                     createdTs: nowTime,
                     useragent: generateUseragent(),
                     timeoutDisconnected: localProxies.connector.proxiesTimeoutDisconnected,
+                    timeoutUnreachable: toOptionalValue(localProxies.connector.proxiesTimeoutUnreachable),
                     fingerprint: null,
                     fingerprintError: null,
                     removing: false,
@@ -532,7 +535,9 @@ export class CommanderRefreshService implements OnModuleDestroy {
                     }
 
                     default: {
-                        if (localProxy.disconnectedTs && nowTime - localProxy.disconnectedTs > this.config.proxyUnreachableDelay) {
+                        if (localProxy.disconnectedTs &&
+                            localProxy.timeoutUnreachable &&
+                            nowTime - localProxy.disconnectedTs > localProxy.timeoutUnreachable) {
                             this.logger.debug(`refreshConnectorProxies: ask to remove proxy ${localProxy.key} disconnected for too long`);
                             localProxy.removing = true;
                         } else if (
@@ -788,6 +793,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                         createdTs: localProxy.createdTs,
                         useragent: localProxy.useragent,
                         timeoutDisconnected: localProxy.timeoutDisconnected,
+                        timeoutUnreachable: localProxy.timeoutUnreachable,
                         disconnectedTs: localProxy.disconnectedTs,
                         autoRotateDelayFactor: localProxy.autoRotateDelayFactor,
                     };
@@ -971,7 +977,9 @@ export class CommanderRefreshService implements OnModuleDestroy {
                     toUpdate = false;
                 }
 
-                if (localFreeproxy.disconnectedTs && nowTime - localFreeproxy.disconnectedTs > this.config.proxyUnreachableDelay) {
+                if (localFreeproxy.disconnectedTs &&
+                    localFreeproxy.timeoutUnreachable &&
+                    nowTime - localFreeproxy.disconnectedTs > localFreeproxy.timeoutUnreachable) {
                     actions.removed.push(localFreeproxy);
                 } else if (toUpdate) {
                     actions.updated.push(localFreeproxy);

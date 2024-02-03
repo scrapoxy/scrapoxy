@@ -30,6 +30,7 @@ export function toConnectorSync(c: IConnectorSync): IConnectorSync {
         active: c.active,
         proxiesMax: c.proxiesMax,
         proxiesTimeoutDisconnected: c.proxiesTimeoutDisconnected,
+        proxiesTimeoutUnreachable: c.proxiesTimeoutUnreachable,
         error: c.error,
         certificateEndAt: c.certificateEndAt,
     };
@@ -47,6 +48,7 @@ export function toConnectorData(c: IConnectorData): IConnectorData {
         active: c.active,
         proxiesMax: c.proxiesMax,
         proxiesTimeoutDisconnected: c.proxiesTimeoutDisconnected,
+        proxiesTimeoutUnreachable: c.proxiesTimeoutUnreachable,
         error: c.error,
         certificateEndAt: c.certificateEndAt,
         credentialId: c.credentialId,

@@ -100,6 +100,10 @@ Response payload:
             "active": "<true if the connector is active>",
             "proxiesMax": "<maximum number of proxies to use>",
             "proxiesTimeoutDisconnected": "<maximum duration for connecting to a proxy before considering it as offline>",
+            "proxiesTimeoutUnreachable": {
+                "enabled": "<do we check maximum duration for connecting to a proxy before removing it>",
+                "value": "<maximum duration>"
+            },
             "error": "<error message if the connector is in error>",
             "certificateEndAt": "<date of the end of the certificate for datacenter provider>"
         },

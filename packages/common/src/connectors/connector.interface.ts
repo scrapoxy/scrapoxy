@@ -2,6 +2,7 @@ import type {
     ICertificate,
     ICertificateInfo,
 } from '../certificate';
+import type { IOptionalValue } from '../optional';
 import type { IProxyInfo } from '../proxies';
 
 
@@ -48,6 +49,7 @@ export const CONNECTOR_DATA_META = [
     ...CONNECTOR_VIEW_META,
     'credentialId',
     'proxiesTimeoutDisconnected',
+    'proxiesTimeoutUnreachable',
     'config',
 ];
 
@@ -55,17 +57,19 @@ export const CONNECTOR_DATA_META = [
 export interface IConnectorData extends IConnectorView {
     credentialId: string;
     proxiesTimeoutDisconnected: number;
+    proxiesTimeoutUnreachable: IOptionalValue<number>;
     config: any;
 }
 
 
 export const CONNECTOR_SYNC_META = [
-    ...CONNECTOR_VIEW_META, 'proxiesTimeoutDisconnected',
+    ...CONNECTOR_VIEW_META, 'proxiesTimeoutDisconnected', 'proxiesTimeoutUnreachable',
 ];
 
 
 export interface IConnectorSync extends IConnectorView {
     proxiesTimeoutDisconnected: number;
+    proxiesTimeoutUnreachable: IOptionalValue<number>;
 }
 
 
@@ -74,6 +78,7 @@ export interface IConnectorToCreate {
     credentialId: string;
     proxiesMax: number;
     proxiesTimeoutDisconnected: number;
+    proxiesTimeoutUnreachable: IOptionalValue<number>;
     config: any;
     certificateDurationInMs: number;
 }
@@ -90,6 +95,7 @@ export interface IConnectorToUpdate {
     credentialId: string;
     proxiesMax: number;
     proxiesTimeoutDisconnected: number;
+    proxiesTimeoutUnreachable: IOptionalValue<number>;
     config: any;
 }
 

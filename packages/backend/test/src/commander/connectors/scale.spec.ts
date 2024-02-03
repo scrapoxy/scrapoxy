@@ -20,6 +20,7 @@ import {
     EventsConnectorsClient,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -197,6 +198,10 @@ describe(
                         credentialId: credential.id,
                         proxiesMax: 0,
                         proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                        proxiesTimeoutUnreachable: {
+                            enabled: true,
+                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                        },
                         config: connectorConfig,
                         certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                     }
@@ -473,6 +478,10 @@ describe(
                         credentialId: credential2.id,
                         proxiesMax: 2,
                         proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                        proxiesTimeoutUnreachable: {
+                            enabled: true,
+                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                        },
                         config: connectorConfig,
                         certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                     }

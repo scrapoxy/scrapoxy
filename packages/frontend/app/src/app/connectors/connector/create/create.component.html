@@ -137,6 +137,34 @@
                                     </c-col>
                                 </c-row>
                             }
+                            @if (form.controls['proxiesTimeoutUnreachable']; as c) {
+                                <c-row>
+                                    <label cLabel cCol md="2" for="proxiesTimeoutUnreachable">
+                                        Proxies Unreachable
+                                    </label>
+
+                                    <c-col md="10">
+                                        <input-optional-number
+                                            id="proxiesTimeoutUnreachable"
+                                            formControlName="proxiesTimeoutUnreachable"
+                                            placeholder="Enter the maximum time to reach proxies (in ms)"
+                                            [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                                        @if (c.dirty || c.touched) {
+                                            <c-form-feedback [valid]="c.valid">
+                                                @if (c.errors; as errs) {
+                                                    @if (errs['required']) {
+                                                        Timeout is required.
+                                                    }
+                                                    @if (errs['min']) {
+                                                        Timeout should be at least 500ms
+                                                    }
+                                                }
+                                            </c-form-feedback>
+                                        }
+                                    </c-col>
+                                </c-row>
+                            }
 
                             <ng-template #dform></ng-template>
                         </c-card-body>

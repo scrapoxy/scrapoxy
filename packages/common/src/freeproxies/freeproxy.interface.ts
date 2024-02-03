@@ -16,6 +16,7 @@ export const FREEPROXY_META = [
     'address',
     'auth',
     'timeoutDisconnected',
+    'timeoutUnreachable',
     'fingerprint',
     'fingerprintError',
     'disconnectedAt',
@@ -27,6 +28,7 @@ export interface IFreeproxy extends IFreeproxyBase, IFingerprintResponse {
     connectorId: string;
     projectId: string;
     timeoutDisconnected: number;
+    timeoutUnreachable: number | null;
     disconnectedTs: number | null;
 }
 
@@ -40,6 +42,7 @@ export const FREEPROXY_TO_REFRESH_META = [
     'address',
     'auth',
     'timeoutDisconnected',
+    'timeoutUnreachable',
 ];
 
 
@@ -48,6 +51,7 @@ export interface IFreeproxyToRefresh extends IFreeproxyBase {
     connectorId: string;
     projectId: string;
     timeoutDisconnected: number;
+    timeoutUnreachable: number | null;
 }
 
 

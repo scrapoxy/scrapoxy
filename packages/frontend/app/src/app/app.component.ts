@@ -45,6 +45,7 @@ import {
     cilTrash,
     cilUser,
     cilWarning,
+    cilX,
     cilXCircle,
     cilZoom,
     flagSet,
@@ -100,8 +101,9 @@ export const icons = {
     cilTransfer,
     cilTrash,
     cilUser,
-    cilXCircle,
     cilWarning,
+    cilX,
+    cilXCircle,
     cilZoom,
 };
 

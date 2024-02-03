@@ -18,6 +18,7 @@ import {
     ONE_SECOND_IN_MS,
     ONE_YEAR_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
@@ -25,6 +26,7 @@ import {
     ProjectCurrentService,
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
+import { ValidatorOptionalNumber } from '../../../sharedspx/input-optional/input-optional-number.component';
 import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,
@@ -85,6 +87,15 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                     Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
                 ],
             ],
+            proxiesTimeoutUnreachable: [
+                void 0,
+                [
+                    Validators.required,
+                    ValidatorOptionalNumber({
+                        min: 500,
+                    }),
+                ],
+            ],
             certificateDurationInMs: [
                 // Value hidden and set to 1 year
                 void 0,
@@ -124,6 +135,10 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                 credentialId: null as any,
                 proxiesMax: 1,
                 proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
+                proxiesTimeoutUnreachable: {
+                    enabled: true,
+                    value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                },
                 config: void 0,
                 certificateDurationInMs: ONE_YEAR_IN_MS,
             };

@@ -9,6 +9,7 @@ import {
     safeJoin,
     toConnectorView,
     toCredentialView,
+    toOptionalValue,
     toTaskView,
     toUserProject,
 } from '@scrapoxy/common';
@@ -1091,6 +1092,7 @@ export class CommanderFrontendService {
                 address: fp.address,
                 auth: fp.auth,
                 timeoutDisconnected: connector.proxiesTimeoutDisconnected,
+                timeoutUnreachable: toOptionalValue(connector.proxiesTimeoutUnreachable),
                 disconnectedTs: nowTime,
                 fingerprint: null,
                 fingerprintError: null,

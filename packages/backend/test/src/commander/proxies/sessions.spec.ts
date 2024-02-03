@@ -12,6 +12,7 @@ import {
     EProxyStatus,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
 } from '@scrapoxy/common';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
@@ -130,6 +131,10 @@ describe(
                         name: 'my asian connector',
                         proxiesMax: 2,
                         proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                        proxiesTimeoutUnreachable: {
+                            enabled: true,
+                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                        },
                         credentialId: credential.id,
                         config: connectorConfig,
                         certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -203,6 +208,10 @@ describe(
                         name: 'my european connector',
                         proxiesMax: 2,
                         proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                        proxiesTimeoutUnreachable: {
+                            enabled: true,
+                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                        },
                         credentialId: credential.id,
                         config: connectorConfig,
                         certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,

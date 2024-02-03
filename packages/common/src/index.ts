@@ -20,6 +20,8 @@ export * from './info';
 
 export * from './oauth';
 
+export * from './optional';
+
 export * from './projects';
 
 export * from './proxies';

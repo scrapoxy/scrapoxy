@@ -30,6 +30,7 @@ import {
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     SCRAPOXY_HEADER_PREFIX,
     sleep,
 } from '@scrapoxy/common';
@@ -270,6 +271,10 @@ export function testConnector(
             credentialId: credential.id,
             proxiesMax: 1,
             proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+            proxiesTimeoutUnreachable: {
+                enabled: true,
+                value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+            },
             config: connectorConfig,
             certificateDurationInMs: ONE_HOUR_IN_MS,
         };

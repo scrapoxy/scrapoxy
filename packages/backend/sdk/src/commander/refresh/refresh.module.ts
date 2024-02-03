@@ -23,7 +23,6 @@ export interface IProxyRefreshConfig {
 export interface ICommanderRefreshModuleConfig {
     jwtSecret: string;
     freeproxyRefresh: IProxyRefreshConfig;
-    proxyUnreachableDelay: number;
     proxyRefresh: IProxyRefreshConfig;
     stoppingDelay: number;
     clearAtShutdown: boolean;
@@ -45,10 +44,6 @@ export function getEnvCommanderRefreshModuleConfig(): ICommanderRefreshModuleCon
                 10
             ),
         },
-        proxyUnreachableDelay: parseInt(
-            process.env.PROXY_UNREACHABLE_DELAY ?? (10 * ONE_MINUTE_IN_MS).toString(),
-            10
-        ),
         proxyRefresh: {
             delay: parseInt(
                 process.env.PROXY_REFRESH_DELAY ?? ONE_SECOND_IN_MS.toString(),

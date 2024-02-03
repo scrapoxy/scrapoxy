@@ -60,6 +60,15 @@ export const schemaCredentialToUpdate = Joi.object({
 });
 
 
+const schemaProxiesTimeoutUnreachable = Joi.object({ // TODO: can be moved in SDK
+    enabled: Joi.boolean()
+        .required(),
+    value: Joi.number()
+        .required()
+        .min(500),
+});
+
+
 export const schemaConnectorToCreate = Joi.object({
     name: Joi.string()
         .required(),
@@ -72,6 +81,7 @@ export const schemaConnectorToCreate = Joi.object({
         .required()
         .min(500)
         .max(30 * ONE_SECOND_IN_MS),
+    proxiesTimeoutUnreachable: schemaProxiesTimeoutUnreachable,
     config: Joi.any()
         .required(),
     certificateDurationInMs: Joi.number()
@@ -92,6 +102,7 @@ export const schemaConnectorToUpdate = Joi.object({
         .required()
         .min(500)
         .max(30 * ONE_SECOND_IN_MS),
+    proxiesTimeoutUnreachable: schemaProxiesTimeoutUnreachable,
     config: Joi.any()
         .required(),
 });
