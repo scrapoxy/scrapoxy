@@ -27,7 +27,6 @@ export function toProjectData(p: IProjectData): IProjectData {
         autoRotateDelayRange: p.autoRotateDelayRange,
         autoScaleUp: p.autoScaleUp,
         autoScaleDown: p.autoScaleDown,
-        autoScaleDownDelay: p.autoScaleDownDelay,
         cookieSession: p.cookieSession,
         mitm: p.mitm,
         proxiesMin: p.proxiesMin,

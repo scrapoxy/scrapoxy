@@ -498,7 +498,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             autoRotateDelayRange: create.project.autoRotateDelayRange,
             autoScaleUp: create.project.autoScaleUp,
             autoScaleDown: create.project.autoScaleDown,
-            autoScaleDownDelay: create.project.autoScaleDownDelay,
             cookieSession: create.project.cookieSession,
             mitm: create.project.mitm,
             proxiesMin: create.project.proxiesMin,
@@ -579,7 +578,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         projectModel.autoRotateDelayRange = project.autoRotateDelayRange;
         projectModel.autoScaleUp = project.autoScaleUp;
         projectModel.autoScaleDown = project.autoScaleDown;
-        projectModel.autoScaleDownDelay = project.autoScaleDownDelay;
         projectModel.cookieSession = project.cookieSession;
         projectModel.mitm = project.mitm;
         projectModel.proxiesMin = project.proxiesMin;

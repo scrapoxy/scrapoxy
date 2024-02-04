@@ -211,44 +211,26 @@
                             <c-row>
                                 <label cLabel cCol md="4" for="autoScaleDown">Auto Scale Down</label>
 
-                                <c-col md="2">
-                                    <c-form-check [switch]="true" sizing="lg">
-                                        <input
-                                            type="checkbox"
-                                            cFormCheckInput
-                                            id="autoScaleDown"
-                                            formControlName="autoScaleDown"
-                                            (change)="onChangeAutoScaleDown()" />
-                                    </c-form-check>
-                                </c-col>
+                                <c-col md="8">
+                                    <input-optional-number
+                                        id="autoScaleDown"
+                                        formControlName="autoScaleDown"
+                                        placeholder="Enter the delay in milliseconds"
+                                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
 
-                                <label cLabel cCol md="2" for="autoScaleDownDelay">Delay (ms)</label>
-
-                                @if (form.controls['autoScaleDownDelay']; as c2) {
-                                    <c-col md="4">
-                                        <!-- TODO: replace with input-optional-number component -->
-                                        <input
-                                            type="text"
-                                            cFormControl
-                                            id="autoScaleDownDelay"
-                                            formControlName="autoScaleDownDelay"
-                                            placeholder="Enter the delay in milliseconds"
-                                            [valid]="c2.dirty || c2.touched ? c2.valid : undefined" />
-
-                                        @if (c2.dirty || c2.touched) {
-                                            <c-form-feedback [valid]="c2.valid">
-                                                @if (c2.errors; as errs) {
-                                                    @if (errs['required']) {
-                                                        <div>Delay is required.</div>
-                                                    }
-                                                    @if (errs['min']) {
-                                                        <div>Delay should be at least 30s (30000ms)</div>
-                                                    }
+                                    @if (c.dirty || c.touched) {
+                                        <c-form-feedback [valid]="c.valid">
+                                            @if (c.errors; as errs) {
+                                                @if (errs['required']) {
+                                                    <div>Delay is required.</div>
                                                 }
-                                            </c-form-feedback>
-                                        }
-                                    </c-col>
-                                }
+                                                @if (errs['min']) {
+                                                    <div>Delay should be at least 30s (30000ms)</div>
+                                                }
+                                            }
+                                        </c-form-feedback>
+                                    }
+                                </c-col>
                             </c-row>
                         }
                         @if (form.controls['mitm']; as c) {

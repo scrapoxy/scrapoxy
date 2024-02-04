@@ -18,5 +18,5 @@
         [disabled]="disabled || !optionalEnabled"
         [value]="optionalEnabled ? optionalValue : '-'"
         (keyup)="onValueChange($event)"
-        (change)="markAsTouched()" />
+        (focus)="markAsTouched()" />
 </c-input-group>

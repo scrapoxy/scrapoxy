@@ -244,8 +244,10 @@ export function testConnector(
                 max: ONE_MINUTE_IN_MS * 30,
             },
             autoScaleUp: true,
-            autoScaleDown: true,
-            autoScaleDownDelay: ONE_MINUTE_IN_MS,
+            autoScaleDown: {
+                enabled: true,
+                value: ONE_MINUTE_IN_MS,
+            },
             cookieSession: true,
             mitm: true,
             proxiesMin: 1,

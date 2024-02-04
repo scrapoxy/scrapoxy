@@ -44,8 +44,10 @@ describe(
                     max: ONE_SECOND_IN_MS * 30,
                 },
                 autoScaleUp: false,
-                autoScaleDown: false,
-                autoScaleDownDelay: ONE_SECOND_IN_MS * 30,
+                autoScaleDown: {
+                    enabled: false,
+                    value: ONE_SECOND_IN_MS * 30,
+                },
                 cookieSession: true,
                 mitm: true,
                 proxiesMin: 1,

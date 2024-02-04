@@ -17,11 +17,13 @@ export const schemaProjectToCreate = Joi.object({
     }),
     autoScaleUp: Joi.boolean()
         .required(),
-    autoScaleDown: Joi.boolean()
-        .required(),
-    autoScaleDownDelay: Joi.number()
-        .required()
-        .min(ONE_SECOND_IN_MS * 30),
+    autoScaleDown: Joi.object({
+        enabled: Joi.boolean()
+            .required(),
+        value: Joi.number()
+            .required()
+            .min(ONE_SECOND_IN_MS * 30),
+    }),
     cookieSession: Joi.boolean()
         .required(),
     mitm: Joi.boolean()

@@ -4,6 +4,7 @@ import type {
     IWindowAdd,
 } from './metrics/window.interface';
 import type { ICertificate } from '../certificate';
+import type { IOptionalValue } from '../optional';
 import type { EConnectMode } from '../proxies';
 import type { IRange } from '../range';
 
@@ -63,7 +64,6 @@ export const PROJECT_DATA_META = [
     'autoRotateDelayRange',
     'autoScaleUp',
     'autoScaleDown',
-    'autoScaleDownDelay',
     'cookieSession',
     'mitm',
     'proxiesMin',
@@ -75,8 +75,7 @@ export interface IProjectData extends IProjectView {
     autoRotate: boolean;
     autoRotateDelayRange: IRange;
     autoScaleUp: boolean;
-    autoScaleDown: boolean;
-    autoScaleDownDelay: number;
+    autoScaleDown: IOptionalValue<number>;
     cookieSession: boolean;
     mitm: boolean;
     proxiesMin: number;
@@ -89,7 +88,6 @@ export const PROJECT_SYNC_META = [
     'autoRotate',
     'autoRotateDelayRange',
     'autoScaleDown',
-    'autoScaleDownDelay',
     'connectorDefaultId',
     'lastDataTs',
     'proxiesMin',
@@ -101,8 +99,7 @@ export interface IProjectSync extends IProjectStatus, IProjectConnectorDefaultId
     id: string;
     autoRotate: boolean;
     autoRotateDelayRange: IRange;
-    autoScaleDown: boolean;
-    autoScaleDownDelay: number;
+    autoScaleDown: IOptionalValue<number>;
     lastDataTs: number;
     proxiesMin: number;
 }
@@ -136,8 +133,7 @@ export interface IProjectToCreate {
     autoRotate: boolean;
     autoRotateDelayRange: IRange;
     autoScaleUp: boolean;
-    autoScaleDown: boolean;
-    autoScaleDownDelay: number;
+    autoScaleDown: IOptionalValue<number>;
     cookieSession: boolean;
     mitm: boolean;
     proxiesMin: number;

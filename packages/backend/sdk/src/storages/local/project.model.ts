@@ -58,7 +58,6 @@ export function toProjectSync(p: IProjectModel): IProjectSync {
         autoRotate: p.autoRotate,
         autoRotateDelayRange: p.autoRotateDelayRange,
         autoScaleDown: p.autoScaleDown,
-        autoScaleDownDelay: p.autoScaleDownDelay,
         lastDataTs: p.lastDataTs,
         proxiesMin: p.proxiesMin,
     };

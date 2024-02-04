@@ -572,9 +572,9 @@ export class CommanderRefreshService implements OnModuleDestroy {
         }
 
         // Part D: Scale down project if no data has been received for a long time
-        if (project.autoScaleDown &&
-            project.status === EProjectStatus.HOT &&
-            nowTime - project.lastDataTs > project.autoScaleDownDelay) {
+        if (project.status === EProjectStatus.HOT &&
+            project.autoScaleDown.enabled &&
+            nowTime - project.lastDataTs > project.autoScaleDown.value) {
 
             project.status = EProjectStatus.CALM;
 

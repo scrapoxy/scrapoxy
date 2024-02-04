@@ -16,6 +16,7 @@ import {
     CommanderFrontendClientService,
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
+import { ValidatorOptionalNumber } from '../../../sharedspx/input-optional/input-optional-number.component';
 import { ValidatorRange } from '../../../sharedspx/input-range/input-range.component';
 import type {
     ICommanderFrontendClient,
@@ -62,12 +63,15 @@ export class ProjectCreateComponent implements IHasModification {
                 true, Validators.required,
             ],
             autoScaleDown: [
-                true, Validators.required,
-            ],
-            autoScaleDownDelay: [
-                ONE_MINUTE_IN_MS * 10,
+                {
+                    enabled: true,
+                    value: ONE_MINUTE_IN_MS * 10,
+                },
                 [
-                    Validators.required, Validators.min(ONE_SECOND_IN_MS * 30),
+                    Validators.required,
+                    ValidatorOptionalNumber({
+                        min: ONE_SECOND_IN_MS * 30,
+                    }),
                 ],
             ],
             cookieSession: [
@@ -89,7 +93,6 @@ export class ProjectCreateComponent implements IHasModification {
 
         this.onChangeMitm();
         this.onChangeAutoRotate();
-        this.onChangeAutoScaleDown();
     }
 
     isModified(): boolean {
@@ -103,7 +106,10 @@ export class ProjectCreateComponent implements IHasModification {
             name: this.form.value.name,
             autoRotate: this.form.value.autoRotate,
             autoScaleUp: this.form.value.autoScaleUp,
-            autoScaleDown: this.form.value.autoScaleDown,
+            autoScaleDown: this.form.value.autoScaleDown ?? {
+                enabled: true,
+                value: ONE_MINUTE_IN_MS * 10,
+            },
             proxiesMin: this.form.value.proxiesMin,
             // We use default value because fields can be disabled
             cookieSession: this.form.value.cookieSession ?? false,
@@ -113,7 +119,6 @@ export class ProjectCreateComponent implements IHasModification {
                 min: ONE_MINUTE_IN_MS * 30,
                 max: ONE_MINUTE_IN_MS * 30,
             },
-            autoScaleDownDelay: this.form.value.autoScaleDownDelay ?? ONE_MINUTE_IN_MS * 10,
         };
 
         try {
@@ -159,14 +164,6 @@ export class ProjectCreateComponent implements IHasModification {
             this.form.controls.autoRotateDelayRange.enable();
         } else {
             this.form.controls.autoRotateDelayRange.disable();
-        }
-    }
-
-    onChangeAutoScaleDown() {
-        if (this.form.value.autoScaleDown) {
-            this.form.controls.autoScaleDownDelay.enable();
-        } else {
-            this.form.controls.autoScaleDownDelay.disable();
         }
     }
 }
