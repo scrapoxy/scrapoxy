@@ -22,3 +22,11 @@
         font-weight: bolder;
     }
 }
+
+.card-body {
+    h5,
+    .h5 {
+        margin-top: var(--cui-card-title-spacer-y);
+        margin-bottom: 0;
+    }
+}

@@ -32,7 +32,7 @@ import type {
 } from '@scrapoxy/common';
 
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
 
 
 @Component({

@@ -1,12 +1,21 @@
 @if (!createMode) {
     <c-row>
+        <c-col><h5 class="card-title">Proxies</h5></c-col>
+    </c-row>
+
+    <c-row>
         <label cCol md="2" for="freeproxiesAdd" class="form-label">Add new proxies</label>
 
         <c-col md="10">
             <c-input-group>
                 <textarea id="freeproxiesAdd" class="form-control" [(ngModel)]="freeproxiesAdd"></textarea>
 
-                <button cButton color="primary" [disabled]="freeproxiesAdd.length <= 0" (click)="addFreeproxies()">
+                <button
+                    cButton
+                    color="secondary"
+                    variant="outline"
+                    [disabled]="freeproxiesAdd.length <= 0"
+                    (click)="addFreeproxies()">
                     <svg cIcon name="cilPlus"></svg>
                 </button>
             </c-input-group>
