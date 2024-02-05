@@ -43,8 +43,8 @@ describe(
             datacenterLocalApp = new DatacenterLocalApp(logger),
             projectToCreate: IProjectToCreate = {
                 name: 'new project 2',
-                autoRotate: true,
-                autoRotateDelayRange: {
+                autoRotate: {
+                    enabled: true,
                     min: ONE_MINUTE_IN_MS * 30,
                     max: ONE_MINUTE_IN_MS * 30,
                 },
@@ -60,8 +60,8 @@ describe(
             },
             projectToCreate2: IProjectToCreate = {
                 name: 'new project 1', // Check sort on name
-                autoRotate: true,
-                autoRotateDelayRange: {
+                autoRotate: {
+                    enabled: true,
                     min: ONE_MINUTE_IN_MS * 30,
                     max: ONE_MINUTE_IN_MS * 30,
                 },
@@ -77,8 +77,8 @@ describe(
             },
             projectToUpdate: IProjectToUpdate = {
                 name: 'new name for project',
-                autoRotate: true,
-                autoRotateDelayRange: {
+                autoRotate: {
+                    enabled: true,
                     min: ONE_MINUTE_IN_MS * 30,
                     max: ONE_MINUTE_IN_MS * 30,
                 },
@@ -169,8 +169,8 @@ describe(
                     name: 'fake_project',
                     status: EProjectStatus.HOT,
                     connectorDefaultId: null,
-                    autoRotate: true,
-                    autoRotateDelayRange: {
+                    autoRotate: {
+                        enabled: true,
                         min: ONE_MINUTE_IN_MS * 30,
                         max: ONE_MINUTE_IN_MS * 30,
                     },

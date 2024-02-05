@@ -1,23 +1,37 @@
-<input
-    type="text"
-    class="form-control"
-    [ngClass]="{
-        'is-invalid': validValue === false,
-        'is-valid': validValue === true
-    }"
-    [disabled]="disabled"
-    [value]="min"
-    (keyup)="onMinChange($event)"
-    (focus)="markAsTouched()" />
--
-<input
-    type="text"
-    class="form-control"
-    [ngClass]="{
-        'is-invalid': validValue === false,
-        'is-valid': validValue === true
-    }"
-    [disabled]="disabled"
-    [value]="max"
-    (keyup)="onMaxChange($event)"
-    (focus)="markAsTouched()" />
+<c-input-group>
+    <button cButton [color]="rangeEnabled ? 'success' : 'secondary'" variant="outline" (click)="toggleEnabled()">
+        @if (rangeEnabled) {
+            <svg cIcon name="cilCheckAlt"></svg>
+        } @else {
+            <svg cIcon name="cilX"></svg>
+        }
+    </button>
+
+    <input
+        type="text"
+        cFormControl
+        [ngClass]="{
+            'is-invalid': rangeEnabled && validValue === false,
+            'is-valid': rangeEnabled && validValue === true
+        }"
+        [placeholder]="placeholderMin"
+        [disabled]="disabled || !rangeEnabled"
+        [value]="rangeEnabled ? rangeMin : '-'"
+        (keyup)="onMinChange($event)"
+        (focus)="markAsTouched()" />
+
+    <span cInputGroupText>-</span>
+
+    <input
+        type="text"
+        cFormControl
+        [ngClass]="{
+            'is-invalid': rangeEnabled && validValue === false,
+            'is-valid': rangeEnabled && validValue === true
+        }"
+        [placeholder]="placeholderMax"
+        [disabled]="disabled || !rangeEnabled"
+        [value]="rangeEnabled ? rangeMax : '-'"
+        (keyup)="onMaxChange($event)"
+        (focus)="markAsTouched()" />
+</c-input-group>

@@ -7,6 +7,7 @@ import {
     AbstractControl,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { parseNumber } from '@scrapoxy/frontend-sdk';
 import type {
     ControlValueAccessor,
     ValidationErrors,
@@ -49,32 +50,6 @@ export function ValidatorOptionalNumber(opts?: IValidatorOptionalNumberOptions):
 
         return null;
     };
-}
-
-
-function parseNumber(text: string | undefined | null): number | undefined { // TODO: move to common (shared function)
-    if (!text || text.length <= 0) {
-        return;
-    }
-
-    if (!/^[0-9]+$/.test(text)) {
-        return;
-    }
-
-    try {
-        const value = parseInt(
-            text,
-            10
-        );
-
-        if (isNaN(value)) {
-            return;
-        }
-
-        return value;
-    } catch (err: any) {
-        return;
-    }
 }
 
 
@@ -121,15 +96,12 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
 
     disabled = false;
 
-    constructor(private readonly elRef: ElementRef) {
-    }
+    constructor(private readonly elRef: ElementRef) {}
 
     // eslint-disable-next-line unused-imports/no-unused-vars
-    onChange = (optional: IOptionalValue<number> | undefined) => {
-    };
+    onChange = (optional: IOptionalValue<number> | undefined) => {};
 
-    onTouched = () => {
-    };
+    onTouched = () => {};
 
     onValueChange(e: any): void {
         if (this.disabled) {
@@ -187,8 +159,8 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
         }
 
         const optional: IOptionalValue<number> = {
-            value,
             enabled: this.optionalEnabled,
+            value,
         };
 
         this.onChange(optional);

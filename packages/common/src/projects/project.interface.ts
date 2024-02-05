@@ -61,7 +61,6 @@ export interface IProjectView extends IProjectConnectorDefaultId {
 export const PROJECT_DATA_META = [
     ...PROJECT_VIEW_META,
     'autoRotate',
-    'autoRotateDelayRange',
     'autoScaleUp',
     'autoScaleDown',
     'cookieSession',
@@ -72,8 +71,7 @@ export const PROJECT_DATA_META = [
 
 
 export interface IProjectData extends IProjectView {
-    autoRotate: boolean;
-    autoRotateDelayRange: IRange;
+    autoRotate: IRange;
     autoScaleUp: boolean;
     autoScaleDown: IOptionalValue<number>;
     cookieSession: boolean;
@@ -86,7 +84,6 @@ export interface IProjectData extends IProjectView {
 export const PROJECT_SYNC_META = [
     'id',
     'autoRotate',
-    'autoRotateDelayRange',
     'autoScaleDown',
     'connectorDefaultId',
     'lastDataTs',
@@ -97,8 +94,7 @@ export const PROJECT_SYNC_META = [
 
 export interface IProjectSync extends IProjectStatus, IProjectConnectorDefaultId {
     id: string;
-    autoRotate: boolean;
-    autoRotateDelayRange: IRange;
+    autoRotate: IRange;
     autoScaleDown: IOptionalValue<number>;
     lastDataTs: number;
     proxiesMin: number;
@@ -130,8 +126,7 @@ export interface IProjectToConnectQuery {
 
 export interface IProjectToCreate {
     name: string;
-    autoRotate: boolean;
-    autoRotateDelayRange: IRange;
+    autoRotate: IRange;
     autoScaleUp: boolean;
     autoScaleDown: IOptionalValue<number>;
     cookieSession: boolean;

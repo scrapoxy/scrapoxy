@@ -5,9 +5,9 @@ import * as Joi from 'joi';
 export const schemaProjectToCreate = Joi.object({
     name: Joi.string()
         .required(),
-    autoRotate: Joi.boolean()
-        .required(),
-    autoRotateDelayRange: Joi.object({
+    autoRotate: Joi.object({
+        enabled: Joi.boolean()
+            .required(),
         min: Joi.number()
             .required()
             .min(ONE_SECOND_IN_MS * 30),

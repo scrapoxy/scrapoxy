@@ -47,8 +47,8 @@ describe(
             datacenterLocalApp = new DatacenterLocalApp(logger),
             projectToCreate: IProjectToCreate = {
                 name: 'project A',
-                autoRotate: true,
-                autoRotateDelayRange: {
+                autoRotate: {
+                    enabled: true,
                     min: ONE_MINUTE_IN_MS * 30,
                     max: ONE_MINUTE_IN_MS * 30,
                 },

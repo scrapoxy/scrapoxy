@@ -65,9 +65,6 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
                 void 0, Validators.required,
             ],
             autoRotate: [
-                void 0, Validators.required,
-            ],
-            autoRotateDelayRange: [
                 void 0,
                 [
                     Validators.required,
@@ -119,7 +116,6 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
             this.project = project;
             this.form.patchValue(this.project);
             this.onChangeMitm();
-            this.onChangeAutoRotate();
 
             const tokenSplit = window.atob(tokenB64)
                 .split(':');
@@ -144,7 +140,11 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
         const projectToUpdate: IProjectToUpdate = {
             name: this.form.value.name,
-            autoRotate: this.form.value.autoRotate,
+            autoRotate: this.form.value.autoRotate ?? {
+                enabled: true,
+                min: ONE_MINUTE_IN_MS * 30,
+                max: ONE_MINUTE_IN_MS * 30,
+            },
             autoScaleUp: this.form.value.autoScaleUp,
             autoScaleDown: this.form.value.autoScaleDown ?? {
                 enabled: true,
@@ -155,10 +155,6 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
             cookieSession: this.form.value.cookieSession ?? false,
             mitm: this.form.value.mitm ?? false,
             useragentOverride: this.form.value.useragentOverride ?? false,
-            autoRotateDelayRange: this.form.value.autoRotateDelayRange ?? {
-                min: ONE_MINUTE_IN_MS * 30,
-                max: ONE_MINUTE_IN_MS * 30,
-            },
         };
 
         try {
@@ -259,14 +255,6 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
 
             this.form.controls.useragentOverride.setValue(false);
             this.form.controls.useragentOverride.disable();
-        }
-    }
-
-    onChangeAutoRotate() {
-        if (this.form.value.autoRotate) {
-            this.form.controls.autoRotateDelayRange.enable();
-        } else {
-            this.form.controls.autoRotateDelayRange.disable();
         }
     }
 

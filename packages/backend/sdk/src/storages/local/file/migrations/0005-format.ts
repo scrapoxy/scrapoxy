@@ -8,10 +8,21 @@ export const migration = {
     name: '0005-format',
     up: async({ context: data }: { context: any }) => {
         for (const project of data.projects ?? []) {
-            project.autoScaleDown = {
-                enabled: project.autoScaleDown,
-                value: project.autoScaleDownDelay,
-            };
+            if (typeof project.autoRotate === 'boolean') {
+                project.autoRotate = {
+                    enabled: project.autoRotate,
+                    min: project.autoRotateDelayRange.min,
+                    max: project.autoRotateDelayRange.max,
+                };
+            }
+            delete project.autoRotateDelayRange;
+
+            if (typeof project.autoScaleDown === 'boolean') {
+                project.autoScaleDown = {
+                    enabled: project.autoScaleDown,
+                    value: project.autoScaleDownDelay,
+                };
+            }
             delete project.autoScaleDownDelay;
 
             for (const connector of project.connectors ?? []) {
@@ -30,6 +41,11 @@ export const migration = {
     },
     down: async({ context: data }: { context: any }) => {
         for (const project of data.projects ?? []) {
+            project.autoRotateDelayRange = {
+                min: project.autoRotate.min,
+                max: project.autoRotate.max,
+            };
+            project.autoRotate = project.autoRotate.enabled;
             project.autoScaleDownDelay = project.autoScaleDown.value;
             project.autoScaleDown = project.autoScaleDown.enabled;
 

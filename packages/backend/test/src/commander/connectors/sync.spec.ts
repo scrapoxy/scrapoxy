@@ -213,8 +213,8 @@ describe(
             // Create a project
             project = await commanderApp.frontendClient.createProject({
                 name: 'myproject',
-                autoRotate: true,
-                autoRotateDelayRange: {
+                autoRotate: {
+                    enabled: true,
                     min: ONE_MINUTE_IN_MS * 30,
                     max: ONE_MINUTE_IN_MS * 30,
                 },

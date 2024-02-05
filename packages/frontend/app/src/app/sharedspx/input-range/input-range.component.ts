@@ -7,6 +7,7 @@ import {
     AbstractControl,
     NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { parseNumber } from '@scrapoxy/frontend-sdk';
 import type {
     ControlValueAccessor,
     ValidationErrors,
@@ -23,13 +24,13 @@ export interface IValidatorRangeOptions {
 
 export function ValidatorRange(opts?: IValidatorRangeOptions): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value as IRange;
+        const range = control.value as IRange;
 
-        if (!value) {
+        if (!range) {
             return null;
         }
 
-        if (value.min > value.max) {
+        if (range.min > range.max) {
             return {
                 inverted: true,
             };
@@ -37,7 +38,8 @@ export function ValidatorRange(opts?: IValidatorRangeOptions): ValidatorFn {
 
         if (opts) {
             if (opts.min !== undefined) {
-                if (value.min < opts.min || value.max < opts.min) {
+                if (range.min < opts.min ||
+                    range.max < opts.min) {
                     return {
                         min: true,
                     };
@@ -45,7 +47,8 @@ export function ValidatorRange(opts?: IValidatorRangeOptions): ValidatorFn {
             }
 
             if (opts.max !== undefined) {
-                if (value.min > opts.max || value.max > opts.max) {
+                if (range.min > opts.max ||
+                    range.max > opts.max) {
                     return {
                         max: true,
                     };
@@ -58,34 +61,9 @@ export function ValidatorRange(opts?: IValidatorRangeOptions): ValidatorFn {
 }
 
 
-function parseNumber(text: string | undefined | null): number | undefined {
-    if (!text || text.length <= 0) {
-        return;
-    }
-
-    try {
-        const value = parseInt(
-            text,
-            10
-        );
-
-        if (isNaN(value)) {
-            return;
-        }
-
-        return value;
-    } catch (err: any) {
-        return;
-    }
-}
-
-
 @Component({
     selector: 'input-range',
     templateUrl: './input-range.component.html',
-    styleUrls: [
-        './input-range.component.scss',
-    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -95,6 +73,12 @@ function parseNumber(text: string | undefined | null): number | undefined {
     ],
 })
 export class InputRangeComponent implements ControlValueAccessor {
+    @Input()
+    placeholderMin = '';
+
+    @Input()
+    placeholderMax = '';
+
     @Input()
     get valid(): boolean | undefined {
         return this.validValue;
@@ -117,17 +101,18 @@ export class InputRangeComponent implements ControlValueAccessor {
 
     validValue: boolean | undefined;
 
-    min: string;
+    rangeMin: string;
 
-    max: string;
+    rangeMax: string;
+
+    rangeEnabled: boolean;
 
     disabled = false;
 
-    constructor(private readonly elRef: ElementRef) {
-    }
+    constructor(private readonly elRef: ElementRef) {}
 
     // eslint-disable-next-line unused-imports/no-unused-vars
-    onChange = (value: IRange | undefined) => {};
+    onChange = (range: IRange | undefined) => {};
 
     onTouched = () => {};
 
@@ -136,7 +121,7 @@ export class InputRangeComponent implements ControlValueAccessor {
             return;
         }
 
-        this.min = e.target.value ?? '';
+        this.rangeMin = e.target.value ?? '';
 
         this.triggerOnChange();
     }
@@ -146,7 +131,17 @@ export class InputRangeComponent implements ControlValueAccessor {
             return;
         }
 
-        this.max = e.target.value ?? '';
+        this.rangeMax = e.target.value ?? '';
+
+        this.triggerOnChange();
+    }
+
+    toggleEnabled() {
+        if (this.disabled) {
+            return;
+        }
+
+        this.rangeEnabled = !this.rangeEnabled;
 
         this.triggerOnChange();
     }
@@ -155,13 +150,15 @@ export class InputRangeComponent implements ControlValueAccessor {
         this.disabled = isDisabled;
     }
 
-    writeValue(value: IRange | undefined): void {
-        if (value) {
-            this.min = value.min.toString();
-            this.max = value.max.toString();
+    writeValue(range: IRange | undefined): void {
+        if (range) {
+            this.rangeEnabled = range.enabled;
+            this.rangeMin = range.min.toString();
+            this.rangeMax = range.max.toString();
         } else {
-            this.min = '';
-            this.max = '';
+            this.rangeEnabled = false;
+            this.rangeMin = '';
+            this.rangeMax = '';
         }
     }
 
@@ -178,7 +175,7 @@ export class InputRangeComponent implements ControlValueAccessor {
     }
 
     private triggerOnChange() {
-        const min = parseNumber(this.min);
+        const min = parseNumber(this.rangeMin);
 
         if (min === undefined) {
             this.onChange(void 0);
@@ -186,7 +183,7 @@ export class InputRangeComponent implements ControlValueAccessor {
             return;
         }
 
-        const max = parseNumber(this.max);
+        const max = parseNumber(this.rangeMax);
 
         if (max === undefined) {
             this.onChange(void 0);
@@ -195,6 +192,7 @@ export class InputRangeComponent implements ControlValueAccessor {
         }
 
         const range: IRange = {
+            enabled: this.rangeEnabled,
             min,
             max,
         };

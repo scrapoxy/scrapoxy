@@ -149,47 +149,32 @@
                         }
                         @if (form.controls['autoRotate']; as c) {
                             <c-row>
-                                <label cLabel cCol md="4" for="autoRotate">Auto Rotate Proxies</label>
+                                <label cLabel cCol md="4" for="autoRotate">Auto Rotate Proxies (ms)</label>
 
-                                <c-col md="2">
-                                    <c-form-check [switch]="true" sizing="lg">
-                                        <input
-                                            type="checkbox"
-                                            cFormCheckInput
-                                            id="autoRotate"
-                                            formControlName="autoRotate"
-                                            (change)="onChangeAutoRotate()" />
-                                    </c-form-check>
-                                </c-col>
+                                <c-col md="8">
+                                    <input-range
+                                        id="autoRotate"
+                                        formControlName="autoRotate"
+                                        placeholderMin="Min delay"
+                                        placeholderMax="Max delay"
+                                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
 
-                                <label cLabel cCol md="2" for="autoRotateDelayRange">Delay range (ms)</label>
-
-                                @if (form.controls['autoRotateDelayRange']; as c2) {
-                                    <c-col md="4">
-                                        <!-- TODO: integrate enabled in the input-range -->
-                                        <input-range
-                                            cFormControl
-                                            id="autoRotateDelayRange"
-                                            formControlName="autoRotateDelayRange"
-                                            [valid]="c2.dirty || c2.touched ? c2.valid : undefined" />
-
-                                        @if (c2.dirty || c2.touched) {
-                                            <c-form-feedback [valid]="c2.valid">
-                                                @if (c2.errors; as errs) {
-                                                    @if (errs['required']) {
-                                                        <div>Delay range is required.</div>
-                                                    }
-                                                    @if (errs['min']) {
-                                                        <div>Minimum should be at least 30s (30000ms)</div>
-                                                    }
-                                                    @if (errs['inverted']) {
-                                                        <div>Minimum should be less than maximum</div>
-                                                    }
+                                    @if (c.dirty || c.touched) {
+                                        <c-form-feedback [valid]="c.valid">
+                                            @if (c.errors; as errs) {
+                                                @if (errs['required']) {
+                                                    <div>Delay range is required.</div>
                                                 }
-                                            </c-form-feedback>
-                                        }
-                                    </c-col>
-                                }
+                                                @if (errs['min']) {
+                                                    <div>Minimum should be at least 30s (30000ms)</div>
+                                                }
+                                                @if (errs['inverted']) {
+                                                    <div>Minimum should be less than maximum</div>
+                                                }
+                                            }
+                                        </c-form-feedback>
+                                    }
+                                </c-col>
                             </c-row>
                         }
                         @if (form.controls['autoScaleUp']; as c) {

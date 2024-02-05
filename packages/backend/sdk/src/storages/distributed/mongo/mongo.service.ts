@@ -655,7 +655,6 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             connectorDefaultId: create.project.connectorDefaultId,
             token: create.token,
             autoRotate: create.project.autoRotate,
-            autoRotateDelayRange: create.project.autoRotateDelayRange,
             autoScaleUp: create.project.autoScaleUp,
             autoScaleDown: create.project.autoScaleDown,
             cookieSession: create.project.cookieSession,
@@ -706,7 +705,6 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 $set: {
                     name: project.name,
                     autoRotate: project.autoRotate,
-                    autoRotateDelayRange: project.autoRotateDelayRange,
                     autoScaleUp: project.autoScaleUp,
                     autoScaleDown: project.autoScaleDown,
                     cookieSession: project.cookieSession,

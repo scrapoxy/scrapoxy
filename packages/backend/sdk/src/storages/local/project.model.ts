@@ -56,7 +56,6 @@ export function toProjectSync(p: IProjectModel): IProjectSync {
         status: p.status,
         connectorDefaultId: p.connectorDefaultId,
         autoRotate: p.autoRotate,
-        autoRotateDelayRange: p.autoRotateDelayRange,
         autoScaleDown: p.autoScaleDown,
         lastDataTs: p.lastDataTs,
         proxiesMin: p.proxiesMin,

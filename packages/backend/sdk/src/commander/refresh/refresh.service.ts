@@ -541,10 +541,10 @@ export class CommanderRefreshService implements OnModuleDestroy {
                             this.logger.debug(`refreshConnectorProxies: ask to remove proxy ${localProxy.key} disconnected for too long`);
                             localProxy.removing = true;
                         } else if (
-                            project.autoRotate &&
                             project.status === EProjectStatus.HOT &&
+                            project.autoRotate.enabled &&
                             nowTime - localProxy.createdTs >
-                            project.autoRotateDelayRange.min + (project.autoRotateDelayRange.max - project.autoRotateDelayRange.min) * localProxy.autoRotateDelayFactor
+                            project.autoRotate.min + (project.autoRotate.max - project.autoRotate.min) * localProxy.autoRotateDelayFactor
                         ) {
                             this.logger.debug(`refreshConnectorProxies: ask to remove proxy ${localProxy.key} because auto rotate discards it`);
                             localProxy.removing = true;

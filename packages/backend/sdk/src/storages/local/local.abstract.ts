@@ -495,7 +495,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             connectorDefaultId: create.project.connectorDefaultId,
             token: create.token,
             autoRotate: create.project.autoRotate,
-            autoRotateDelayRange: create.project.autoRotateDelayRange,
             autoScaleUp: create.project.autoScaleUp,
             autoScaleDown: create.project.autoScaleDown,
             cookieSession: create.project.cookieSession,
@@ -575,7 +574,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
         projectModel.name = project.name;
         projectModel.autoRotate = project.autoRotate;
-        projectModel.autoRotateDelayRange = project.autoRotateDelayRange;
         projectModel.autoScaleUp = project.autoScaleUp;
         projectModel.autoScaleDown = project.autoScaleDown;
         projectModel.cookieSession = project.cookieSession;

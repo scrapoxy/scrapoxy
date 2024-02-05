@@ -24,7 +24,6 @@ export function toProjectData(p: IProjectData): IProjectData {
         status: p.status,
         connectorDefaultId: p.connectorDefaultId,
         autoRotate: p.autoRotate,
-        autoRotateDelayRange: p.autoRotateDelayRange,
         autoScaleUp: p.autoScaleUp,
         autoScaleDown: p.autoScaleDown,
         cookieSession: p.cookieSession,
