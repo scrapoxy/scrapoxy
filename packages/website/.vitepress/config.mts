@@ -77,7 +77,7 @@ export default defineConfig({
                     {text: 'What is Scrapoxy?', link: 'scrapoxy'},
                     {text: 'Getting Started', link: 'get-started'},
                     {text: 'User Interface', link: 'ui'},
-                    {text: 'QnA', link: 'qna'},
+                    {text: 'Q&A', link: 'qna'},
                     {text: 'Changelog', link: 'changelog'},
                     {text: 'Licence', link: 'licence'},
                 ]
