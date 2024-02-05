@@ -31,6 +31,7 @@ export enum ECommanderError {
     ConnectorCertificateNotUsed = 'connector_certificate_not_used',
     ConnectorRemove = 'connector_remove',
     ConnectorInvalid = 'connector_invalid',
+    ConnectorWrongType = 'connector_wrong_type',
     NoConnectorToRefresh = 'no_connector_to_refresh',
     ConnectorFactoryNotFound = 'connector_factory_not_found',
     TransportNotFound = 'transport_not_found',

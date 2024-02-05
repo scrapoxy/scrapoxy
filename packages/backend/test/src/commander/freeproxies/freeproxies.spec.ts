@@ -28,6 +28,7 @@ import type {
 } from '@scrapoxy/common';
 
 
+// TODO: test is not finishing. It should remains an opening connection
 describe(
     'Commander - Freeproxies',
     () => {
@@ -129,7 +130,13 @@ describe(
                         value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                     },
                     credentialId: credential.id,
-                    config: {},
+                    config: {
+                        freeproxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                        freeproxiesTimeoutUnreachable: {
+                            enabled: true,
+                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                        },
+                    },
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
                 }
             );

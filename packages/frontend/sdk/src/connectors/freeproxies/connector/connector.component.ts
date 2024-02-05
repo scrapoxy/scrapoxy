@@ -6,14 +6,19 @@ import {
 import {
     FormBuilder,
     FormGroup,
+    Validators,
 } from '@angular/forms';
 import {
     CONNECTOR_FREEPROXIES_TYPE,
     EventsFreeproxiesClient,
     FreeproxiesCreatedEvent,
     FreeproxiesSynchronizedEvent,
+    ONE_SECOND_IN_MS,
     parseFreeproxy,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
+    PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
 } from '@scrapoxy/common';
+import { ValidatorOptionalNumber } from '@scrapoxy/frontend-sdk';
 import { Subscription } from 'rxjs';
 import { CommanderFrontendClientService } from '../../../clients';
 import { ConfirmService } from '../../../confirm';
@@ -75,7 +80,23 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         fb: FormBuilder,
         private readonly toastsService: ToastsService
     ) {
-        this.subForm = fb.group({});
+        this.subForm = fb.group({
+            freeproxiesTimeoutDisconnected: [
+                void 0,
+                [
+                    Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                ],
+            ],
+            freeproxiesTimeoutUnreachable: [
+                void 0,
+                [
+                    Validators.required,
+                    ValidatorOptionalNumber({
+                        min: 500,
+                    }),
+                ],
+            ],
+        });
 
         this.client = new EventsFreeproxiesClient(
             this.events,
@@ -132,6 +153,14 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         );
 
         if (this.createMode) {
+            this.subForm.patchValue({
+                freeproxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
+                freeproxiesTimeoutUnreachable: {
+                    enabled: true,
+                    value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                },
+            });
+
             return;
         }
 

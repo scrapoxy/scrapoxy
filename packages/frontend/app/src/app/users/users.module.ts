@@ -19,10 +19,10 @@ import {
     UtilitiesModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
+import { SharedSpxModule } from '@scrapoxy/frontend-sdk';
 import { UserAddComponent } from './user-add/add.component';
 import { UsersComponent } from './users.component';
 import { routes } from './users.routes';
-import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 
 @NgModule({

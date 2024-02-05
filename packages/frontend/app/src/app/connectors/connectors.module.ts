@@ -21,7 +21,10 @@ import {
     TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
+import {
+    ConnectorprovidersModule,
+    SharedSpxModule,
+} from '@scrapoxy/frontend-sdk';
 import { ConnectorCreateComponent } from './connector/create/create.component';
 import { ConnectorInstallComponent } from './connector/install/install.component';
 import { ConnectorLayoutComponent } from './connector/layout.component';
@@ -30,7 +33,6 @@ import { ConnectorUpdateComponent } from './connector/update/update.component';
 import { ConnectorViewComponent } from './connector-view/view.component';
 import { ConnectorsComponent } from './connectors.component';
 import { routes } from './connectors.routes';
-import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 
 @NgModule({

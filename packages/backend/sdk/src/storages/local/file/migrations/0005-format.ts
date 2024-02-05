@@ -36,6 +36,14 @@ export const migration = {
                         value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                     };
                 }
+
+                if (connector.type === 'freeproxies') {
+                    connector.config.freeproxiesTimeoutDisconnected = PROXY_TIMEOUT_DISCONNECTED_DEFAULT;
+                    connector.config.freeproxiesTimeoutUnreachable = {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    };
+                }
             }
         }
     },
@@ -52,6 +60,11 @@ export const migration = {
             for (const connector of project.connectors ?? []) {
                 delete connector.proxiesTimeoutDisconnected;
                 delete connector.proxiesTimeoutUnreachable;
+
+                if (connector.type === 'freeproxies') {
+                    delete connector.config.freeproxiesTimeoutDisconnected;
+                    delete connector.config.freeproxiesTimeoutUnreachable;
+                }
             }
         }
     },

@@ -3,54 +3,10 @@ import {
     ElementRef,
     Input,
 } from '@angular/core';
-import {
-    AbstractControl,
-    NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { parseNumber } from '@scrapoxy/frontend-sdk';
-import type {
-    ControlValueAccessor,
-    ValidationErrors,
-    ValidatorFn,
-} from '@angular/forms';
+import type { ControlValueAccessor } from '@angular/forms';
 import type { IOptionalValue } from '@scrapoxy/common';
-
-
-export interface IValidatorOptionalNumberOptions {
-    min?: number;
-    max?: number;
-}
-
-
-export function ValidatorOptionalNumber(opts?: IValidatorOptionalNumberOptions): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const optional = control.value as IOptionalValue<any>;
-
-        if (!optional) {
-            return null;
-        }
-
-        if (opts) {
-            if (opts.min !== undefined) {
-                if (optional.value < opts.min) {
-                    return {
-                        min: true,
-                    };
-                }
-            }
-
-            if (opts.max !== undefined) {
-                if (optional.value >= opts.max) {
-                    return {
-                        max: true,
-                    };
-                }
-            }
-        }
-
-        return null;
-    };
-}
 
 
 @Component({

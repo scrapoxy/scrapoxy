@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/common';
 import { ConnectorFreeproxiesService } from './freeproxies.service';
+import { schemaConfig } from './freeproxies.validation';
 import { CommanderRefreshClientService } from '../../commander-client';
+import { validate } from '../../helpers';
 import { TRANSPORT_PROXY_TYPE } from '../../transports';
 import { ConnectorprovidersService } from '../providers.service';
 import type {
@@ -10,6 +12,7 @@ import type {
     IConnectorService,
 } from '../providers.interface';
 import type {
+    IConnectorFreeproxyConfig,
     IConnectorListProxies,
     IConnectorToRefresh,
     ITaskToCreate,
@@ -38,8 +41,14 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
         throw new Error('Not implemented');
     }
 
-    async validateConnectorConfig(): Promise<void> {
-        // Nothing to validate
+    async validateConnectorConfig(
+        credentialConfig: any,
+        connectorConfig: IConnectorFreeproxyConfig
+    ): Promise<void> {
+        await validate(
+            schemaConfig,
+            connectorConfig
+        );
     }
 
     async validateInstallConfig(): Promise<void> {

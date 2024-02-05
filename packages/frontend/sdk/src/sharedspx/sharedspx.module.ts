@@ -9,10 +9,10 @@ import {
     TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { InputOptionalNumberComponent } from './input-optional/input-optional-number.component';
-import { InputRangeComponent } from './input-range/input-range.component';
-import { LoadingButtonComponent } from './loading-button/button.component';
-import { ProjectStatusComponent } from './project-status/project-status.component';
+import { InputOptionalNumberComponent } from './input-optional';
+import { InputRangeComponent } from './input-range';
+import { LoadingButtonComponent } from './loading-button';
+import { ProjectStatusComponent } from './project-status';
 import {
     FileUnit,
     NumberUnit,

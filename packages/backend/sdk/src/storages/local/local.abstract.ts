@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     addRange,
+    CONNECTOR_FREEPROXIES_TYPE,
     ConnectorCreatedEvent,
     ConnectorRemovedEvent,
     ConnectorUpdatedEvent,
@@ -102,6 +103,7 @@ import type {
     ICertificateInfo,
     IConnectorData,
     IConnectorDataToCreate,
+    IConnectorFreeproxyConfig,
     IConnectorProxiesSync,
     IConnectorProxiesView,
     IConnectorToRefresh,
@@ -1225,15 +1227,19 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         connectorModel.credentialId = connector.credentialId;
         connectorModel.config = connector.config;
 
-        const timeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
+        const proxyTimeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
         for (const proxy of connectorModel.proxies.values()) {
             proxy.timeoutDisconnected = connector.proxiesTimeoutDisconnected;
-            proxy.timeoutUnreachable = timeoutUnreachable;
+            proxy.timeoutUnreachable = proxyTimeoutUnreachable;
         }
 
-        for (const freeproxy of connectorModel.freeproxies.values()) {
-            freeproxy.timeoutDisconnected = connector.proxiesTimeoutDisconnected;
-            freeproxy.timeoutUnreachable = timeoutUnreachable;
+        if (connector.type === CONNECTOR_FREEPROXIES_TYPE) {
+            const config = connector.config as IConnectorFreeproxyConfig;
+            const freeproxyTimeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
+            for (const freeproxy of connectorModel.freeproxies.values()) {
+                freeproxy.timeoutDisconnected = config.freeproxiesTimeoutDisconnected;
+                freeproxy.timeoutUnreachable = freeproxyTimeoutUnreachable;
+            }
         }
 
         const event: IEvent = {

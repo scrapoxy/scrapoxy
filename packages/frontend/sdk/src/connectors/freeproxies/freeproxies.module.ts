@@ -15,6 +15,7 @@ import { ConnectorFreeproxiesComponent } from './connector/connector.component';
 import { CredentialFreeproxiesComponent } from './credential/credential.component';
 import { ConnectorFreeproxiesFactory } from './freeproxies.factory';
 import { FingerprintModule } from '../../fingerprint';
+import { SharedSpxModule } from '../../sharedspx';
 import { TablePaginationModule } from '../../table-pagination';
 import { ConnectorprovidersModule } from '../providers.module';
 
@@ -32,6 +33,7 @@ import { ConnectorprovidersModule } from '../providers.module';
         TableModule,
         TablePaginationModule,
         TooltipModule,
+        SharedSpxModule,
     ],
     declarations: [
         ConnectorFreeproxiesComponent, CredentialFreeproxiesComponent,

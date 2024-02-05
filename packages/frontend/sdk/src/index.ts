@@ -16,6 +16,8 @@ export * from './helpers';
 
 export * from './isocodes';
 
+export * from './sharedspx';
+
 export * from './table-pagination';
 
 export * from './toasts';

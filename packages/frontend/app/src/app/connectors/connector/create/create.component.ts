@@ -25,8 +25,8 @@ import {
     ConnectorprovidersService,
     ProjectCurrentService,
     ToastsService,
+    ValidatorOptionalNumber,
 } from '@scrapoxy/frontend-sdk';
-import { ValidatorOptionalNumber } from '../../../sharedspx/input-optional/input-optional-number.component';
 import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,

@@ -20,13 +20,15 @@ import {
     UtilitiesModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
+import {
+    ConnectorprovidersModule,
+    SharedSpxModule,
+} from '@scrapoxy/frontend-sdk';
 import { CredentialCreateComponent } from './credential/create/create.component';
 import { CredentialLayoutComponent } from './credential/layout.component';
 import { CredentialUpdateComponent } from './credential/update/update.component';
 import { CredentialsComponent } from './credentials.component';
 import { routes } from './credentials.routes';
-import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 
 @NgModule({

@@ -1,3 +1,65 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['freeproxiesTimeoutDisconnected']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="freeproxiesTimeoutDisconnected">Freeproxies Timeout</label>
+
+            <c-col md="10">
+                <input
+                    type="number"
+                    cFormControl
+                    id="freeproxiesTimeoutDisconnected"
+                    formControlName="freeproxiesTimeoutDisconnected"
+                    placeholder="Enter the maximum time to reach freeproxies (in ms)"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                Timeout is required.
+                            }
+                            @if (errs['min']) {
+                                Timeout should be at least 500ms
+                            }
+                            @if (errs['max']) {
+                                Timeout should not exceed 30000ms
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['freeproxiesTimeoutUnreachable']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="freeproxiesTimeoutUnreachable">
+                Freeproxies Kick
+            </label>
+
+            <c-col md="10">
+                <input-optional-number
+                    id="freeproxiesTimeoutUnreachable"
+                    formControlName="freeproxiesTimeoutUnreachable"
+                    placeholder="Enter the maximum time to reach freeproxies (in ms)"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                Timeout is required.
+                            }
+                            @if (errs['min']) {
+                                Timeout should be at least 500ms
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>
+
 @if (!createMode) {
     <c-row>
         <c-col><h5 class="card-title">Proxies</h5></c-col>

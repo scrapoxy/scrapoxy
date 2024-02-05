@@ -23,9 +23,9 @@ import {
     EventsService,
     ProjectCurrentService,
     ToastsService,
+    ValidatorOptionalNumber,
 } from '@scrapoxy/frontend-sdk';
 import { Subscription } from 'rxjs';
-import { ValidatorOptionalNumber } from '../../../sharedspx/input-optional/input-optional-number.component';
 import type {
     OnDestroy,
     OnInit,

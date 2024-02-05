@@ -17,9 +17,9 @@ import {
     ConfirmService,
     copyToClipboard,
     ToastsService,
+    ValidatorOptionalNumber,
+    ValidatorRange,
 } from '@scrapoxy/frontend-sdk';
-import { ValidatorOptionalNumber } from '../../../sharedspx/input-optional/input-optional-number.component';
-import { ValidatorRange } from '../../../sharedspx/input-range/input-range.component';
 import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,

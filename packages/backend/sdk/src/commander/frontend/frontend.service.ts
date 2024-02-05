@@ -4,6 +4,7 @@ import {
     Logger,
 } from '@nestjs/common';
 import {
+    CONNECTOR_FREEPROXIES_TYPE,
     EProjectStatus,
     formatFreeproxyId,
     safeJoin,
@@ -34,6 +35,7 @@ import {
     ConnectorCertificateNotUsedError,
     ConnectorRemoveError,
     ConnectorUpdateError,
+    ConnectorWrongTypeError,
     CredentialRemoveError,
     CredentialUpdateError,
     ProjectRemoveError,
@@ -61,6 +63,7 @@ import type {
     ICertificate,
     IConnectorData,
     IConnectorDataToCreate,
+    IConnectorFreeproxyConfig,
     IConnectorProxiesSync,
     IConnectorProxiesView,
     IConnectorToCreate,
@@ -1077,6 +1080,15 @@ export class CommanderFrontendService {
             projectId,
             connectorId
         );
+
+        if (connector.type !== CONNECTOR_FREEPROXIES_TYPE) {
+            throw new ConnectorWrongTypeError(
+                CONNECTOR_FREEPROXIES_TYPE,
+                connector.type
+            );
+        }
+
+        const config = connector.config as IConnectorFreeproxyConfig;
         const create: IFreeproxiesToCreate = {
             projectId,
             connectorId,
@@ -1091,8 +1103,8 @@ export class CommanderFrontendService {
                 type: fp.type,
                 address: fp.address,
                 auth: fp.auth,
-                timeoutDisconnected: connector.proxiesTimeoutDisconnected,
-                timeoutUnreachable: toOptionalValue(connector.proxiesTimeoutUnreachable),
+                timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
+                timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
                 disconnectedTs: nowTime,
                 fingerprint: null,
                 fingerprintError: null,

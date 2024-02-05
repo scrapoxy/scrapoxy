@@ -11,9 +11,9 @@ import {
     TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
+import { SharedSpxModule } from '@scrapoxy/frontend-sdk';
 import { MapComponent } from './map.component';
 import { routes } from './map.routes';
-import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 
 @NgModule({

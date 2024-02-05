@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import {
+    CONNECTOR_FREEPROXIES_TYPE,
     EProxyStatus,
     safeJoin,
     toOptionalValue,
@@ -116,6 +117,7 @@ import type {
     ICertificateInfo,
     IConnectorData,
     IConnectorDataToCreate,
+    IConnectorFreeproxyConfig,
     IConnectorProxiesSync,
     IConnectorProxiesView,
     IConnectorSync,
@@ -1485,7 +1487,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             }
         );
-        const timeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
+        const proxyTimeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
         const proxiesPromise = this.colProxies.updateMany(
             {
                 connectorId: connector.id,
@@ -1494,22 +1496,31 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             {
                 $set: {
                     timeoutDisconnected: connector.proxiesTimeoutDisconnected,
-                    timeoutUnreachable,
+                    timeoutUnreachable: proxyTimeoutUnreachable,
                 },
             }
         );
-        const freeproxiesPromises = this.colFreeproxies.updateMany(
-            {
-                connectorId: connector.id,
-                projectId: connector.projectId,
-            },
-            {
-                $set: {
-                    timeoutDisconnected: connector.proxiesTimeoutDisconnected,
-                    timeoutUnreachable,
+        let freeproxiesPromises: Promise<any>;
+
+        if (connector.type === CONNECTOR_FREEPROXIES_TYPE) {
+            const config = connector.config as IConnectorFreeproxyConfig;
+            const freeproxiesTimeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
+            freeproxiesPromises = this.colFreeproxies.updateMany(
+                {
+                    connectorId: connector.id,
+                    projectId: connector.projectId,
                 },
-            }
-        );
+                {
+                    $set: {
+                        timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
+                        timeoutUnreachable: freeproxiesTimeoutUnreachable,
+                    },
+                }
+            );
+        } else {
+            freeproxiesPromises = Promise.resolve();
+        }
+
         const [
             { matchedCount },
         ] = await Promise.all([

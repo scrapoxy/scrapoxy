@@ -9,6 +9,7 @@ import {
     ConnectorNotFoundError,
     ConnectorRemoveError,
     ConnectorUpdateError,
+    ConnectorWrongTypeError,
     CredentialInvalidError,
     CredentialNameAlreadyExistsError,
     CredentialNotFoundError,
@@ -151,6 +152,10 @@ export function catchError(data: any) {
 
             case ConnectorInvalidError.id: {
                 throw ConnectorInvalidError.from(data);
+            }
+
+            case ConnectorWrongTypeError.id: {
+                throw ConnectorWrongTypeError.from(data);
             }
 
             case NoConnectorToRefreshError.id: {

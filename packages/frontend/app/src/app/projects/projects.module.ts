@@ -19,13 +19,13 @@ import {
     UtilitiesModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
+import { SharedSpxModule } from '@scrapoxy/frontend-sdk';
 import { ProjectCreateComponent } from './project/create/create.component';
 import { ProjectLayoutComponent } from './project/layout.component';
 import { ProjectUpdateComponent } from './project/update/update.component';
 import { ProjectViewComponent } from './project-view/view.component';
 import { ProjectsComponent } from './projects.component';
 import { routes } from './projects.routes';
-import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 
 @NgModule({

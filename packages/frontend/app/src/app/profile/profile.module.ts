@@ -15,9 +15,9 @@ import {
     FormModule,
     GridModule,
 } from '@coreui/angular';
+import { SharedSpxModule } from '@scrapoxy/frontend-sdk';
 import { routes } from './profile.routes';
 import { ProfileUpdateComponent } from './update/update.component';
-import { SharedSpxModule } from '../sharedspx/sharedspx.module';
 
 
 @NgModule({

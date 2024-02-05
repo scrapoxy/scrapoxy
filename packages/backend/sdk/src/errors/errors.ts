@@ -650,6 +650,30 @@ export class ConnectorInvalidError extends HttpBaseException {
 }
 
 
+export class ConnectorWrongTypeError extends HttpBaseException {
+    static readonly id = ECommanderError.ConnectorWrongType;
+
+    static from(data: any): ConnectorWrongTypeError {
+        return new ConnectorWrongTypeError(
+            data.typeCorrect,
+            data.typeWrong
+        );
+    }
+
+    constructor(
+        typeCorrect: string,
+        typeWrong: string
+    ) {
+        super(
+            HttpStatus.BAD_REQUEST,
+            ConnectorInvalidError.id,
+            `Connector type should be ${typeCorrect} instead of ${typeWrong}`,
+            true
+        );
+    }
+}
+
+
 export class NoConnectorToRefreshError extends HttpBaseException {
     static readonly id = ECommanderError.NoConnectorToRefresh;
 
