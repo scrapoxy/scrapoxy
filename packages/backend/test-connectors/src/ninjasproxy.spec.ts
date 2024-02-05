@@ -1,8 +1,6 @@
 import * as fs from 'fs';
-import {
-    Agents,
-    ConnectorNinjasproxyModule,
-} from '@scrapoxy/backend-sdk';
+import { ConnectorNinjasproxyModule } from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_NINJASPROXY_TYPE } from '@scrapoxy/common';
 

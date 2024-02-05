@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 import { Test } from '@nestjs/testing';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/backend-connectors';
 import {
     Agents,
     AuthLocalModule,
@@ -11,7 +12,6 @@ import {
     CommanderRefreshModule,
     CommanderScraperModule,
     CommanderUsersModule,
-    ConnectorDatacenterLocalModule,
     DatacenterLocalApp,
     getEnvStorageDistributedModuleConfig,
     getEnvStorageType,
@@ -24,7 +24,6 @@ import {
     RefreshProxiesModule,
     RefreshTasksModule,
     ScrapoxyExpressAdapter,
-
     StorageDistributedConnModule,
     StorageDistributedMsModule,
     StorageMongoService,
@@ -57,7 +56,7 @@ import type { MicroserviceOptions } from '@nestjs/microservices';
 import type {
     IConnectorDatacenterLocalConfig,
     IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
 import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type { AddressInfo } from 'net';
 

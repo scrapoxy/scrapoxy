@@ -1,12 +1,12 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorProxyrackModule,
     EProxyrackOs,
-} from '@scrapoxy/backend-sdk';
+    IConnectorProxyrackConfig,
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_PROXYRACK_TYPE } from '@scrapoxy/common';
-import type { IConnectorProxyrackConfig } from '@scrapoxy/backend-sdk';
 
 
 describe(

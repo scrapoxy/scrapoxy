@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorProxyCheapServerModule,
     EProxyCheapNetworkType,
     IConnectorProxyCheapServerConfig,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_PROXY_CHEAP_SERVER_TYPE } from '@scrapoxy/common';
 

@@ -1,0 +1,37 @@
+{
+    "name": "frontend-connectors",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/frontend-connectors",
+    "sourceRoot": "packages/frontend-connectors/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/frontend-connectors",
+                "main": "packages/frontend/connectors/src/index.ts",
+                "tsConfig": "packages/frontend/connectors/tsconfig.lib.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/frontend/connectors/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/frontend/connectors/**/*.ts"
+                ],
+                "fix": true
+            }
+        }
+    },
+    "tags": []
+}

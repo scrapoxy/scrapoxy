@@ -16,11 +16,7 @@ import {
     TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import {
-    FingerprintModule,
-    SharedSpxModule,
-    TablePaginationModule,
-} from '@scrapoxy/frontend-sdk';
+import { SharedSpxModule } from '@scrapoxy/frontend-sdk';
 import { ProxiesComponent } from './proxies.component';
 import { routes } from './proxies.routes';
 import { ProxyStatusComponent } from './proxy-status/status.component';
@@ -35,13 +31,11 @@ import { ProxyStatusComponent } from './proxy-status/status.component';
         CardModule,
         CommonModule,
         DropdownModule,
-        FingerprintModule,
         GridModule,
         IconModule,
         RouterModule,
         SharedSpxModule,
         TableModule,
-        TablePaginationModule,
         TooltipModule,
     ],
     declarations: [

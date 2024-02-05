@@ -26,7 +26,7 @@ import { v4 as uuid } from 'uuid';
 import type {
     IConnectorDatacenterLocalConfig,
     IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
 import type {
     IConnectorView,
     ICredentialView,

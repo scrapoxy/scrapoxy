@@ -1,8 +1,6 @@
 import { Logger } from '@nestjs/common';
-import {
-    ConnectorFreeproxiesModule,
-    readCaCert,
-} from '@scrapoxy/backend-sdk';
+import { ConnectorFreeproxiesModule } from '@scrapoxy/backend-connectors';
+import { readCaCert } from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
     CommanderApp,
@@ -129,7 +127,13 @@ export function testProxy(
                     value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                 },
                 credentialId: credential.id,
-                config: {},
+                config: {
+                    freeproxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    freeproxiesTimeoutUnreachable: {
+                        enabled: true,
+                        value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                    },
+                },
                 certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
             }
         );

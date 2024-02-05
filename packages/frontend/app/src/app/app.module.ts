@@ -15,11 +15,6 @@ import {
 } from '@angular/router';
 import { IconModule } from '@coreui/icons-angular';
 import {
-    ClientRequestsInterceptor,
-    CommanderFrontendClientService,
-    CommanderUsersClientService,
-    ConfirmGuard,
-    ConfirmService,
     ConnectorAwsModule,
     ConnectorAzureModule,
     ConnectorDatacenterLocalModule,
@@ -40,6 +35,13 @@ import {
     ConnectorRayobyteModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
+} from '@scrapoxy/frontend-connectors';
+import {
+    ClientRequestsInterceptor,
+    CommanderFrontendClientService,
+    CommanderUsersClientService,
+    ConfirmGuard,
+    ConfirmService,
     EventsService,
     ProjectCurrentService,
     ToastsService,

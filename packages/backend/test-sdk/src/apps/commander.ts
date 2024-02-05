@@ -1,5 +1,9 @@
 import { Test } from '@nestjs/testing';
 import {
+    ConnectorDatacenterLocalModule,
+    ConnectorProxyLocalModule,
+} from '@scrapoxy/backend-connectors';
+import {
     Agents,
     AStorageLocal,
     AuthLocalModule,
@@ -10,8 +14,6 @@ import {
     CommanderRefreshModule,
     CommanderScraperModule,
     CommanderUsersModule,
-    ConnectorDatacenterLocalModule,
-    ConnectorProxyLocalModule,
     LogExceptionFilter,
     ScrapoxyExpressAdapter,
     StorageprovidersService,

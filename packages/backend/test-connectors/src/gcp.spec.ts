@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorGcpModule,
     GcpApi,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import {
     CONNECTOR_GCP_TYPE,
@@ -13,7 +13,7 @@ import {
 import type {
     IConnectorGcpConfig,
     IConnectorGcpInstallConfig,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
 
 
 describe(

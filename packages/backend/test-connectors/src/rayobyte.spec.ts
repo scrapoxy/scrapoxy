@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorRayobyteModule,
-} from '@scrapoxy/backend-sdk';
+    IConnectorRayobyteConfig,
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_RAYOBYTE_TYPE } from '@scrapoxy/common';
-import type { IConnectorRayobyteConfig } from '@scrapoxy/backend-sdk';
 
 
 describe(

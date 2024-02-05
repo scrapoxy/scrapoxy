@@ -1,3 +1,5 @@
+export * from './fingerprint';
+
 export * from './input-optional';
 
 export * from './input-range';
@@ -9,3 +11,5 @@ export * from './project-status';
 export * from './unit';
 
 export * from './sharedspx.module';
+
+export * from './table-pagination';

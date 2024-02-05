@@ -18,6 +18,9 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "paths": {
+            "@scrapoxy/backend-connectors": [
+                "packages/backend/connectors/src/index.ts"
+            ],
             "@scrapoxy/backend-sdk": [
                 "packages/backend/sdk/src/index.ts"
             ],
@@ -26,6 +29,9 @@
             ],
             "@scrapoxy/common": [
                 "packages/common/src/index.ts"
+            ],
+            "@scrapoxy/frontend-connectors": [
+                "packages/frontend/connectors/src/index.ts"
             ],
             "@scrapoxy/frontend-sdk": [
                 "packages/frontend/sdk/src/index.ts"

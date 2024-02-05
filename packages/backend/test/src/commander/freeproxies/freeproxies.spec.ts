@@ -1,8 +1,6 @@
 import { Logger } from '@nestjs/common';
-import {
-    ConnectorFreeproxiesModule,
-    ProxyHttp,
-} from '@scrapoxy/backend-sdk';
+import { ConnectorFreeproxiesModule } from '@scrapoxy/backend-connectors';
+import { ProxyHttp } from '@scrapoxy/backend-sdk';
 import {
     CommanderApp,
     MasterApp,

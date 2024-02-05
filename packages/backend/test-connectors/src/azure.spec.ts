@@ -1,9 +1,10 @@
 import * as fs from 'fs';
 import {
-    Agents,
     AzureApi,
     ConnectorAzureModule,
-} from '@scrapoxy/backend-sdk';
+    IConnectorAzureConfig,
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import {
     AZURE_DEFAULT_LOCATION,
@@ -11,7 +12,6 @@ import {
     AZURE_DEFAULT_VM_SIZE,
     CONNECTOR_AZURE_TYPE,
 } from '@scrapoxy/common';
-import type { IConnectorAzureConfig } from '@scrapoxy/backend-sdk';
 
 
 describe(

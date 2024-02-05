@@ -1,16 +1,16 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorDigitaloceanModule,
     DigitalOceanApi,
-} from '@scrapoxy/backend-sdk';
+    IConnectorDigitalOceanConfig,
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import {
     CONNECTOR_DIGITALOCEAN_TYPE,
     DIGITALOCEAN_DEFAULT_REGION,
     DIGITALOCEAN_DEFAULT_SIZE,
 } from '@scrapoxy/common';
-import type { IConnectorDigitalOceanConfig } from '@scrapoxy/backend-sdk';
 
 
 describe(

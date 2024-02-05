@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorZyteModule,
-} from '@scrapoxy/backend-sdk';
+    IConnectorZyteConfig,
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_ZYTE_TYPE } from '@scrapoxy/common';
-import type { IConnectorZyteConfig } from '@scrapoxy/backend-sdk';
 
 
 describe(

@@ -1,5 +1,9 @@
 import { Logger } from '@nestjs/common';
 import {
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-connectors';
+import {
     DatacenterLocalApp,
     getEnvStorageType,
     RefreshConnectorsModule,
@@ -23,11 +27,7 @@ import {
     sleep,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
-import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-    IProxyTest,
-} from '@scrapoxy/backend-sdk';
+import type { IProxyTest } from '@scrapoxy/backend-sdk';
 import type {
     ICredentialView,
     IProjectData,

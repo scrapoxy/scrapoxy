@@ -1,8 +1,6 @@
 import * as fs from 'fs';
-import {
-    Agents,
-    ConnectorProxidizeModule,
-} from '@scrapoxy/backend-sdk';
+import { ConnectorProxidizeModule } from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_PROXIDIZE_TYPE } from '@scrapoxy/common';
 

@@ -7,7 +7,7 @@ import {
     ConnectorGcpModule,
     ConnectorOvhModule,
     ConnectorZyteModule,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
 import { CHECK_CONNECTORS_MODULE_CONFIG } from './check.constants';
 import { CheckConnectorsService } from './check.service';
 import type { DynamicModule } from '@nestjs/common';

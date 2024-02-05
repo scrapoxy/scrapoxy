@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorIproyalResidentialModule,
     IConnectorIproyalResidentialConfig,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_IPROYAL_RESIDENTIAL_TYPE } from '@scrapoxy/common';
 

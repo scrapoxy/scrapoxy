@@ -10,15 +10,11 @@ export * from './current';
 
 export * from './events';
 
-export * from './fingerprint';
-
 export * from './helpers';
 
 export * from './isocodes';
 
 export * from './sharedspx';
-
-export * from './table-pagination';
 
 export * from './toasts';
 

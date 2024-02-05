@@ -1,0 +1,48 @@
+{
+    "name": "backend-connectors",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/backend/connectors",
+    "sourceRoot": "packages/backend/connectors/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/webpack:webpack",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/test/backend-connectors",
+                "main": "packages/backend/connectors/src/index.ts",
+                "tsConfig": "packages/backend/connectors/tsconfig.spec.json",
+                "isolatedConfig": true,
+                "webpackConfig": "packages/backend/connectors/webpack.config.js"
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+                "{options.outputFile}"
+            ],
+            "options": {
+                "lintFilePatterns": [
+                    "packages/backend/connectors/**/*.ts"
+                ],
+                "fix": true
+            }
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+                "jestConfig": "packages/backend/connectors/jest.config.ts",
+                "passWithNoTests": true,
+                "runInBand": true
+            }
+        }
+    },
+    "tags": []
+}

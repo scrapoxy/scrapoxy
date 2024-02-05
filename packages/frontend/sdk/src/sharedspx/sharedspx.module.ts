@@ -6,13 +6,19 @@ import {
     ButtonGroupModule,
     ButtonModule,
     FormModule,
+    PaginationModule,
     TooltipModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
+import {
+    FingerprintAddressComponent,
+    FingerprintStatusComponent,
+} from './fingerprint';
 import { InputOptionalNumberComponent } from './input-optional';
 import { InputRangeComponent } from './input-range';
 import { LoadingButtonComponent } from './loading-button';
 import { ProjectStatusComponent } from './project-status';
+import { TablePaginationComponent } from './table-pagination';
 import {
     FileUnit,
     NumberUnit,
@@ -22,11 +28,15 @@ import {
 
 const DECLARATIONS = [
     FileUnit,
+    FingerprintAddressComponent,
+    FingerprintStatusComponent,
     InputOptionalNumberComponent,
     InputRangeComponent,
     LoadingButtonComponent,
     NumberUnit,
+    TablePaginationComponent,
     ProjectStatusComponent,
+    TablePaginationComponent,
     TimeUnit,
 ];
 
@@ -38,6 +48,7 @@ const DECLARATIONS = [
         CommonModule,
         FormModule,
         IconModule,
+        PaginationModule,
         RouterModule,
         TooltipModule,
         ReactiveFormsModule,

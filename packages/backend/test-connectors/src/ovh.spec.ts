@@ -1,15 +1,15 @@
 import * as fs from 'fs';
 import {
-    Agents,
     ConnectorOvhModule,
     OvhApi,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_OVH_TYPE } from '@scrapoxy/common';
 import type {
     IConnectorOvhConfig,
     IConnectorOvhCredential,
-} from '@scrapoxy/backend-sdk';
+} from '@scrapoxy/backend-connectors';
 
 
 describe(

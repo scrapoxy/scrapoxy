@@ -1,9 +1,10 @@
 import * as fs from 'fs';
 import {
-    Agents,
     AwsApi,
     ConnectorAwsModule,
-} from '@scrapoxy/backend-sdk';
+    IConnectorAwsConfig,
+} from '@scrapoxy/backend-connectors';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnector } from '@scrapoxy/backend-test-sdk';
 import {
     AWS_DEFAULT_INSTANCE_TYPE,
@@ -11,7 +12,6 @@ import {
     CONNECTOR_AWS_TYPE,
     SCRAPOXY_DATACENTER_PREFIX,
 } from '@scrapoxy/common';
-import type { IConnectorAwsConfig } from '@scrapoxy/backend-sdk';
 
 
 describe(

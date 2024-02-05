@@ -2,16 +2,6 @@ import { resolve } from 'path';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {
-    AuthGithubModule,
-    AuthGoogleModule,
-    AuthLocalModule,
-    CommanderCaCertificateModule,
-    CommanderEventsModule,
-    CommanderFrontendModule,
-    CommanderMasterModule,
-    CommanderRefreshModule,
-    CommanderScraperModule,
-    CommanderUsersModule,
     ConnectorAwsModule,
     ConnectorAzureModule,
     ConnectorDatacenterLocalModule,
@@ -32,6 +22,18 @@ import {
     ConnectorRayobyteModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
+} from '@scrapoxy/backend-connectors';
+import {
+    AuthGithubModule,
+    AuthGoogleModule,
+    AuthLocalModule,
+    CommanderCaCertificateModule,
+    CommanderEventsModule,
+    CommanderFrontendModule,
+    CommanderMasterModule,
+    CommanderRefreshModule,
+    CommanderScraperModule,
+    CommanderUsersModule,
     getEnvAssetsPath,
     getEnvAuthGithubModuleConfig,
     getEnvAuthGoogleModuleConfig,

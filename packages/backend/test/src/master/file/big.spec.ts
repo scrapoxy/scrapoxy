@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { ConnectorDatacenterLocalModule } from '@scrapoxy/backend-connectors';
 import {
     CommanderMasterClientService,
-    ConnectorDatacenterLocalModule,
     generateCertificateSelfSignedForTest,
     MasterModule,
     MasterService,
