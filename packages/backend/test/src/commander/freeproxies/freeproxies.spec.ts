@@ -12,6 +12,7 @@ import {
     countProxiesOnlineViews,
     EProxyType,
     EventsFreeproxiesClient,
+    ISourcesAndFreeproxies,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
@@ -21,7 +22,6 @@ import axios from 'axios';
 import type {
     IConnectorView,
     ICredentialView,
-    IFreeproxy,
     IProjectData,
 } from '@scrapoxy/common';
 
@@ -45,9 +45,9 @@ describe(
             commanderApp: CommanderApp,
             connector: IConnectorView,
             credential: ICredentialView,
-            freeproxies: IFreeproxy[],
             masterApp: MasterApp,
             project: IProjectData,
+            sourcesAndFreeproxies: ISourcesAndFreeproxies,
             token: string;
 
         beforeAll(async() => {
@@ -150,7 +150,10 @@ describe(
             await client.subscribeAsync(
                 project.id,
                 connector.id,
-                []
+                {
+                    sources: [],
+                    freeproxies: [],
+                }
             );
         });
 
@@ -209,15 +212,15 @@ describe(
                 });
 
                 await waitFor(async() => {
-                    freeproxies = await commanderApp.frontendClient.getAllProjectFreeproxiesById(
+                    sourcesAndFreeproxies = await commanderApp.frontendClient.getAllProjectSourcesAndFreeproxiesById(
                         project.id,
                         connector.id
                     );
 
-                    expect(freeproxies)
+                    expect(sourcesAndFreeproxies.freeproxies)
                         .toHaveLength(1);
 
-                    const freeproxy = freeproxies[ 0 ];
+                    const freeproxy = sourcesAndFreeproxies.freeproxies[ 0 ];
                     expect(freeproxy.type)
                         .toBe(EProxyType.HTTP);
                     expect(freeproxy.key)
@@ -327,7 +330,7 @@ describe(
             'should remove the proxy from freeproxies list',
             async() => {
                 // Create and activate connector
-                const ids = freeproxies.map((p) => p.id);
+                const ids = sourcesAndFreeproxies.freeproxies.map((p) => p.id);
                 await commanderApp.frontendClient.removeFreeproxies(
                     project.id,
                     connector.id,
@@ -349,12 +352,12 @@ describe(
                 });
 
                 await waitFor(async() => {
-                    freeproxies = await commanderApp.frontendClient.getAllProjectFreeproxiesById(
+                    sourcesAndFreeproxies = await commanderApp.frontendClient.getAllProjectSourcesAndFreeproxiesById(
                         project.id,
                         connector.id
                     );
 
-                    expect(freeproxies)
+                    expect(sourcesAndFreeproxies.freeproxies)
                         .toHaveLength(0);
                 });
             }

@@ -40,7 +40,7 @@ export function getEnvCommanderRefreshModuleConfig(): ICommanderRefreshModuleCon
                 10
             ),
             count: parseInt(
-                process.env.FREEPROXY_REFRESH_COUNT ?? '100',
+                process.env.FREEPROXY_REFRESH_COUNT ?? '5000',
                 10
             ),
         },
@@ -50,7 +50,7 @@ export function getEnvCommanderRefreshModuleConfig(): ICommanderRefreshModuleCon
                 10
             ),
             count: parseInt(
-                process.env.PROXY_REFRESH_COUNT ?? '200',
+                process.env.PROXY_REFRESH_COUNT ?? '1000',
                 10
             ),
         },

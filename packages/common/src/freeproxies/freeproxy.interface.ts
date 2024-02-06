@@ -99,13 +99,6 @@ export interface IFreeproxiesToRemoveOptions {
 }
 
 
-export interface IFreeproxiesToRemove {
-    projectId: string;
-    connectorId: string;
-    freeproxiesIds: string[];
-}
-
-
 export interface IFreeproxiesNextRefreshToUpdate {
     freeproxiesIds: string[];
     nextRefreshTs: number;

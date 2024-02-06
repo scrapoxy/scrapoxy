@@ -1,7 +1,10 @@
 import { toOptionalValue } from '@scrapoxy/common';
 import type { IConnectorStore } from './connector.store';
 import type { IFreeproxyModel } from '../freeproxy.model';
-import type { IFreeproxyBase } from '@scrapoxy/common';
+import type {
+    IConnectorFreeproxyConfig,
+    IFreeproxyBase,
+} from '@scrapoxy/common';
 
 
 export interface IFreeproxyStore extends IFreeproxyBase {
@@ -29,6 +32,7 @@ export function toFreeproxyStore(fp: IFreeproxyModel): IFreeproxyStore {
 export function fromFreeproxyStore(
     fp: IFreeproxyStore, c: IConnectorStore, nowTime: number
 ): IFreeproxyModel {
+    const config = c.config as IConnectorFreeproxyConfig;
     const model: IFreeproxyModel = {
         id: fp.id,
         projectId: fp.projectId,
@@ -37,8 +41,8 @@ export function fromFreeproxyStore(
         type: fp.type,
         address: fp.address,
         auth: fp.auth,
-        timeoutDisconnected: c.proxiesTimeoutDisconnected,
-        timeoutUnreachable: toOptionalValue(c.proxiesTimeoutUnreachable),
+        timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
+        timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
         disconnectedTs: nowTime,
         fingerprint: null,
         fingerprintError: null,

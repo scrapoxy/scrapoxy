@@ -25,6 +25,8 @@ import {
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     safeJoin,
+    SourcesCreatedEvent,
+    SourcesRemovedEvent,
     TaskCreatedEvent,
     TaskRemovedEvent,
     TaskUpdatedEvent,
@@ -62,6 +64,7 @@ import {
     toProxyToConnect,
     toProxyToRefresh,
 } from './proxy.model';
+import { toSource } from './source.model';
 import {
     CertificateNotFoundError,
     ConnectorNameAlreadyExistsError,
@@ -93,6 +96,7 @@ import type { IFreeproxyModel } from './freeproxy.model';
 import type { IStorageLocalModuleConfig } from './local.interface';
 import type { IProjectModel } from './project.model';
 import type { IProxyModel } from './proxy.model';
+import type { ISourceModel } from './source.model';
 import type { ITaskModel } from './task.model';
 import type { IUserModel } from './user.model';
 import type { IProxyTest } from '../../datacenter-local';
@@ -124,6 +128,7 @@ import type {
     IProxyMetricsAdd,
     IProxyToConnect,
     IProxyToRefresh,
+    ISource,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -152,6 +157,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
     protected readonly projectsToken = new Map<string, IProjectModel>();
 
     protected readonly proxies = new Map<string, IProxyModel>();
+
+    protected readonly sources = new Map<string, ISourceModel>();
 
     protected readonly users = new Map<string, IUserModel>();
 
@@ -1183,6 +1190,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             nextRefreshTs: Date.now(),
             proxies: new Map<string, IProxyModel>(),
             freeproxies: new Map<string, IFreeproxyModel>(),
+            sources: new Map<string, ISourceModel>(),
         };
 
         projectModel.connectors.set(
@@ -1307,6 +1315,10 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
         for (const proxy of connectorModel.proxies.values()) {
             this.proxies.delete(proxy.id);
+        }
+
+        for (const source of connectorModel.sources.values()) {
+            this.sources.delete(source.id);
         }
 
         for (const freeproxy of connectorModel.freeproxies.values()) {
@@ -1881,7 +1893,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             .map(toFreeproxy);
     }
 
-    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
+    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> { // TODO: can destructur create to projectId, connectorId, freeproxies
         this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
 
         const projectModel = this.projects.get(create.projectId);
@@ -2074,6 +2086,150 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
         if (idsNotFound.length > 0) {
             throw new FreeproxiesNotFoundError(idsNotFound);
+        }
+    }
+
+    async getAllProjectSourcesById(
+        projectId: string, connectorId: string
+    ): Promise<ISource[]> {
+        this.logger.debug(`getAllProjectSourcesById(): projectId=${projectId} / connectorId=${connectorId}`);
+
+        const projectModel = this.projects.get(projectId);
+
+        if (!projectModel) {
+            throw new ProjectNotFoundError(projectId);
+        }
+
+        const connectorModel = projectModel.connectors.get(connectorId);
+
+        if (!connectorModel) {
+            throw new ConnectorNotFoundError(
+                projectModel.id,
+                connectorId
+            );
+        }
+
+        return Array.from(connectorModel.sources.values())
+            .map(toSource);
+    }
+
+    async createSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`createSources(): sources.length=${sources.length}`);
+
+        const sourcesByProjects = new Map<string, ISource[]>();
+        for (const source of sources) {
+            const projectModel = this.projects.get(source.projectId);
+
+            if (!projectModel) {
+                throw new ProjectNotFoundError(source.projectId);
+            }
+
+            const connectorModel = projectModel.connectors.get(source.connectorId);
+
+            if (!connectorModel) {
+                throw new ConnectorNotFoundError(
+                    source.projectId,
+                    source.connectorId
+                );
+            }
+
+            const sourceModel: ISourceModel = {
+                ...source,
+                nextRefreshTs: 0,
+            };
+
+            connectorModel.sources.set(
+                sourceModel.id,
+                sourceModel
+            );
+
+            this.sources.set(
+                sourceModel.id,
+                sourceModel
+            );
+
+            let sourcesByProject = sourcesByProjects.get(source.projectId);
+
+            if (sourcesByProject) {
+                sourcesByProject.push(source);
+            } else {
+                sourcesByProject = [
+                    source,
+                ];
+
+                sourcesByProjects.set(
+                    source.projectId,
+                    sourcesByProject
+                );
+            }
+        }
+
+        // Events
+        for (const [
+            projectId, sourcesByProject,
+        ] of sourcesByProjects.entries()) {
+            const event: IEvent = {
+                id: projectId,
+                scope: EEventScope.FREEPROXIES,
+                event: new SourcesCreatedEvent(sourcesByProject),
+            };
+
+            await this.events.emit(event);
+        }
+    }
+
+    async removeSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`removeSources(): sources.length=${sources.length}`);
+
+        const sourcesByProjects = new Map<string, ISource[]>();
+        for (const source of sources) {
+            const projectModel = this.projects.get(source.projectId);
+
+            if (!projectModel) {
+                throw new ProjectNotFoundError(source.projectId);
+            }
+
+            const connectorModel = projectModel.connectors.get(source.connectorId);
+
+            if (!connectorModel) {
+                throw new ConnectorNotFoundError(
+                    source.projectId,
+                    source.connectorId
+                );
+            }
+
+            connectorModel.sources.delete(source.id);
+            this.sources.delete(source.id);
+
+            let sourcesByProject = sourcesByProjects.get(source.projectId);
+
+            if (sourcesByProject) {
+                sourcesByProject.push(source);
+            } else {
+                sourcesByProject = [
+                    source,
+                ];
+
+                sourcesByProjects.set(
+                    source.projectId,
+                    sourcesByProject
+                );
+            }
+        }
+
+        // Events
+        if (sourcesByProjects.size > 0) {
+            for (const [
+                projectId, sourcesByProject,
+            ] of sourcesByProjects.entries()) {
+                const event: IEvent = {
+                    id: projectId,
+                    scope: EEventScope.FREEPROXIES,
+                    event: new SourcesRemovedEvent(sourcesByProject),
+                };
+
+                await this.events.emit(event);
+            }
         }
     }
 

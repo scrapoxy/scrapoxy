@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import {
     Inject,
     Injectable,
@@ -28,6 +29,7 @@ import {
     schemaProjectToCreate,
     schemaProjectToUpdate,
     schemaProjectUserEmailToAdd,
+    schemaSourcesToRemove,
     schemaTaskToCreate,
 } from './frontend.validation';
 import { ConnectorprovidersService } from '../../connectors';
@@ -78,7 +80,6 @@ import type {
     ICredentialView,
     IFreeproxiesToCreate,
     IFreeproxiesToRemoveOptions,
-    IFreeproxy,
     IFreeproxyBase,
     IProjectData,
     IProjectDataCreate,
@@ -88,6 +89,8 @@ import type {
     IProjectUserLink,
     IProjectView,
     IProxyIdToRemove,
+    ISourceBase,
+    ISourcesAndFreeproxies,
     ITaskData,
     ITaskToCreate,
     ITaskView,
@@ -1051,17 +1054,28 @@ export class CommanderFrontendService {
     }
 
     //////////// FREE PROXIES ////////////
-    async getAllProjectFreeproxiesById(
+    async getAllProjectSourcesAndFreeproxiesById(
         projectId: string, connectorId: string
-    ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getAllProjectFreeproxiesById(): projectId=${projectId} / connectorId=${connectorId}`);
+    ): Promise<ISourcesAndFreeproxies> {
+        this.logger.debug(`getAllProjectSourcesAndFreeproxiesById(): projectId=${projectId} / connectorId=${connectorId}`);
 
-        const freeproxies = await this.storageproviders.storage.getAllProjectFreeproxiesById(
-            projectId,
-            connectorId
-        );
+        const [
+            sources, freeproxies,
+        ] = await Promise.all([
+            this.storageproviders.storage.getAllProjectSourcesById(
+                projectId,
+                connectorId
+            ),
+            this.storageproviders.storage.getAllProjectFreeproxiesById(
+                projectId,
+                connectorId
+            ),
+        ]);
 
-        return freeproxies;
+        return {
+            sources,
+            freeproxies,
+        };
     }
 
     async createFreeproxies(
@@ -1150,6 +1164,67 @@ export class CommanderFrontendService {
             updated: [],
             removed: freeproxies,
         });
+    }
+
+    async createSources(
+        projectId: string,
+        connectorId: string,
+        sources: ISourceBase[]
+    ): Promise<void> {
+        this.logger.debug(`createSources(): projectId=${projectId} / connectorId=${connectorId} / sources.length=${sources.length}`);
+
+        const connector = await this.storageproviders.storage.getConnectorById(
+            projectId,
+            connectorId
+        );
+
+        if (connector.type !== CONNECTOR_FREEPROXIES_TYPE) {
+            throw new ConnectorWrongTypeError(
+                CONNECTOR_FREEPROXIES_TYPE,
+                connector.type
+            );
+        }
+
+        const create = sources.map((source) => {
+            const hash = createHash('sha256')
+                .update(source.url)
+                .digest('hex');
+
+            return {
+                ...source,
+                projectId,
+                connectorId,
+                id: `${connectorId}:${hash}`,
+            };
+        });
+
+        await this.storageproviders.storage.createSources(create);
+    }
+
+    async removeSources(
+        projectId: string, connectorId: string, ids: string[]
+    ): Promise<void> {
+        this.logger.debug(`removeSources(): projectId=${projectId} / connectorId=${connectorId} / ids.length=${ids.length}`);
+
+        await validate(
+            schemaSourcesToRemove,
+            ids
+        );
+
+        let sources = await this.storageproviders.storage.getAllProjectSourcesById(
+            projectId,
+            connectorId
+        );
+
+        if (ids && ids.length > 0) {
+            sources = sources.filter((s) => ids!.includes(s.id));
+        }
+
+        if (sources.length <= 0) {
+            return;
+        }
+
+        await this.storageproviders.storage.removeSources(sources);
     }
 
     //////////// TASKS ////////////

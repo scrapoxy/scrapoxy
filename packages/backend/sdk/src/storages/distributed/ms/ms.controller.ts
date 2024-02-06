@@ -25,6 +25,8 @@ import {
     ProxiesMetricsAddedEvent,
     ProxiesSynchronizedEvent,
     safeJoin,
+    SourcesCreatedEvent,
+    SourcesRemovedEvent,
     TaskCreatedEvent,
     TaskRemovedEvent,
     TaskUpdatedEvent,
@@ -64,6 +66,8 @@ import {
     MESSAGE_PROXIES_SYNC,
     MESSAGE_PROXIES_UPDATE_LAST_CONNECTION,
     MESSAGE_PROXIES_UPDATE_NEXT_REFRESH,
+    MESSAGE_SOURCES_CREATE,
+    MESSAGE_SOURCES_REMOVED,
     MESSAGE_TASKS_CREATE,
     MESSAGE_TASKS_LOCK,
     MESSAGE_TASKS_REMOVE,
@@ -95,6 +99,7 @@ import type {
     IProxiesNextRefreshToUpdate,
     IProxyLastConnectionToUpdate,
     IProxyMetricsAdd,
+    ISource,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -696,6 +701,93 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
             update.freeproxiesIds,
             update.nextRefreshTs
         );
+    }
+
+    @EventPattern(MESSAGE_SOURCES_CREATE)
+    async createSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`createSources(): sources.length=${sources.length}`);
+
+        await this.storage.createSources(sources);
+
+        const sourcesByProjects = new Map<string, ISource[]>();
+        for (const source of sources) {
+            let sourcesByProject = sourcesByProjects.get(source.projectId);
+
+            if (sourcesByProject) {
+                sourcesByProject.push(source);
+            } else {
+                sourcesByProject = [
+                    source,
+                ];
+
+                sourcesByProjects.set(
+                    source.projectId,
+                    sourcesByProject
+                );
+            }
+        }
+
+        // Events
+        if (sourcesByProjects.size > 0) {
+            const events: IEvent[] = [];
+            for (const [
+                projectId, sourcesByProject,
+            ] of sourcesByProjects.entries()) {
+                events.push({
+                    id: projectId,
+                    scope: EEventScope.FREEPROXIES,
+                    event: new SourcesCreatedEvent(sourcesByProject),
+                });
+            }
+            await lastValueFrom(this.proxy.emit(
+                MESSAGE_EVENTS,
+                events
+            ));
+        }
+    }
+
+    @EventPattern(MESSAGE_SOURCES_REMOVED)
+    async removeSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`removeSources(): sources.length=${sources.length}`);
+
+        await this.storage.removeSources(sources);
+
+        const sourcesByProjects = new Map<string, ISource[]>();
+
+        for (const source of sources) {
+            let sourcesByProject = sourcesByProjects.get(source.projectId);
+
+            if (sourcesByProject) {
+                sourcesByProject.push(source);
+            } else {
+                sourcesByProject = [
+                    source,
+                ];
+
+                sourcesByProjects.set(
+                    source.projectId,
+                    sourcesByProject
+                );
+            }
+        }
+
+        // Events
+        if (sourcesByProjects.size > 0) {
+            const events: IEvent[] = [];
+            for (const [
+                projectId, sourcesByProject,
+            ] of sourcesByProjects.entries()) {
+                events.push({
+                    id: projectId,
+                    scope: EEventScope.FREEPROXIES,
+                    event: new SourcesRemovedEvent(sourcesByProject),
+                });
+            }
+            await lastValueFrom(this.proxy.emit(
+                MESSAGE_EVENTS,
+                events
+            ));
+        }
     }
 
     //////////// TASKS ////////////

@@ -6,6 +6,7 @@ import {
 } from '@scrapoxy/common';
 import type { IFreeproxyModel } from './freeproxy.model';
 import type { IProxyModel } from './proxy.model';
+import type { ISourceModel } from './source.model';
 import type {
     ICertificate,
     IConnectorData,
@@ -18,6 +19,8 @@ export interface IConnectorModel extends IConnectorData {
     certificate: ICertificate | null;
 
     nextRefreshTs: number;
+
+    sources: Map<string, ISourceModel>;
 
     freeproxies: Map<string, IFreeproxyModel>;
 

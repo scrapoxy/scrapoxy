@@ -34,6 +34,8 @@ import {
     MESSAGE_PROXIES_SYNC,
     MESSAGE_PROXIES_UPDATE_LAST_CONNECTION,
     MESSAGE_PROXIES_UPDATE_NEXT_REFRESH,
+    MESSAGE_SOURCES_CREATE,
+    MESSAGE_SOURCES_REMOVED,
     MESSAGE_TASKS_CREATE,
     MESSAGE_TASKS_LOCK,
     MESSAGE_TASKS_REMOVE,
@@ -78,6 +80,7 @@ import type {
     IProxyMetricsAdd,
     IProxyToConnect,
     IProxyToRefresh,
+    ISource,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -801,6 +804,37 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         await lastValueFrom(this.proxy.emit(
             MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH,
             update
+        ));
+    }
+
+    async getAllProjectSourcesById(
+        projectId: string, connectorId: string
+    ): Promise<ISource[]> {
+        this.logger.debug(`getAllProjectSourcesById(): projectId=${projectId} / connectorId=${connectorId}`);
+
+        const sources = await this.database.getAllProjectSourcesById(
+            projectId,
+            connectorId
+        );
+
+        return sources;
+    }
+
+    async createSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`createSources(): sources.length=${sources.length}`);
+
+        await lastValueFrom(this.proxy.emit(
+            MESSAGE_SOURCES_CREATE,
+            sources
+        ));
+    }
+
+    async removeSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`removeSources(): sources.length=${sources.length}`);
+
+        await lastValueFrom(this.proxy.emit(
+            MESSAGE_SOURCES_REMOVED,
+            sources
         ));
     }
 

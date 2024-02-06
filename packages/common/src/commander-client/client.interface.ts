@@ -15,8 +15,9 @@ import type {
 } from '../credentials';
 import type {
     IFreeproxiesToRemoveOptions,
-    IFreeproxy,
     IFreeproxyBase,
+    ISourceBase,
+    ISourcesAndFreeproxies,
 } from '../freeproxies';
 import type {
     EProjectStatus,
@@ -111,11 +112,15 @@ export interface ICommanderFrontendClient {
     askProxiesToRemove: (projectId: string, proxiesIds: IProxyIdToRemove[]) => Promise<void>;
 
     //////////// FREE PROXIES ////////////
-    getAllProjectFreeproxiesById: (projectId: string, connectorId: string) => Promise<IFreeproxy[]>;
+    getAllProjectSourcesAndFreeproxiesById: (projectId: string, connectorId: string) => Promise<ISourcesAndFreeproxies>;
 
     createFreeproxies: (projectId: string, connectorId: string, freeproxies: IFreeproxyBase[]) => Promise<void>;
 
     removeFreeproxies: (projectId: string, connectorId: string, options: IFreeproxiesToRemoveOptions) => Promise<void>;
+
+    createSources: (projectId: string, connectorId: string, sources: ISourceBase[]) => Promise<void>;
+
+    removeSources: (projectId: string, connectorId: string, ids: string[]) => Promise<void>;
 
     //////////// TASKS ////////////
     getAllProjectTasksById: (projectId: string) => Promise<ITaskView[]>;

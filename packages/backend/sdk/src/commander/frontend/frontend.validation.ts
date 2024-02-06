@@ -132,6 +132,11 @@ export const schemaFreeproxiesToRemove = Joi.object({
 });
 
 
+export const schemaSourcesToRemove = Joi.array()
+    .items(Joi.string())
+    .required();
+
+
 export const schemaTaskToCreate = Joi.object({
     type: Joi.string()
         .required(),

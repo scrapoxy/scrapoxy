@@ -62,23 +62,24 @@
 
 @if (!createMode) {
     <c-row>
-        <c-col><h5 class="card-title">Sources</h5></c-col>
+        <c-col><h5 class="card-title">Sources ({{ sourcesSize }})</h5></c-col>
     </c-row>
 
-    <source-add (add)="addSource($event)"></source-add>
+    <source-add (add)="addSources($event)"></source-add>
 
     <sources
-        [sources]="sources"
+        [sources$]="sources$"
         (remove)="removeSources($event)"></sources>
 
     <c-row>
-        <c-col><h5 class="card-title">Proxies</h5></c-col>
+        <c-col><h5 class="card-title">Proxies ({{ freeproxiesSize }})</h5></c-col>
     </c-row>
 
     <freeproxies-add (add)="addFreeproxies($event)"></freeproxies-add>
 
+    <!-- TODO: make itemsPerPage configurable for every pagination in the app -->
     <freeproxies
-        [freeproxies]="freeproxies"
+        [freeproxies$]="freeproxies$"
         [itemsPerPage]="10"
         (remove)="removeFreeproxies($event)"></freeproxies>
 }

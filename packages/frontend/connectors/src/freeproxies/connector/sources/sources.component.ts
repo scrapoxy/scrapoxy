@@ -6,30 +6,42 @@ import {
 } from '@angular/core';
 import { ConfirmService } from '@scrapoxy/frontend-sdk';
 import type {
-    ISource,
-    ISourcesToRemoveOptions,
-} from '@scrapoxy/common';
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
+import type { ISource } from '@scrapoxy/common';
+import type {
+    Observable,
+    Subscription,
+} from 'rxjs';
 
 
 @Component({
     selector: 'sources',
     templateUrl: './sources.component.html',
 })
-export class SourcesComponent {
+export class SourcesComponent implements OnInit, OnDestroy {
     @Input()
-    get sources(): ISource[] {
-        return this.value;
-    }
+    sources$: Observable<ISource[]>;
 
-    set sources(sources: ISource[]) {
-        this.value = sources;
-    }
+    @Output()
+    remove = new EventEmitter<string[]>();
 
-    @Output() remove = new EventEmitter<ISourcesToRemoveOptions>();
+    sources: ISource[] = [];
 
-    private value: ISource[] = [];
+    private subscription: Subscription;
 
     constructor(private readonly confirmService: ConfirmService) {}
+
+    ngOnInit() {
+        this.subscription = this.sources$.subscribe((sources) => {
+            this.sources = sources;
+        });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     async removeWithConfirm(source: ISource): Promise<void> {
         const accept = await this
@@ -42,11 +54,9 @@ export class SourcesComponent {
             return;
         }
 
-        this.remove.emit({
-            urls: [
-                source.url,
-            ],
-        });
+        this.remove.emit([
+            source.id,
+        ]);
     }
 
     async removeAllWithConfirm(): Promise<void> {
@@ -60,8 +70,6 @@ export class SourcesComponent {
             return;
         }
 
-        this.remove.emit({
-            urls: [],
-        });
+        this.remove.emit([]);
     }
 }

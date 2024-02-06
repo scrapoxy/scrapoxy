@@ -22,6 +22,8 @@ import {
     ProjectUserRemovedEvent,
     ProxiesMetricsAddedEvent,
     ProxiesSynchronizedEvent,
+    SourcesCreatedEvent,
+    SourcesRemovedEvent,
     TaskCreatedEvent,
     TaskRemovedEvent,
     TaskUpdatedEvent,
@@ -216,6 +218,16 @@ export abstract class AEventsService {
 
             case FreeproxiesSynchronizedEvent.id: {
                 this.emit(FreeproxiesSynchronizedEvent.from(event));
+                break;
+            }
+
+            case SourcesCreatedEvent.id: {
+                this.emit(SourcesCreatedEvent.from(event));
+                break;
+            }
+
+            case SourcesRemovedEvent.id: {
+                this.emit(SourcesRemovedEvent.from(event));
                 break;
             }
 

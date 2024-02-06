@@ -22,6 +22,7 @@ import {
     RefreshFreeproxiesModule,
     RefreshMetricsModule,
     RefreshProxiesModule,
+    RefreshSourcesModule,
     RefreshTasksModule,
     ScrapoxyExpressAdapter,
     StorageDistributedConnModule,
@@ -190,6 +191,7 @@ async function createRefresh(
             ),
             RefreshFreeproxiesModule.forRoot(
                 url,
+                VERSION_TEST,
                 fingerprintUrl
             ),
             RefreshMetricsModule.forRoot(
@@ -202,6 +204,10 @@ async function createRefresh(
                 VERSION_TEST,
                 true,
                 fingerprintUrl
+            ),
+            RefreshSourcesModule.forRoot(
+                url,
+                VERSION_TEST
             ),
             RefreshTasksModule.forRoot(
                 url,

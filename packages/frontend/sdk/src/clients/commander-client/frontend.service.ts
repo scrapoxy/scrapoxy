@@ -21,7 +21,6 @@ import type {
     ICredentialToUpdate,
     ICredentialView,
     IFreeproxiesToRemoveOptions,
-    IFreeproxy,
     IFreeproxyBase,
     IProjectConnectorDefaultId,
     IProjectData,
@@ -32,6 +31,8 @@ import type {
     IProjectToUpdate,
     IProjectView,
     IProxyIdToRemove,
+    ISourceBase,
+    ISourcesAndFreeproxies,
     ITaskView,
     IUserProject,
     IUserProjectEmail,
@@ -407,12 +408,12 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
     }
 
     //////////// FREE PROXIES ////////////
-    async getAllProjectFreeproxiesById(
+    async getAllProjectSourcesAndFreeproxiesById(
         projectId: string, connectorId: string
-    ): Promise<IFreeproxy[]> {
+    ): Promise<ISourcesAndFreeproxies> {
         const res = await lastValueFrom(this.client
-            .get<IFreeproxy[]>(
-            `${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/freeproxies/all`,
+            .get<ISourcesAndFreeproxies>(
+            `${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/sourcesfreeproxies`,
             {}
         ));
 
@@ -440,6 +441,30 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
             .post(
                 `${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/freeproxies/remove`,
                 options
+            ));
+    }
+
+    async createSources(
+        projectId: string,
+        connectorId: string,
+        sources: ISourceBase[]
+    ): Promise<void> {
+        await lastValueFrom(this.client
+            .post(
+                `${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/sources`,
+                sources
+            ));
+    }
+
+    async removeSources(
+        projectId: string,
+        connectorId: string,
+        ids: string[]
+    ): Promise<void> {
+        await lastValueFrom(this.client
+            .post(
+                `${this.baseUrl}/projects/${projectId}/connectors/${connectorId}/sources/remove`,
+                ids
             ));
     }
 

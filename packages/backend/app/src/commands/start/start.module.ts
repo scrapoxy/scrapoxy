@@ -44,6 +44,7 @@ import {
     RefreshFreeproxiesModule,
     RefreshMetricsModule,
     RefreshProxiesModule,
+    RefreshSourcesModule,
     RefreshTasksModule,
     StorageDistributedConnModule,
     StorageDistributedMsModule,
@@ -234,10 +235,16 @@ export class AppStartModule {
         }
 
         if (options.refreshFreeproxies) {
-            imports.push(RefreshFreeproxiesModule.forRoot(
-                commanderUrl,
-                options.version
-            ));
+            imports.push(
+                RefreshFreeproxiesModule.forRoot(
+                    commanderUrl,
+                    options.version
+                ),
+                RefreshSourcesModule.forRoot(
+                    commanderUrl,
+                    options.version
+                )
+            );
         }
 
         if (options.refreshMetrics) {

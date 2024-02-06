@@ -26,6 +26,7 @@ import type {
     IProxyMetricsAdd,
     IProxyToConnect,
     IProxyToRefresh,
+    ISource,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -167,6 +168,16 @@ export interface IStorageService {
     getNextFreeproxiesToRefresh: (nextRefreshTs: number, count: number) => Promise<IFreeproxyToRefresh[]>;
 
     updateFreeproxiesNextRefreshTs: (proxiesIds: string[], nextRefreshTs: number) => Promise<void>;
+
+    getAllProjectSourcesById: (projectId: string, connectorId: string) => Promise<ISource[]>;
+
+    createSources: (sources: ISource[]) => Promise<void>;
+
+    removeSources: (sources: ISource[]) => Promise<void>;
+
+    getNextSourceToRefresh: (nextRefreshTs: number) => Promise<ISource>;
+
+    updateSourceNextRefreshTs: (projectId: string, connectorId: string, sourceId: string, nextRefreshTs: number) => Promise<void>;
 
     //////////// TASKS ////////////
     getAllProjectTasksById: (projectId: string) => Promise<ITaskView[]>;

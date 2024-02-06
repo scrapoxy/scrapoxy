@@ -94,8 +94,8 @@ export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase |
 
     if (
         !port ||
-            port < 1 ||
-            port > 65535
+        port < 1 ||
+        port > 65535
     ) {
         return;
     }

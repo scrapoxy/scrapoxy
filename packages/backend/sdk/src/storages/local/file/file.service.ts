@@ -34,6 +34,7 @@ import type {
     IProjectData,
     IProjectDataCreate,
     IProjectUserLink,
+    ISource,
     ISynchronizeFreeproxies,
     IUserData,
 } from '@scrapoxy/common';
@@ -209,6 +210,35 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
         await this.saveStore();
     }
 
+    override async createSources(sources: ISource[]): Promise<void> {
+        await super.createSources(sources);
+
+        await this.saveStore();
+    }
+
+    override async removeSources(sources: ISource[]): Promise<void> {
+        await super.removeSources(sources);
+
+        await this.saveStore();
+    }
+
+    override async updateSourceNextRefreshTs(
+        projectId: string,
+        connectorId: string,
+        sourceId: string,
+        nextRefreshTs: number
+    ): Promise<void> {
+        await super.updateSourceNextRefreshTs(
+            projectId,
+            connectorId,
+            sourceId,
+            nextRefreshTs
+        );
+
+        await this.saveStore();
+    }
+
+
     //////////// MISC ////////////
     private async loadStore(): Promise<void> {
         // Clear before load
@@ -293,8 +323,14 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
                 projectsIds.add(projectStore.id);
             }
 
-            // Load free proxies
+            // Load free proxies and sources
             for (const connector of projectModel.connectors.values()) {
+                for (const source of connector.sources.values()) {
+                    this.sources.set(
+                        source.id,
+                        source
+                    );
+                }
                 for (const freeproxy of connector.freeproxies.values()) {
                     this.freeproxies.set(
                         freeproxy.id,

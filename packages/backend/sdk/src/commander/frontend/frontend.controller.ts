@@ -37,7 +37,6 @@ import type {
     ICredentialToUpdate,
     ICredentialView,
     IFreeproxiesToRemoveOptions,
-    IFreeproxy,
     IFreeproxyBase,
     IProjectConnectorDefaultId,
     IProjectData,
@@ -48,6 +47,8 @@ import type {
     IProjectToUpdate,
     IProjectView,
     IProxyIdToRemove,
+    ISourceBase,
+    ISourcesAndFreeproxies,
     ITaskView,
     IUserProject,
     IUserProjectEmail,
@@ -508,18 +509,18 @@ export class CommanderFrontendController {
     }
 
     //////////// FREE PROXIES ////////////
-    @Get('projects/:projectId/connectors/:connectorId/freeproxies/all')
+    @Get('projects/:projectId/connectors/:connectorId/sourcesfreeproxies')
     @UseGuards(CommanderFrontendRoleGuard)
-    async getAllProjectFreeproxiesById(
+    async getAllProjectSourcesAndFreeproxiesById(
         @Param('projectId') projectId: string,
             @Param('connectorId') connectorId: string
-    ): Promise<IFreeproxy[]> {
-        const freeproxies = await this.commander.getAllProjectFreeproxiesById(
+    ): Promise<ISourcesAndFreeproxies> {
+        const data = await this.commander.getAllProjectSourcesAndFreeproxiesById(
             projectId,
             connectorId
         );
 
-        return freeproxies;
+        return data;
     }
 
     @Post('projects/:projectId/connectors/:connectorId/freeproxies/create')
@@ -549,6 +550,36 @@ export class CommanderFrontendController {
             projectId,
             connectorId,
             options
+        );
+    }
+
+    @Post('projects/:projectId/connectors/:connectorId/sources')
+    @HttpCode(204)
+    @UseGuards(CommanderFrontendRoleGuard)
+    async createSources(
+        @Param('projectId') projectId: string,
+            @Param('connectorId') connectorId: string,
+            @Body() sources: ISourceBase[]
+    ): Promise<void> {
+        await this.commander.createSources(
+            projectId,
+            connectorId,
+            sources
+        );
+    }
+
+    @Post('projects/:projectId/connectors/:connectorId/sources/remove')
+    @HttpCode(204)
+    @UseGuards(CommanderFrontendRoleGuard)
+    async removeSources(
+        @Param('projectId') projectId: string,
+            @Param('connectorId') connectorId: string,
+            @Body() ids: string[]
+    ): Promise<void> {
+        await this.commander.removeSources(
+            projectId,
+            connectorId,
+            ids
         );
     }
 

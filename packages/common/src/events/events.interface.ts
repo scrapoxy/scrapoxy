@@ -2,6 +2,7 @@ import type { IConnectorView } from '../connectors';
 import type { ICredentialView } from '../credentials';
 import type {
     IFreeproxy,
+    ISource,
     ISynchronizeFreeproxies,
 } from '../freeproxies';
 import type {
@@ -281,6 +282,32 @@ export class FreeproxiesSynchronizedEvent extends ACommanderEvent {
 
     constructor(public actions: ISynchronizeFreeproxies) {
         super(FreeproxiesSynchronizedEvent.id);
+    }
+}
+
+
+export class SourcesCreatedEvent extends ACommanderEvent {
+    static readonly id = 'sources_created_event';
+
+    static from(data: any): SourcesCreatedEvent {
+        return new SourcesCreatedEvent(data.sources);
+    }
+
+    constructor(public sources: ISource[]) {
+        super(SourcesCreatedEvent.id);
+    }
+}
+
+
+export class SourcesRemovedEvent extends ACommanderEvent {
+    static readonly id = 'sources_removed_event';
+
+    static from(data: any): SourcesRemovedEvent {
+        return new SourcesRemovedEvent(data.sources);
+    }
+
+    constructor(public sources: ISource[]) {
+        super(SourcesRemovedEvent.id);
     }
 }
 

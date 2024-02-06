@@ -8,4 +8,6 @@ export * from './proxies';
 
 export * from './refresh.abstract';
 
+export * from './sources';
+
 export * from './tasks';

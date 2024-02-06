@@ -14,9 +14,9 @@ import {
     EventsFreeproxiesClient,
     IConnectorView,
     ICredentialView,
-    IFreeproxy,
     IFreeproxyBase,
     IProjectData,
+    ISourcesAndFreeproxies,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
@@ -43,9 +43,9 @@ export function testProxy(
         commanderApp: CommanderApp,
         connector: IConnectorView,
         credential: ICredentialView,
-        freeproxies: IFreeproxy[],
         masterApp: MasterApp,
         project: IProjectData,
+        sourcesAndFreeproxies: ISourcesAndFreeproxies,
         token: string;
 
     jest.beforeAll(async() => {
@@ -149,7 +149,10 @@ export function testProxy(
         await client.subscribeAsync(
             project.id,
             connector.id,
-            []
+            {
+                sources: [],
+                freeproxies: [],
+            }
         );
     });
 
@@ -197,15 +200,15 @@ export function testProxy(
             });
 
             await waitFor(async() => {
-                freeproxies = await commanderApp.frontendClient.getAllProjectFreeproxiesById(
+                sourcesAndFreeproxies = await commanderApp.frontendClient.getAllProjectSourcesAndFreeproxiesById(
                     project.id,
                     connector.id
                 );
 
-                jest.expect(freeproxies)
+                jest.expect(sourcesAndFreeproxies.freeproxies)
                     .toHaveLength(1);
 
-                const freeproxyFound = freeproxies[ 0 ];
+                const freeproxyFound = sourcesAndFreeproxies.freeproxies[ 0 ];
                 jest.expect(freeproxyFound.type)
                     .toBe(freeproxy.type);
                 jest.expect(freeproxyFound.key)
@@ -394,7 +397,7 @@ export function testProxy(
         'should remove the proxy from freeproxies list',
         async() => {
             // Create and activate connector
-            const ids = freeproxies.map((p) => p.id);
+            const ids = sourcesAndFreeproxies.freeproxies.map((p) => p.id);
             await commanderApp.frontendClient.removeFreeproxies(
                 project.id,
                 connector.id,
@@ -416,12 +419,12 @@ export function testProxy(
             });
 
             await waitFor(async() => {
-                freeproxies = await commanderApp.frontendClient.getAllProjectFreeproxiesById(
+                sourcesAndFreeproxies = await commanderApp.frontendClient.getAllProjectSourcesAndFreeproxiesById(
                     project.id,
                     connector.id
                 );
 
-                jest.expect(freeproxies)
+                jest.expect(sourcesAndFreeproxies.freeproxies)
                     .toHaveLength(0);
             });
         }

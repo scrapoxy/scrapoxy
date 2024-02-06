@@ -17,6 +17,7 @@ import {
     RefreshConnectorsModule,
     RefreshFreeproxiesModule,
     RefreshProxiesModule,
+    RefreshSourcesModule,
     RefreshTasksModule,
     ScrapoxyExpressAdapter,
     TaskStepError,
@@ -157,6 +158,10 @@ async function createMasterApp(
                 commanderAppUrl,
                 VERSION_TEST,
                 true
+            ),
+            RefreshSourcesModule.forRoot(
+                commanderAppUrl,
+                VERSION_TEST
             ),
             RefreshTasksModule.forRoot(
                 commanderAppUrl,

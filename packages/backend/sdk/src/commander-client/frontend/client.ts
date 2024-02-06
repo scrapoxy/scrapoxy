@@ -21,7 +21,6 @@ import type {
     ICredentialToUpdate,
     ICredentialView,
     IFreeproxiesToRemoveOptions,
-    IFreeproxy,
     IFreeproxyBase,
     IProjectConnectorDefaultId,
     IProjectData,
@@ -32,6 +31,8 @@ import type {
     IProjectToUpdate,
     IProjectView,
     IProxyIdToRemove,
+    ISourceBase,
+    ISourcesAndFreeproxies,
     ITaskView,
     IUserProject,
     IUserProjectEmail,
@@ -415,10 +416,10 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
     }
 
     //////////// FREE PROXIES ////////////
-    async getAllProjectFreeproxiesById(
+    async getAllProjectSourcesAndFreeproxiesById(
         projectId: string, connectorId: string
-    ): Promise<IFreeproxy[]> {
-        const res = await this.instance.get<IFreeproxy[]>(`projects/${projectId}/connectors/${connectorId}/freeproxies/all`);
+    ): Promise<ISourcesAndFreeproxies> {
+        const res = await this.instance.get<ISourcesAndFreeproxies>(`projects/${projectId}/connectors/${connectorId}/sourcesfreeproxies`);
 
         return res.data;
     }
@@ -444,6 +445,30 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
             .post(
                 `projects/${projectId}/connectors/${connectorId}/freeproxies/remove`,
                 options
+            );
+    }
+
+    async createSources(
+        projectId: string,
+        connectorId: string,
+        sources: ISourceBase[]
+    ): Promise<void> {
+        await this.instance
+            .post(
+                `projects/${projectId}/connectors/${connectorId}/sources`,
+                sources
+            );
+    }
+
+    async removeSources(
+        projectId: string,
+        connectorId: string,
+        ids: string[]
+    ): Promise<void> {
+        await this.instance
+            .post(
+                `projects/${projectId}/connectors/${connectorId}/sources/remove`,
+                ids
             );
     }
 

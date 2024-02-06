@@ -14,6 +14,8 @@ export const PROJECTS_KEY = 'projects';
 
 export const PROXIES_KEY = 'proxies';
 
+export const SOURCES_KEY = 'sources';
+
 export const TASKS_KEY = 'tasks';
 
 export const USERS_KEY = 'users';

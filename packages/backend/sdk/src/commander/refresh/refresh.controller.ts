@@ -17,12 +17,14 @@ import type {
     ICreateRemoveLocalProxies,
     IFreeproxiesToRefresh,
     IFreeproxy,
+    IFreeproxyBase,
     IFreeproxyRefreshed,
     INewFreeProxies,
     IProxiesToRefresh,
     IProxyMetricsAdd,
     IProxyRefreshed,
     ISelectedFreeproxies,
+    ISource,
     ISynchronizeRemoteProxies,
     ITaskData,
     ITaskToUpdate,
@@ -150,10 +152,31 @@ export class CommanderRefreshController {
         return freeproxies;
     }
 
+    @Post('projects/:projectId/connectors/:connectorId/freeproxies')
+    @HttpCode(204)
+    async createFreeproxies(
+        @Param('projectId') projectId: string,
+            @Param('connectorId') connectorId: string,
+            @Body() freeproxies: IFreeproxyBase[]
+    ): Promise<void> {
+        await this.commander.createFreeproxies(
+            projectId,
+            connectorId,
+            freeproxies
+        );
+    }
+
     @Post('freeproxies/refresh')
     @HttpCode(204)
     async updateFreeproxies(@Body() remoteFreeproxies: IFreeproxyRefreshed[]): Promise<void> {
         await this.commander.updateFreeproxies(remoteFreeproxies);
+    }
+
+    @Get('sources/refresh')
+    async getNextSourceToRefresh(): Promise<ISource> {
+        const source = await this.commander.getNextSourceToRefresh();
+
+        return source;
     }
 
     //////////// TASKS ////////////

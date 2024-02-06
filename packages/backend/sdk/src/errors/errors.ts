@@ -848,6 +848,37 @@ export class FreeproxiesNotFoundError extends HttpBaseException {
 }
 
 
+export class SourceNotFoundError extends HttpBaseException {
+    static readonly id = ECommanderError.FreeproxiesNotFound;
+
+    static from(data: any): SourceNotFoundError {
+        return new SourceNotFoundError(
+            data.projectId,
+            data.connectorId,
+            data.sourceId
+        );
+    }
+
+    constructor(
+        projectId: string,
+        connectorId: string,
+        sourceId: string
+    ) {
+        super(
+            HttpStatus.BAD_REQUEST,
+            SourceNotFoundError.id,
+            `Cannot find source (sourceId=${sourceId}, connectorId=${connectorId}, projectId=${projectId})`,
+            true,
+            {
+                projectId,
+                connectorId,
+                sourceId,
+            }
+        );
+    }
+}
+
+
 export class NoFreeproxyToRefreshError extends HttpBaseException {
     static readonly id = ECommanderError.NoFreeproxyToRefresh;
 
@@ -860,6 +891,24 @@ export class NoFreeproxyToRefreshError extends HttpBaseException {
             HttpStatus.BAD_REQUEST,
             NoFreeproxyToRefreshError.id,
             'No freeproxy to refresh',
+            false
+        );
+    }
+}
+
+
+export class NoSourceToRefreshError extends HttpBaseException {
+    static readonly id = ECommanderError.NoSourceToRefresh;
+
+    static from(): NoSourceToRefreshError {
+        return new NoSourceToRefreshError();
+    }
+
+    constructor() {
+        super(
+            HttpStatus.BAD_REQUEST,
+            NoSourceToRefreshError.id,
+            'No source to refresh',
             false
         );
     }

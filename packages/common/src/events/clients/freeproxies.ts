@@ -4,9 +4,13 @@ import {
     EEventScope,
     FreeproxiesCreatedEvent,
     FreeproxiesSynchronizedEvent,
+    SourcesCreatedEvent,
+    SourcesRemovedEvent,
 } from '../events.interface';
 import type {
     IFreeproxy,
+    ISource,
+    ISourcesAndFreeproxies,
     ISynchronizeFreeproxies,
 } from '../../freeproxies';
 
@@ -14,7 +18,11 @@ import type {
 export class EventsFreeproxiesClient {
     readonly freeproxies: IFreeproxy[] = [];
 
+    readonly sources: ISource[] = [];
+
     private connectorId: string | undefined = void 0;
+
+    private readonly sourcesMap = new Map<string, ISource>();
 
     private readonly freeproxiesMap = new Map<string, IFreeproxy>();
 
@@ -24,19 +32,19 @@ export class EventsFreeproxiesClient {
 
     constructor(
         private readonly events: AEventsService,
-        private readonly onFreeproxiesCreated?: (freeproxies: IFreeproxy[]) => void,
-        private readonly onFreeproxiesRemoved?: (freeproxies: IFreeproxy[]) => void
-    ) { }
+        private readonly onSourcesEvent?: () => void,
+        private readonly onFreeproxiesEvent?: () => void
+    ) {}
 
     subscribe(
         projectId: string,
         connectorId: string,
-        freeproxies: IFreeproxy[]
+        sourcesAndFreeproxies: ISourcesAndFreeproxies
     ) {
         this.subscribeImpl(
             projectId,
             connectorId,
-            freeproxies
+            sourcesAndFreeproxies
         );
 
         this.events.register({
@@ -48,7 +56,7 @@ export class EventsFreeproxiesClient {
     async subscribeAsync(
         projectId: string,
         connectorId: string,
-        freeproxies: IFreeproxy[]
+        sourcesAndFreeproxies: ISourcesAndFreeproxies
     ): Promise<void> {
         await this.events.registerAsync({
             scope: EEventScope.FREEPROXIES,
@@ -58,7 +66,7 @@ export class EventsFreeproxiesClient {
         this.subscribeImpl(
             projectId,
             connectorId,
-            freeproxies
+            sourcesAndFreeproxies
         );
     }
 
@@ -87,7 +95,7 @@ export class EventsFreeproxiesClient {
     private subscribeImpl(
         projectId: string,
         connectorId: string,
-        freeproxies: IFreeproxy[]
+        sourcesAndFreeproxies: ISourcesAndFreeproxies
     ) {
         this.subscription.add(this.events.event$.subscribe((event) => {
             if (!event) {
@@ -106,16 +114,92 @@ export class EventsFreeproxiesClient {
                     this.onFreeproxiesSyncImpl(sync.actions);
                     break;
                 }
+
+                case SourcesCreatedEvent.id: {
+                    const created = event as SourcesCreatedEvent;
+                    this.onSourcesCreatedImpl(created.sources);
+                    break;
+                }
+
+                case SourcesRemovedEvent.id: {
+                    const removed = event as SourcesRemovedEvent;
+                    this.onSourcesRemovedImpl(removed.sources);
+                    break;
+                }
             }
         }));
 
         this.projectId = projectId;
         this.connectorId = connectorId;
 
+        this.sources.length = 0;
+        this.sourcesMap.clear();
+
         this.freeproxies.length = 0;
         this.freeproxiesMap.clear();
 
-        this.onFreeproxiesCreatedImpl(freeproxies);
+        this.onSourcesCreatedImpl(sourcesAndFreeproxies.sources);
+        this.onFreeproxiesCreatedImpl(sourcesAndFreeproxies.freeproxies);
+    }
+
+    private onSourcesCreatedImpl(sources: ISource[]) {
+        if (!this.projectId ||
+            !this.connectorId ||
+            sources.length <= 0) {
+            return;
+        }
+
+        for (const source of sources) {
+            if (source.projectId === this.projectId &&
+                source.connectorId === this.connectorId) {
+                const index = this.sources.findIndex((c) => c.id === source.id);
+
+                if (index < 0) {
+                    this.sources.push(source);
+                } else {
+                    this.sources[ index ] = source;
+                }
+
+                this.sourcesMap.set(
+                    source.id,
+                    source
+                );
+            }
+        }
+
+        this.sources.sort((
+            a, b
+        ) => a.url.localeCompare(b.url));
+
+        if (this.onSourcesEvent) {
+            this.onSourcesEvent();
+        }
+    }
+
+    private onSourcesRemovedImpl(sources: ISource[]) {
+        if (!this.projectId ||
+            !this.connectorId ||
+            sources.length <= 0) {
+            return;
+        }
+
+        for (const source of sources) {
+            const sourceFound = this.sourcesMap.get(source.id);
+
+            if (sourceFound) {
+                const index = this.sources.findIndex((c) => c.id === source.id);
+                this.sources.splice(
+                    index,
+                    1
+                );
+
+                this.sourcesMap.delete(source.id);
+            }
+        }
+
+        if (this.onSourcesEvent) {
+            this.onSourcesEvent();
+        }
     }
 
     private onFreeproxiesCreatedImpl(freeproxies: IFreeproxy[]) {
@@ -147,8 +231,8 @@ export class EventsFreeproxiesClient {
             a, b
         ) => a.key.localeCompare(b.key));
 
-        if (this.onFreeproxiesCreated) {
-            this.onFreeproxiesCreated(freeproxies);
+        if (this.onFreeproxiesEvent) {
+            this.onFreeproxiesEvent();
         }
     }
 
@@ -185,8 +269,8 @@ export class EventsFreeproxiesClient {
                 }
             }
 
-            if (this.onFreeproxiesRemoved) {
-                this.onFreeproxiesRemoved(actions.removed);
+            if (this.onFreeproxiesEvent) {
+                this.onFreeproxiesEvent();
             }
         }
     }

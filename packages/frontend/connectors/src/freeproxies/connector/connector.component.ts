@@ -16,6 +16,8 @@ import {
     ONE_SECOND_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
     PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+    SourcesCreatedEvent,
+    SourcesRemovedEvent,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
@@ -23,7 +25,10 @@ import {
     ToastsService,
     ValidatorOptionalNumber,
 } from '@scrapoxy/frontend-sdk';
-import { Subscription } from 'rxjs';
+import {
+    Subject,
+    Subscription,
+} from 'rxjs';
 import type {
     OnDestroy,
     OnInit,
@@ -34,7 +39,7 @@ import type {
     IFreeproxy,
     IFreeproxyBase,
     ISource,
-    ISourcesToRemoveOptions,
+    ISourceBase,
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
@@ -63,9 +68,13 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
     readonly subForm: FormGroup;
 
-    freeproxies: IFreeproxy[] = [];
+    freeproxies$ = new Subject<IFreeproxy[]>();
 
-    sources: ISource[] = [];
+    freeproxiesSize = 0;
+
+    sources$ = new Subject<ISource[]>();
+
+    sourcesSize = 0;
 
     private readonly subscription = new Subscription();
 
@@ -97,10 +106,12 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         this.client = new EventsFreeproxiesClient(
             this.events,
             () => {
-                this.freeproxies = this.client.freeproxies;
+                this.sources$.next(this.client.sources);
+                this.sourcesSize = this.client.sources.length;
             },
             () => {
-                this.freeproxies = this.client.freeproxies;
+                this.freeproxies$.next(this.client.freeproxies);
+                this.freeproxiesSize = this.client.freeproxies.length;
             }
         );
     }
@@ -112,6 +123,26 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             }
 
             switch (event.id) {
+                case SourcesCreatedEvent.id: {
+                    const created = event as SourcesCreatedEvent;
+                    this.toastsService.success(
+                        'Proxy List',
+                        `${created.sources.length} sources added.`
+                    );
+
+                    break;
+                }
+
+                case SourcesRemovedEvent.id: {
+                    const removed = event as SourcesRemovedEvent;
+                    this.toastsService.success(
+                        'Proxy List',
+                        `${removed.sources.length} sources removed.`
+                    );
+
+                    break;
+                }
+
                 case FreeproxiesCreatedEvent.id: {
                     const created = event as FreeproxiesCreatedEvent;
                     this.toastsService.success(
@@ -161,15 +192,20 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         }
 
         try {
-            this.freeproxies = await this.commander.getAllProjectFreeproxiesById(
+            const sourcesAndFreeproxies = await this.commander.getAllProjectSourcesAndFreeproxiesById(
                 this.projectId,
                 this.connectorId as string
             );
 
+            this.freeproxies$.next(sourcesAndFreeproxies.freeproxies);
+            this.freeproxiesSize = sourcesAndFreeproxies.freeproxies.length;
+            this.sources$.next(sourcesAndFreeproxies.sources);
+            this.sourcesSize = sourcesAndFreeproxies.sources.length;
+
             this.client.subscribe(
                 this.projectId,
                 this.connectorId as string,
-                this.freeproxies
+                sourcesAndFreeproxies
             );
 
             this.freeproxies$.next(this.client.freeproxies);
@@ -194,22 +230,38 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         this.subscription.unsubscribe();
     }
 
-    addSource(source: ISource) {
-        this.sources.push(source);
+    async addSources(sources: ISourceBase[]) {
+        try {
+            await this.commander.createSources(
+                this.projectId,
+                this.connectorId as string,
+                sources
+            );
+        } catch (err: any) {
+            console.error(err);
 
-        this.sources = this.sources.sort((
-            a, b
-        ) => a.url.localeCompare(b.url));
+            this.toastsService.error(
+                'Proxy List',
+                err.message
+            );
+        }
     }
 
-    removeSources(options: ISourcesToRemoveOptions) {
-        if (options.urls.length === 0) {
-            this.sources = [];
+    async removeSources(ids: string[]) {
+        try {
+            await this.commander.removeSources(
+                this.projectId,
+                this.connectorId as string,
+                ids
+            );
+        } catch (err: any) {
+            console.error(err);
 
-            return;
+            this.toastsService.error(
+                'Proxy List',
+                err.message
+            );
         }
-
-        this.sources = this.sources.filter((source) => !options.urls.includes(source.url));
     }
 
     async addFreeproxies(freeproxies: IFreeproxyBase[]) {

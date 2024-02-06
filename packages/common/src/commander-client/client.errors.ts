@@ -44,7 +44,9 @@ export enum ECommanderError {
 
     //////////// FREEPROXIES ////////////
     FreeproxiesNotFound = 'freeproxies_not_found',
+    SourceNotFound = 'source_not_found',
     NoFreeproxyToRefresh = 'no_freeproxy_to_refresh',
+    NoSourceToRefresh = 'no_source_to_refresh',
 
     //////////// TASKS ////////////
     TaskNotFound = 'task_not_found',

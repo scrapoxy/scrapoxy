@@ -26,6 +26,7 @@ import {
     PARAMS_KEY,
     PROJECTS_KEY,
     PROXIES_KEY,
+    SOURCES_KEY,
     TASKS_KEY,
     USERS_KEY,
     WINDOWS_KEY,
@@ -86,6 +87,7 @@ import {
     PROXY_TO_REFRESH_META_MONGODB,
     PROXY_VIEW_META_MONGODB,
 } from '../proxy.model';
+import { SOURCE_META_MONGODB } from '../source.model';
 import {
     TASK_DATA_META_MONGODB,
     TASK_VIEW_META_MONGODB,
@@ -105,6 +107,7 @@ import type { IFreeproxyModel } from '../freeproxy.model';
 import type { IParamModel } from '../param.model';
 import type { IProjectModel } from '../project.model';
 import type { IProxyModel } from '../proxy.model';
+import type { ISourceModel } from '../source.model';
 import type { ITaskModel } from '../task.model';
 import type { IUserModel } from '../user.model';
 import type { IWindowModel } from '../window.model';
@@ -142,6 +145,7 @@ import type {
     IProxyToConnect,
     IProxyToRefresh,
     IProxyView,
+    ISource,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -175,6 +179,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     private colProxies!: Collection<IProxyModel>;
 
     private colTasks!: Collection<ITaskModel>;
+
+    private colSources!: Collection<ISourceModel>;
 
     private colUsers!: Collection<IUserModel>;
 
@@ -230,6 +236,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         this.colProjects = this.conn.db.collection(PROJECTS_KEY);
         this.colProxies = this.conn.db.collection(PROXIES_KEY);
         this.colTasks = this.conn.db.collection(TASKS_KEY);
+        this.colSources = this.conn.db.collection(SOURCES_KEY);
         this.colUsers = this.conn.db.collection(USERS_KEY);
         this.colWindows = this.conn.db.collection(WINDOWS_KEY);
 
@@ -272,6 +279,10 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             dropCollectionFailsafe(
                 this.conn.db,
                 MIGRATIONS_KEY
+            ),
+            dropCollectionFailsafe(
+                this.conn.db,
+                SOURCES_KEY
             ),
             dropCollectionFailsafe(
                 this.conn.db,
@@ -2193,9 +2204,9 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async synchronizeFreeproxies(actions: ISynchronizeFreeproxies): Promise<void> {
         this.logger.debug(`synchronizeFreeproxies(): updated.length=${actions.updated.length} / removed.length=${actions.removed.length}`);
 
-        const vulk = this.colFreeproxies.initializeUnorderedBulkOp();
+        const bulk = this.colFreeproxies.initializeUnorderedBulkOp();
         for (const freeproxy of actions.updated) {
-            vulk.find({
+            bulk.find({
                 _id: freeproxy.id,
                 projectId: freeproxy.projectId,
                 connectorId: freeproxy.connectorId,
@@ -2210,7 +2221,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         }
 
         for (const freeproxy of actions.removed) {
-            vulk.find({
+            bulk.find({
                 _id: freeproxy.id,
                 projectId: freeproxy.projectId,
                 connectorId: freeproxy.connectorId,
@@ -2218,7 +2229,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 .deleteOne();
         }
 
-        await vulk.execute();
+        await bulk.execute();
     }
 
     async getNextFreeproxiesToRefresh(
@@ -2286,6 +2297,62 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
             throw new FreeproxiesNotFoundError(idsNotFound);
         }
+    }
+
+    async getAllProjectSourcesById(
+        projectId: string, connectorId: string
+    ): Promise<ISource[]> {
+        this.logger.debug(`getAllProjectSourcesById(): projectId=${projectId} / connectorId=${connectorId}`);
+
+        const sources = await this.colSources.find(
+            {
+                projectId,
+                connectorId,
+            },
+            {
+                projection: SOURCE_META_MONGODB,
+            }
+        )
+            .map((p) => fromMongo<ISource>(p))
+            .toArray();
+
+        return sources;
+    }
+
+    async createSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`createSources(): sources.length=${sources.length}`);
+
+        const bulk = this.colSources.initializeUnorderedBulkOp();
+        for (const source of sources) {
+            const sourceToCreate: ISourceModel = {
+                _id: source.id,
+                projectId: source.projectId,
+                connectorId: source.connectorId,
+                url: source.url,
+                delay: source.delay,
+                nextRefreshTs: 0,
+            };
+
+            bulk.insert(sourceToCreate);
+        }
+
+        await bulk.execute();
+    }
+
+    async removeSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`removeSources(): sources.length=${sources.length}`);
+
+        const bulk = this.colSources.initializeUnorderedBulkOp();
+        for (const source of sources) {
+            bulk.find({
+                _id: source.id,
+                projectId: source.projectId,
+                connectorId: source.connectorId,
+            })
+                .deleteOne();
+        }
+
+        await bulk.execute();
     }
 
     //////////// TASKS ////////////

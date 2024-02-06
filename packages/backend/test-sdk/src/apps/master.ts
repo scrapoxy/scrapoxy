@@ -12,6 +12,7 @@ import {
     RefreshMetricsModule,
     RefreshProxiesModule,
     RefreshProxiesService,
+    RefreshSourcesModule,
     RefreshTasksModule,
 } from '@scrapoxy/backend-sdk';
 import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
@@ -58,6 +59,10 @@ export class MasterApp {
                     options.commanderApp.url,
                     VERSION_TEST,
                     ONE_SECOND_IN_MS
+                ),
+                RefreshSourcesModule.forRoot(
+                    options.commanderApp.url,
+                    VERSION_TEST
                 ),
                 RefreshTasksModule.forRoot(
                     options.commanderApp.url,

@@ -5,53 +5,66 @@ import {
     Output,
 } from '@angular/core';
 import { ConfirmService } from '@scrapoxy/frontend-sdk';
+import { Observable } from 'rxjs';
+import type {
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import type {
     IFreeproxiesToRemoveOptions,
     IFreeproxy,
 } from '@scrapoxy/common';
+import type { Subscription } from 'rxjs';
 
 
 @Component({
     selector: 'freeproxies',
     templateUrl: './freeproxies.component.html',
 })
-export class FreeproxiesComponent {
+export class FreeproxiesComponent implements OnInit, OnDestroy {
     @Input()
-    get freeproxies(): IFreeproxy[] {
-        return this.value;
-    }
-
-    set freeproxies(freeproxies: IFreeproxy[]) {
-        this.value = freeproxies;
-
-        this.pageMax = Math.ceil(this.value.length / this.itemsPerPage);
-
-        this.pageCurrent = Math.max(
-            0,
-            Math.min(
-                this.pageCurrent,
-                this.pageMax - 1
-            )
-        );
-    }
+    freeproxies$: Observable<IFreeproxy[]>;
 
     @Input()
     itemsPerPage: number;
 
-    @Output() remove = new EventEmitter<IFreeproxiesToRemoveOptions>();
+    @Output()
+    remove = new EventEmitter<IFreeproxiesToRemoveOptions>();
+
+    freeproxies: IFreeproxy[] = [];
 
     pageCurrent = 0;
 
     pageMax = 0;
 
-    private value: IFreeproxy[] = [];
+    private subscription: Subscription;
 
     constructor(private readonly confirmService: ConfirmService) {}
+
+    ngOnInit() {
+        this.subscription = this.freeproxies$.subscribe((freeproxies) => {
+            this.freeproxies = freeproxies;
+
+            this.pageMax = Math.ceil(this.freeproxies.length / this.itemsPerPage);
+
+            this.pageCurrent = Math.max(
+                0,
+                Math.min(
+                    this.pageCurrent,
+                    this.pageMax - 1
+                )
+            );
+        });
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     get view(): IFreeproxy[] {
         const start = this.pageCurrent * this.itemsPerPage;
 
-        return this.value.slice(
+        return this.freeproxies.slice(
             start,
             start + this.itemsPerPage
         );

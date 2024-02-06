@@ -16,12 +16,14 @@ import type {
     ICreateRemoveLocalProxies,
     IFreeproxiesToRefresh,
     IFreeproxy,
+    IFreeproxyBase,
     IFreeproxyRefreshed,
     INewFreeProxies,
     IProxiesToRefresh,
     IProxyMetricsAdd,
     IProxyRefreshed,
     ISelectedFreeproxies,
+    ISource,
     ISynchronizeRemoteProxies,
     ITaskData,
     ITaskToUpdate,
@@ -199,11 +201,28 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
         return res.data;
     }
 
+    async createFreeproxies(
+        projectId: string,
+        connectorId: string,
+        freeproxies: IFreeproxyBase[]
+    ): Promise<void> {
+        await this.instance.post(
+            `projects/${projectId}/connectors/${connectorId}/freeproxies`,
+            freeproxies
+        );
+    }
+
     async updateFreeproxies(remoteFreeproxies: IFreeproxyRefreshed[]): Promise<void> {
         await this.instance.post<IFreeproxy[]>(
             'freeproxies/refresh',
             remoteFreeproxies
         );
+    }
+
+    async getNextSourceToRefresh(): Promise<ISource> {
+        const res = await this.instance.get<ISource>('sources/refresh'); // TODO: possible to remove 'refresh' because API is already prefixed with 'refresh'?
+
+        return res.data;
     }
 
     //////////// TASKS ////////////

@@ -23,6 +23,7 @@ import {
     NoFreeproxyToRefreshError,
     NoProjectProxyError,
     NoProxyToRefreshError,
+    NoSourceToRefreshError,
     NoTaskToRefreshError,
     ParamNotFoundError,
     ProjectInaccessibleError,
@@ -33,6 +34,7 @@ import {
     ProjectUserAccessError,
     ProxiesNotFoundError,
     ProxyNotFoundError,
+    SourceNotFoundError,
     TaskCancelError,
     TaskCreateError,
     TaskFactoryNotFoundError,
@@ -188,8 +190,16 @@ export function catchError(data: any) {
                 throw FreeproxiesNotFoundError.from(data);
             }
 
+            case SourceNotFoundError.id: {
+                throw SourceNotFoundError.from(data);
+            }
+
             case NoFreeproxyToRefreshError.id: {
                 throw NoFreeproxyToRefreshError.from();
+            }
+
+            case NoSourceToRefreshError.id: {
+                throw NoSourceToRefreshError.from();
             }
 
             //////////// TASKS ////////////

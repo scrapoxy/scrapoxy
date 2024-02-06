@@ -14,7 +14,7 @@ import {
     ONE_SECOND_IN_MS,
 } from '@scrapoxy/common';
 import { ValidatorUrl } from '@scrapoxy/frontend-sdk';
-import type { ISource } from '@scrapoxy/common';
+import type { ISourceBase } from '@scrapoxy/common';
 
 
 @Component({
@@ -22,7 +22,7 @@ import type { ISource } from '@scrapoxy/common';
     templateUrl: './source-add.component.html',
 })
 export class SourceAddComponent {
-    @Output() add = new EventEmitter<ISource>();
+    @Output() add = new EventEmitter<ISourceBase[]>();
 
     form: FormGroup;
 
@@ -44,9 +44,11 @@ export class SourceAddComponent {
     }
 
     async create() {
-        const source = this.form.value as ISource;
+        const source = this.form.value as ISourceBase;
 
-        this.add.emit(source);
+        this.add.emit([
+            source,
+        ]);
 
         this.form.reset({
             url: '',
