@@ -14,13 +14,11 @@ import {
     FreeproxiesCreatedEvent,
     FreeproxiesSynchronizedEvent,
     ONE_SECOND_IN_MS,
-    parseFreeproxy,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
     PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
-    ConfirmService,
     EventsService,
     ToastsService,
     ValidatorOptionalNumber,
@@ -35,11 +33,10 @@ import type {
     IFreeproxiesToRemoveOptions,
     IFreeproxy,
     IFreeproxyBase,
+    ISource,
+    ISourcesToRemoveOptions,
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
-
-
-const ITEMS_PER_PAGE = 10;
 
 
 @Component({
@@ -64,20 +61,17 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
     readonly client: EventsFreeproxiesClient;
 
-    pageCurrent = 0;
-
-    pageMax = 0;
-
     readonly subForm: FormGroup;
 
-    freeproxiesAdd = '';
+    freeproxies: IFreeproxy[] = [];
+
+    sources: ISource[] = [];
 
     private readonly subscription = new Subscription();
 
     constructor(
         @Inject(CommanderFrontendClientService)
         private readonly commander: ICommanderFrontendClient,
-        private readonly confirmService: ConfirmService,
         private readonly events: EventsService,
         fb: FormBuilder,
         private readonly toastsService: ToastsService
@@ -103,10 +97,10 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         this.client = new EventsFreeproxiesClient(
             this.events,
             () => {
-                this.onFreeproxiesRefreshed();
+                this.freeproxies = this.client.freeproxies;
             },
             () => {
-                this.onFreeproxiesRefreshed();
+                this.freeproxies = this.client.freeproxies;
             }
         );
     }
@@ -167,7 +161,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         }
 
         try {
-            const freeproxies = await this.commander.getAllProjectFreeproxiesById(
+            this.freeproxies = await this.commander.getAllProjectFreeproxiesById(
                 this.projectId,
                 this.connectorId as string
             );
@@ -175,10 +169,13 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             this.client.subscribe(
                 this.projectId,
                 this.connectorId as string,
-                freeproxies
+                this.freeproxies
             );
 
-            this.onFreeproxiesRefreshed();
+            this.freeproxies$.next(this.client.freeproxies);
+            this.freeproxiesSize = sourcesAndFreeproxies.freeproxies.length;
+            this.sources$.next(this.client.sources);
+            this.sourcesSize = sourcesAndFreeproxies.sources.length;
         } catch (err: any) {
             console.error(err);
 
@@ -197,38 +194,31 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         this.subscription.unsubscribe();
     }
 
-    get freeproxies(): IFreeproxy[] {
-        if (!this.client) {
-            return [];
-        }
+    addSource(source: ISource) {
+        this.sources.push(source);
 
-        const start = this.pageCurrent * ITEMS_PER_PAGE;
-
-        return this.client.freeproxies.slice(
-            start,
-            start + ITEMS_PER_PAGE
-        );
+        this.sources = this.sources.sort((
+            a, b
+        ) => a.url.localeCompare(b.url));
     }
 
-    async addFreeproxies() {
-        if (!this.freeproxiesAdd ||
-            this.freeproxiesAdd.length <= 0) {
+    removeSources(options: ISourcesToRemoveOptions) {
+        if (options.urls.length === 0) {
+            this.sources = [];
+
             return;
         }
 
-        const freeproxies = this.freeproxiesAdd.split(/[\n,]/)
-            .map(l => l.trim())
-            .map(parseFreeproxy)
-            .filter(p => !!p) as IFreeproxyBase[];
+        this.sources = this.sources.filter((source) => !options.urls.includes(source.url));
+    }
 
+    async addFreeproxies(freeproxies: IFreeproxyBase[]) {
         try {
             await this.commander.createFreeproxies(
                 this.projectId,
                 this.connectorId as string,
                 freeproxies
             );
-
-            this.freeproxiesAdd = '';
         } catch (err: any) {
             console.error(err);
 
@@ -239,93 +229,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         }
     }
 
-    async removeFreeproxyWithConfirm(freeproxy: IFreeproxy): Promise<void> {
-        const accept = await this
-            .confirmService.confirm(
-                'Remove freeproxy',
-                `Do you want to remove freeproxy ${freeproxy.key}?`
-            );
-
-        if (!accept) {
-            return;
-        }
-
-        await this.removeFreeproxies({
-            ids: [
-                freeproxy.id,
-            ],
-            duplicate: false,
-            onlyOffline: false,
-        });
-    }
-
-    async removeFreeproxiesAllWithConfirm(): Promise<void> {
-        const accept = await this
-            .confirmService.confirm(
-                'Remove all freeproxies',
-                `Do you want to all freeproxies?`
-            );
-
-        if (!accept) {
-            return;
-        }
-
-        await this.removeFreeproxies({
-            ids: [],
-            duplicate: false,
-            onlyOffline: false,
-        });
-    }
-
-    async removeFreeproxiesDuplicateWithConfirm(): Promise<void> {
-        const accept = await this
-            .confirmService.confirm(
-                'Remove duplicate',
-                `Do you want to remove all duplicate outbound IP addresses now?`
-            );
-
-        if (!accept) {
-            return;
-        }
-
-        await this.removeFreeproxies({
-            ids: [],
-            duplicate: true,
-            onlyOffline: false,
-        });
-    }
-
-    async removeFreeproxiesOfflineWithConfirm(): Promise<void> {
-        const accept = await this
-            .confirmService.confirm(
-                'Remove offline freeproxies',
-                `Do you want to all offline freeproxies now?`
-            );
-
-        if (!accept) {
-            return;
-        }
-
-        await this.removeFreeproxies({
-            ids: [],
-            duplicate: false,
-            onlyOffline: true,
-        });
-    }
-
-    private onFreeproxiesRefreshed() {
-        this.pageMax = Math.ceil(this.client.freeproxies.length / ITEMS_PER_PAGE);
-
-        this.pageCurrent = Math.max(
-            0,
-            Math.min(
-                this.pageCurrent,
-                this.pageMax - 1
-            )
-        );
-    }
-
-    private async removeFreeproxies(options: IFreeproxiesToRemoveOptions): Promise<void> {
+    async removeFreeproxies(options: IFreeproxiesToRemoveOptions): Promise<void> {
         try {
             await this.commander.removeFreeproxies(
                 this.projectId,

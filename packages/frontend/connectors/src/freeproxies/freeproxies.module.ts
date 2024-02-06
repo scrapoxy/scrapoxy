@@ -16,6 +16,10 @@ import {
     SharedSpxModule,
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorFreeproxiesComponent } from './connector/connector.component';
+import { FreeproxiesComponent } from './connector/freeproxies/freeproxies.component';
+import { FreeproxiesAddComponent } from './connector/freeproxies-add/freeproxies-add.component';
+import { SourcesComponent } from './connector/sources/sources.component';
+import { SourceAddComponent } from './connector/sources-add/source-add.component';
 import { CredentialFreeproxiesComponent } from './credential/credential.component';
 import { ConnectorFreeproxiesFactory } from './freeproxies.factory';
 
@@ -34,7 +38,12 @@ import { ConnectorFreeproxiesFactory } from './freeproxies.factory';
         SharedSpxModule,
     ],
     declarations: [
-        ConnectorFreeproxiesComponent, CredentialFreeproxiesComponent,
+        ConnectorFreeproxiesComponent,
+        CredentialFreeproxiesComponent,
+        FreeproxiesComponent,
+        FreeproxiesAddComponent,
+        SourceAddComponent,
+        SourcesComponent,
     ],
     providers: [
         ConnectorFreeproxiesFactory,

@@ -62,112 +62,23 @@
 
 @if (!createMode) {
     <c-row>
+        <c-col><h5 class="card-title">Sources</h5></c-col>
+    </c-row>
+
+    <source-add (add)="addSource($event)"></source-add>
+
+    <sources
+        [sources]="sources"
+        (remove)="removeSources($event)"></sources>
+
+    <c-row>
         <c-col><h5 class="card-title">Proxies</h5></c-col>
     </c-row>
 
-    <c-row>
-        <label cCol md="2" for="freeproxiesAdd" class="form-label">Add new proxies</label>
+    <freeproxies-add (add)="addFreeproxies($event)"></freeproxies-add>
 
-        <c-col md="10">
-            <c-input-group>
-                <textarea id="freeproxiesAdd" class="form-control" [(ngModel)]="freeproxiesAdd"></textarea>
-
-                <button
-                    cButton
-                    color="secondary"
-                    variant="outline"
-                    [disabled]="freeproxiesAdd.length <= 0"
-                    (click)="addFreeproxies()">
-                    <svg cIcon name="cilPlus"></svg>
-                </button>
-            </c-input-group>
-        </c-col>
-    </c-row>
-
-    @if (freeproxies.length > 0) {
-        <c-row>
-            <c-col md="12">
-                <table cTable small>
-                    <thead>
-                        <tr>
-                            <th scope="col" class="col-freeproxy-type">Type</th>
-
-                            <th scope="col" class="col-freeproxy-address-in">Inbound Address</th>
-
-                            <th scope="col" class="col-freeproxy-status">Status</th>
-
-                            <th scope="col" class="col-freeproxy-address-out">Outbound Address</th>
-
-                            <th scope="col" class="col-actions">
-                                <button
-                                    cButton
-                                    color="secondary"
-                                    variant="outline"
-                                    cTooltip="Remove offline proxies now"
-                                    cTooltipPlacement="top"
-                                    (click)="removeFreeproxiesOfflineWithConfirm()">
-                                    <svg cIcon name="cilPowerStandby"></svg>
-                                </button>
-
-                                <button
-                                    cButton
-                                    color="secondary"
-                                    variant="outline"
-                                    cTooltip="Remove duplicate outbound IP addresses now"
-                                    cTooltipPlacement="top"
-                                    (click)="removeFreeproxiesDuplicateWithConfirm()">
-                                    <svg cIcon name="cilMoney"></svg>
-                                </button>
-
-                                <button
-                                    cButton
-                                    color="primary"
-                                    cTooltip="Remove all proxies"
-                                    cTooltipPlacement="top"
-                                    (click)="removeFreeproxiesAllWithConfirm()">
-                                    <svg cIcon name="cilTrash"></svg>
-                                </button>
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @for (freeproxy of freeproxies; track freeproxy.key) {
-                            <tr>
-                                <td class="col-freeproxy-type">
-                                    {{ freeproxy.type }}
-                                </td>
-
-                                <td class="col-freeproxy-address-in">
-                                    {{ freeproxy.key }}
-                                </td>
-
-                                <td class="col-freeproxy-status">
-                                    <fingerprint-status
-                                        [fingerprint]="freeproxy.fingerprint"
-                                        [error]="freeproxy.fingerprintError"></fingerprint-status>
-                                </td>
-
-                                <td class="col-freeproxy-address-out">
-                                    <fingerprint-address [fingerprint]="freeproxy.fingerprint"></fingerprint-address>
-                                </td>
-
-                                <td class="col-actions">
-                                    <button
-                                        cButton
-                                        color="secondary"
-                                        variant="outline"
-                                        (click)="removeFreeproxyWithConfirm(freeproxy)">
-                                        <svg cIcon name="cilTrash"></svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-                <table-pagination [(pageCurrent)]="pageCurrent" [pageMax]="pageMax"></table-pagination>
-            </c-col>
-        </c-row>
-    }
+    <freeproxies
+        [freeproxies]="freeproxies"
+        [itemsPerPage]="10"
+        (remove)="removeFreeproxies($event)"></freeproxies>
 }

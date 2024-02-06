@@ -1,0 +1,68 @@
+<form cForm [formGroup]="form" (ngSubmit)="create()">
+    <c-row>
+        @if (form.controls['url']; as c) {
+            <label cCol md="2" for="url" class="form-label">Add new source</label>
+
+            <c-col md="4">
+                <input
+                    type="text"
+                    cFormControl
+                    id="url"
+                    formControlName="url"
+                    placeholder="Enter the URL"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                URL is required.
+                            }
+                            @if (errs['url']) {
+                                URL has a wrong format.
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        }
+
+        @if (form.controls['delay']; as c) {
+            <label cCol md="2" for="delay" class="form-label">Refresh Delay</label>
+
+            <c-col md="3">
+                <input
+                    type="number"
+                    cFormControl
+                    id="delay"
+                    formControlName="delay"
+                    placeholder="Enter the refresh delay (in ms)"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                URL is required.
+                            }
+                            @if (errs['min']) {
+                                Timeout should be at least 10s.
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        }
+
+        <c-col md="1">
+            <button
+                cButton
+                type="submit"
+                color="secondary"
+                variant="outline"
+                [disabled]="!form.valid">
+                <svg cIcon name="cilPlus"></svg>
+            </button>
+        </c-col>
+    </c-row>
+</form>

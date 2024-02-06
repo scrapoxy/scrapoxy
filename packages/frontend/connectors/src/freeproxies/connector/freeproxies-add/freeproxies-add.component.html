@@ -1,0 +1,37 @@
+<form cForm [formGroup]="form" (ngSubmit)="create()">
+    @if (form.controls['list']; as c) {
+        <c-row>
+            <label cCol md="2" for="list" class="form-label">Add new proxies</label>
+
+            <c-col md="10">
+                <c-input-group [class]="{'is-invalid': c.invalid}">
+                    <textarea
+                        cFormControl
+                        id="list"
+                        formControlName="list"
+                        placeholder="Enter list of proxies, one per line."
+                        [valid]="c.dirty || c.touched ? c.valid : undefined"></textarea>
+
+                    <button
+                        cButton
+                        type="submit"
+                        color="secondary"
+                        variant="outline"
+                        [disabled]="!form.valid">
+                        <svg cIcon name="cilPlus"></svg>
+                    </button>
+                </c-input-group>
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                A list is required.
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</form>

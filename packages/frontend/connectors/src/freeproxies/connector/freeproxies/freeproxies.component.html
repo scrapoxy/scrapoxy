@@ -1,0 +1,89 @@
+<c-row>
+    <c-col md="12">
+        @if (freeproxies.length > 0) {
+            <table cTable small>
+                <thead>
+                <tr>
+                    <th scope="col" class="col-freeproxy-type">Type</th>
+
+                    <th scope="col" class="col-freeproxy-address-in">Inbound Address</th>
+
+                    <th scope="col" class="col-freeproxy-status">Status</th>
+
+                    <th scope="col" class="col-freeproxy-address-out">Outbound Address</th>
+
+                    <th scope="col" class="col-actions">
+                        <button
+                            cButton
+                            color="secondary"
+                            variant="outline"
+                            cTooltip="Remove offline proxies now"
+                            cTooltipPlacement="top"
+                            (click)="removeOfflineWithConfirm()">
+                            <svg cIcon name="cilPowerStandby"></svg>
+                        </button>
+
+                        <button
+                            cButton
+                            color="secondary"
+                            variant="outline"
+                            cTooltip="Remove duplicate outbound IP addresses now"
+                            cTooltipPlacement="top"
+                            (click)="removeDuplicateWithConfirm()">
+                            <svg cIcon name="cilMoney"></svg>
+                        </button>
+
+                        <button
+                            cButton
+                            color="primary"
+                            cTooltip="Remove all proxies"
+                            cTooltipPlacement="top"
+                            (click)="removeAllWithConfirm()">
+                            <svg cIcon name="cilTrash"></svg>
+                        </button>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    @for (freeproxy of view; track freeproxy.key) {
+                        <tr>
+                            <td class="col-freeproxy-type">
+                                {{ freeproxy.type }}
+                            </td>
+
+                            <td class="col-freeproxy-address-in">
+                                {{ freeproxy.key }}
+                            </td>
+
+                            <td class="col-freeproxy-status">
+                                <fingerprint-status
+                                    [fingerprint]="freeproxy.fingerprint"
+                                    [error]="freeproxy.fingerprintError"></fingerprint-status>
+                            </td>
+
+                            <td class="col-freeproxy-address-out">
+                                <fingerprint-address [fingerprint]="freeproxy.fingerprint"></fingerprint-address>
+                            </td>
+
+                            <td class="col-actions">
+                                <button
+                                    cButton
+                                    color="secondary"
+                                    variant="outline"
+                                    (click)="removeWithConfirm(freeproxy)">
+                                    <svg cIcon name="cilTrash"></svg>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <table-pagination [(pageCurrent)]="pageCurrent" [pageMax]="pageMax"></table-pagination>
+        }
+        @else {
+            No proxies in the list.
+        }
+    </c-col>
+</c-row>
