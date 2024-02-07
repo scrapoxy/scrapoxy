@@ -3,26 +3,33 @@ import type {
     ValidationErrors,
     ValidatorFn,
 } from '@angular/forms';
-import type { IOptionalValue } from '@scrapoxy/common';
+import type { IRange } from '@scrapoxy/common';
 
 
-export interface IValidatorOptionalNumberOptions {
+export interface IValidatorDelayRangeOptions {
     min?: number;
     max?: number;
 }
 
 
-export function ValidatorOptionalNumber(opts?: IValidatorOptionalNumberOptions): ValidatorFn {
+export function ValidatorDelayRange(opts?: IValidatorDelayRangeOptions): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-        const optional = control.value as IOptionalValue<any>;
+        const range = control.value as IRange;
 
-        if (!optional) {
+        if (!range) {
             return null;
+        }
+
+        if (range.min > range.max) {
+            return {
+                inverted: true,
+            };
         }
 
         if (opts) {
             if (opts.min !== undefined) {
-                if (optional.value < opts.min) {
+                if (range.min < opts.min ||
+                    range.max < opts.min) {
                     return {
                         min: true,
                     };
@@ -30,7 +37,8 @@ export function ValidatorOptionalNumber(opts?: IValidatorOptionalNumberOptions):
             }
 
             if (opts.max !== undefined) {
-                if (optional.value >= opts.max) {
+                if (range.min > opts.max ||
+                    range.max > opts.max) {
                     return {
                         max: true,
                     };

@@ -4,9 +4,7 @@
             <label cLabel cCol md="2" for="freeproxiesTimeoutDisconnected">Freeproxies Timeout</label>
 
             <c-col md="10">
-                <input
-                    type="number"
-                    cFormControl
+                <input-delay
                     id="freeproxiesTimeoutDisconnected"
                     formControlName="freeproxiesTimeoutDisconnected"
                     placeholder="Enter the maximum time to reach freeproxies (in ms)"
@@ -37,7 +35,7 @@
             </label>
 
             <c-col md="10">
-                <input-optional-number
+                <input-delay-optional
                     id="freeproxiesTimeoutUnreachable"
                     formControlName="freeproxiesTimeoutUnreachable"
                     placeholder="Enter the maximum time to reach freeproxies (in ms)"

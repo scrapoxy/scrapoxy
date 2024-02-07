@@ -23,7 +23,7 @@ import {
     EventsService,
     ProjectCurrentService,
     ToastsService,
-    ValidatorOptionalNumber,
+    ValidatorDelayOptional,
 } from '@scrapoxy/frontend-sdk';
 import { Subscription } from 'rxjs';
 import type {
@@ -111,7 +111,7 @@ export class ConnectorUpdateComponent implements OnInit, OnDestroy, IHasModifica
                 void 0,
                 [
                     Validators.required,
-                    ValidatorOptionalNumber({
+                    ValidatorDelayOptional({
                         min: 500,
                     }),
                 ],
@@ -243,7 +243,7 @@ export class ConnectorUpdateComponent implements OnInit, OnDestroy, IHasModifica
 
             this.toastsService.success(
                 'Connector',
-                `Connector "${this.connector!.name} "validated.`
+                `Connector "${this.connector!.name}" validated.`
             );
         } catch (err: any) {
             console.error(err);

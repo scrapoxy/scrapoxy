@@ -155,9 +155,7 @@
                                 <label cLabel cCol md="2" for="proxiesTimeoutDisconnected">Proxies Timeout</label>
 
                                 <c-col md="10">
-                                    <input
-                                        type="number"
-                                        cFormControl
+                                    <input-delay
                                         id="proxiesTimeoutDisconnected"
                                         formControlName="proxiesTimeoutDisconnected"
                                         placeholder="Enter the maximum time to reach proxies (in ms)"
@@ -186,7 +184,7 @@
                                 <label cLabel cCol md="2" for="proxiesTimeoutUnreachable">Proxies Unreachable</label>
 
                                 <c-col md="10">
-                                    <input-optional-number
+                                    <input-delay-optional
                                         id="proxiesTimeoutUnreachable"
                                         formControlName="proxiesTimeoutUnreachable"
                                         placeholder="Enter the maximum time to reach proxies (in ms)"

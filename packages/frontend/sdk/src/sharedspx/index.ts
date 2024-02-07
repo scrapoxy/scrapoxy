@@ -1,8 +1,10 @@
 export * from './fingerprint';
 
-export * from './input-optional';
+export * from './input-delay';
 
-export * from './input-range';
+export * from './input-delay-optional';
+
+export * from './input-delay-range';
 
 export * from './loading-button';
 

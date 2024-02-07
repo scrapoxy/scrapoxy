@@ -17,8 +17,8 @@ import {
     ConfirmService,
     copyToClipboard,
     ToastsService,
-    ValidatorOptionalNumber,
-    ValidatorRange,
+    ValidatorDelayOptional,
+    ValidatorDelayRange,
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
 import type {
@@ -68,7 +68,7 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
                 void 0,
                 [
                     Validators.required,
-                    ValidatorRange({
+                    ValidatorDelayRange({
                         min: ONE_SECOND_IN_MS * 30,
                     }),
                 ],
@@ -80,7 +80,7 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
                 void 0,
                 [
                     Validators.required,
-                    ValidatorOptionalNumber({
+                    ValidatorDelayOptional({
                         min: ONE_SECOND_IN_MS * 30,
                     }),
                 ],

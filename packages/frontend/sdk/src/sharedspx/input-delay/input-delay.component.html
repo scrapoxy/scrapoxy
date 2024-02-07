@@ -1,0 +1,28 @@
+<c-input-group>
+    <input
+        type="text"
+        cFormControl
+        [ngClass]="{
+            'is-invalid': validValue === false,
+            'is-valid': validValue === true
+        }"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        [value]="value"
+        (keyup)="onValueChange($event)"
+        (focus)="markAsTouched()"/>
+
+    <select
+        cSelect
+        [value]="valueType"
+        [disabled]="disabled"
+        (change)="onTypeChange($event)">
+        <option value="ms">milliseconds</option>
+        <option value="s">seconds</option>
+        <option value="min">minutes</option>
+        <option value="hour">hours</option>
+        <option value="day">days</option>
+        <option value="month">months</option>
+        <option value="year">years</option>
+    </select>
+</c-input-group>

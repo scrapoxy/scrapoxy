@@ -25,7 +25,7 @@ import {
     ConnectorprovidersService,
     ProjectCurrentService,
     ToastsService,
-    ValidatorOptionalNumber,
+    ValidatorDelayOptional,
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
 import type {
@@ -91,7 +91,7 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                 void 0,
                 [
                     Validators.required,
-                    ValidatorOptionalNumber({
+                    ValidatorDelayOptional({
                         min: 500,
                     }),
                 ],

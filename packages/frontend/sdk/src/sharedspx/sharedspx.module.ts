@@ -14,8 +14,9 @@ import {
     FingerprintAddressComponent,
     FingerprintStatusComponent,
 } from './fingerprint';
-import { InputOptionalNumberComponent } from './input-optional';
-import { InputRangeComponent } from './input-range';
+import { InputDelayComponent } from './input-delay';
+import { InputDelayOptionalComponent } from './input-delay-optional';
+import { InputDelayRangeComponent } from './input-delay-range';
 import { LoadingButtonComponent } from './loading-button';
 import { ProjectStatusComponent } from './project-status';
 import { TablePaginationComponent } from './table-pagination';
@@ -24,14 +25,16 @@ import {
     NumberUnit,
     TimeUnit,
 } from './unit/unit.pipe';
+import { ConnectorprovidersModule } from '../connectors';
 
 
 const DECLARATIONS = [
     FileUnit,
     FingerprintAddressComponent,
     FingerprintStatusComponent,
-    InputOptionalNumberComponent,
-    InputRangeComponent,
+    InputDelayComponent,
+    InputDelayOptionalComponent,
+    InputDelayRangeComponent,
     LoadingButtonComponent,
     NumberUnit,
     TablePaginationComponent,
@@ -52,6 +55,7 @@ const DECLARATIONS = [
         RouterModule,
         TooltipModule,
         ReactiveFormsModule,
+        ConnectorprovidersModule,
     ],
     declarations: [
         ...DECLARATIONS,

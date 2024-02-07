@@ -16,7 +16,21 @@
         }"
         [placeholder]="placeholder"
         [disabled]="disabled || !optionalEnabled"
-        [value]="optionalEnabled ? optionalValue : '-'"
+        [value]="optionalValue"
         (keyup)="onValueChange($event)"
         (focus)="markAsTouched()" />
+
+    <select
+        cSelect
+        [disabled]="disabled || !optionalEnabled"
+        [value]="optionalValueType"
+        (change)="onTypeChange($event)">
+        <option value="ms">milliseconds</option>
+        <option value="s">seconds</option>
+        <option value="min">minutes</option>
+        <option value="hour">hours</option>
+        <option value="day">days</option>
+        <option value="month">months</option>
+        <option value="year">years</option>
+    </select>
 </c-input-group>

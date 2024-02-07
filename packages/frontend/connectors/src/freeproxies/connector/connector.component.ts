@@ -23,7 +23,7 @@ import {
     CommanderFrontendClientService,
     EventsService,
     ToastsService,
-    ValidatorOptionalNumber,
+    ValidatorDelayOptional,
 } from '@scrapoxy/frontend-sdk';
 import {
     Subject,
@@ -96,7 +96,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
                 void 0,
                 [
                     Validators.required,
-                    ValidatorOptionalNumber({
+                    ValidatorDelayOptional({
                         min: 500,
                     }),
                 ],

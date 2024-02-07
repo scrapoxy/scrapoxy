@@ -15,8 +15,8 @@ import {
 import {
     CommanderFrontendClientService,
     ToastsService,
-    ValidatorOptionalNumber,
-    ValidatorRange,
+    ValidatorDelayOptional,
+    ValidatorDelayRange,
 } from '@scrapoxy/frontend-sdk';
 import type {
     ICommanderFrontendClient,
@@ -52,7 +52,7 @@ export class ProjectCreateComponent implements IHasModification {
                 },
                 [
                     Validators.required,
-                    ValidatorRange({
+                    ValidatorDelayRange({
                         min: ONE_SECOND_IN_MS * 30,
                     }),
                 ],
@@ -67,7 +67,7 @@ export class ProjectCreateComponent implements IHasModification {
                 },
                 [
                     Validators.required,
-                    ValidatorOptionalNumber({
+                    ValidatorDelayOptional({
                         min: ONE_SECOND_IN_MS * 30,
                     }),
                 ],

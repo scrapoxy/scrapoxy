@@ -4,23 +4,31 @@ import {
     Input,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { parseNumber } from '@scrapoxy/frontend-sdk';
+import {
+    ETimeType,
+    fromDelay,
+    parseNumber,
+    toDelay,
+} from '@scrapoxy/frontend-sdk';
 import type { ControlValueAccessor } from '@angular/forms';
 import type { IRange } from '@scrapoxy/common';
 
 
 @Component({
-    selector: 'input-range',
-    templateUrl: './input-range.component.html',
+    selector: 'input-delay-range',
+    templateUrl: './input-delay-range.component.html',
+    styleUrls: [
+        './input-delay-range.component.scss',
+    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: InputRangeComponent,
+            useExisting: InputDelayRangeComponent,
         },
     ],
 })
-export class InputRangeComponent implements ControlValueAccessor {
+export class InputDelayRangeComponent implements ControlValueAccessor {
     @Input()
     placeholderMin = '';
 
@@ -51,7 +59,11 @@ export class InputRangeComponent implements ControlValueAccessor {
 
     rangeMin: string;
 
+    rangeMinType: ETimeType;
+
     rangeMax: string;
+
+    rangeMaxType: ETimeType;
 
     rangeEnabled: boolean;
 
@@ -74,12 +86,32 @@ export class InputRangeComponent implements ControlValueAccessor {
         this.triggerOnChange();
     }
 
+    onMinTypeChange(e: any): void {
+        if (this.disabled) {
+            return;
+        }
+
+        this.rangeMinType = e.target.value ?? ETimeType.MS;
+
+        this.triggerOnChange();
+    }
+
     onMaxChange(e: any): void {
         if (this.disabled) {
             return;
         }
 
         this.rangeMax = e.target.value ?? '';
+
+        this.triggerOnChange();
+    }
+
+    onMaxTypeChange(e: any): void {
+        if (this.disabled) {
+            return;
+        }
+
+        this.rangeMaxType = e.target.value ?? ETimeType.MS;
 
         this.triggerOnChange();
     }
@@ -101,12 +133,32 @@ export class InputRangeComponent implements ControlValueAccessor {
     writeValue(range: IRange | undefined): void {
         if (range) {
             this.rangeEnabled = range.enabled;
-            this.rangeMin = range.min.toString();
-            this.rangeMax = range.max.toString();
+
+            const delayMin = toDelay(range.min);
+
+            if (delayMin) {
+                this.rangeMin = delayMin.value.toString();
+                this.rangeMinType = delayMin.type;
+            } else {
+                this.rangeMin = '';
+                this.rangeMinType = ETimeType.MS;
+            }
+
+            const delayMax = toDelay(range.max);
+
+            if (delayMax) {
+                this.rangeMax = delayMax.value.toString();
+                this.rangeMaxType = delayMax.type;
+            } else {
+                this.rangeMax = '';
+                this.rangeMaxType = ETimeType.MS;
+            }
         } else {
             this.rangeEnabled = false;
             this.rangeMin = '';
+            this.rangeMinType = ETimeType.MS;
             this.rangeMax = '';
+            this.rangeMaxType = ETimeType.MS;
         }
     }
 
@@ -123,17 +175,39 @@ export class InputRangeComponent implements ControlValueAccessor {
     }
 
     private triggerOnChange() {
-        const min = parseNumber(this.rangeMin);
+        const minValue = parseNumber(this.rangeMin);
 
-        if (min === undefined) {
+        if (minValue === undefined) {
             this.onChange(void 0);
 
             return;
         }
 
-        const max = parseNumber(this.rangeMax);
+        const min = fromDelay({
+            value: minValue,
+            type: this.rangeMinType,
+        });
 
-        if (max === undefined) {
+        if (!min) {
+            this.onChange(void 0);
+
+            return;
+        }
+
+        const maxValue = parseNumber(this.rangeMax);
+
+        if (maxValue === undefined) {
+            this.onChange(void 0);
+
+            return;
+        }
+
+        const max = fromDelay({
+            value: maxValue,
+            type: this.rangeMaxType,
+        });
+
+        if (!max) {
             this.onChange(void 0);
 
             return;

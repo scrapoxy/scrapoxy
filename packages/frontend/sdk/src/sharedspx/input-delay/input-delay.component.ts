@@ -4,23 +4,30 @@ import {
     Input,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { parseNumber } from '@scrapoxy/frontend-sdk';
+import {
+    fromDelay,
+    toDelay,
+} from './delay.helpers';
+import { ETimeType } from './delay.interface';
+import { parseNumber } from '../../helpers';
 import type { ControlValueAccessor } from '@angular/forms';
-import type { IOptionalValue } from '@scrapoxy/common';
 
 
 @Component({
-    selector: 'input-optional-number',
-    templateUrl: './input-optional.component.html',
+    selector: 'input-delay',
+    templateUrl: './input-delay.component.html',
+    styleUrls: [
+        './input-delay.component.scss',
+    ],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             multi: true,
-            useExisting: InputOptionalNumberComponent,
+            useExisting: InputDelayComponent,
         },
     ],
 })
-export class InputOptionalNumberComponent implements ControlValueAccessor {
+export class InputDelayComponent implements ControlValueAccessor {
     @Input()
     placeholder = '';
 
@@ -46,16 +53,16 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
 
     validValue: boolean | undefined;
 
-    optionalValue: string;
+    value: string;
 
-    optionalEnabled: boolean;
+    valueType: ETimeType;
 
     disabled = false;
 
     constructor(private readonly elRef: ElementRef) {}
 
     // eslint-disable-next-line unused-imports/no-unused-vars
-    onChange = (optional: IOptionalValue<number> | undefined) => {};
+    onChange = (value: number | undefined) => {};
 
     onTouched = () => {};
 
@@ -64,17 +71,17 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
             return;
         }
 
-        this.optionalValue = e.target.value ?? '';
+        this.value = e.target.value ?? '';
 
         this.triggerOnChange();
     }
 
-    toggleEnabled() {
+    onTypeChange(e: any): void {
         if (this.disabled) {
             return;
         }
 
-        this.optionalEnabled = !this.optionalEnabled;
+        this.valueType = e.target.value ?? ETimeType.MS;
 
         this.triggerOnChange();
     }
@@ -83,13 +90,20 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
         this.disabled = isDisabled;
     }
 
-    writeValue(optional: IOptionalValue<number> | undefined): void {
-        if (optional) {
-            this.optionalEnabled = optional.enabled;
-            this.optionalValue = optional.value.toString();
+    writeValue(value: number | undefined): void {
+        if (value) {
+            const delay = toDelay(value);
+
+            if (delay) {
+                this.value = delay.value.toString();
+                this.valueType = delay.type;
+            } else {
+                this.value = '';
+                this.valueType = ETimeType.MS;
+            }
         } else {
-            this.optionalEnabled = false;
-            this.optionalValue = '';
+            this.value = '';
+            this.valueType = ETimeType.MS;
         }
     }
 
@@ -106,7 +120,7 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
     }
 
     private triggerOnChange() {
-        const value = parseNumber(this.optionalValue);
+        const value = parseNumber(this.value);
 
         if (value === undefined) {
             this.onChange(void 0);
@@ -114,11 +128,11 @@ export class InputOptionalNumberComponent implements ControlValueAccessor {
             return;
         }
 
-        const optional: IOptionalValue<number> = {
-            enabled: this.optionalEnabled,
+        const valueFinal = fromDelay({
             value,
-        };
+            type: this.valueType,
+        });
 
-        this.onChange(optional);
+        this.onChange(valueFinal);
     }
 }
