@@ -125,9 +125,17 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             switch (event.id) {
                 case SourcesCreatedEvent.id: {
                     const created = event as SourcesCreatedEvent;
+                    let message: string;
+
+                    if (created.sources.length > 1) {
+                        message = `${created.sources.length} sources added.`;
+                    } else {
+                        message = '1 source added.';
+                    }
+
                     this.toastsService.success(
                         'Proxy List',
-                        `${created.sources.length} sources added.`
+                        message
                     );
 
                     break;
@@ -135,9 +143,17 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
                 case SourcesRemovedEvent.id: {
                     const removed = event as SourcesRemovedEvent;
+                    let message: string;
+
+                    if (removed.sources.length > 1) {
+                        message = `${removed.sources.length} sources removed.`;
+                    } else {
+                        message = '1 source removed.';
+                    }
+
                     this.toastsService.success(
                         'Proxy List',
-                        `${removed.sources.length} sources removed.`
+                        message
                     );
 
                     break;
@@ -145,9 +161,17 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
 
                 case FreeproxiesCreatedEvent.id: {
                     const created = event as FreeproxiesCreatedEvent;
+                    let message: string;
+
+                    if (created.freeproxies.length > 1) {
+                        message = `${created.freeproxies.length} proxies added.`;
+                    } else {
+                        message = '1 proxy added.';
+                    }
+
                     this.toastsService.success(
                         'Proxy List',
-                        `${created.freeproxies.length} proxies added.`
+                        message
                     );
 
                     break;
@@ -157,9 +181,17 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
                     const sync = event as FreeproxiesSynchronizedEvent;
 
                     if (sync.actions.removed.length > 0) {
+                        let message: string;
+
+                        if (sync.actions.removed.length > 1) {
+                            message = `${sync.actions.removed.length} proxies removed.`;
+                        } else {
+                            message = '1 proxy removed.';
+                        }
+
                         this.toastsService.success(
                             'Proxy List',
-                            `${sync.actions.removed.length} proxies removed.`
+                            message
                         );
                     }
 
