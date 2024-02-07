@@ -76,7 +76,7 @@ export class UserAddComponent implements IHasModification, OnInit {
 
             this.toastsService.success(
                 'User',
-                `User ${user.name} add.`
+                `User "${user.name}" add.`
             );
 
             await this.router.navigate([
