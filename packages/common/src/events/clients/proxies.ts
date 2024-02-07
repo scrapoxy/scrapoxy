@@ -25,7 +25,7 @@ export class EventsProxiesClient {
 
     private readonly connectorsNameMap = new Map<string, string>();
 
-    private now = Date.now();
+    private nowTime = Date.now();
 
     private nowTimeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -99,7 +99,7 @@ export class EventsProxiesClient {
         views: IConnectorProxiesView[]
     ) {
         const nowUpdate = () => {
-            this.now = Date.now();
+            this.nowTime = Date.now();
 
             if (this.nowTimeout) {
                 clearTimeout(this.nowTimeout);
@@ -108,7 +108,7 @@ export class EventsProxiesClient {
             for (const proxy of this.proxies) {
                 proxy.elapsed = Math.max(
                     0,
-                    Math.floor((this.now - proxy.createdTs) / 1000)
+                    Math.floor((this.nowTime - proxy.createdTs) / 1000)
                 );
             }
 
@@ -177,7 +177,7 @@ export class EventsProxiesClient {
                     online: isProxyOnline(proxy),
                     elapsed: Math.max(
                         0,
-                        Math.floor((this.now - proxy.createdTs) / 1000)
+                        Math.floor((this.nowTime - proxy.createdTs) / 1000)
                     ),
                     requests: proxy.requests,
                     bytesReceived: proxy.bytesReceived,
@@ -267,7 +267,7 @@ export class EventsProxiesClient {
                     online: isProxyOnline(proxy),
                     elapsed: Math.max(
                         0,
-                        Math.floor((this.now - proxy.createdTs) / 1000)
+                        Math.floor((this.nowTime - proxy.createdTs) / 1000)
                     ),
                     requests: 0,
                     bytesReceived: 0,
