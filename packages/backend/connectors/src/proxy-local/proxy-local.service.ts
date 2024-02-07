@@ -3,7 +3,6 @@ import { Agents } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_PROXY_LOCAL_TYPE,
     EProxyStatus,
-    safeJoin,
 } from '@scrapoxy/common';
 import { ProxyLocalApi } from './api';
 import type { IConnectorProxyLocalCredential } from './proxy-local.interface';
@@ -84,11 +83,10 @@ export class ConnectorProxyLocalService implements IConnectorService {
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
-        await Promise.all(proxiesKeys.map((key) =>
-            this.api.removeSession(key)));
+        await Promise.all(keys.map((p) =>
+            this.api.removeSession(p.key)));
 
         return [];
     }

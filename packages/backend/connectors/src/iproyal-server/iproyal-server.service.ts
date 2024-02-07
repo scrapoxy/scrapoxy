@@ -4,7 +4,6 @@ import {
     CONNECTOR_IPROYAL_SERVER_TYPE,
     EProxyStatus,
     EProxyType,
-    safeJoin,
 } from '@scrapoxy/common';
 import { IproyalServerApi } from './api';
 import type {
@@ -88,7 +87,7 @@ export class ConnectorIproyalService implements IConnectorService {
     }
 
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`getProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
         const proxies = await this.api.getAllProxies(
             this.connectorConfig.product,
@@ -104,7 +103,7 @@ export class ConnectorIproyalService implements IConnectorService {
     async createProxies(
         count: number, excludeKeys: string[]
     ): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`createProxies(): count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`createProxies(): count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const proxies = await this.api.getAllProxies(
             this.connectorConfig.product,
@@ -122,15 +121,14 @@ export class ConnectorIproyalService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         // Not used
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
-        return proxiesKeys;
+        return keys.map((p) => p.key);
     }
 }

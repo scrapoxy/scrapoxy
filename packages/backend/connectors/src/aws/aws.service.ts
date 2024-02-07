@@ -3,7 +3,6 @@ import { Agents } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_AWS_TYPE,
     EProxyStatus,
-    safeJoin,
 } from '@scrapoxy/common';
 import { AwsApi } from './api';
 import type {
@@ -120,14 +119,15 @@ export class ConnectorAwsService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         await this.api.startInstances(keys);
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
+
         const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
 
         await this.api.terminateInstances(proxiesKeys);
 

@@ -8,7 +8,6 @@ import {
     CONNECTOR_FREEPROXIES_TYPE,
     EProjectStatus,
     formatFreeproxyId,
-    safeJoin,
     toConnectorView,
     toCredentialView,
     toOptionalValue,
@@ -997,8 +996,7 @@ export class CommanderFrontendService {
     async askProxiesToRemove(
         projectId: string, proxiesIds: IProxyIdToRemove[]
     ): Promise<void> {
-        const ids = proxiesIds.map((p) => p.id);
-        this.logger.debug(`askProxiesToRemove(): projectId=${projectId} / proxiesIds=${safeJoin(ids)}`);
+        this.logger.debug(`askProxiesToRemove(): projectId=${projectId} / proxiesIds.length=${proxiesIds.length}`);
 
         await validate(
             schemaProxiesToRemove,
@@ -1017,6 +1015,7 @@ export class CommanderFrontendService {
             );
         }
 
+        const ids = proxiesIds.map((p) => p.id);
         const proxiesFound = await this.storageproviders.storage.getProjectProxiesByIds(
             projectId,
             ids,
@@ -1102,27 +1101,39 @@ export class CommanderFrontendService {
             );
         }
 
+        const freeproxiesExisting = await this.storageproviders.storage.getAllProjectFreeproxiesById(
+            projectId,
+            connectorId
+        );
+        const freeproxiesIds = new Set(freeproxiesExisting.map((fp) => fp.id));
         const config = connector.config as IConnectorFreeproxyConfig;
+        const freeproxiesToCreate = freeproxies.map((fp) => ({
+            id: formatFreeproxyId(
+                connectorId,
+                fp
+            ),
+            projectId,
+            connectorId: connectorId,
+            key: fp.key,
+            type: fp.type,
+            address: fp.address,
+            auth: fp.auth,
+            timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
+            timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
+            disconnectedTs: nowTime,
+            fingerprint: null,
+            fingerprintError: null,
+        }))
+            .filter((fp) => !freeproxiesIds.has(fp.id));
+
+        if (freeproxiesToCreate.length <= 0) {
+            return;
+        }
+
         const create: IFreeproxiesToCreate = {
             projectId,
             connectorId,
-            freeproxies: freeproxies.map((fp) => ({
-                id: formatFreeproxyId(
-                    connectorId,
-                    fp
-                ),
-                projectId,
-                connectorId: connectorId,
-                key: fp.key,
-                type: fp.type,
-                address: fp.address,
-                auth: fp.auth,
-                timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
-                timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
-                disconnectedTs: nowTime,
-                fingerprint: null,
-                fingerprintError: null,
-            })),
+            freeproxies: freeproxiesToCreate,
         };
 
         await this.storageproviders.storage.createFreeproxies(create);
@@ -1185,18 +1196,29 @@ export class CommanderFrontendService {
             );
         }
 
-        const create = sources.map((source) => {
-            const hash = createHash('sha256')
-                .update(source.url)
-                .digest('hex');
+        const sourcesExisting = await this.storageproviders.storage.getAllProjectSourcesById(
+            projectId,
+            connectorId
+        );
+        const sourcesUrls = new Set(sourcesExisting.map((s) => s.url));
+        const create = sources
+            .filter((source) => !sourcesUrls.has(source.url))
+            .map((source) => {
+                const hash = createHash('sha256')
+                    .update(source.url)
+                    .digest('hex');
 
-            return {
-                ...source,
-                projectId,
-                connectorId,
-                id: `${connectorId}:${hash}`,
-            };
-        });
+                return {
+                    ...source,
+                    projectId,
+                    connectorId,
+                    id: `${connectorId}:${hash}`,
+                };
+            });
+
+        if (create.length <= 0) {
+            return;
+        }
 
         await this.storageproviders.storage.createSources(create);
     }

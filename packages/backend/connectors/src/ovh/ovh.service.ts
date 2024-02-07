@@ -4,7 +4,6 @@ import {
     CONNECTOR_OVH_TYPE,
     EProxyStatus,
     randomName,
-    safeJoin,
 } from '@scrapoxy/common';
 import { OvhApi } from './api';
 import { getOvhExternalIp } from './ovh.helpers';
@@ -126,7 +125,7 @@ export class ConnectorOvhService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         await Promise.all(keys.map((key) => this.api.startInstance(
             this.connectorConfig.projectId,
@@ -135,12 +134,11 @@ export class ConnectorOvhService implements IConnectorService {
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
-        await Promise.all(proxiesKeys.map((key) => this.api.removeInstance(
+        await Promise.all(keys.map((p) => this.api.removeInstance(
             this.connectorConfig.projectId,
-            key
+            p.key
         )));
 
         return [];

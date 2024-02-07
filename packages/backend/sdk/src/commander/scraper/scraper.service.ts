@@ -4,7 +4,6 @@ import {
 } from '@nestjs/common';
 import {
     EProjectStatus,
-    safeJoin,
     toProjectView,
 } from '@scrapoxy/common';
 import { ProxiesNotFoundError } from '../../errors';
@@ -85,8 +84,7 @@ export class CommanderScraperService {
         token: string,
         proxiesIds: IProxyIdToRemove[]
     ): Promise<void> {
-        const ids = proxiesIds.map((p) => p.id);
-        this.logger.debug(`askProxiesToRemove(): token=${token} / proxiesIds=${safeJoin(ids)}`);
+        this.logger.debug(`askProxiesToRemove(): token=${token} / proxiesIds.length=${proxiesIds.length}`);
 
         await validate(
             schemaProxiesToRemove,
@@ -106,6 +104,7 @@ export class CommanderScraperService {
         }
 
         const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
+        const ids = proxiesIds.map((p) => p.id);
         const proxiesFound = await this.storageproviders.storage.getProjectProxiesByIds(
             projectId,
             ids,

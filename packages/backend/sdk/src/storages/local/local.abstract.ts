@@ -24,7 +24,6 @@ import {
     ProxiesSynchronizedEvent,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
-    safeJoin,
     SourcesCreatedEvent,
     SourcesRemovedEvent,
     TaskCreatedEvent,
@@ -77,6 +76,7 @@ import {
     NoFreeproxyToRefreshError,
     NoProjectProxyError,
     NoProxyToRefreshError,
+    NoSourceToRefreshError,
     NoTaskToRefreshError,
     ParamNotFoundError,
     ProjectNameAlreadyExistsError,
@@ -84,6 +84,7 @@ import {
     ProjectTokenNotFoundError,
     ProxiesNotFoundError,
     ProxyNotFoundError,
+    SourceNotFoundError,
     TaskNotFoundError,
     UserEmailAlreadyExistsError,
     UserNotFoundByEmailError,
@@ -1415,7 +1416,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
     //////////// PROXIES ////////////
     async getProxiesByIds(proxiesIds: string[]): Promise<IProxyData[]> {
-        this.logger.debug(`getProxiesByIds(): proxiesIds=${safeJoin(proxiesIds)}`);
+        this.logger.debug(`getProxiesByIds(): proxiesIds.length=${proxiesIds.length}`);
 
         const proxies: IProxyData[] = [];
         for (const id of proxiesIds) {
@@ -1432,7 +1433,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
     async getProjectProxiesByIds(
         projectId: string, proxiesIds: string[], removing?: boolean
     ): Promise<IProxyData[]> {
-        this.logger.debug(`getProjectProxiesByIds(): projectId=${projectId} / proxiesIds=${safeJoin(proxiesIds)} / removing=${removing}`);
+        this.logger.debug(`getProjectProxiesByIds(): projectId=${projectId} / proxiesIds.length=${proxiesIds.length} / removing=${removing}`);
 
         const projectModel = this.projects.get(projectId);
 
@@ -1783,7 +1784,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
     async updateProxiesNextRefreshTs(
         proxiesIds: string[], nextRefreshTs: number
     ): Promise<void> {
-        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds=${safeJoin(proxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
+        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds.length=${proxiesIds.length} / nextRefreshTs=${nextRefreshTs}`);
 
         const idsNotFound: string[] = [];
         for (const id of proxiesIds) {
@@ -1803,7 +1804,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
     //////////// FREE PROXIES ////////////
     async getFreeproxiesByIds(freeproxiesIds: string[]): Promise<IFreeproxy[]> {
-        this.logger.debug(`getFreeproxiesByIds(): freeproxiesIds=${safeJoin(freeproxiesIds)}`);
+        this.logger.debug(`getFreeproxiesByIds(): freeproxiesIds.length=${freeproxiesIds.length}`);
 
         const freeproxies: IFreeproxy[] = [];
         for (const freeproxyModel of this.freeproxies.values()) {
@@ -1842,7 +1843,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
     async getSelectedProjectFreeproxies(
         projectId: string, connectorId: string, keys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys=${safeJoin(keys)}`);
+        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys.length=${keys.length}`);
 
         const projectModel = this.projects.get(projectId);
 
@@ -1867,7 +1868,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
     async getNewProjectFreeproxies(
         projectId: string, connectorId: string, count: number, excludeKeys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const projectModel = this.projects.get(projectId);
 
@@ -2071,7 +2072,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
     async updateFreeproxiesNextRefreshTs(
         freeproxiesIds: string[], nextRefreshTs: number
     ): Promise<void> {
-        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds=${safeJoin(freeproxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
+        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds.length=${freeproxiesIds.length} / nextRefreshTs=${nextRefreshTs}`);
 
         const idsNotFound: string[] = [];
         for (const id of freeproxiesIds) {
@@ -2231,6 +2232,61 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 await this.events.emit(event);
             }
         }
+    }
+
+    async getNextSourceToRefresh(nextRefreshTs: number): Promise<ISource> {
+        this.logger.debug(`getNextSourceToRefresh(): nextRetryTs=${nextRefreshTs}`);
+
+        const sourcesModel = Array.from(this.sources.values())
+            .filter((s) => s.nextRefreshTs < nextRefreshTs);
+
+        if (sourcesModel.length <= 0) {
+            throw new NoSourceToRefreshError();
+        }
+
+        sourcesModel.sort((
+            a, b
+        ) => a.nextRefreshTs - b.nextRefreshTs);
+
+        const sourceModel = sourcesModel[ 0 ];
+
+        return toSource(sourceModel);
+    }
+
+    async updateSourceNextRefreshTs(
+        projectId: string,
+        connectorId: string,
+        sourceId: string,
+        nextRefreshTs: number
+    ): Promise<void> {
+        this.logger.debug(`updateSourceNextRefreshTs(): projectId=${projectId} / connectorId=${connectorId} / sourceId=${sourceId} / nextRefreshTs=${nextRefreshTs}`);
+
+        const projectModel = this.projects.get(projectId);
+
+        if (!projectModel) {
+            throw new ProjectNotFoundError(projectId);
+        }
+
+        const connectorModel = projectModel.connectors.get(connectorId);
+
+        if (!connectorModel) {
+            throw new ConnectorNotFoundError(
+                projectId,
+                connectorId
+            );
+        }
+
+        const sourceModel = connectorModel.sources.get(sourceId);
+
+        if (!sourceModel) {
+            throw new SourceNotFoundError(
+                projectId,
+                connectorId,
+                sourceId
+            );
+        }
+
+        sourceModel.nextRefreshTs = nextRefreshTs;
     }
 
     //////////// TASKS ////////////

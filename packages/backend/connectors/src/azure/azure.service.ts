@@ -4,7 +4,6 @@ import {
     CONNECTOR_AZURE_TYPE,
     randomName,
     randomNames,
-    safeJoin,
 } from '@scrapoxy/common';
 import { AzureApi } from './api';
 import { EAzureDeploymentMode } from './azure.interface';
@@ -130,7 +129,7 @@ export class ConnectorAzureService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         await Promise.all(keys.map((key) => this.api.startVirtualMachine(
             this.connectorConfig.resourceGroupName,
@@ -139,12 +138,11 @@ export class ConnectorAzureService implements IConnectorService {
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
-        await Promise.all(proxiesKeys.map((key) => this.api.deleteVirtualMachine(
+        await Promise.all(keys.map((p) => this.api.deleteVirtualMachine(
             this.connectorConfig.resourceGroupName,
-            key
+            p.key
         )));
 
         return [];

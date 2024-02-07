@@ -4,7 +4,6 @@ import {
     CONNECTOR_PROXIDIZE_TYPE,
     EProxyStatus,
     EProxyType,
-    safeJoin,
 } from '@scrapoxy/common';
 import { ProxidizeApi } from './api';
 import { EProxidizeDeviceStatus } from './proxidize.interface';
@@ -79,7 +78,7 @@ export class ConnectorProxidizeService implements IConnectorService {
     }
 
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`getProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
         const devices = await this.api.getDevices();
         const proxies = devices
@@ -95,7 +94,7 @@ export class ConnectorProxidizeService implements IConnectorService {
     async createProxies(
         count: number, excludeKeys: string[]
     ): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`createProxies(): count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`createProxies(): count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const devices = await this.api.getDevices();
         const proxies = devices
@@ -113,14 +112,13 @@ export class ConnectorProxidizeService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         // Not used
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
         const promises = keys
             .map((proxy) => {
@@ -138,6 +136,6 @@ export class ConnectorProxidizeService implements IConnectorService {
 
         await Promise.all(promises);
 
-        return proxiesKeys;
+        return keys.map((p) => p.key);
     }
 }

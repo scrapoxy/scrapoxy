@@ -5,13 +5,14 @@ import {
 } from '@nestjs/common';
 import {
     addRange,
+    CONNECTOR_FREEPROXIES_TYPE,
     EProjectStatus,
     EProxyStatus,
     fingerprintEquals,
+    formatFreeproxyId,
     formatProxyId,
     fromProxySyncToData,
     generateUseragent,
-    safeJoin,
     sleep,
     toOptionalValue,
 } from '@scrapoxy/common';
@@ -20,6 +21,7 @@ import { COMMANDER_REFRESH_MODULE_CONFIG } from './refresh.constants';
 import { schemaTaskToUpdate } from './refresh.validation';
 import { ConnectorprovidersService } from '../../connectors';
 import {
+    ConnectorWrongTypeError,
     NoFreeproxyToRefreshError,
     NoProxyToRefreshError,
 } from '../../errors';
@@ -29,11 +31,14 @@ import { TasksService } from '../../tasks';
 import type { ICommanderRefreshModuleConfig } from './refresh.module';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
+    IConnectorFreeproxyConfig,
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
     ICreateRemoveLocalProxies,
+    IFreeproxiesToCreate,
     IFreeproxiesToRefresh,
     IFreeproxy,
+    IFreeproxyBase,
     IFreeproxyRefreshed,
     IProjectMetricsAdd,
     IProjectMetricsAddView,
@@ -43,6 +48,7 @@ import type {
     IProxyRefreshed,
     IProxySync,
     IRangeMetrics,
+    ISource,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ISynchronizeRemoteProxies,
@@ -316,17 +322,11 @@ export class CommanderRefreshService implements OnModuleDestroy {
         if (actionsLocal.created.length > 0 ||
             actionsLocal.removed.length > 0) {
             if (actionsLocal.created.length > 0) {
-                const keys = actionsLocal.created.map((p) => p.key);
-                this.logger.debug(`createAndRemoveConnectorProxies: create ${
-                    actionsLocal.created.length
-                } local proxies: ${safeJoin(keys)}`);
+                this.logger.debug(`createAndRemoveConnectorProxies: create ${actionsLocal.created.length} local proxies`);
             }
 
             if (actionsLocal.removed.length > 0) {
-                const keys = actionsLocal.removed.map((p) => p.key);
-                this.logger.debug(`createAndRemoveConnectorProxies: remove ${
-                    actionsLocal.removed.length
-                } local proxies: ${safeJoin(keys)}`);
+                this.logger.debug(`createAndRemoveConnectorProxies: remove ${actionsLocal.removed.length} local proxies`);
             }
 
             promiseSync = this.storageproviders.storage.synchronizeProxies(actionsLocal);
@@ -672,24 +672,15 @@ export class CommanderRefreshService implements OnModuleDestroy {
             actionsLocal.updated.length > 0 ||
             actionsLocal.removed.length > 0) {
             if (actionsLocal.created.length > 0) {
-                const keys = actionsLocal.created.map((p) => p.key);
-                this.logger.debug(`refreshConnectorProxies: create ${
-                    actionsLocal.created.length
-                } local proxies: ${safeJoin(keys)}`);
+                this.logger.debug(`refreshConnectorProxies: create ${actionsLocal.created.length} local proxies`);
             }
 
             if (actionsLocal.updated.length > 0) {
-                const keys = actionsLocal.updated.map((p) => p.key);
-                this.logger.debug(`refreshConnectorProxies: update ${
-                    actionsLocal.updated.length
-                } local proxies: ${safeJoin(keys)}`);
+                this.logger.debug(`refreshConnectorProxies: update ${actionsLocal.updated.length} local proxies`);
             }
 
             if (actionsLocal.removed.length > 0) {
-                const keys = actionsLocal.removed.map((p) => p.key);
-                this.logger.debug(`refreshConnectorProxies: remove ${
-                    actionsLocal.removed.length
-                } local proxies: ${safeJoin(keys)}`);
+                this.logger.debug(`refreshConnectorProxies: remove ${actionsLocal.removed.length} local proxies`);
             }
 
             promiseSync = this.storageproviders.storage.synchronizeProxies(actionsLocal);
@@ -718,16 +709,11 @@ export class CommanderRefreshService implements OnModuleDestroy {
         }
 
         if (orders.keysToStart.length > 0) {
-            this.logger.debug(`refreshConnectorProxies: ask to start ${
-                orders.keysToStart.length
-            } remote proxies: ${safeJoin(orders.keysToStart)}`);
+            this.logger.debug(`refreshConnectorProxies: ask to start ${orders.keysToStart.length} remote proxies`);
         }
 
         if (orders.keysToRemove.length > 0) {
-            const keys = orders.keysToRemove.map((p) => p.key);
-            this.logger.debug(`refreshConnectorProxies: ask to remove ${
-                orders.keysToRemove.length
-            } remote proxies: ${safeJoin(keys)}`);
+            this.logger.debug(`refreshConnectorProxies: ask to remove ${orders.keysToRemove.length} remote proxies`);
         }
 
         return orders;
@@ -858,7 +844,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
         connectorId: string,
         keys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys=${safeJoin(keys)}`);
+        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys.length=${keys.length}`);
 
         if (keys.length <= 0) {
             return [];
@@ -879,7 +865,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
         count: number,
         excludeKeys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const freeproxies = await this.storageproviders.storage.getNewProjectFreeproxies(
             projectId,
@@ -924,6 +910,68 @@ export class CommanderRefreshService implements OnModuleDestroy {
         };
 
         return freeproxiesToRefresh;
+    }
+
+    async createFreeproxies(
+        projectId: string,
+        connectorId: string,
+        freeproxies: IFreeproxyBase[]
+    ): Promise<void> {
+        this.logger.debug(`createFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
+
+        if (freeproxies.length <= 0) {
+            return;
+        }
+
+        const nowTime = Date.now();
+        const connector = await this.storageproviders.storage.getConnectorById(
+            projectId,
+            connectorId
+        );
+
+        if (connector.type !== CONNECTOR_FREEPROXIES_TYPE) {
+            throw new ConnectorWrongTypeError(
+                CONNECTOR_FREEPROXIES_TYPE,
+                connector.type
+            );
+        }
+
+        const freeproxiesExisting = await this.storageproviders.storage.getAllProjectFreeproxiesById(
+            projectId,
+            connectorId
+        );
+        const freeproxiesIds = new Set(freeproxiesExisting.map((fp) => fp.id));
+        const config = connector.config as IConnectorFreeproxyConfig;
+        const freeproxiesToCreate = freeproxies.map((fp) => ({
+            id: formatFreeproxyId(
+                connectorId,
+                fp
+            ),
+            projectId,
+            connectorId: connectorId,
+            key: fp.key,
+            type: fp.type,
+            address: fp.address,
+            auth: fp.auth,
+            timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
+            timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
+            disconnectedTs: nowTime,
+            fingerprint: null,
+            fingerprintError: null,
+        }))
+            .filter((fp) => !freeproxiesIds.has(fp.id));
+
+        if (freeproxiesToCreate.length <= 0) {
+            return;
+        }
+
+        const create: IFreeproxiesToCreate = {
+            projectId,
+            connectorId,
+            freeproxies: freeproxiesToCreate,
+        };
+
+        await this.storageproviders.storage.createFreeproxies(create);
     }
 
     async updateFreeproxies(remoteFreeproxies: IFreeproxyRefreshed[]): Promise<void> {
@@ -991,6 +1039,22 @@ export class CommanderRefreshService implements OnModuleDestroy {
             actions.removed.length > 0) {
             await this.storageproviders.storage.synchronizeFreeproxies(actions);
         }
+    }
+
+    async getNextSourceToRefresh(): Promise<ISource> {
+        this.logger.debug('getNextSourceToRefresh()');
+
+        const nowTime = Date.now();
+        const source = await this.storageproviders.storage.getNextSourceToRefresh(nowTime);
+
+        await this.storageproviders.storage.updateSourceNextRefreshTs(
+            source.projectId,
+            source.connectorId,
+            source.id,
+            nowTime + source.delay
+        );
+
+        return source;
     }
 
     //////////// TASKS ////////////

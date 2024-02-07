@@ -4,7 +4,6 @@ import {
     CONNECTOR_GCP_TYPE,
     EProxyStatus,
     randomNames,
-    safeJoin,
 } from '@scrapoxy/common';
 import { GcpApi } from './api';
 import { getGcpExternalIp } from './gcp.helpers';
@@ -121,7 +120,7 @@ export class ConnectorGcpService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         await Promise.all(keys.map((key) => this.api.startInstance(
             this.connectorConfig.zone,
@@ -130,12 +129,11 @@ export class ConnectorGcpService implements IConnectorService {
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
-        await Promise.all(proxiesKeys.map((key) => this.api.deleteInstance(
+        await Promise.all(keys.map((p) => this.api.deleteInstance(
             this.connectorConfig.zone,
-            key
+            p.key
         )));
 
         return [];

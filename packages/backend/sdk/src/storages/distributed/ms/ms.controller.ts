@@ -24,7 +24,6 @@ import {
     ProjectUserRemovedEvent,
     ProxiesMetricsAddedEvent,
     ProxiesSynchronizedEvent,
-    safeJoin,
     SourcesCreatedEvent,
     SourcesRemovedEvent,
     TaskCreatedEvent,
@@ -66,6 +65,7 @@ import {
     MESSAGE_PROXIES_SYNC,
     MESSAGE_PROXIES_UPDATE_LAST_CONNECTION,
     MESSAGE_PROXIES_UPDATE_NEXT_REFRESH,
+    MESSAGE_SOURCE_UPDATE_NEXT_REFRESH,
     MESSAGE_SOURCES_CREATE,
     MESSAGE_SOURCES_REMOVED,
     MESSAGE_TASKS_CREATE,
@@ -100,6 +100,7 @@ import type {
     IProxyLastConnectionToUpdate,
     IProxyMetricsAdd,
     ISource,
+    ISourceNextRefreshToUpdate,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -595,7 +596,7 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
 
     @EventPattern(MESSAGE_PROXIES_UPDATE_NEXT_REFRESH)
     async updateProxiesNextRefreshTs(update: IProxiesNextRefreshToUpdate): Promise<void> {
-        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds=${safeJoin(update.proxiesIds)} / nextRefreshTs=${update.nextRefreshTs}`);
+        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds.length=${update.proxiesIds.length} / nextRefreshTs=${update.nextRefreshTs}`);
 
         await this.storage.updateProxiesNextRefreshTs(
             update.proxiesIds,
@@ -695,7 +696,7 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
 
     @EventPattern(MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH)
     async updateFreeproxiesNextRefreshTs(update: IFreeproxiesNextRefreshToUpdate): Promise<void> {
-        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds=${safeJoin(update.freeproxiesIds)} / nextRefreshTs=${update.nextRefreshTs}`);
+        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds.length=${update.freeproxiesIds.length} / nextRefreshTs=${update.nextRefreshTs}`);
 
         await this.storage.updateFreeproxiesNextRefreshTs(
             update.freeproxiesIds,
@@ -788,6 +789,18 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
                 events
             ));
         }
+    }
+
+    @EventPattern(MESSAGE_SOURCE_UPDATE_NEXT_REFRESH)
+    async updateSourceNextRefreshTs(update: ISourceNextRefreshToUpdate): Promise<void> {
+        this.logger.debug(`updateSourceNextRefreshTs(): projectId=${update.projectId} / connectorId=${update.connectorId} / sourceId=${update.sourceId} / nextRefreshTs=${update.nextRefreshTs}`);
+
+        await this.storage.updateSourceNextRefreshTs(
+            update.projectId,
+            update.connectorId,
+            update.sourceId,
+            update.nextRefreshTs
+        );
     }
 
     //////////// TASKS ////////////

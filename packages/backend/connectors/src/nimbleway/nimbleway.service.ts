@@ -3,7 +3,6 @@ import {
     CONNECTOR_NIMBLEWAY_TYPE,
     EProxyStatus,
     randomName,
-    safeJoin,
 } from '@scrapoxy/common';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
@@ -29,7 +28,7 @@ export class ConnectorNimblewayService implements IConnectorService {
     private readonly logger = new Logger(ConnectorNimblewayService.name);
 
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`getProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
         return keys.map(convertToProxy);
     }
@@ -37,7 +36,7 @@ export class ConnectorNimblewayService implements IConnectorService {
     async createProxies(
         count: number, excludeKeys: string[]
     ): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`createProxies(): count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`createProxies(): count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const proxies: IConnectorProxyRefreshed[] = [];
         for (let i = 0; i < count; ++i) {
@@ -48,7 +47,7 @@ export class ConnectorNimblewayService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         // Not used
     }

@@ -3,7 +3,6 @@ import { generateRandomString } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_IPROYAL_RESIDENTIAL_TYPE,
     EProxyStatus,
-    safeJoin,
 } from '@scrapoxy/common';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type{
@@ -29,7 +28,7 @@ export class ConnectorIproyalService implements IConnectorService {
     private readonly logger = new Logger(ConnectorIproyalService.name);
 
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`getProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
         const proxies = keys.map(convertToProxy);
 
@@ -48,15 +47,14 @@ export class ConnectorIproyalService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         // Not used
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        const proxiesKeys = keys.map((p) => p.key);
-        this.logger.debug(`removeProxies(): keys=${safeJoin(proxiesKeys)}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
-        return proxiesKeys;
+        return keys.map((p) => p.key);
     }
 }

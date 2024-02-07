@@ -62,8 +62,7 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
     }
 
     async task(proxiesToRefresh: IProxiesToRefresh): Promise<void> {
-        const ids = proxiesToRefresh.proxies.map((p) => p.id);
-        this.logger.debug(`fingerprint instances ${ids.join(',')}`);
+        this.logger.debug(`fingerprint ${proxiesToRefresh.proxies.length} instances`);
 
         // Parallel version
         const sockets = new Sockets(this.sockets);

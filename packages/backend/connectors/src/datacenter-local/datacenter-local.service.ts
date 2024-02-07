@@ -8,7 +8,6 @@ import {
     EInstanceDatacenterLocalStatus,
     EProxyStatus,
     randomNames,
-    safeJoin,
 } from '@scrapoxy/common';
 import type {
     IConnectorDatacenterLocalConfig,
@@ -122,7 +121,7 @@ export class ConnectorDatacenterLocalService implements IConnectorService {
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        this.logger.debug(`removeProxies(): keys=${safeJoin(keys.map((p) => p.key))}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
         await this.api.removeInstances(
             this.credentialConfig.subscriptionId,

@@ -4,7 +4,6 @@ import {
     Logger,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { safeJoin } from '@scrapoxy/common';
 import { lastValueFrom } from 'rxjs';
 import { ProbeprovidersService } from '../../../probe';
 import { StorageprovidersService } from '../../providers.service';
@@ -34,6 +33,7 @@ import {
     MESSAGE_PROXIES_SYNC,
     MESSAGE_PROXIES_UPDATE_LAST_CONNECTION,
     MESSAGE_PROXIES_UPDATE_NEXT_REFRESH,
+    MESSAGE_SOURCE_UPDATE_NEXT_REFRESH,
     MESSAGE_SOURCES_CREATE,
     MESSAGE_SOURCES_REMOVED,
     MESSAGE_TASKS_CREATE,
@@ -81,6 +81,7 @@ import type {
     IProxyToConnect,
     IProxyToRefresh,
     ISource,
+    ISourceNextRefreshToUpdate,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ITaskData,
@@ -588,7 +589,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
 
     //////////// PROXIES ////////////
     async getProxiesByIds(proxiesIds: string[]): Promise<IProxyData[]> {
-        this.logger.debug(`getProxiesByIds(): proxiesIds=${safeJoin(proxiesIds)}`);
+        this.logger.debug(`getProxiesByIds(): proxiesIds.length=${proxiesIds.length}`);
 
         const proxies = await this.database.getProxiesByIds(proxiesIds);
 
@@ -598,7 +599,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
     async getProjectProxiesByIds(
         projectId: string, proxiesIds: string[], removing?: boolean
     ): Promise<IProxyData[]> {
-        this.logger.debug(`getProjectProxiesByIds(): projectId=${projectId} / proxiesIds=${safeJoin(proxiesIds)} / removing=${removing}`);
+        this.logger.debug(`getProjectProxiesByIds(): projectId=${projectId} / proxiesIds.length=${proxiesIds.length} / removing=${removing}`);
 
         const proxies = await this.database.getProjectProxiesByIds(
             projectId,
@@ -696,7 +697,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
     async updateProxiesNextRefreshTs(
         proxiesIds: string[], nextRefreshTs: number
     ): Promise<void> {
-        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds=${safeJoin(proxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
+        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds.length=${proxiesIds.length} / nextRefreshTs=${nextRefreshTs}`);
 
         const update: IProxiesNextRefreshToUpdate = {
             proxiesIds,
@@ -711,7 +712,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
 
     //////////// FREE PROXIES ////////////
     async getFreeproxiesByIds(freeproxiesIds: string[]): Promise<IFreeproxy[]> {
-        this.logger.debug(`getFreeproxiesByIds(): freeproxiesIds=${safeJoin(freeproxiesIds)}`);
+        this.logger.debug(`getFreeproxiesByIds(): freeproxiesIds.length=${freeproxiesIds.length}`);
 
         const freeproxies = await this.database.getFreeproxiesByIds(freeproxiesIds);
 
@@ -734,7 +735,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
     async getSelectedProjectFreeproxies(
         projectId: string, connectorId: string, keys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys=${safeJoin(keys)}`);
+        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys.length=${keys.length}`);
 
         const freeproxies = await this.database.getSelectedProjectFreeproxies(
             projectId,
@@ -748,7 +749,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
     async getNewProjectFreeproxies(
         projectId: string, connectorId: string, count: number, excludeKeys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const freeproxies = await this.database.getNewProjectFreeproxies(
             projectId,
@@ -794,7 +795,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
     async updateFreeproxiesNextRefreshTs(
         freeproxiesIds: string[], nextRefreshTs: number
     ): Promise<void> {
-        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds=${safeJoin(freeproxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
+        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds.length=${freeproxiesIds.length} / nextRefreshTs=${nextRefreshTs}`);
 
         const update: IFreeproxiesNextRefreshToUpdate = {
             freeproxiesIds,
@@ -835,6 +836,35 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         await lastValueFrom(this.proxy.emit(
             MESSAGE_SOURCES_REMOVED,
             sources
+        ));
+    }
+
+    async getNextSourceToRefresh(nextRefreshTs: number): Promise<ISource> {
+        this.logger.debug(`getNextSourceToRefresh(): nextRetryTs=${nextRefreshTs}`);
+
+        const source = await this.database.getNextSourceToRefresh(nextRefreshTs);
+
+        return source;
+    }
+
+    async updateSourceNextRefreshTs(
+        projectId: string,
+        connectorId: string,
+        sourceId: string,
+        nextRefreshTs: number
+    ): Promise<void> {
+        this.logger.debug(`updateSourceNextRefreshTs(): projectId=${projectId} / connectorId=${connectorId} / sourceId=${sourceId} / nextRefreshTs=${nextRefreshTs}`);
+
+        const update: ISourceNextRefreshToUpdate = {
+            projectId,
+            connectorId,
+            sourceId,
+            nextRefreshTs,
+        };
+
+        await lastValueFrom(this.proxy.emit(
+            MESSAGE_SOURCE_UPDATE_NEXT_REFRESH,
+            update
         ));
     }
 

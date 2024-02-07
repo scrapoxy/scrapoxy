@@ -55,8 +55,7 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
     }
 
     async task(freeproxieToRefresh: IFreeproxiesToRefresh): Promise<void> {
-        const ids = freeproxieToRefresh.freeproxies.map((p) => p.id);
-        this.logger.debug(`fingerprint free proxies ${ids.join(',')}`);
+        this.logger.debug(`fingerprint ${freeproxieToRefresh.freeproxies.length} free proxies`);
 
         const transport = this.provider.getTransportByType(TRANSPORT_PROXY_TYPE);
         const sockets = new Sockets();

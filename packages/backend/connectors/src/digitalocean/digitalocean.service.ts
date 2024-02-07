@@ -4,7 +4,6 @@ import {
     CONNECTOR_DIGITALOCEAN_TYPE,
     EProxyStatus,
     randomNames,
-    safeJoin,
 } from '@scrapoxy/common';
 import { DigitalOceanApi } from './api';
 import { getDigitalOceanPublicAddress } from './digitalocean.helpers';
@@ -114,14 +113,14 @@ export class ConnectorDigitaloceanService implements IConnectorService {
     }
 
     async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys=${safeJoin(keys)}`);
+        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         await Promise.all(keys.map((key) =>
             this.api.powerOnDroplet(parseInt(key))));
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
-        this.logger.debug(`removeProxies(): keys=${safeJoin(keys.map((p) => p.key))}`);
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
         await Promise.all(keys.map((key) =>
             this.api.deleteDroplet(parseInt(key.key))));

@@ -2,7 +2,6 @@ import { Logger } from '@nestjs/common';
 import {
     CONNECTOR_FREEPROXIES_TYPE,
     EProxyStatus,
-    safeJoin,
     toOptionalValue,
     toUserData,
     WINDOWS_CONFIG,
@@ -54,6 +53,7 @@ import {
     ProjectTokenNotFoundError,
     ProxiesNotFoundError,
     ProxyNotFoundError,
+    SourceNotFoundError,
     TaskNotFoundError,
     UserEmailAlreadyExistsError,
     UserNotFoundByEmailError,
@@ -1711,7 +1711,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
     //////////// PROXIES ////////////
     async getProxiesByIds(proxiesIds: string[]): Promise<IProxyData[]> {
-        this.logger.debug(`getProxiesByIds(): proxiesIds=${safeJoin(proxiesIds)}`);
+        this.logger.debug(`getProxiesByIds(): proxiesIds.length=${proxiesIds.length}`);
 
         const query: Filter<IProxyModel> = {
             _id: {
@@ -1733,7 +1733,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async getProjectProxiesByIds(
         projectId: string, proxiesIds: string[], removing?: boolean
     ): Promise<IProxyData[]> {
-        this.logger.debug(`getProjectProxiesByIds(): projectId=${projectId} / proxiesIds=${safeJoin(proxiesIds)} / removing=${removing}`);
+        this.logger.debug(`getProjectProxiesByIds(): projectId=${projectId} / proxiesIds.length=${proxiesIds.length} / removing=${removing}`);
 
         const query: Filter<IProxyModel> = {
             _id: {
@@ -2015,7 +2015,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async updateProxiesNextRefreshTs(
         proxiesIds: string[], nextRefreshTs: number
     ): Promise<void> {
-        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds=${safeJoin(proxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
+        this.logger.debug(`updateProxiesNextRefreshTs(): proxiesIds.length=${proxiesIds.length} / nextRefreshTs=${nextRefreshTs}`);
 
 
         const { modifiedCount } = await this.colProxies.updateMany(
@@ -2060,7 +2060,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
     //////////// FREE PROXIES ////////////
     async getFreeproxiesByIds(freeproxiesIds: string[]): Promise<IFreeproxy[]> {
-        this.logger.debug(`getFreeproxiesByIds(): freeproxiesIds=${safeJoin(freeproxiesIds)}`);
+        this.logger.debug(`getFreeproxiesByIds(): freeproxiesIds.length=${freeproxiesIds.length}`);
 
         const freeproxies = await this.colFreeproxies.find(
             {
@@ -2101,7 +2101,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async getSelectedProjectFreeproxies(
         projectId: string, connectorId: string, keys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys=${safeJoin(keys)}`);
+        this.logger.debug(`getSelectedProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / keys.length=${keys.length}`);
 
         const freeproxies = await this.colFreeproxies.find(
             {
@@ -2124,7 +2124,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async getNewProjectFreeproxies(
         projectId: string, connectorId: string, count: number, excludeKeys: string[]
     ): Promise<IFreeproxy[]> {
-        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys=${safeJoin(excludeKeys)}`);
+        this.logger.debug(`getNewProjectFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / count=${count} / excludeKeys.length=${excludeKeys.length}`);
 
         const freeproxies = await this.colFreeproxies.find(
             {
@@ -2257,7 +2257,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async updateFreeproxiesNextRefreshTs(
         freeproxiesIds: string[], nextRefreshTs: number
     ): Promise<void> {
-        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds=${safeJoin(freeproxiesIds)} / nextRefreshTs=${nextRefreshTs}`);
+        this.logger.debug(`updateFreeproxiesNextRefreshTs(): freeproxiesIds.length=${freeproxiesIds.length} / nextRefreshTs=${nextRefreshTs}`);
 
         const { modifiedCount } = await this.colFreeproxies.updateMany(
             {
@@ -2353,6 +2353,57 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         }
 
         await bulk.execute();
+    }
+
+    async getNextSourceToRefresh(nextRefreshTs: number): Promise<ISource> {
+        this.logger.debug(`getNextSourceToRefresh(): nextRetryTs=${nextRefreshTs}`);
+
+        const source = await this.colSources.findOne(
+            {
+                nextRefreshTs: {
+                    $lt: nextRefreshTs,
+                },
+            },
+            {
+                limit: 1, // TODO: miss the sort in the getnextsource => check on mongo + local
+                projection: SOURCE_META_MONGODB,
+            }
+        )
+            .then((p) => fromMongo<ISource>(p));
+
+        return source;
+    }
+
+    async updateSourceNextRefreshTs(
+        projectId: string,
+        connectorId: string,
+        sourceId: string,
+        nextRefreshTs: number
+    ): Promise<void> {
+        this.logger.debug(`updateSourceNextRefreshTs(): projectId=${projectId} / connectorId=${connectorId} / sourceId=${sourceId} / nextRefreshTs=${nextRefreshTs}`);
+
+        const { modifiedCount } = await this.colSources.updateOne(
+            {
+                _id: sourceId,
+                connectorId,
+                projectId,
+            },
+            [
+                {
+                    $set: {
+                        nextRefreshTs,
+                    },
+                },
+            ]
+        );
+
+        if (!modifiedCount) {
+            throw new SourceNotFoundError(
+                projectId,
+                connectorId,
+                sourceId
+            );
+        }
     }
 
     //////////// TASKS ////////////
