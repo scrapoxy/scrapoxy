@@ -24,6 +24,7 @@ import {
     ProxiesSynchronizedEvent,
     SourcesCreatedEvent,
     SourcesRemovedEvent,
+    SourcesUpdatedEvent,
     TaskCreatedEvent,
     TaskRemovedEvent,
     TaskUpdatedEvent,
@@ -223,6 +224,11 @@ export abstract class AEventsService {
 
             case SourcesCreatedEvent.id: {
                 this.emit(SourcesCreatedEvent.from(event));
+                break;
+            }
+
+            case SourcesUpdatedEvent.id: {
+                this.emit(SourcesUpdatedEvent.from(event));
                 break;
             }
 

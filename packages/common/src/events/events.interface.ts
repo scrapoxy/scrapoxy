@@ -299,6 +299,19 @@ export class SourcesCreatedEvent extends ACommanderEvent {
 }
 
 
+export class SourcesUpdatedEvent extends ACommanderEvent {
+    static readonly id = 'sources_updated_event';
+
+    static from(data: any): SourcesUpdatedEvent {
+        return new SourcesUpdatedEvent(data.sources);
+    }
+
+    constructor(public sources: ISource[]) {
+        super(SourcesUpdatedEvent.id);
+    }
+}
+
+
 export class SourcesRemovedEvent extends ACommanderEvent {
     static readonly id = 'sources_removed_event';
 

@@ -88,6 +88,7 @@ import type {
     IProjectUserLink,
     IProjectView,
     IProxyIdToRemove,
+    ISource,
     ISourceBase,
     ISourcesAndFreeproxies,
     ITaskData,
@@ -1201,7 +1202,7 @@ export class CommanderFrontendService {
             connectorId
         );
         const sourcesUrls = new Set(sourcesExisting.map((s) => s.url));
-        const create = sources
+        const create: ISource[] = sources
             .filter((source) => !sourcesUrls.has(source.url))
             .map((source) => {
                 const hash = createHash('sha256')
@@ -1213,6 +1214,8 @@ export class CommanderFrontendService {
                     projectId,
                     connectorId,
                     id: `${connectorId}:${hash}`,
+                    lastRefreshTs: null,
+                    lastRefreshError: null,
                 };
             });
 

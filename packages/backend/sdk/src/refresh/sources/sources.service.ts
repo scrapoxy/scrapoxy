@@ -16,6 +16,7 @@ import type { IRefreshSourcesModuleConfig } from './sources.module';
 import type {
     IFreeproxyBase,
     ISource,
+    ISourceRefreshed,
 } from '@scrapoxy/common';
 
 
@@ -48,20 +49,37 @@ export class RefreshSourcesService extends ARefresh<ISource> {
     async task(source: ISource): Promise<void> {
         this.logger.debug(`get freeproxies source url ${source.url}`);
 
+        const nowTime = Date.now();
         try {
             const freeproxies = await this.fetchFreeproxies(source);
 
-            await this.commander.createFreeproxies(
-                source.projectId,
-                source.connectorId,
-                freeproxies
-            );
+            if (freeproxies && freeproxies.length > 0) {
+                await this.commander.createFreeproxies(
+                    source.projectId,
+                    source.connectorId,
+                    freeproxies
+                );
+            }
+
+            const refreshed: ISourceRefreshed = {
+                id: source.id,
+                connectorId: source.connectorId,
+                projectId: source.projectId,
+                lastRefreshTs: nowTime,
+                lastRefreshError: null,
+            };
+
+            await this.commander.updateSource(refreshed);
         } catch (err: any) {
-            this.logger.error(
-                err.message,
-                err.stack
-            );
-            // TODO: update status of the source
+            const refreshed: ISourceRefreshed = {
+                id: source.id,
+                connectorId: source.connectorId,
+                projectId: source.projectId,
+                lastRefreshTs: nowTime,
+                lastRefreshError: err.message,
+            };
+
+            await this.commander.updateSource(refreshed);
         }
     }
 

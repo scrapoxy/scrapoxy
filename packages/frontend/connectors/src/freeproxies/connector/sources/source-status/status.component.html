@@ -1,0 +1,11 @@
+@if (source.lastRefreshError) {
+    <span [cTooltip]="source.lastRefreshError"
+          cTooltipPlacement="top"
+    >
+            <svg cIcon name="cilWarning"></svg>
+    </span>
+} @else if (source.lastRefreshTs && source.lastRefreshTs > 0) {
+    <svg cIcon name="cilCheckAlt"></svg>
+} @else {
+    <svg cIcon name="cilArrowTop" class="wip"></svg>
+}

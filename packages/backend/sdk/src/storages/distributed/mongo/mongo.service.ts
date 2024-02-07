@@ -46,6 +46,7 @@ import {
     NoConnectorToRefreshError,
     NoProjectProxyError,
     NoProxyToRefreshError,
+    NoSourceToRefreshError,
     NoTaskToRefreshError,
     ParamNotFoundError,
     ProjectNameAlreadyExistsError,
@@ -2319,6 +2320,34 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         return sources;
     }
 
+    async getSourceById(
+        projectId: string, connectorId: string, sourceId: string
+    ): Promise<ISource> {
+        this.logger.debug(`getSourceById(): projectId=${projectId} / connectorId=${connectorId} / sourceId=${sourceId}`);
+
+        const sourceModel = await this.colSources.findOne(
+            {
+                _id: sourceId,
+                projectId,
+                connectorId,
+            },
+            {
+                projection: SOURCE_META_MONGODB,
+            }
+        )
+            .then((p) => safeFromMongo<ISource>(p));
+
+        if (!sourceModel) {
+            throw new SourceNotFoundError(
+                projectId,
+                connectorId,
+                sourceId
+            );
+        }
+
+        return sourceModel;
+    }
+
     async createSources(sources: ISource[]): Promise<void> {
         this.logger.debug(`createSources(): sources.length=${sources.length}`);
 
@@ -2330,10 +2359,36 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 connectorId: source.connectorId,
                 url: source.url,
                 delay: source.delay,
+                lastRefreshTs: source.lastRefreshTs,
+                lastRefreshError: source.lastRefreshError,
                 nextRefreshTs: 0,
             };
 
             bulk.insert(sourceToCreate);
+        }
+
+        await bulk.execute();
+    }
+
+    async updateSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`updateSources(): sources.length=${sources.length}`);
+
+        const bulk = this.colSources.initializeUnorderedBulkOp();
+
+        for (const source of sources) {
+            bulk.find({
+                _id: source.id,
+                projectId: source.projectId,
+                connectorId: source.connectorId,
+            })
+                .update({
+                    $set: {
+                        url: source.url,
+                        delay: source.delay,
+                        lastRefreshTs: source.lastRefreshTs,
+                        lastRefreshError: source.lastRefreshError,
+                    },
+                });
         }
 
         await bulk.execute();
@@ -2358,7 +2413,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async getNextSourceToRefresh(nextRefreshTs: number): Promise<ISource> {
         this.logger.debug(`getNextSourceToRefresh(): nextRetryTs=${nextRefreshTs}`);
 
-        const source = await this.colSources.findOne(
+        const sourceModel = await this.colSources.findOne(
             {
                 nextRefreshTs: {
                     $lt: nextRefreshTs,
@@ -2369,9 +2424,13 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 projection: SOURCE_META_MONGODB,
             }
         )
-            .then((p) => fromMongo<ISource>(p));
+            .then((p) => safeFromMongo<ISource>(p));
 
-        return source;
+        if (!sourceModel) {
+            throw new NoSourceToRefreshError();
+        }
+
+        return sourceModel;
     }
 
     async updateSourceNextRefreshTs(

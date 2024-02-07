@@ -49,6 +49,7 @@ import type {
     IProxySync,
     IRangeMetrics,
     ISource,
+    ISourceRefreshed,
     ISynchronizeFreeproxies,
     ISynchronizeLocalProxiesData,
     ISynchronizeRemoteProxies,
@@ -1055,6 +1056,27 @@ export class CommanderRefreshService implements OnModuleDestroy {
         );
 
         return source;
+    }
+
+    async updateSource(source: ISourceRefreshed): Promise<void> {
+        this.logger.debug(`updateSource(): projectId=${source.projectId} / connectorId=${source.id} / source.id=${source.id}`);
+
+        const sourceFound = await this.storageproviders.storage.getSourceById(
+            source.projectId,
+            source.connectorId,
+            source.id
+        );
+
+        if (!sourceFound) {
+            return;
+        }
+
+        sourceFound.lastRefreshTs = source.lastRefreshTs;
+        sourceFound.lastRefreshError = source.lastRefreshError;
+
+        await this.storageproviders.storage.updateSources([
+            sourceFound,
+        ]);
     }
 
     //////////// TASKS ////////////

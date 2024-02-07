@@ -18,6 +18,7 @@ import {
 import { ConnectorFreeproxiesComponent } from './connector/connector.component';
 import { FreeproxiesComponent } from './connector/freeproxies/freeproxies.component';
 import { FreeproxiesAddComponent } from './connector/freeproxies-add/freeproxies-add.component';
+import { SourceStatusComponent } from './connector/sources/source-status/status.component';
 import { SourcesComponent } from './connector/sources/sources.component';
 import { SourceAddComponent } from './connector/sources-add/source-add.component';
 import { CredentialFreeproxiesComponent } from './credential/credential.component';
@@ -44,6 +45,7 @@ import { ConnectorFreeproxiesFactory } from './freeproxies.factory';
         FreeproxiesAddComponent,
         SourceAddComponent,
         SourcesComponent,
+        SourceStatusComponent,
     ],
     providers: [
         ConnectorFreeproxiesFactory,

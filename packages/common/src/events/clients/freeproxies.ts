@@ -6,6 +6,7 @@ import {
     FreeproxiesSynchronizedEvent,
     SourcesCreatedEvent,
     SourcesRemovedEvent,
+    SourcesUpdatedEvent,
 } from '../events.interface';
 import type {
     IFreeproxy,
@@ -121,6 +122,12 @@ export class EventsFreeproxiesClient {
                     break;
                 }
 
+                case SourcesUpdatedEvent.id: {
+                    const updated = event as SourcesUpdatedEvent;
+                    this.onSourcesUpdatedImpl(updated.sources);
+                    break;
+                }
+
                 case SourcesRemovedEvent.id: {
                     const removed = event as SourcesRemovedEvent;
                     this.onSourcesRemovedImpl(removed.sources);
@@ -164,6 +171,36 @@ export class EventsFreeproxiesClient {
                     source.id,
                     source
                 );
+            }
+        }
+
+        this.sources.sort((
+            a, b
+        ) => a.url.localeCompare(b.url));
+
+        if (this.onSourcesEvent) {
+            this.onSourcesEvent();
+        }
+    }
+
+    private onSourcesUpdatedImpl(sources: ISource[]) {
+        if (!this.projectId ||
+            !this.connectorId ||
+            sources.length <= 0) {
+            return;
+        }
+
+        for (const source of sources) {
+            if (source.projectId === this.projectId &&
+                source.connectorId === this.connectorId) {
+                const sourceFound = this.sources.find((c) => c.id === source.id);
+
+                if (sourceFound) {
+                    sourceFound.url = source.url;
+                    sourceFound.delay = source.delay;
+                    sourceFound.lastRefreshTs = source.lastRefreshTs;
+                    sourceFound.lastRefreshError = source.lastRefreshError;
+                }
             }
         }
 

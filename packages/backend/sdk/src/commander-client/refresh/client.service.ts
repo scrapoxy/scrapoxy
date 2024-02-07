@@ -24,6 +24,7 @@ import type {
     IProxyRefreshed,
     ISelectedFreeproxies,
     ISource,
+    ISourceRefreshed,
     ISynchronizeRemoteProxies,
     ITaskData,
     ITaskToUpdate,
@@ -223,6 +224,13 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
         const res = await this.instance.get<ISource>('sources/refresh'); // TODO: possible to remove 'refresh' because API is already prefixed with 'refresh'?
 
         return res.data;
+    }
+
+    async updateSource(source: ISourceRefreshed): Promise<void> {
+        await this.instance.post<IFreeproxy[]>(
+            'sources/refresh',
+            source
+        );
     }
 
     //////////// TASKS ////////////

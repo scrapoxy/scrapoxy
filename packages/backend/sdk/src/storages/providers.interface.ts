@@ -171,7 +171,11 @@ export interface IStorageService {
 
     getAllProjectSourcesById: (projectId: string, connectorId: string) => Promise<ISource[]>;
 
+    getSourceById: (projectId: string, connectorId: string, sourceId: string) => Promise<ISource>;
+
     createSources: (sources: ISource[]) => Promise<void>;
+
+    updateSources: (sources: ISource[]) => Promise<void>;
 
     removeSources: (sources: ISource[]) => Promise<void>;
 

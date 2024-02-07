@@ -13,6 +13,8 @@ export const SOURCE_META = [
     'projectId',
     'url',
     'delay',
+    'lastRefreshTs',
+    'lastRefreshError',
 ];
 
 
@@ -20,6 +22,17 @@ export interface ISource extends ISourceBase {
     id: string;
     connectorId: string;
     projectId: string;
+    lastRefreshTs: number | null;
+    lastRefreshError: string | null;
+}
+
+
+export interface ISourceRefreshed {
+    id: string;
+    connectorId: string;
+    projectId: string;
+    lastRefreshTs: number | null;
+    lastRefreshError: string | null;
 }
 
 

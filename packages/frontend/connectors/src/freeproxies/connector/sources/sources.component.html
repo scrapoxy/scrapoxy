@@ -8,6 +8,8 @@
 
                     <th scope="col" class="col-source-delay">Refresh Delay</th>
 
+                    <th scope="col" class="col-source-status">Status</th>
+
                     <th scope="col" class="col-actions">
                         <button
                             cButton
@@ -30,6 +32,10 @@
 
                             <td class="col-source-delay">
                                 {{ source.delay }}
+                            </td>
+
+                            <td class="col-source-status">
+                                <source-status [source]="source"></source-status>
                             </td>
 
                             <td class="col-actions">

@@ -26,6 +26,7 @@ import {
     PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
     SourcesCreatedEvent,
     SourcesRemovedEvent,
+    SourcesUpdatedEvent,
     TaskCreatedEvent,
     TaskRemovedEvent,
     TaskUpdatedEvent,
@@ -2114,6 +2115,39 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             .map(toSource);
     }
 
+    async getSourceById(
+        projectId: string, connectorId: string, sourceId: string
+    ): Promise<ISource> {
+        this.logger.debug(`getSourceById(): projectId=${projectId} / connectorId=${connectorId} / sourceId=${sourceId}`);
+
+        const projectModel = this.projects.get(projectId);
+
+        if (!projectModel) {
+            throw new ProjectNotFoundError(projectId);
+        }
+
+        const connectorModel = projectModel.connectors.get(connectorId);
+
+        if (!connectorModel) {
+            throw new ConnectorNotFoundError(
+                projectModel.id,
+                connectorId
+            );
+        }
+
+        const sourceModel = connectorModel.sources.get(sourceId);
+
+        if (!sourceModel) {
+            throw new SourceNotFoundError(
+                projectModel.id,
+                connectorId,
+                sourceId
+            );
+        }
+
+        return toSource(sourceModel);
+    }
+
     async createSources(sources: ISource[]): Promise<void> {
         this.logger.debug(`createSources(): sources.length=${sources.length}`);
 
@@ -2176,6 +2210,56 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             };
 
             await this.events.emit(event);
+        }
+    }
+
+    async updateSources(sources: ISource[]): Promise<void> {
+        this.logger.debug(`updateSources(): sources.length=${sources.length}`);
+
+        const sourcesByProjects = new Map<string, ISource[]>();
+        for (const source of sources) {
+            const sourceModel = this.sources.get(source.id);
+
+            if (!sourceModel) {
+                throw new SourceNotFoundError(
+                    source.projectId,
+                    source.connectorId,
+                    source.id
+                );
+            }
+
+            sourceModel.url = source.url;
+            sourceModel.delay = source.delay;
+            sourceModel.lastRefreshTs = source.lastRefreshTs;
+            sourceModel.lastRefreshError = source.lastRefreshError;
+
+            let sourcesByProject = sourcesByProjects.get(source.projectId);
+
+            if (sourcesByProject) {
+                sourcesByProject.push(source);
+            } else {
+                sourcesByProject = [
+                    source,
+                ];
+                sourcesByProjects.set(
+                    source.projectId,
+                    sourcesByProject
+                );
+            }
+        }
+
+        if (sourcesByProjects.size > 0) {
+            for (const [
+                projectId, sourcesByProject,
+            ] of sourcesByProjects.entries()) {
+                const event: IEvent = {
+                    id: projectId,
+                    scope: EEventScope.FREEPROXIES,
+                    event: new SourcesUpdatedEvent(sourcesByProject),
+                };
+
+                await this.events.emit(event);
+            }
         }
     }
 

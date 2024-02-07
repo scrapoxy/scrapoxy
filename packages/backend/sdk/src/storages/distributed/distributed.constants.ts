@@ -56,7 +56,9 @@ export const MESSAGE_FREEPROXIES_UPDATE_NEXT_REFRESH = 'freeproxies.update.next_
 
 export const MESSAGE_SOURCES_CREATE = 'sources.create';
 
-export const MESSAGE_SOURCES_REMOVED = 'sources.remove';
+export const MESSAGE_SOURCES_UPDATE = 'sources.update';
+
+export const MESSAGE_SOURCES_REMOVE = 'sources.remove';
 
 export const MESSAGE_SOURCE_UPDATE_NEXT_REFRESH = 'sources.update.next_refresh';
 

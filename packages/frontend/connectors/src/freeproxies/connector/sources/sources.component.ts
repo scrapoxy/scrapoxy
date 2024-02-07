@@ -19,6 +19,9 @@ import type {
 @Component({
     selector: 'sources',
     templateUrl: './sources.component.html',
+    styleUrls: [
+        './sources.component.scss',
+    ],
 })
 export class SourcesComponent implements OnInit, OnDestroy {
     @Input()

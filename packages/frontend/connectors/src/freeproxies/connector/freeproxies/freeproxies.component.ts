@@ -20,6 +20,9 @@ import type { Subscription } from 'rxjs';
 @Component({
     selector: 'freeproxies',
     templateUrl: './freeproxies.component.html',
+    styleUrls: [
+        './freeproxies.component.scss',
+    ],
 })
 export class FreeproxiesComponent implements OnInit, OnDestroy {
     @Input()

@@ -67,7 +67,7 @@ import {
     MESSAGE_PROXIES_UPDATE_NEXT_REFRESH,
     MESSAGE_SOURCE_UPDATE_NEXT_REFRESH,
     MESSAGE_SOURCES_CREATE,
-    MESSAGE_SOURCES_REMOVED,
+    MESSAGE_SOURCES_REMOVE,
     MESSAGE_TASKS_CREATE,
     MESSAGE_TASKS_LOCK,
     MESSAGE_TASKS_REMOVE,
@@ -747,7 +747,7 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
         }
     }
 
-    @EventPattern(MESSAGE_SOURCES_REMOVED)
+    @EventPattern(MESSAGE_SOURCES_REMOVE)
     async removeSources(sources: ISource[]): Promise<void> {
         this.logger.debug(`removeSources(): sources.length=${sources.length}`);
 

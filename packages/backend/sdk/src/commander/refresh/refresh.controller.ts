@@ -25,6 +25,7 @@ import type {
     IProxyRefreshed,
     ISelectedFreeproxies,
     ISource,
+    ISourceRefreshed,
     ISynchronizeRemoteProxies,
     ITaskData,
     ITaskToUpdate,
@@ -177,6 +178,11 @@ export class CommanderRefreshController {
         const source = await this.commander.getNextSourceToRefresh();
 
         return source;
+    }
+
+    @Post('sources/refresh')
+    async updateSource(@Body() source: ISourceRefreshed): Promise<void> {
+        await this.commander.updateSource(source);
     }
 
     //////////// TASKS ////////////

@@ -13,6 +13,8 @@ export function toSource(p: ISourceModel): ISource {
         projectId: p.projectId,
         url: p.url,
         delay: p.delay,
+        lastRefreshTs: p.lastRefreshTs,
+        lastRefreshError: p.lastRefreshError,
     };
 
     return s;

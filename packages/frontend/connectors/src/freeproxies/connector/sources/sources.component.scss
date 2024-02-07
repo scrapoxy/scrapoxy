@@ -1,0 +1,25 @@
+.col-source-url {
+    max-width: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.col-source-delay {
+    width: 140px;
+
+    text-align: center;
+}
+
+.col-source-status {
+    width: 100px;
+
+    text-align: center;
+}
+
+.col-actions {
+    width: 50px;
+
+    text-align: center;
+}
