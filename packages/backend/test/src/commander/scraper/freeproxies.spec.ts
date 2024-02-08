@@ -153,8 +153,8 @@ describe(
 
                 await waitFor(async() => {
                     freeproxies = await client.getAllProjectFreeproxiesById(connector.id);
-                    expect(freeproxies.length)
-                        .toBe(1);
+                    expect(freeproxies)
+                        .toHaveLength(1);
 
                     const freeproxy = freeproxies[ 0 ];
                     expect(freeproxy.type)
@@ -188,8 +188,8 @@ describe(
 
                 await waitFor(async() => {
                     freeproxies = await client.getAllProjectFreeproxiesById(connector.id);
-                    expect(freeproxies.length)
-                        .toBe(0);
+                    expect(freeproxies)
+                        .toHaveLength(0);
                 });
             }
         );
@@ -209,8 +209,8 @@ describe(
 
                 await waitFor(async() => {
                     sources = await client.getAllProjectSourcesById(connector.id);
-                    expect(sources.length)
-                        .toBe(1);
+                    expect(sources)
+                        .toHaveLength(1);
 
                     const source = sources[ 0 ];
                     expect(source.url)
@@ -233,7 +233,7 @@ describe(
                 await waitFor(async() => {
                     sources = await client.getAllProjectSourcesById(connector.id);
                     expect(sources)
-                        .toHaveLength(0);// TODO: transform all xxx.length to xxx.toHaveLength
+                        .toHaveLength(0);
                 });
             }
         );

@@ -296,8 +296,8 @@ describe(
                         subscription.id,
                         'europe'
                     );
-                    expect(instances.length)
-                        .toBe(instancesToCreate.ids.length);
+                    expect(instances)
+                        .toHaveLength(instancesToCreate.ids.length);
 
                     for (const instance of instances) {
                         expect(instance.status)
@@ -337,8 +337,8 @@ describe(
                         subscription.id,
                         'europe'
                     );
-                    expect(instances.length)
-                        .toBe(instancesToCreate.ids.length);
+                    expect(instances)
+                        .toHaveLength(instancesToCreate.ids.length);
 
                     for (const instance of instances) {
                         expect(instance.status)
@@ -365,8 +365,8 @@ describe(
                         subscription.id,
                         'europe'
                     );
-                    expect(instances.length)
-                        .toBe(instancesToCreate.ids.length);
+                    expect(instances)
+                        .toHaveLength(instancesToCreate.ids.length);
 
                     for (const instance of instances) {
                         expect(instance.status)
@@ -393,8 +393,8 @@ describe(
                         subscription.id,
                         'europe'
                     );
-                    expect(instances.length)
-                        .toBe(0);
+                    expect(instances)
+                        .toHaveLength(0);
                 });
             }
         );

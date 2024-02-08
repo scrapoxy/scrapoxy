@@ -178,7 +178,6 @@ describe(
                         useragentOverride: false,
                     });
 
-
                     await waitFor(async() => {
                         token = await commanderApp.frontendClient.getProjectTokenById(project.id);
                         expect(token.length)

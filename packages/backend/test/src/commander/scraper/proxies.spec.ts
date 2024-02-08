@@ -198,12 +198,12 @@ describe(
             async() => {
                 const views = await client.getAllProjectConnectorsAndProxies();
 
-                expect(views.length)
-                    .toBe(1);
+                expect(views)
+                    .toHaveLength(1);
 
                 const view = views[ 0 ];
-                expect(view.proxies.length)
-                    .toBe(connector.proxiesMax);
+                expect(view.proxies)
+                    .toHaveLength(connector.proxiesMax);
 
                 proxy = view.proxies[ 0 ];
                 expect(proxy.removing)
