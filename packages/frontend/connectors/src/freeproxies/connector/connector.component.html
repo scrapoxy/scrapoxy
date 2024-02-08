@@ -78,6 +78,5 @@
 
     <freeproxies-add (add)="addFreeproxies($event)"></freeproxies-add>
 
-    <!-- TODO: make itemsPerPage configurable for every pagination in the app -->
     <freeproxies [freeproxies$]="freeproxies$" [itemsPerPage]="10" (remove)="removeFreeproxies($event)"></freeproxies>
 }
