@@ -215,7 +215,7 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
             this.subForm.patchValue({
                 freeproxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
                 freeproxiesTimeoutUnreachable: {
-                    enabled: true,
+                    enabled: false,
                     value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                 },
             });

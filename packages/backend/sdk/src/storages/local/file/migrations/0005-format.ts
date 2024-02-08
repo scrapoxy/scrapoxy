@@ -40,7 +40,7 @@ export const migration = {
                 if (connector.type === 'freeproxies') {
                     connector.config.freeproxiesTimeoutDisconnected = PROXY_TIMEOUT_DISCONNECTED_DEFAULT;
                     connector.config.freeproxiesTimeoutUnreachable = {
-                        enabled: true,
+                        enabled: false,
                         value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                     };
                 }
