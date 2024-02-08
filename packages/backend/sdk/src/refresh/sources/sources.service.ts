@@ -1,3 +1,5 @@
+import { Agent as AgentHttp } from 'http';
+import { Agent as AgentHttps } from 'https';
 import {
     Inject,
     Injectable,
@@ -18,11 +20,20 @@ import type {
     ISource,
     ISourceRefreshed,
 } from '@scrapoxy/common';
+import type { AxiosInstance } from 'axios';
 
 
 @Injectable()
 export class RefreshSourcesService extends ARefresh<ISource> {
     protected readonly logger = new Logger(RefreshSourcesService.name);
+
+    private readonly httpInstance = new AgentHttp();
+
+    private readonly httpsInstance = new AgentHttps({
+        rejectUnauthorized: false,
+    });
+
+    private readonly instance: AxiosInstance;
 
     constructor(
     @Inject(REFRESH_SOURCES_CONFIG)
@@ -30,6 +41,18 @@ export class RefreshSourcesService extends ARefresh<ISource> {
         private readonly commander: CommanderRefreshClientService
     ) {
         super(config);
+
+        this.instance = axios.create({
+            httpAgent: this.httpInstance,
+            httpsAgent: this.httpsInstance,
+        });
+    }
+
+    override onApplicationShutdown() {
+        super.onApplicationShutdown();
+
+        this.httpInstance.destroy();
+        this.httpsInstance.destroy();
     }
 
     async next(): Promise<ISource | undefined> {
@@ -84,7 +107,7 @@ export class RefreshSourcesService extends ARefresh<ISource> {
     }
 
     private async fetchFreeproxies(source: ISource): Promise<IFreeproxyBase[]> {
-        const res = await axios.get(
+        const res = await this.instance.get(
             source.url,
             {
                 timeout: Math.min(

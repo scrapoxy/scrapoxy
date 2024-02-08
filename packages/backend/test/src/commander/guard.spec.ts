@@ -62,9 +62,11 @@ const commandsAuthFrontend = [
     'GET /frontend/projects/00000000-0000-0000-0000-000000000000/tasks/00000000-0000-0000-0000-000000000000',
     'DELETE /frontend/projects/00000000-0000-0000-0000-000000000000/tasks/00000000-0000-0000-0000-000000000000',
     'POST /frontend/projects/00000000-0000-0000-0000-000000000000/tasks/00000000-0000-0000-0000-000000000000/cancel',
-    'GET /frontend/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/freeproxies/all',
+    'GET /frontend/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/sourcesfreeproxies',
     'POST /frontend/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/freeproxies/create',
     'POST /frontend/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/freeproxies/remove',
+    'POST /frontend/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/sources',
+    'POST /frontend/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/sources/remove',
 ];
 const commandsAuthBackend = [
     'POST /master/projects/00000000-0000-0000-0000-000000000000/scaleup',
@@ -79,10 +81,13 @@ const commandsAuthBackend = [
     'GET /refresh/proxies/refresh',
     'PUT /refresh/projects/00000000-0000-0000-0000-000000000000/tasks/00000000-0000-0000-0000-000000000000',
     'GET /refresh/tasks/refresh',
+    'POST /refresh/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/freeproxies',
     'POST /refresh/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/freeproxies/selected',
     'POST /refresh/projects/00000000-0000-0000-0000-000000000000/connectors/00000000-0000-0000-0000-000000000000/freeproxies/new',
     'GET /refresh/freeproxies/refresh',
     'POST /refresh/freeproxies/refresh',
+    'GET /refresh/sources/refresh',
+    'POST /refresh/sources/refresh',
 ];
 const commandsAuthScraper = [
     'GET /scraper/project',

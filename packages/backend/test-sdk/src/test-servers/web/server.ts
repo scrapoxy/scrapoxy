@@ -14,10 +14,12 @@ import {
     Res,
     UseInterceptors,
 } from '@nestjs/common';
+import { validate } from '@scrapoxy/backend-sdk';
 import {
     ONE_SECOND_IN_MS,
     sleep,
 } from '@scrapoxy/common';
+import * as Joi from 'joi';
 import { Observable } from 'rxjs';
 import {
     GeneratorCheckStream,
@@ -33,6 +35,20 @@ import type {
     Response,
 } from 'express';
 import type { AddressInfo } from 'net';
+
+
+interface IRememberPayload {
+    type: string;
+    content: any;
+}
+
+
+const schemaRemember = Joi.object({
+    type: Joi.string()
+        .required(),
+    content: Joi.any()
+        .required(),
+});
 
 
 @Injectable()
@@ -56,6 +72,8 @@ class CheckIfHostHeaderExistsInterceptor implements NestInterceptor {
 @Controller()
 @UseInterceptors(CheckIfHostHeaderExistsInterceptor)
 class WebController {
+    private data: IRememberPayload | undefined = void 0;
+
     @Get('mirror/headers')
     mirrorHeaders(@Req() req: Request) {
         return req.headers;
@@ -152,6 +170,35 @@ class WebController {
             },
         })
             .pipe(res);
+    }
+
+    @Get('remember')
+    rememberRead(@Res() res: Response) {
+        if (!this.data) {
+            throw new BadRequestException('No data remembered');
+        }
+
+        res.set(
+            'Content-Type',
+            this.data.type
+        );
+
+        res.send(this.data.content);
+    }
+
+    @Post('remember')
+    @HttpCode(204)
+    async rememberWrite(@Body() data: IRememberPayload) {
+        try {
+            await validate(
+                schemaRemember,
+                data
+            );
+
+            this.data = data;
+        } catch (err: any) {
+            throw new BadRequestException(err.message);
+        }
     }
 }
 

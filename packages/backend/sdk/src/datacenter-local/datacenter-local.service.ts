@@ -667,7 +667,8 @@ export class DatacenterLocalService implements IDatacenterLocal, OnModuleInit, O
         region: string,
         instancesToCreate: IInstancesDatacenterLocalToCreate
     ): Promise<IInstanceDatacenterLocalView[]> {
-        this.logger.debug(`createInstances(): subscriptionId=${subscriptionId} / region=${region} / instancesToCreate.ids=${instancesToCreate.ids.length}`);
+        const idsLength = Array.isArray(instancesToCreate?.ids) ? instancesToCreate.ids.length : 0;
+        this.logger.debug(`createInstances(): subscriptionId=${subscriptionId} / region=${region} / instancesToCreate.ids=${idsLength}`);
 
         await validate(
             schemaInstancesDatacenterLocalToCreate,

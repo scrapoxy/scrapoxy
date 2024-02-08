@@ -27,7 +27,6 @@ import type {
 } from '@scrapoxy/common';
 
 
-// TODO: test is not finishing. It should remains an opening connection
 describe(
     'Commander - Freeproxies',
     () => {

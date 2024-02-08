@@ -19,7 +19,7 @@ export const FREEPROXY_META = [
     'timeoutUnreachable',
     'fingerprint',
     'fingerprintError',
-    'disconnectedAt',
+    'disconnectedTs',
 ];
 
 
