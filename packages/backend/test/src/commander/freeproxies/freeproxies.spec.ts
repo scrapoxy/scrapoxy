@@ -12,6 +12,7 @@ import {
     countProxiesOnlineViews,
     EProxyType,
     EventsFreeproxiesClient,
+    IConnectorFreeproxyConfig,
     ISourcesAndFreeproxies,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
@@ -129,10 +130,10 @@ describe(
                     },
                     credentialId: credential.id,
                     config: {
-                        freeproxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                        freeproxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST + 1,
                         freeproxiesTimeoutUnreachable: {
-                            enabled: true,
-                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                            enabled: false,
+                            value: 3000,
                         },
                     },
                     certificateDurationInMs: 10 * ONE_MINUTE_IN_MS,
@@ -259,6 +260,10 @@ describe(
                 await waitFor(() => {
                     expect(client.freeproxies)
                         .toHaveLength(2);
+
+                    const freeproxy = client.freeproxies.find((p) => p.key === '1.2.3.4:1337');
+                    expect(freeproxy!.fingerprintError)
+                        .toBe('socket hang up');
                 });
             }
         );
@@ -280,6 +285,98 @@ describe(
                     expect(client.freeproxies)
                         .toHaveLength(1);
                 });
+            }
+        );
+
+        it(
+            'should not update connector with a freeproxy unreachable timeout below disconnected timeout',
+            async() => {
+                const connectorFound = await commanderApp.frontendClient.getConnectorById(
+                    project.id,
+                    connector.id
+                );
+                const config = connectorFound.config as IConnectorFreeproxyConfig;
+                config.freeproxiesTimeoutUnreachable = {
+                    enabled: true,
+                    value: config.freeproxiesTimeoutDisconnected - 1,
+                };
+
+                await expect(commanderApp.frontendClient.updateConnector(
+                    project.id,
+                    connector.id,
+                    {
+                        name: connectorFound.name,
+                        credentialId: connectorFound.credentialId,
+                        proxiesMax: connectorFound.proxiesMax,
+                        proxiesTimeoutDisconnected: connectorFound.proxiesTimeoutDisconnected,
+                        proxiesTimeoutUnreachable: connectorFound.proxiesTimeoutUnreachable,
+                        config,
+                    }
+                )).rejects.toThrowError('Request failed with status code 500');
+            }
+        );
+
+        it(
+            'should update connector with freeproxy timeout renewal enable',
+            async() => {
+                const connectorFound = await commanderApp.frontendClient.getConnectorById(
+                    project.id,
+                    connector.id
+                );
+                const config = connectorFound.config as IConnectorFreeproxyConfig;
+                config.freeproxiesTimeoutUnreachable.enabled = true;
+
+                await commanderApp.frontendClient.updateConnector(
+                    project.id,
+                    connector.id,
+                    {
+                        name: connectorFound.name,
+                        credentialId: connectorFound.credentialId,
+                        proxiesMax: connectorFound.proxiesMax,
+                        proxiesTimeoutDisconnected: connectorFound.proxiesTimeoutDisconnected,
+                        proxiesTimeoutUnreachable: connectorFound.proxiesTimeoutUnreachable,
+                        config,
+                    }
+                );
+            }
+        );
+
+        it(
+            'should add again an offline proxy',
+            async() => {
+                await commanderApp.frontendClient.createFreeproxies(
+                    project.id,
+                    connector.id,
+                    [
+                        {
+                            type: EProxyType.HTTP,
+                            key: '1.2.3.4:1337',
+                            address: {
+                                hostname: '1.2.3.4',
+                                port: 1337,
+                            },
+                            auth: null,
+                        },
+                    ]
+                );
+
+                await waitFor(() => {
+                    expect(client.freeproxies)
+                        .toHaveLength(2);
+                });
+            }
+        );
+
+        it(
+            'should auto-remove all offline proxies',
+            async() => {
+                await waitFor(
+                    () => {
+                        expect(client.freeproxies)
+                            .toHaveLength(1);
+                    },
+                    20
+                );
             }
         );
 

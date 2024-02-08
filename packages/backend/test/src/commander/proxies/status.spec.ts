@@ -24,6 +24,7 @@ import {
     EventsConnectorsClient,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    sleep,
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import type {
@@ -138,7 +139,7 @@ describe(
                 {
                     name: 'myconnector',
                     proxiesMax: 0,
-                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                    proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST + 1,
                     proxiesTimeoutUnreachable: {
                         enabled: true,
                         value: 3000,
@@ -167,12 +168,6 @@ describe(
                     .toBeGreaterThan(0);
             });
 
-            await commanderApp.frontendClient.activateConnector(
-                project.id,
-                connector.id,
-                true
-            );
-
             // Connect events
             const views = await commanderApp.frontendClient.getAllProjectConnectorsAndProxiesById(project.id);
             client = new EventsConnectorsClient(commanderApp.events);
@@ -197,6 +192,17 @@ describe(
                 masterApp.stop(), datacenterLocalApp.close(), servers.close(),
             ]);
         });
+
+        it(
+            'should activate the connector',
+            async() => {
+                await commanderApp.frontendClient.activateConnector(
+                    project.id,
+                    connector.id,
+                    true
+                );
+            }
+        );
 
         it(
             'should scale 1 proxy',
@@ -355,7 +361,7 @@ describe(
         );
 
         it(
-            'should have 1 stopped proxy',
+            'should have no proxy',
             async() => {
                 await datacenterLocalApp.client.updateSubscription(
                     subscriptionId,
@@ -376,6 +382,101 @@ describe(
                 );
                 expect(view.proxies)
                     .toHaveLength(0);
+            }
+        );
+
+        it(
+            'should not update connector with a unreachable timeout below disconnected timeout',
+            async() => {
+                const connectorFound = await commanderApp.frontendClient.getConnectorById(
+                    project.id,
+                    connector.id
+                );
+
+                await expect(commanderApp.frontendClient.updateConnector(
+                    project.id,
+                    connector.id,
+                    {
+                        name: connectorFound.name,
+                        credentialId: connectorFound.credentialId,
+                        proxiesMax: connectorFound.proxiesMax,
+                        proxiesTimeoutDisconnected: connectorFound.proxiesTimeoutDisconnected,
+                        proxiesTimeoutUnreachable: {
+                            enabled: connectorFound.proxiesTimeoutUnreachable.enabled,
+                            value: connectorFound.proxiesTimeoutDisconnected - 1,
+                        },
+                        config: connectorFound.config,
+                    }
+                )).rejects.toThrowError('Request failed with status code 500');
+            }
+        );
+
+        it(
+            'should reactivate connector with proxy timeout renewal disabled',
+            async() => {
+                await datacenterLocalApp.client.updateSubscription(
+                    subscriptionId,
+                    {
+                        ...SUBSCRIPTION_LOCAL_DEFAULTS,
+                        transitionStartingToStarted: false,
+                    }
+                );
+
+                const connectorFound = await commanderApp.frontendClient.getConnectorById(
+                    project.id,
+                    connector.id
+                );
+
+                await commanderApp.frontendClient.updateConnector(
+                    project.id,
+                    connector.id,
+                    {
+                        name: connectorFound.name,
+                        credentialId: connectorFound.credentialId,
+                        proxiesMax: connectorFound.proxiesMax,
+                        proxiesTimeoutDisconnected: connectorFound.proxiesTimeoutDisconnected,
+                        proxiesTimeoutUnreachable: {
+                            enabled: false,
+                            value: connectorFound.proxiesTimeoutUnreachable.value,
+                        },
+                        config: connectorFound.config,
+                    }
+                );
+
+                await commanderApp.frontendClient.activateConnector(
+                    project.id,
+                    connector.id,
+                    true
+                );
+            }
+        );
+
+        it(
+            'have 1 starting proxy never removed',
+            async() => {
+                await waitFor(
+                    () => {
+                        expect(client.views[ 0 ].proxies)
+                            .toHaveLength(1);
+
+                        const proxy = client.views[ 0 ].proxies[ 0 ];
+                        expect(proxy.id).not.toBe(proxyId);
+                    },
+                    10
+                );
+
+                await sleep(4000);
+
+                await waitFor(
+                    () => {
+                        expect(client.views[ 0 ].proxies)
+                            .toHaveLength(1);
+
+                        const proxy = client.views[ 0 ].proxies[ 0 ];
+                        expect(proxy.id).not.toBe(proxyId);
+                    },
+                    10
+                );
             }
         );
     }
