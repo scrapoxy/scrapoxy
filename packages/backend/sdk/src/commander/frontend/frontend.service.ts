@@ -14,6 +14,7 @@ import {
     toTaskView,
     toUserProject,
 } from '@scrapoxy/common';
+import { ValidationError } from 'joi';
 import { v4 as uuid } from 'uuid';
 import { COMMANDER_FRONTEND_MODULE_CONFIG } from './frontend.constants';
 import { filterDuplicateOutboundIpFreeproxies } from './frontend.helpers';
@@ -612,6 +613,16 @@ export class CommanderFrontendService {
             connectorToCreate
         );
 
+        if (connectorToCreate.proxiesTimeoutUnreachable.enabled) {
+            if (connectorToCreate.proxiesTimeoutUnreachable.value < connectorToCreate.proxiesTimeoutDisconnected) {
+                throw new ValidationError(
+                    'Timeout unreachable must be greater than disconnected',
+                    [],
+                    'proxiesTimeoutUnreachable.value'
+                );
+            }
+        }
+
         await this.storageproviders.storage.checkIfConnectorNameExists(
             projectId,
             connectorToCreate.name
@@ -671,6 +682,16 @@ export class CommanderFrontendService {
             schemaConnectorToUpdate,
             connectorToUpdate
         );
+
+        if (connectorToUpdate.proxiesTimeoutUnreachable.enabled) {
+            if (connectorToUpdate.proxiesTimeoutUnreachable.value < connectorToUpdate.proxiesTimeoutDisconnected) {
+                throw new ValidationError(
+                    'Timeout unreachable must be greater than disconnected',
+                    [],
+                    'proxiesTimeoutUnreachable.value'
+                );
+            }
+        }
 
         await this.storageproviders.storage.checkIfConnectorNameExists(
             projectId,
@@ -1108,6 +1129,7 @@ export class CommanderFrontendService {
         );
         const freeproxiesIds = new Set(freeproxiesExisting.map((fp) => fp.id));
         const config = connector.config as IConnectorFreeproxyConfig;
+        const timeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
         const freeproxiesToCreate = freeproxies.map((fp) => ({
             id: formatFreeproxyId(
                 connectorId,
@@ -1120,7 +1142,7 @@ export class CommanderFrontendService {
             address: fp.address,
             auth: fp.auth,
             timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
-            timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
+            timeoutUnreachable,
             disconnectedTs: nowTime,
             fingerprint: null,
             fingerprintError: null,

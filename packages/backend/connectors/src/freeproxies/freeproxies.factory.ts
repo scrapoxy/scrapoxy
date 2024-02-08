@@ -6,6 +6,7 @@ import {
     validate,
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/common';
+import { ValidationError } from 'joi';
 import { ConnectorFreeproxiesService } from './freeproxies.service';
 import { schemaConfig } from './freeproxies.validation';
 import type {
@@ -51,6 +52,16 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
             schemaConfig,
             connectorConfig
         );
+
+        if (connectorConfig.freeproxiesTimeoutUnreachable.enabled) {
+            if (connectorConfig.freeproxiesTimeoutUnreachable.value < connectorConfig.freeproxiesTimeoutDisconnected) {
+                throw new ValidationError(
+                    'Timeout unreachable must be greater than disconnected',
+                    [],
+                    'freeproxiesTimeoutUnreachable.value'
+                );
+            }
+        }
     }
 
     async validateInstallConfig(): Promise<void> {

@@ -23,6 +23,7 @@ import {
 import {
     CommanderFrontendClientService,
     ConnectorprovidersService,
+    matchTimeout,
     ProjectCurrentService,
     ToastsService,
     ValidatorDelayOptional,
@@ -68,42 +69,52 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
         private readonly router: Router,
         private readonly toastsService: ToastsService
     ) {
-        this.form = fb.group({
-            name: [
-                void 0, Validators.required,
-            ],
-            credentialId: [
-                void 0, Validators.required,
-            ],
-            proxiesMax: [
-                void 0,
-                [
-                    Validators.required, Validators.min(1),
+        this.form = fb.group(
+            {
+                name: [
+                    void 0, Validators.required,
                 ],
-            ],
-            proxiesTimeoutDisconnected: [
-                void 0,
-                [
-                    Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                credentialId: [
+                    void 0, Validators.required,
                 ],
-            ],
-            proxiesTimeoutUnreachable: [
-                void 0,
-                [
-                    Validators.required,
-                    ValidatorDelayOptional({
-                        min: 500,
-                    }),
+                proxiesMax: [
+                    void 0,
+                    [
+                        Validators.required, Validators.min(1),
+                    ],
                 ],
-            ],
-            certificateDurationInMs: [
+                proxiesTimeoutDisconnected: [
+                    void 0,
+                    [
+                        Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                    ],
+                ],
+                proxiesTimeoutUnreachable: [
+                    void 0,
+                    [
+                        Validators.required,
+                        ValidatorDelayOptional({
+                            min: 500,
+                        }),
+                    ],
+                ],
+                certificateDurationInMs: [
                 // Value hidden and set to 1 year
-                void 0,
-                [
-                    Validators.required, Validators.min(1),
+                    void 0,
+                    [
+                        Validators.required, Validators.min(1),
+                    ],
                 ],
-            ],
-        });
+            },
+            {
+                validators: [
+                    matchTimeout(
+                        'proxiesTimeoutDisconnected',
+                        'proxiesTimeoutUnreachable'
+                    ),
+                ],
+            }
+        );
 
         projectCurrentService.project$.subscribe((value) => {
             this.projectName = value?.name ?? '';

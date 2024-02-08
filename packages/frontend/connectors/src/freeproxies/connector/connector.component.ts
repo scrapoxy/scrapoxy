@@ -22,6 +22,7 @@ import {
 import {
     CommanderFrontendClientService,
     EventsService,
+    matchTimeout,
     ToastsService,
     ValidatorDelayOptional,
 } from '@scrapoxy/frontend-sdk';
@@ -85,23 +86,33 @@ export class ConnectorFreeproxiesComponent implements IConnectorComponent, OnIni
         fb: FormBuilder,
         private readonly toastsService: ToastsService
     ) {
-        this.subForm = fb.group({
-            freeproxiesTimeoutDisconnected: [
-                void 0,
-                [
-                    Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+        this.subForm = fb.group(
+            {
+                freeproxiesTimeoutDisconnected: [
+                    void 0,
+                    [
+                        Validators.required, Validators.min(500), Validators.max(30 * ONE_SECOND_IN_MS),
+                    ],
                 ],
-            ],
-            freeproxiesTimeoutUnreachable: [
-                void 0,
-                [
-                    Validators.required,
-                    ValidatorDelayOptional({
-                        min: 500,
-                    }),
+                freeproxiesTimeoutUnreachable: [
+                    void 0,
+                    [
+                        Validators.required,
+                        ValidatorDelayOptional({
+                            min: 500,
+                        }),
+                    ],
                 ],
-            ],
-        });
+            },
+            {
+                validators: [
+                    matchTimeout(
+                        'freeproxiesTimeoutDisconnected',
+                        'freeproxiesTimeoutUnreachable'
+                    ),
+                ],
+            }
+        );
 
         this.client = new EventsFreeproxiesClient(
             this.events,

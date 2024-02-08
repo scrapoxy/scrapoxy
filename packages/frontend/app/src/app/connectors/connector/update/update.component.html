@@ -199,6 +199,9 @@
                                                 @if (errs['min']) {
                                                     Timeout should be at least 500ms
                                                 }
+                                                @if (errs['timeout']) {
+                                                    Kick timeout should be greater than or equal to disconnected timeout
+                                                }
                                             }
                                         </c-form-feedback>
                                     }

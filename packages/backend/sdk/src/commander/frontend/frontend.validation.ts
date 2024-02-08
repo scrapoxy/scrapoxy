@@ -62,7 +62,7 @@ export const schemaCredentialToUpdate = Joi.object({
 });
 
 
-const schemaProxiesTimeoutUnreachable = Joi.object({ // TODO: can be moved in SDK
+const schemaProxiesTimeoutUnreachable = Joi.object({
     enabled: Joi.boolean()
         .required(),
     value: Joi.number()
