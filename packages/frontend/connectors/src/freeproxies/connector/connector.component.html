@@ -30,9 +30,7 @@
     }
     @if (subForm.controls['freeproxiesTimeoutUnreachable']; as c) {
         <c-row>
-            <label cLabel cCol md="2" for="freeproxiesTimeoutUnreachable">
-                Freeproxies Kick
-            </label>
+            <label cLabel cCol md="2" for="freeproxiesTimeoutUnreachable">Freeproxies Kick</label>
 
             <c-col md="10">
                 <input-delay-optional
@@ -63,24 +61,23 @@
 
 @if (!createMode) {
     <c-row>
-        <c-col><h5 class="card-title">Sources ({{ sourcesSize }})</h5></c-col>
+        <c-col>
+            <h5 class="card-title">Sources ({{ sourcesSize }})</h5>
+        </c-col>
     </c-row>
 
     <source-add (add)="addSources($event)"></source-add>
 
-    <sources
-        [sources$]="sources$"
-        (remove)="removeSources($event)"></sources>
+    <sources [sources$]="sources$" (remove)="removeSources($event)"></sources>
 
     <c-row>
-        <c-col><h5 class="card-title">Proxies ({{ freeproxiesSize }})</h5></c-col>
+        <c-col>
+            <h5 class="card-title">Proxies ({{ freeproxiesSize }})</h5>
+        </c-col>
     </c-row>
 
     <freeproxies-add (add)="addFreeproxies($event)"></freeproxies-add>
 
     <!-- TODO: make itemsPerPage configurable for every pagination in the app -->
-    <freeproxies
-        [freeproxies$]="freeproxies$"
-        [itemsPerPage]="10"
-        (remove)="removeFreeproxies($event)"></freeproxies>
+    <freeproxies [freeproxies$]="freeproxies$" [itemsPerPage]="10" (remove)="removeFreeproxies($event)"></freeproxies>
 }

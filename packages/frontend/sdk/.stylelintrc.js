@@ -1,7 +1,3 @@
-const
-    order = require('../../../stylelint/order.rule'),
-    standard = require('../../../stylelint/standard.rule');
-
 module.exports = {
     parserOptions: {
         project: [
@@ -9,14 +5,5 @@ module.exports = {
         ],
     },
 
-    plugins: [
-        'stylelint-scss', 'stylelint-order',
-    ],
-
-    extends: 'stylelint-config-standard',
-
-    rules: {
-        ...standard,
-        ...order,
-    },
+    extends: '@scrapoxy/stylelint-config',
 };

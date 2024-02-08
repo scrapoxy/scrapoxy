@@ -3,24 +3,24 @@
         @if (sources.length > 0) {
             <table cTable small>
                 <thead>
-                <tr>
-                    <th scope="col" class="col-source-url">URL</th>
+                    <tr>
+                        <th scope="col" class="col-source-url">URL</th>
 
-                    <th scope="col" class="col-source-delay">Refresh Delay</th>
+                        <th scope="col" class="col-source-delay">Refresh Delay</th>
 
-                    <th scope="col" class="col-source-status">Status</th>
+                        <th scope="col" class="col-source-status">Status</th>
 
-                    <th scope="col" class="col-actions">
-                        <button
-                            cButton
-                            color="primary"
-                            cTooltip="Remove all sources"
-                            cTooltipPlacement="top"
-                            (click)="removeAllWithConfirm()">
-                            <svg cIcon name="cilTrash"></svg>
-                        </button>
-                    </th>
-                </tr>
+                        <th scope="col" class="col-actions">
+                            <button
+                                cButton
+                                color="primary"
+                                cTooltip="Remove all sources"
+                                cTooltipPlacement="top"
+                                (click)="removeAllWithConfirm()">
+                                <svg cIcon name="cilTrash"></svg>
+                            </button>
+                        </th>
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -39,11 +39,7 @@
                             </td>
 
                             <td class="col-actions">
-                                <button
-                                    cButton
-                                    color="secondary"
-                                    variant="outline"
-                                    (click)="removeWithConfirm(source)">
+                                <button cButton color="secondary" variant="outline" (click)="removeWithConfirm(source)">
                                     <svg cIcon name="cilTrash"></svg>
                                 </button>
                             </td>
@@ -51,8 +47,7 @@
                     }
                 </tbody>
             </table>
-        }
-        @else {
+        } @else {
             No source in the list.
         }
     </c-col>

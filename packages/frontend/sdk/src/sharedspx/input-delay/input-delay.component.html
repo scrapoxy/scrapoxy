@@ -10,13 +10,9 @@
         [disabled]="disabled"
         [value]="value"
         (keyup)="onValueChange($event)"
-        (focus)="markAsTouched()"/>
+        (focus)="markAsTouched()" />
 
-    <select
-        cSelect
-        [value]="valueType"
-        [disabled]="disabled"
-        (change)="onTypeChange($event)">
+    <select cSelect [value]="valueType" [disabled]="disabled" (change)="onTypeChange($event)">
         <option value="ms">milliseconds</option>
         <option value="s">seconds</option>
         <option value="min">minutes</option>

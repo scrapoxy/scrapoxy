@@ -31,6 +31,18 @@
                 ],
                 "fix": true
             }
+        },
+        "lint-styles": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx stylelint --aei --fix packages/frontend/connectors/src/**/{*,*.*}.scss"
+            }
+        },
+        "lint-html": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "npx prettier --write --loglevel warn packages/frontend/connectors/src/**/{*,*.*}.html"
+            }
         }
     },
     "tags": []

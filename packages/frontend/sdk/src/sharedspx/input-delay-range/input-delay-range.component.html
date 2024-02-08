@@ -20,11 +20,7 @@
         (keyup)="onMinChange($event)"
         (focus)="markAsTouched()" />
 
-    <select
-        cSelect
-        [disabled]="disabled || !rangeEnabled"
-        [value]="rangeMinType"
-        (change)="onMinTypeChange($event)">
+    <select cSelect [disabled]="disabled || !rangeEnabled" [value]="rangeMinType" (change)="onMinTypeChange($event)">
         <option value="ms">milliseconds</option>
         <option value="s">seconds</option>
         <option value="min">minutes</option>
@@ -49,11 +45,7 @@
         (keyup)="onMaxChange($event)"
         (focus)="markAsTouched()" />
 
-    <select
-        cSelect
-        [disabled]="disabled || !rangeEnabled"
-        [value]="rangeMaxType"
-        (change)="onMaxTypeChange($event)">
+    <select cSelect [disabled]="disabled || !rangeEnabled" [value]="rangeMaxType" (change)="onMaxTypeChange($event)">
         <option value="ms">milliseconds</option>
         <option value="s">seconds</option>
         <option value="min">minutes</option>

@@ -12,12 +12,7 @@
                         placeholder="Enter list of proxies, one per line."
                         [valid]="c.dirty || c.touched ? c.valid : undefined"></textarea>
 
-                    <button
-                        cButton
-                        type="submit"
-                        color="secondary"
-                        variant="outline"
-                        [disabled]="!form.valid">
+                    <button cButton type="submit" color="secondary" variant="outline" [disabled]="!form.valid">
                         <svg cIcon name="cilPlus"></svg>
                     </button>
                 </c-input-group>

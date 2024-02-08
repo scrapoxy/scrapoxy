@@ -3,46 +3,46 @@
         @if (freeproxies.length > 0) {
             <table cTable small>
                 <thead>
-                <tr>
-                    <th scope="col" class="col-freeproxy-type">Type</th>
+                    <tr>
+                        <th scope="col" class="col-freeproxy-type">Type</th>
 
-                    <th scope="col" class="col-freeproxy-address-in">Inbound Address</th>
+                        <th scope="col" class="col-freeproxy-address-in">Inbound Address</th>
 
-                    <th scope="col" class="col-freeproxy-status">Status</th>
+                        <th scope="col" class="col-freeproxy-status">Status</th>
 
-                    <th scope="col" class="col-freeproxy-address-out">Outbound Address</th>
+                        <th scope="col" class="col-freeproxy-address-out">Outbound Address</th>
 
-                    <th scope="col" class="col-actions">
-                        <button
-                            cButton
-                            color="secondary"
-                            variant="outline"
-                            cTooltip="Remove offline proxies now"
-                            cTooltipPlacement="top"
-                            (click)="removeOfflineWithConfirm()">
-                            <svg cIcon name="cilPowerStandby"></svg>
-                        </button>
+                        <th scope="col" class="col-actions">
+                            <button
+                                cButton
+                                color="secondary"
+                                variant="outline"
+                                cTooltip="Remove offline proxies now"
+                                cTooltipPlacement="top"
+                                (click)="removeOfflineWithConfirm()">
+                                <svg cIcon name="cilPowerStandby"></svg>
+                            </button>
 
-                        <button
-                            cButton
-                            color="secondary"
-                            variant="outline"
-                            cTooltip="Remove duplicate outbound IP addresses now"
-                            cTooltipPlacement="top"
-                            (click)="removeDuplicateWithConfirm()">
-                            <svg cIcon name="cilMoney"></svg>
-                        </button>
+                            <button
+                                cButton
+                                color="secondary"
+                                variant="outline"
+                                cTooltip="Remove duplicate outbound IP addresses now"
+                                cTooltipPlacement="top"
+                                (click)="removeDuplicateWithConfirm()">
+                                <svg cIcon name="cilMoney"></svg>
+                            </button>
 
-                        <button
-                            cButton
-                            color="primary"
-                            cTooltip="Remove all proxies"
-                            cTooltipPlacement="top"
-                            (click)="removeAllWithConfirm()">
-                            <svg cIcon name="cilTrash"></svg>
-                        </button>
-                    </th>
-                </tr>
+                            <button
+                                cButton
+                                color="primary"
+                                cTooltip="Remove all proxies"
+                                cTooltipPlacement="top"
+                                (click)="removeAllWithConfirm()">
+                                <svg cIcon name="cilTrash"></svg>
+                            </button>
+                        </th>
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -81,8 +81,7 @@
             </table>
 
             <table-pagination [(pageCurrent)]="pageCurrent" [pageMax]="pageMax"></table-pagination>
-        }
-        @else {
+        } @else {
             No proxies in the list.
         }
     </c-col>
