@@ -73,23 +73,6 @@ export interface IConnectorSync extends IConnectorView {
 }
 
 
-export interface IConnectorToCreate {
-    name: string;
-    credentialId: string;
-    proxiesMax: number;
-    proxiesTimeoutDisconnected: number;
-    proxiesTimeoutUnreachable: IOptionalValue<number>;
-    config: any;
-    certificateDurationInMs: number;
-}
-
-
-export interface IConnectorDataToCreate extends IConnectorData {
-    certificate: ICertificate | null;
-    certificateEndAt: number | null;
-}
-
-
 export interface IConnectorToUpdate {
     name: string;
     credentialId: string;
@@ -97,6 +80,17 @@ export interface IConnectorToUpdate {
     proxiesTimeoutDisconnected: number;
     proxiesTimeoutUnreachable: IOptionalValue<number>;
     config: any;
+}
+
+
+export interface IConnectorToCreate extends IConnectorToUpdate {
+    certificateDurationInMs: number;
+}
+
+
+export interface IConnectorDataToCreate extends IConnectorData {
+    certificate: ICertificate | null;
+    certificateEndAt: number | null;
 }
 
 
