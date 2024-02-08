@@ -118,7 +118,8 @@ export class CommanderScraperService extends ACommanderService {
 
     async createFreeproxies(
         token: string,
-        connectorId: string, freeproxies: IFreeproxyBase[]
+        connectorId: string,
+        freeproxies: IFreeproxyBase[]
     ): Promise<void> {
         this.logger.debug(`createFreeproxies(): token=${token} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
 

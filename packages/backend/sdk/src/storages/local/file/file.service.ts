@@ -30,7 +30,7 @@ import type {
     IConnectorData,
     IConnectorDataToCreate,
     ICredentialData,
-    IFreeproxiesToCreate,
+    IFreeproxy,
     IProjectData,
     IProjectDataCreate,
     IProjectUserLink,
@@ -198,8 +198,16 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
     }
 
     //////////// FREE PROXIES ////////////
-    override async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
-        await super.createFreeproxies(create);
+    override async createFreeproxies(
+        projectId: string,
+        connectorId: string,
+        freeproxies: IFreeproxy[]
+    ): Promise<void> {
+        await super.createFreeproxies(
+            projectId,
+            connectorId,
+            freeproxies
+        );
 
         await this.saveStore();
     }

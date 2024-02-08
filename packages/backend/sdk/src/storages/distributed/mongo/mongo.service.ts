@@ -129,7 +129,6 @@ import type {
     IConnectorView,
     ICredentialData,
     ICredentialView,
-    IFreeproxiesToCreate,
     IFreeproxy,
     IFreeproxyToRefresh,
     IProjectData,
@@ -2154,13 +2153,17 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         return freeproxies;
     }
 
-    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
-        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
+    async createFreeproxies(
+        projectId: string,
+        connectorId: string,
+        freeproxies: IFreeproxy[]
+    ): Promise<void> {
+        this.logger.debug(`createFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
 
         const connectorModel = await this.colConnector.findOne(
             {
-                _id: create.connectorId,
-                projectId: create.projectId,
+                _id: connectorId,
+                projectId,
             },
             {
                 projection: {
@@ -2172,15 +2175,15 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
         if (!connectorModel) {
             throw new ConnectorNotFoundError(
-                create.projectId,
-                create.connectorId
+                projectId,
+                connectorId
             );
         }
 
         const bulk = this.colFreeproxies.initializeUnorderedBulkOp();
-        for (const freeproxy of create.freeproxies) {
-            if (freeproxy.projectId !== create.projectId ||
-                freeproxy.connectorId !== create.connectorId) {
+        for (const freeproxy of freeproxies) {
+            if (freeproxy.projectId !== projectId ||
+                freeproxy.connectorId !== connectorId) {
                 continue;
             }
 

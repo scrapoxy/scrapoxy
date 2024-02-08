@@ -14,7 +14,6 @@ import { StorageprovidersService } from '../storages';
 import type { Logger } from '@nestjs/common';
 import type {
     IConnectorFreeproxyConfig,
-    IFreeproxiesToCreate,
     IFreeproxiesToRemoveOptions,
     IFreeproxyBase,
     IProjectData,
@@ -151,13 +150,11 @@ export abstract class ACommanderService {
             return;
         }
 
-        const create: IFreeproxiesToCreate = {
+        await this.storageproviders.storage.createFreeproxies(
             projectId,
             connectorId,
-            freeproxies: freeproxiesToCreate,
-        };
-
-        await this.storageproviders.storage.createFreeproxies(create);
+            freeproxiesToCreate
+        );
     }
 
     protected async removeFreeproxiesImpl(

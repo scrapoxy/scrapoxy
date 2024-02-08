@@ -12,7 +12,6 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialView,
-    IFreeproxiesToCreate,
     IFreeproxy,
     IFreeproxyToRefresh,
     IProjectData,
@@ -161,7 +160,7 @@ export interface IStorageService {
 
     getNewProjectFreeproxies: (projectId: string, connectorId: string, count: number, excludeKeys: string[]) => Promise<IFreeproxy[]>;
 
-    createFreeproxies: (create: IFreeproxiesToCreate) => Promise<void>;
+    createFreeproxies: (projectId: string, connectorId: string, freeproxies: IFreeproxy[],) => Promise<void>;
 
     synchronizeFreeproxies: (actions: ISynchronizeFreeproxies) => Promise<void>;
 

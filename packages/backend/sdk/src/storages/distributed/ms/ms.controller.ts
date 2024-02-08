@@ -609,7 +609,11 @@ export class StorageDistributedMsController implements IProbeService, OnModuleIn
     async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
         this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
 
-        await this.storage.createFreeproxies(create);
+        await this.storage.createFreeproxies(
+            create.projectId,
+            create.connectorId,
+            create.freeproxies
+        );
 
         const event: IEvent = {
             id: create.projectId,

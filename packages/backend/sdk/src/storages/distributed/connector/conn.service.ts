@@ -762,8 +762,18 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         return freeproxies;
     }
 
-    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> {
-        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
+    async createFreeproxies(
+        projectId: string,
+        connectorId: string,
+        freeproxies: IFreeproxy[]
+    ): Promise<void> {
+        this.logger.debug(`createFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
+
+        const create: IFreeproxiesToCreate = {
+            projectId,
+            connectorId,
+            freeproxies,
+        };
 
         await lastValueFrom(this.proxy.emit(
             MESSAGE_FREEPROXIES_CREATE,

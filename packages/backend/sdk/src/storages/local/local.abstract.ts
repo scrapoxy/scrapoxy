@@ -116,7 +116,6 @@ import type {
     ICredentialData,
     ICredentialView,
     IEvent,
-    IFreeproxiesToCreate,
     IFreeproxy,
     IFreeproxyToRefresh,
     IProjectData,
@@ -1895,28 +1894,32 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             .map(toFreeproxy);
     }
 
-    async createFreeproxies(create: IFreeproxiesToCreate): Promise<void> { // TODO: can destructur create to projectId, connectorId, freeproxies
-        this.logger.debug(`createFreeproxies(): create.freeproxies.length=${create.freeproxies.length}`);
+    async createFreeproxies(
+        projectId: string,
+        connectorId: string,
+        freeproxies: IFreeproxy[]
+    ): Promise<void> {
+        this.logger.debug(`createFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
 
-        const projectModel = this.projects.get(create.projectId);
+        const projectModel = this.projects.get(projectId);
 
         if (!projectModel) {
-            throw new ProjectNotFoundError(create.projectId);
+            throw new ProjectNotFoundError(projectId);
         }
 
-        const connectorModel = projectModel.connectors.get(create.connectorId);
+        const connectorModel = projectModel.connectors.get(connectorId);
 
         if (!connectorModel) {
             throw new ConnectorNotFoundError(
-                create.projectId,
-                create.connectorId
+                projectId,
+                connectorId
             );
         }
 
-        const freeproxies: IFreeproxy[] = [];
-        for (const freeproxy of create.freeproxies) {
-            if (freeproxy.projectId !== create.projectId ||
-                freeproxy.connectorId !== create.connectorId) {
+        const freeproxiesCreated: IFreeproxy[] = [];
+        for (const freeproxy of freeproxies) {
+            if (freeproxy.projectId !== projectId ||
+                freeproxy.connectorId !== connectorId) {
                 continue;
             }
 
@@ -1935,13 +1938,13 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 freeproxyModel
             );
 
-            freeproxies.push(toFreeproxy(freeproxyModel));
+            freeproxiesCreated.push(toFreeproxy(freeproxyModel));
         }
 
         const event: IEvent = {
-            id: create.projectId,
+            id: projectId,
             scope: EEventScope.FREEPROXIES,
-            event: new FreeproxiesCreatedEvent(freeproxies),
+            event: new FreeproxiesCreatedEvent(freeproxiesCreated),
         };
 
         await this.events.emit(event);
