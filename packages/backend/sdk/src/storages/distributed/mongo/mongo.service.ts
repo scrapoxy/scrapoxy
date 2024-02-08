@@ -1612,6 +1612,10 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             },
             {
+                sort: {
+                    nextRefreshTs: 1,
+                },
+                limit: 1,
                 projection: {
                     _id: 1,
                     name: 1,
@@ -1941,10 +1945,10 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         const proxyModel = await this.colProxies.findOne(
             query,
             {
-                limit: 1,
                 sort: {
                     lastConnectionTs: 1,
                 },
+                limit: 1,
                 projection: PROXY_TO_CONNECT_META_MONGODB,
             }
         )
@@ -1997,6 +2001,9 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             },
             {
+                sort: {
+                    nextRefreshTs: 1,
+                },
                 limit: count,
                 projection: PROXY_TO_REFRESH_META_MONGODB,
             }
@@ -2242,6 +2249,9 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             },
             {
+                sort: {
+                    nextRefreshTs: 1,
+                },
                 limit: count,
                 projection: FREEPROXY_TO_REFRESH_META_MONGODB,
             }
@@ -2417,7 +2427,10 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             },
             {
-                limit: 1, // TODO: miss the sort in the getnextsource => check on mongo + local
+                sort: {
+                    nextRefreshTs: 1,
+                },
+                limit: 1,
                 projection: SOURCE_META_MONGODB,
             }
         )
@@ -2613,19 +2626,27 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
     async getNextTaskToRefresh(nextRetryTs: number): Promise<ITaskData> {
         this.logger.debug(`getNextTaskToRefresh(): nextRetryTs=${nextRetryTs}`);
 
-        const taskModel = await this.colTasks.findOne({
-            running: true,
-            nextRetryTs: {
-                $lt: nextRetryTs,
+        const taskModel = await this.colTasks.findOne(
+            {
+                running: true,
+                nextRetryTs: {
+                    $lt: nextRetryTs,
+                },
+                locked: false,
             },
-            locked: false,
-        })
+            {
+                sort: {
+                    nextRetryTs: 1,
+                },
+                limit: 1,
+                projection: TASK_DATA_META_MONGODB,
+            }
+        )
             .then((c) => safeFromMongo<ITaskData>(c));
 
         if (!taskModel) {
             throw new NoTaskToRefreshError();
         }
-
 
         return taskModel;
     }
