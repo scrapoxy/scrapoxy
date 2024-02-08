@@ -1913,7 +1913,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             );
         }
 
-        const timeoutUnreachable = toOptionalValue(connectorModel.proxiesTimeoutUnreachable);
         const freeproxies: IFreeproxy[] = [];
         for (const freeproxy of create.freeproxies) {
             if (freeproxy.projectId !== create.projectId ||
@@ -1923,8 +1922,6 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
             const freeproxyModel: IFreeproxyModel = {
                 ...freeproxy,
-                timeoutDisconnected: connectorModel.proxiesTimeoutDisconnected,
-                timeoutUnreachable,
                 nextRefreshTs: 0,
             };
 

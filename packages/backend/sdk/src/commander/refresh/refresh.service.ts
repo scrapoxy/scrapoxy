@@ -943,6 +943,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
         );
         const freeproxiesIds = new Set(freeproxiesExisting.map((fp) => fp.id));
         const config = connector.config as IConnectorFreeproxyConfig;
+        const timeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
         const freeproxiesToCreate = freeproxies.map((fp) => ({
             id: formatFreeproxyId(
                 connectorId,
@@ -955,7 +956,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
             address: fp.address,
             auth: fp.auth,
             timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
-            timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
+            timeoutUnreachable,
             disconnectedTs: nowTime,
             fingerprint: null,
             fingerprintError: null,

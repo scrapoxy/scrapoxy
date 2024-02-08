@@ -1516,7 +1516,6 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
         if (connector.type === CONNECTOR_FREEPROXIES_TYPE) {
             const config = connector.config as IConnectorFreeproxyConfig;
-            const freeproxiesTimeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
             freeproxiesPromises = this.colFreeproxies.updateMany(
                 {
                     connectorId: connector.id,
@@ -1525,7 +1524,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 {
                     $set: {
                         timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
-                        timeoutUnreachable: freeproxiesTimeoutUnreachable,
+                        timeoutUnreachable: toOptionalValue(config.freeproxiesTimeoutUnreachable),
                     },
                 }
             );
@@ -2172,7 +2171,6 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             );
         }
 
-        const timeoutUnreachable = toOptionalValue(connectorModel.proxiesTimeoutUnreachable);
         const bulk = this.colFreeproxies.initializeUnorderedBulkOp();
         for (const freeproxy of create.freeproxies) {
             if (freeproxy.projectId !== create.projectId ||
@@ -2191,8 +2189,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 disconnectedTs: freeproxy.disconnectedTs,
                 fingerprint: null,
                 fingerprintError: null,
-                timeoutDisconnected: connectorModel.proxiesTimeoutDisconnected,
-                timeoutUnreachable,
+                timeoutDisconnected: freeproxy.timeoutDisconnected,
+                timeoutUnreachable: freeproxy.timeoutUnreachable,
                 nextRefreshTs: 0,
             };
 
