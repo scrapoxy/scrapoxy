@@ -435,7 +435,7 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
     async removeFreeproxies(
         projectId: string,
         connectorId: string,
-        options: IFreeproxiesToRemoveOptions
+        options?: IFreeproxiesToRemoveOptions
     ): Promise<void> {
         await lastValueFrom(this.client
             .post(

@@ -142,7 +142,8 @@ export class CommanderScraperService extends ACommanderService {
 
     async removeFreeproxies(
         token: string,
-        connectorId: string, options: IFreeproxiesToRemoveOptions
+        connectorId: string,
+        options?: IFreeproxiesToRemoveOptions
     ): Promise<void> {
         this.logger.debug(`removeFreeproxies(): token=${token} / connectorId=${connectorId}`);
 

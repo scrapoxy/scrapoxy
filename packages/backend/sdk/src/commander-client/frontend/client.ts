@@ -439,7 +439,7 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
     async removeFreeproxies(
         projectId: string,
         connectorId: string,
-        options: IFreeproxiesToRemoveOptions
+        options?: IFreeproxiesToRemoveOptions
     ): Promise<void> {
         await this.instance
             .post(

@@ -116,7 +116,7 @@ export interface ICommanderFrontendClient {
 
     createFreeproxies: (projectId: string, connectorId: string, freeproxies: IFreeproxyBase[]) => Promise<void>;
 
-    removeFreeproxies: (projectId: string, connectorId: string, options: IFreeproxiesToRemoveOptions) => Promise<void>;
+    removeFreeproxies: (projectId: string, connectorId: string, options?: IFreeproxiesToRemoveOptions) => Promise<void>;
 
     createSources: (projectId: string, connectorId: string, sources: ISourceBase[]) => Promise<void>;
 

@@ -274,8 +274,6 @@ describe(
                     project.id,
                     connector.id,
                     {
-                        ids: [],
-                        duplicate: false,
                         onlyOffline: true,
                     }
                 );
@@ -432,8 +430,6 @@ describe(
                     connector.id,
                     {
                         ids,
-                        duplicate: false,
-                        onlyOffline: false,
                     }
                 );
             }

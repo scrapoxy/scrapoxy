@@ -544,7 +544,7 @@ export class CommanderFrontendController {
     async removeFreeproxies(
         @Param('projectId') projectId: string,
             @Param('connectorId') connectorId: string,
-            @Body() options: IFreeproxiesToRemoveOptions
+            @Body() options?: IFreeproxiesToRemoveOptions
     ): Promise<void> {
         await this.commander.removeFreeproxies(
             projectId,

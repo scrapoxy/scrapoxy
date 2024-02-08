@@ -103,7 +103,7 @@ export class CommanderScraperController {
     async removeFreeproxies(
         @Req() req: IRequestToken,
             @Param('connectorId') connectorId: string,
-            @Body() options: IFreeproxiesToRemoveOptions
+            @Body() options?: IFreeproxiesToRemoveOptions
     ): Promise<void> {
         await this.commander.removeFreeproxies(
             req.token,

@@ -93,9 +93,9 @@ export interface INewFreeProxies {
 
 
 export interface IFreeproxiesToRemoveOptions {
-    ids: string[];
-    duplicate: boolean;
-    onlyOffline: boolean;
+    ids?: string[];
+    duplicate?: boolean;
+    onlyOffline?: boolean;
 }
 
 

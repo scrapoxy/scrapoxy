@@ -88,8 +88,6 @@ export class FreeproxiesComponent implements OnInit, OnDestroy {
             ids: [
                 freeproxy.id,
             ],
-            duplicate: false,
-            onlyOffline: false,
         });
     }
 
@@ -105,8 +103,6 @@ export class FreeproxiesComponent implements OnInit, OnDestroy {
         }
 
         this.remove.emit({
-            ids: [],
-            duplicate: false,
             onlyOffline: true,
         });
     }
@@ -123,9 +119,7 @@ export class FreeproxiesComponent implements OnInit, OnDestroy {
         }
 
         this.remove.emit({
-            ids: [],
             duplicate: true,
-            onlyOffline: false,
         });
     }
 
@@ -140,10 +134,6 @@ export class FreeproxiesComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.remove.emit({
-            ids: [],
-            duplicate: false,
-            onlyOffline: false,
-        });
+        this.remove.emit({});
     }
 }

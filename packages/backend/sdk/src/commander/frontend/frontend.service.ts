@@ -1064,7 +1064,7 @@ export class CommanderFrontendService extends ACommanderService {
     }
 
     async removeFreeproxies(
-        projectId: string, connectorId: string, options: IFreeproxiesToRemoveOptions
+        projectId: string, connectorId: string, options?: IFreeproxiesToRemoveOptions
     ): Promise<void> {
         this.logger.debug(`removeFreeproxies(): projectId=${projectId} / connectorId=${connectorId}`);
 

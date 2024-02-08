@@ -403,8 +403,6 @@ export function testProxy(
                 connector.id,
                 {
                     ids,
-                    duplicate: false,
-                    onlyOffline: false,
                 }
             );
         }
