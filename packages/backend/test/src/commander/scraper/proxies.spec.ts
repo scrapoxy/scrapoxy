@@ -32,7 +32,7 @@ import type {
 
 
 describe(
-    'Commander - Scrapers',
+    'Commander - Scrapers - Proxies',
     () => {
         const logger = new Logger();
         const

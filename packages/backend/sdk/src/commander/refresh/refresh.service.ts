@@ -5,11 +5,9 @@ import {
 } from '@nestjs/common';
 import {
     addRange,
-    CONNECTOR_FREEPROXIES_TYPE,
     EProjectStatus,
     EProxyStatus,
     fingerprintEquals,
-    formatFreeproxyId,
     formatProxyId,
     fromProxySyncToData,
     generateUseragent,
@@ -21,21 +19,20 @@ import { COMMANDER_REFRESH_MODULE_CONFIG } from './refresh.constants';
 import { schemaTaskToUpdate } from './refresh.validation';
 import { ConnectorprovidersService } from '../../connectors';
 import {
-    ConnectorWrongTypeError,
     NoFreeproxyToRefreshError,
     NoProxyToRefreshError,
 } from '../../errors';
 import { validate } from '../../helpers';
 import { StorageprovidersService } from '../../storages';
 import { TasksService } from '../../tasks';
+import { ACommanderService } from '../commander.abstract';
+import { schemaFreeproxiesToCreate } from '../commander.validation';
 import type { ICommanderRefreshModuleConfig } from './refresh.module';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
-    IConnectorFreeproxyConfig,
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
     ICreateRemoveLocalProxies,
-    IFreeproxiesToCreate,
     IFreeproxiesToRefresh,
     IFreeproxy,
     IFreeproxyBase,
@@ -60,7 +57,7 @@ import type {
 
 
 @Injectable()
-export class CommanderRefreshService implements OnModuleDestroy {
+export class CommanderRefreshService extends ACommanderService implements OnModuleDestroy {
     protected readonly logger = new Logger(CommanderRefreshService.name);
 
     private stopping = false;
@@ -69,9 +66,10 @@ export class CommanderRefreshService implements OnModuleDestroy {
         private readonly connectorproviders: ConnectorprovidersService,
         @Inject(COMMANDER_REFRESH_MODULE_CONFIG)
         private readonly config: ICommanderRefreshModuleConfig,
-        private readonly storageproviders: StorageprovidersService,
+        storageproviders: StorageprovidersService,
         private readonly tasks: TasksService
     ) {
+        super(storageproviders);
     }
 
     async onModuleDestroy() {
@@ -923,60 +921,20 @@ export class CommanderRefreshService implements OnModuleDestroy {
     ): Promise<void> {
         this.logger.debug(`createFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
 
+        await validate(
+            schemaFreeproxiesToCreate,
+            freeproxies
+        );
+
         if (freeproxies.length <= 0) {
             return;
         }
 
-        const nowTime = Date.now();
-        const connector = await this.storageproviders.storage.getConnectorById(
-            projectId,
-            connectorId
-        );
-
-        if (connector.type !== CONNECTOR_FREEPROXIES_TYPE) {
-            throw new ConnectorWrongTypeError(
-                CONNECTOR_FREEPROXIES_TYPE,
-                connector.type
-            );
-        }
-
-        const freeproxiesExisting = await this.storageproviders.storage.getAllProjectFreeproxiesById(
-            projectId,
-            connectorId
-        );
-        const freeproxiesIds = new Set(freeproxiesExisting.map((fp) => fp.id));
-        const config = connector.config as IConnectorFreeproxyConfig;
-        const timeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
-        const freeproxiesToCreate = freeproxies.map((fp) => ({
-            id: formatFreeproxyId(
-                connectorId,
-                fp
-            ),
-            projectId,
-            connectorId: connectorId,
-            key: fp.key,
-            type: fp.type,
-            address: fp.address,
-            auth: fp.auth,
-            timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
-            timeoutUnreachable,
-            disconnectedTs: nowTime,
-            fingerprint: null,
-            fingerprintError: null,
-        }))
-            .filter((fp) => !freeproxiesIds.has(fp.id));
-
-        if (freeproxiesToCreate.length <= 0) {
-            return;
-        }
-
-        const create: IFreeproxiesToCreate = {
+        await this.createFreeproxiesImpl(
             projectId,
             connectorId,
-            freeproxies: freeproxiesToCreate,
-        };
-
-        await this.storageproviders.storage.createFreeproxies(create);
+            freeproxies
+        );
     }
 
     async updateFreeproxies(remoteFreeproxies: IFreeproxyRefreshed[]): Promise<void> {

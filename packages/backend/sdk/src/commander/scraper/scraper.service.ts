@@ -6,25 +6,37 @@ import {
     EProjectStatus,
     toProjectView,
 } from '@scrapoxy/common';
-import { ProxiesNotFoundError } from '../../errors';
 import { validate } from '../../helpers';
 import { StorageprovidersService } from '../../storages';
+import { ACommanderService } from '../commander.abstract';
 import {
+    schemaFreeproxiesToCreate,
+    schemaFreeproxiesToRemove,
     schemaProjectStatusToSet,
     schemaProxiesToRemove,
+    schemaSourcesToCreate,
+    schemaSourcesToRemove,
 } from '../commander.validation';
 import type {
     IConnectorProxiesView,
+    IFreeproxiesToRemoveOptions,
+    IFreeproxy,
+    IFreeproxyBase,
     IProjectView,
     IProxyIdToRemove,
+    ISource,
+    ISourceBase,
 } from '@scrapoxy/common';
 
 
 @Injectable()
-export class CommanderScraperService {
+export class CommanderScraperService extends ACommanderService {
     protected readonly logger = new Logger(CommanderScraperService.name);
 
-    constructor(private readonly storageproviders: StorageprovidersService) {}
+    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+    constructor(storageproviders: StorageprovidersService) {
+        super(storageproviders);
+    }
 
     //////////// PROJECTS ////////////
     async getProjectByToken(token: string): Promise<IProjectView> {
@@ -47,24 +59,10 @@ export class CommanderScraperService {
 
         const project = await this.storageproviders.storage.getProjectByToken(token);
 
-        if (project.status === status) {
-            return;
-        }
-
-        project.status = status;
-
-        const promises: Promise<void>[] = [
-            this.storageproviders.storage.updateProject(project),
-        ];
-
-        if (status === EProjectStatus.HOT) {
-            promises.push(this.storageproviders.storage.updateProjectLastDataTs(
-                project.id,
-                Date.now()
-            ));
-        }
-
-        await Promise.all(promises);
+        await this.setProjectStatusImpl(
+            project,
+            status
+        );
     }
 
 
@@ -95,49 +93,126 @@ export class CommanderScraperService {
             return;
         }
 
-        const forceMap = new Map<string, boolean>();
-        for (const proxy of proxiesIds) {
-            forceMap.set(
-                proxy.id,
-                proxy.force
-            );
+        const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
+
+        await super.askProxiesToRemoveImpl(
+            projectId,
+            proxiesIds
+        );
+    }
+
+    //////////// FREE PROXIES ////////////
+    async getAllProjectFreeproxiesById(
+        token: string, connectorId: string
+    ): Promise<IFreeproxy[]> {
+        this.logger.debug(`getAllProjectFreeproxiesById(): token=${token} / connectorId=${connectorId}`);
+
+        const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
+        const freeproxies = await this.storageproviders.storage.getAllProjectFreeproxiesById(
+            projectId,
+            connectorId
+        );
+
+        return freeproxies;
+    }
+
+    async createFreeproxies(
+        token: string,
+        connectorId: string, freeproxies: IFreeproxyBase[]
+    ): Promise<void> {
+        this.logger.debug(`createFreeproxies(): token=${token} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
+
+        await validate(
+            schemaFreeproxiesToCreate,
+            freeproxies
+        );
+
+        if (freeproxies.length <= 0) {
+            return;
         }
 
         const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
-        const ids = proxiesIds.map((p) => p.id);
-        const proxiesFound = await this.storageproviders.storage.getProjectProxiesByIds(
+
+        await this.createFreeproxiesImpl(
             projectId,
-            ids,
-            false
+            connectorId,
+            freeproxies
+        );
+    }
+
+    async removeFreeproxies(
+        token: string,
+        connectorId: string, options: IFreeproxiesToRemoveOptions
+    ): Promise<void> {
+        this.logger.debug(`removeFreeproxies(): token=${token} / connectorId=${connectorId}`);
+
+        await validate(
+            schemaFreeproxiesToRemove,
+            options
         );
 
-        if (proxiesFound.length <= 0) {
-            throw new ProxiesNotFoundError(ids);
-        }
+        const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
 
-        for (const proxyFound of proxiesFound) {
-            proxyFound.removing = true;
-            proxyFound.removingForce = forceMap.get(proxyFound.id) ?? false;
-        }
+        await this.removeFreeproxiesImpl(
+            projectId,
+            connectorId,
+            options
+        );
+    }
 
-        await this.storageproviders.storage.synchronizeProxies({
-            created: [],
-            updated: proxiesFound,
-            removed: [],
-        });
+    async getAllProjectSourcesById(
+        token: string, connectorId: string
+    ): Promise<ISource[]> {
+        this.logger.debug(`getAllProjectSourcesById(): token=${token} / connectorId=${connectorId}`);
 
-        await this.storageproviders.storage.addProjectsMetrics([
-            {
-                project: {
-                    id: projectId,
-                    snapshot: {
-                        requests: 0,
-                        stops: proxiesFound.length,
-                        bytesReceived: 0,
-                        bytesSent: 0,
-                    },
-                },
-            },
-        ]);
+        const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
+        const sources = await this.storageproviders.storage.getAllProjectSourcesById(
+            projectId,
+            connectorId
+        );
+
+        return sources;
+    }
+
+    async createSources(
+        token: string,
+        connectorId: string,
+        sources: ISourceBase[]
+    ): Promise<void> {
+        this.logger.debug(`createSources(): token=${token} / connectorId=${connectorId} / sources.length=${sources.length}`);
+
+        await validate(
+            schemaSourcesToCreate,
+            sources
+        );
+
+        const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
+
+        await this.createSourcesImpl(
+            projectId,
+            connectorId,
+            sources
+        );
+    }
+
+    async removeSources(
+        token: string,
+        connectorId: string,
+        ids: string[]
+    ): Promise<void> {
+        this.logger.debug(`removeSources(): token=${token} / connectorId=${connectorId} / ids.length=${ids.length}`);
+
+        await validate(
+            schemaSourcesToRemove,
+            ids
+        );
+
+        const projectId = await this.storageproviders.storage.getProjectIdByToken(token);
+
+        await this.removeSourcesImpl(
+            projectId,
+            connectorId,
+            ids
+        );
     }
 }

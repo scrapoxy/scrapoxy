@@ -121,22 +121,6 @@ export const schemaConnectorToActivate = Joi
     .required();
 
 
-export const schemaFreeproxiesToRemove = Joi.object({
-    ids: Joi.array()
-        .items(Joi.string())
-        .required(),
-    duplicate: Joi.boolean()
-        .required(),
-    onlyOffline: Joi.boolean()
-        .required(),
-});
-
-
-export const schemaSourcesToRemove = Joi.array()
-    .items(Joi.string())
-    .required();
-
-
 export const schemaTaskToCreate = Joi.object({
     type: Joi.string()
         .required(),

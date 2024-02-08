@@ -94,6 +94,12 @@ const commandsAuthScraper = [
     'POST /scraper/project/status',
     'GET /scraper/project/connectors',
     'POST /scraper/project/proxies/remove',
+    'GET /scraper/project/connectors/00000000-0000-0000-0000-000000000000/freeproxies',
+    'POST /scraper/project/connectors/00000000-0000-0000-0000-000000000000/freeproxies',
+    'POST /scraper/project/connectors/00000000-0000-0000-0000-000000000000/freeproxies/remove',
+    'GET /scraper/project/connectors/00000000-0000-0000-0000-000000000000/sources',
+    'POST /scraper/project/connectors/00000000-0000-0000-0000-000000000000/sources',
+    'POST /scraper/project/connectors/00000000-0000-0000-0000-000000000000/sources/remove',
 ];
 
 

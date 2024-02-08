@@ -1,23 +1,18 @@
-import { createHash } from 'crypto';
 import {
     Inject,
     Injectable,
     Logger,
 } from '@nestjs/common';
 import {
-    CONNECTOR_FREEPROXIES_TYPE,
     EProjectStatus,
-    formatFreeproxyId,
     toConnectorView,
     toCredentialView,
-    toOptionalValue,
     toTaskView,
     toUserProject,
 } from '@scrapoxy/common';
 import { ValidationError } from 'joi';
 import { v4 as uuid } from 'uuid';
 import { COMMANDER_FRONTEND_MODULE_CONFIG } from './frontend.constants';
-import { filterDuplicateOutboundIpFreeproxies } from './frontend.helpers';
 import {
     schemaConnectorToActivate,
     schemaConnectorToCreate,
@@ -25,11 +20,9 @@ import {
     schemaConnectorToUpdate,
     schemaCredentialToCreate,
     schemaCredentialToUpdate,
-    schemaFreeproxiesToRemove,
     schemaProjectToCreate,
     schemaProjectToUpdate,
     schemaProjectUserEmailToAdd,
-    schemaSourcesToRemove,
     schemaTaskToCreate,
 } from './frontend.validation';
 import { ConnectorprovidersService } from '../../connectors';
@@ -37,12 +30,10 @@ import {
     ConnectorCertificateNotUsedError,
     ConnectorRemoveError,
     ConnectorUpdateError,
-    ConnectorWrongTypeError,
     CredentialRemoveError,
     CredentialUpdateError,
     ProjectRemoveError,
     ProjectUserAccessError,
-    ProxiesNotFoundError,
     TaskCancelError,
     TaskCreateError,
     TaskRemoveError,
@@ -56,16 +47,20 @@ import {
 } from '../../helpers';
 import { StorageprovidersService } from '../../storages';
 import { TasksService } from '../../tasks';
+import { ACommanderService } from '../commander.abstract';
 import {
+    schemaFreeproxiesToCreate,
+    schemaFreeproxiesToRemove,
     schemaProjectStatusToSet,
     schemaProxiesToRemove,
+    schemaSourcesToCreate,
+    schemaSourcesToRemove,
 } from '../commander.validation';
 import type { ICommanderFrontendModuleConfig } from './frontend.module';
 import type {
     ICertificate,
     IConnectorData,
     IConnectorDataToCreate,
-    IConnectorFreeproxyConfig,
     IConnectorProxiesSync,
     IConnectorProxiesView,
     IConnectorToCreate,
@@ -78,7 +73,6 @@ import type {
     ICredentialToCreateCallback,
     ICredentialToUpdate,
     ICredentialView,
-    IFreeproxiesToCreate,
     IFreeproxiesToRemoveOptions,
     IFreeproxyBase,
     IProjectData,
@@ -89,7 +83,6 @@ import type {
     IProjectUserLink,
     IProjectView,
     IProxyIdToRemove,
-    ISource,
     ISourceBase,
     ISourcesAndFreeproxies,
     ITaskData,
@@ -100,16 +93,17 @@ import type {
 
 
 @Injectable()
-export class CommanderFrontendService {
+export class CommanderFrontendService extends ACommanderService {
     protected readonly logger = new Logger(CommanderFrontendService.name);
 
     constructor(
         @Inject(COMMANDER_FRONTEND_MODULE_CONFIG)
         private readonly config: ICommanderFrontendModuleConfig,
         private readonly connectorproviders: ConnectorprovidersService,
-        private readonly storageproviders: StorageprovidersService,
+        storageproviders: StorageprovidersService,
         private readonly tasks: TasksService
     ) {
+        super(storageproviders);
     }
 
     //////////// PROJECTS ////////////
@@ -335,24 +329,10 @@ export class CommanderFrontendService {
 
         const project = await this.storageproviders.storage.getProjectById(projectId);
 
-        if (project.status === status) {
-            return;
-        }
-
-        project.status = status;
-
-        const promises: Promise<void>[] = [
-            this.storageproviders.storage.updateProject(project),
-        ];
-
-        if (status === EProjectStatus.HOT) {
-            promises.push(this.storageproviders.storage.updateProjectLastDataTs(
-                projectId,
-                Date.now()
-            ));
-        }
-
-        await Promise.all(promises);
+        await this.setProjectStatusImpl(
+            project,
+            status
+        );
     }
 
     async setProjectConnectorDefault(
@@ -1029,49 +1009,10 @@ export class CommanderFrontendService {
             return;
         }
 
-        const forceMap = new Map<string, boolean>();
-        for (const proxy of proxiesIds) {
-            forceMap.set(
-                proxy.id,
-                proxy.force
-            );
-        }
-
-        const ids = proxiesIds.map((p) => p.id);
-        const proxiesFound = await this.storageproviders.storage.getProjectProxiesByIds(
+        await super.askProxiesToRemoveImpl(
             projectId,
-            ids,
-            false
+            proxiesIds
         );
-
-        if (proxiesFound.length <= 0) {
-            throw new ProxiesNotFoundError(ids);
-        }
-
-        for (const proxyFound of proxiesFound) {
-            proxyFound.removing = true;
-            proxyFound.removingForce = forceMap.get(proxyFound.id) ?? false;
-        }
-
-        await this.storageproviders.storage.synchronizeProxies({
-            created: [],
-            updated: proxiesFound,
-            removed: [],
-        });
-
-        await this.storageproviders.storage.addProjectsMetrics([
-            {
-                project: {
-                    id: projectId,
-                    snapshot: {
-                        requests: 0,
-                        stops: proxiesFound.length,
-                        bytesReceived: 0,
-                        bytesSent: 0,
-                    },
-                },
-            },
-        ]);
     }
 
     //////////// FREE PROXIES ////////////
@@ -1106,60 +1047,20 @@ export class CommanderFrontendService {
     ): Promise<void> {
         this.logger.debug(`createFreeproxies(): projectId=${projectId} / connectorId=${connectorId} / freeproxies.length=${freeproxies.length}`);
 
+        await validate(
+            schemaFreeproxiesToCreate,
+            freeproxies
+        );
+
         if (freeproxies.length <= 0) {
             return;
         }
 
-        const nowTime = Date.now();
-        const connector = await this.storageproviders.storage.getConnectorById(
-            projectId,
-            connectorId
-        );
-
-        if (connector.type !== CONNECTOR_FREEPROXIES_TYPE) {
-            throw new ConnectorWrongTypeError(
-                CONNECTOR_FREEPROXIES_TYPE,
-                connector.type
-            );
-        }
-
-        const freeproxiesExisting = await this.storageproviders.storage.getAllProjectFreeproxiesById(
-            projectId,
-            connectorId
-        );
-        const freeproxiesIds = new Set(freeproxiesExisting.map((fp) => fp.id));
-        const config = connector.config as IConnectorFreeproxyConfig;
-        const timeoutUnreachable = toOptionalValue(config.freeproxiesTimeoutUnreachable);
-        const freeproxiesToCreate = freeproxies.map((fp) => ({
-            id: formatFreeproxyId(
-                connectorId,
-                fp
-            ),
-            projectId,
-            connectorId: connectorId,
-            key: fp.key,
-            type: fp.type,
-            address: fp.address,
-            auth: fp.auth,
-            timeoutDisconnected: config.freeproxiesTimeoutDisconnected,
-            timeoutUnreachable,
-            disconnectedTs: nowTime,
-            fingerprint: null,
-            fingerprintError: null,
-        }))
-            .filter((fp) => !freeproxiesIds.has(fp.id));
-
-        if (freeproxiesToCreate.length <= 0) {
-            return;
-        }
-
-        const create: IFreeproxiesToCreate = {
+        await this.createFreeproxiesImpl(
             projectId,
             connectorId,
-            freeproxies: freeproxiesToCreate,
-        };
-
-        await this.storageproviders.storage.createFreeproxies(create);
+            freeproxies
+        );
     }
 
     async removeFreeproxies(
@@ -1172,32 +1073,11 @@ export class CommanderFrontendService {
             options
         );
 
-        let freeproxies = await this.storageproviders.storage.getAllProjectFreeproxiesById(
+        await this.removeFreeproxiesImpl(
             projectId,
-            connectorId
+            connectorId,
+            options
         );
-
-        if (options.ids && options.ids.length > 0) {
-            freeproxies = freeproxies.filter((fp) => options.ids!.includes(fp.id));
-        }
-
-
-        if (options.duplicate) {
-            freeproxies = filterDuplicateOutboundIpFreeproxies(freeproxies);
-        }
-
-        if (options.onlyOffline) {
-            freeproxies = freeproxies.filter((fp) => !fp.fingerprint);
-        }
-
-        if (freeproxies.length <= 0) {
-            return;
-        }
-
-        await this.storageproviders.storage.synchronizeFreeproxies({
-            updated: [],
-            removed: freeproxies,
-        });
     }
 
     async createSources(
@@ -1207,45 +1087,16 @@ export class CommanderFrontendService {
     ): Promise<void> {
         this.logger.debug(`createSources(): projectId=${projectId} / connectorId=${connectorId} / sources.length=${sources.length}`);
 
-        const connector = await this.storageproviders.storage.getConnectorById(
-            projectId,
-            connectorId
+        await validate(
+            schemaSourcesToCreate,
+            sources
         );
 
-        if (connector.type !== CONNECTOR_FREEPROXIES_TYPE) {
-            throw new ConnectorWrongTypeError(
-                CONNECTOR_FREEPROXIES_TYPE,
-                connector.type
-            );
-        }
-
-        const sourcesExisting = await this.storageproviders.storage.getAllProjectSourcesById(
+        await this.createSourcesImpl(
             projectId,
-            connectorId
+            connectorId,
+            sources
         );
-        const sourcesUrls = new Set(sourcesExisting.map((s) => s.url));
-        const create: ISource[] = sources
-            .filter((source) => !sourcesUrls.has(source.url))
-            .map((source) => {
-                const hash = createHash('sha256')
-                    .update(source.url)
-                    .digest('hex');
-
-                return {
-                    ...source,
-                    projectId,
-                    connectorId,
-                    id: `${connectorId}:${hash}`,
-                    lastRefreshTs: null,
-                    lastRefreshError: null,
-                };
-            });
-
-        if (create.length <= 0) {
-            return;
-        }
-
-        await this.storageproviders.storage.createSources(create);
     }
 
     async removeSources(
@@ -1258,20 +1109,11 @@ export class CommanderFrontendService {
             ids
         );
 
-        let sources = await this.storageproviders.storage.getAllProjectSourcesById(
+        await this.removeSourcesImpl(
             projectId,
-            connectorId
+            connectorId,
+            ids
         );
-
-        if (ids && ids.length > 0) {
-            sources = sources.filter((s) => ids!.includes(s.id));
-        }
-
-        if (sources.length <= 0) {
-            return;
-        }
-
-        await this.storageproviders.storage.removeSources(sources);
     }
 
     //////////// TASKS ////////////
