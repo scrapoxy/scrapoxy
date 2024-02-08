@@ -142,7 +142,7 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
     async refreshProxies(remoteProxies: IProxyRefreshed[]): Promise<void> {
         await this.instance
             .post(
-                'proxies/refresh',
+                'proxies',
                 remoteProxies
             );
     }
@@ -156,7 +156,7 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
     }
 
     async getNextProxiesToRefresh(): Promise<IProxiesToRefresh> {
-        const res = await this.instance.get<IProxiesToRefresh>('proxies/refresh');
+        const res = await this.instance.get<IProxiesToRefresh>('proxies');
 
         return res.data;
     }
@@ -197,7 +197,7 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
     }
 
     async getNextFreeproxiesToRefresh(): Promise<IFreeproxiesToRefresh> {
-        const res = await this.instance.get<IFreeproxiesToRefresh>('freeproxies/refresh');
+        const res = await this.instance.get<IFreeproxiesToRefresh>('freeproxies');
 
         return res.data;
     }
@@ -215,20 +215,20 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
 
     async updateFreeproxies(remoteFreeproxies: IFreeproxyRefreshed[]): Promise<void> {
         await this.instance.post<IFreeproxy[]>(
-            'freeproxies/refresh',
+            'freeproxies',
             remoteFreeproxies
         );
     }
 
     async getNextSourceToRefresh(): Promise<ISource> {
-        const res = await this.instance.get<ISource>('sources/refresh'); // TODO: possible to remove 'refresh' because API is already prefixed with 'refresh'?
+        const res = await this.instance.get<ISource>('sources');
 
         return res.data;
     }
 
     async updateSource(source: ISourceRefreshed): Promise<void> {
         await this.instance.post<IFreeproxy[]>(
-            'sources/refresh',
+            'sources',
             source
         );
     }
@@ -257,7 +257,7 @@ export class CommanderRefreshClientService implements OnModuleDestroy {
     }
 
     async getNextTaskToRefresh(): Promise<ITaskData> {
-        const res = await this.instance.get<ITaskData>('tasks/refresh');
+        const res = await this.instance.get<ITaskData>('tasks');
 
         return res.data;
     }

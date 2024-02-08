@@ -95,7 +95,7 @@ export class CommanderRefreshController {
     }
 
     //////////// PROXIES ////////////
-    @Post('proxies/refresh')
+    @Post('proxies')
     @HttpCode(204)
     async refreshProxies(@Body() remoteProxies: IProxyRefreshed[]): Promise<void> {
         await this.commander.refreshProxies(remoteProxies);
@@ -107,7 +107,7 @@ export class CommanderRefreshController {
         await this.commander.addProxiesMetrics(proxies);
     }
 
-    @Get('proxies/refresh')
+    @Get('proxies')
     async getNextProxiesToRefresh(): Promise<IProxiesToRefresh> {
         const proxies = await this.commander.getNextProxiesToRefresh();
 
@@ -146,7 +146,7 @@ export class CommanderRefreshController {
         return freeproxies;
     }
 
-    @Get('freeproxies/refresh')
+    @Get('freeproxies')
     async getNextFreeproxiesToRefresh(): Promise<IFreeproxiesToRefresh> {
         const freeproxies = await this.commander.getNextFreeproxiesToRefresh();
 
@@ -167,20 +167,20 @@ export class CommanderRefreshController {
         );
     }
 
-    @Post('freeproxies/refresh')
+    @Post('freeproxies')
     @HttpCode(204)
     async updateFreeproxies(@Body() remoteFreeproxies: IFreeproxyRefreshed[]): Promise<void> {
         await this.commander.updateFreeproxies(remoteFreeproxies);
     }
 
-    @Get('sources/refresh')
+    @Get('sources')
     async getNextSourceToRefresh(): Promise<ISource> {
         const source = await this.commander.getNextSourceToRefresh();
 
         return source;
     }
 
-    @Post('sources/refresh')
+    @Post('sources')
     async updateSource(@Body() source: ISourceRefreshed): Promise<void> {
         await this.commander.updateSource(source);
     }
@@ -212,7 +212,7 @@ export class CommanderRefreshController {
         );
     }
 
-    @Get('tasks/refresh')
+    @Get('tasks')
     async getNextTaskToRefresh(): Promise<ITaskData> {
         const task = await this.commander.getNextTaskToRefresh();
 
