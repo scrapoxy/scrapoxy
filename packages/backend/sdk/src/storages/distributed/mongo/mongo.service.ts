@@ -1499,7 +1499,6 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 },
             }
         );
-        const proxyTimeoutUnreachable = toOptionalValue(connector.proxiesTimeoutUnreachable);
         const proxiesPromise = this.colProxies.updateMany(
             {
                 connectorId: connector.id,
@@ -1508,7 +1507,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             {
                 $set: {
                     timeoutDisconnected: connector.proxiesTimeoutDisconnected,
-                    timeoutUnreachable: proxyTimeoutUnreachable,
+                    timeoutUnreachable: toOptionalValue(connector.proxiesTimeoutUnreachable),
                 },
             }
         );

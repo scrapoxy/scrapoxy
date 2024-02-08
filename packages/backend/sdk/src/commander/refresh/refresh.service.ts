@@ -202,7 +202,9 @@ export class CommanderRefreshService implements OnModuleDestroy {
         }
 
         // Proxies creation
-        const localProxiesCreatedMap = new Map<string, IProxySync>();
+        const
+            localProxiesCreatedMap = new Map<string, IProxySync>(),
+            timeoutUnreachable = toOptionalValue(localProxies.connector.proxiesTimeoutUnreachable);
         for (const remoteProxy of proxies.created) {
             if (localProxiesMap.has(remoteProxy.key)) {
                 continue;
@@ -223,7 +225,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                 createdTs: nowTime,
                 useragent: generateUseragent(),
                 timeoutDisconnected: localProxies.connector.proxiesTimeoutDisconnected,
-                timeoutUnreachable: toOptionalValue(localProxies.connector.proxiesTimeoutUnreachable),
+                timeoutUnreachable,
                 fingerprint: null,
                 fingerprintError: null,
                 removing: false,
@@ -377,7 +379,8 @@ export class CommanderRefreshService implements OnModuleDestroy {
         const
             localProxiesCreatedMap = new Map<string, IProxySync>(),
             localProxiesUnmodifiedMap = new Map<string, IProxySync>(),
-            localProxiesUpdatedMap = new Map<string, IProxySync>();
+            localProxiesUpdatedMap = new Map<string, IProxySync>(),
+            timeoutUnreachable = toOptionalValue(localProxies.connector.proxiesTimeoutUnreachable);
         for (const remoteProxy of remoteProxies) {
             let localProxy: IProxySync | undefined = localProxiesMap.get(remoteProxy.key);
 
@@ -423,7 +426,7 @@ export class CommanderRefreshService implements OnModuleDestroy {
                     createdTs: nowTime,
                     useragent: generateUseragent(),
                     timeoutDisconnected: localProxies.connector.proxiesTimeoutDisconnected,
-                    timeoutUnreachable: toOptionalValue(localProxies.connector.proxiesTimeoutUnreachable),
+                    timeoutUnreachable,
                     fingerprint: null,
                     fingerprintError: null,
                     removing: false,
