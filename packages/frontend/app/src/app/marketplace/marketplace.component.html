@@ -31,46 +31,43 @@
         </c-col>
     </c-row>
 
-    @for (tcs of typesOfConnectorsFiltered; track tcs.name) {
-        <c-row>
-            <c-col md="12">
-                <c-card>
-                    <c-card-header>{{ tcs.name }}</c-card-header>
+    <c-row>
+        @for (connector of connectorsFiltered; track connector.key) {
+            <c-col md="4" xl="4">
+                <c-card class="card-provider">
+                    <c-card-body>
+                        <div class="provider-image">
+                            <img
+                                [src]="'assets/imgs/connectors/' + connector.key + '.svg'"
+                                [alt]="connector.config.name" />
+                        </div>
+
+                        <div class="provider-field field-single">
+                            <div class="field-title">Type</div>
+                            <div class="field-value">{{ getTypeDescription(connector.config.type) }}</div>
+                        </div>
+
+                        <div class="provider-field field-multiple">
+                            <div class="field-value">{{ connector.config.description }}</div>
+                        </div>
+
+                        <div class="provider-buttons">
+                            <a
+                                cButton
+                                color="light"
+                                [routerLink]="['/projects', projectId, 'credentials', 'create', connector.key]">
+                                Create
+                            </a>
+
+                            <div></div>
+
+                            @if (connector.config.url) {
+                                <a [href]="connector.config.url" target="_blank">Website</a>
+                            }
+                        </div>
+                    </c-card-body>
                 </c-card>
             </c-col>
-
-            @for (connector of tcs.connectors; track connector.key) {
-                <c-col md="4" xl="4">
-                    <c-card class="card-provider">
-                        <c-card-body>
-                            <div class="provider-image">
-                                <img
-                                    [src]="'assets/imgs/connectors/' + connector.key + '.svg'"
-                                    [alt]="connector.config.name" />
-                            </div>
-
-                            <div class="provider-description">
-                                {{ connector.config.description }}
-                            </div>
-
-                            <div class="provider-buttons">
-                                <a
-                                    cButton
-                                    color="light"
-                                    [routerLink]="['/projects', projectId, 'credentials', 'create', connector.key]">
-                                    Create
-                                </a>
-
-                                <div></div>
-
-                                @if (connector.config.url) {
-                                    <a [href]="connector.config.url" target="_blank">Website</a>
-                                }
-                            </div>
-                        </c-card-body>
-                    </c-card>
-                </c-col>
-            }
-        </c-row>
-    }
+        }
+    </c-row>
 </c-container>

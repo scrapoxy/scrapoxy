@@ -29,13 +29,10 @@ import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type { IConnectorConfig } from '@scrapoxy/frontend-sdk';
 
 
-interface ITypeOfConnectors {
-    type: string;
-    name: string;
-    connectors: {
-        key: string;
-        config: IConnectorConfig;
-    }[];
+interface IConnectorUI {
+    key: string;
+    type: EConnectorType;
+    config: IConnectorConfig;
 }
 
 
@@ -48,7 +45,7 @@ interface ITypeOfConnectors {
 export class MarketplaceComponent implements OnInit, OnDestroy {
     EConnectorType = EConnectorType;
 
-    typesOfConnectorsFiltered: ITypeOfConnectors[] = [];
+    connectorsFiltered: IConnectorUI[] = [];
 
     projectId: string;
 
@@ -56,33 +53,7 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
 
     connectorsLoaded = false;
 
-    private readonly typesOfConnectors: ITypeOfConnectors[] = [
-        {
-            type: EConnectorType.StaticIp,
-            name: 'Static IP Providers',
-            connectors: [],
-        },
-        {
-            type: EConnectorType.DynamicIP,
-            name: 'Dynamic IP Providers',
-            connectors: [],
-        },
-        {
-            type: EConnectorType.Hardware,
-            name: 'Hardware Providers',
-            connectors: [],
-        },
-        {
-            type: EConnectorType.Datacenter,
-            name: 'Datacenter Providers',
-            connectors: [],
-        },
-        {
-            type: EConnectorType.List,
-            name: 'Proxy List',
-            connectors: [],
-        },
-    ];
+    private readonly connectors: IConnectorUI[] = [];
 
     private search = '';
 
@@ -123,23 +94,16 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
                 .filter((factory) => backendTypes.includes(factory.type));
 
             for (const factory of factories) {
-                const tcs = this.typesOfConnectors.find((g) => g.type === factory.config.type);
-
-                if (tcs) {
-                    tcs.connectors.push({
-                        key: factory.type,
-                        config: factory.config,
-                    });
-                } else {
-                    console.log(`Type not found for ${factory.type} and type=${factory.config.type}`);
-                }
+                this.connectors.push({
+                    key: factory.type,
+                    type: factory.config.type,
+                    config: factory.config,
+                });
             }
 
-            for (const tcs of this.typesOfConnectors) {
-                tcs.connectors.sort((
-                    a, b
-                ) => a.config.name.localeCompare(b.config.name));
-            }
+            this.connectors.sort((
+                a, b
+            ) => a.config.name.localeCompare(b.config.name));
 
             this.update();
 
@@ -164,6 +128,23 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
             .toLowerCase());
     }
 
+    getTypeDescription(type: EConnectorType) {
+        switch (type) {
+            case EConnectorType.StaticIp:
+                return 'Static IP';
+            case EConnectorType.DynamicIP:
+                return 'Dynamic IP';
+            case EConnectorType.Hardware:
+                return 'Hardware';
+            case EConnectorType.Datacenter:
+                return 'Datacenter';
+            case EConnectorType.List:
+                return 'Proxy List';
+            default:
+                return 'Unknown';
+        }
+    }
+
     async create(connector: string) {
         await this.router.navigate([
             '/projects',
@@ -176,20 +157,12 @@ export class MarketplaceComponent implements OnInit, OnDestroy {
 
     private update() {
         if (this.search.length > 0) {
-            this.typesOfConnectorsFiltered = this.typesOfConnectors.map((tcs) => {
-                const connectors = tcs.connectors.filter((connector) => connector.key.toLowerCase()
-                    .includes(this.search) ||
-                        connector.config.name.toLowerCase()
-                            .includes(this.search));
-
-                return {
-                    ...tcs,
-                    connectors,
-                };
-            })
-                .filter((tp) => tp.connectors.length > 0);
+            this.connectorsFiltered = this.connectors.filter((connector) => connector.key.toLowerCase()
+                .includes(this.search) ||
+                    connector.config.name.toLowerCase()
+                        .includes(this.search));
         } else {
-            this.typesOfConnectorsFiltered = this.typesOfConnectors;
+            this.connectorsFiltered = this.connectors;
         }
     }
 }

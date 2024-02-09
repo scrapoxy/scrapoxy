@@ -26,16 +26,45 @@
     align-items: center;
     justify-content: center;
 
+    margin-bottom: calc(var(--cui-card-spacer-y) * 1);
+
     img {
         max-width: 100%;
         max-height: 50px;
     }
 }
 
-.provider-description {
-    min-height: 130px;
+.provider-field {
+    display: flex;
 
-    margin-top: var(--cui-card-spacer-y);
+    margin-bottom: 5px;
+}
+
+.field-title {
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.field-single {
+    .field-title {
+        margin-right: 5px;
+
+        &::after {
+            content: ' :';
+        }
+    }
+
+    .field-value {
+        font-size: 0.9em;
+    }
+}
+
+.field-multiple {
+    flex-flow: column;
+
+    .field-value {
+        min-height: 130px;
+    }
 }
 
 .provider-buttons {
