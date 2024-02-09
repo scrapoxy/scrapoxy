@@ -1,5 +1,31 @@
 # Changelog
 
+## 4.5.0
+
+### Features
+
+- **freeproxies**: collect freeproxies from an URL at specified interval
+- **proxies**: make timeout configurable to detect online/offline status of proxies
+- **proxies**: make timeout configurable for removing offline proxies
+- **freeproxies**: add a configurable timeout to detect online/offine status of freeproxies
+- **freeproxies**: add a configurable timeout for removing offline freeproxies
+- **api**: add an API endpoint to manage freeproxies and sources
+
+### Refactor
+
+- **connectors**: merge all connectors into 3 fixed directory (common, frontend, backend)
+- **storage**: merge all storages into 2 fixed directory (common, backend)
+- **auth**: merge all authentications into 2 fixed directory (common, backend)
+- **website**: reorganize website and documentation structure for connectors
+- **website**: manage plural text in toasts
+
+### Bug fixes
+
+- **linter**: fix linter for HTML and CSS
+- **frontend**: correct pagination component
+- **socks**: allow socks in connect tunnel mode
+
+
 ## 4.4.2
 
 ### Bug fixes
