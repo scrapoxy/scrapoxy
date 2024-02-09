@@ -86,7 +86,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `OVH` as provider to create a new credential (use search if necessary).
+Select `OVH` to create a new credential (use search if necessary).
 
 ---
 

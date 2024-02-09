@@ -31,7 +31,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Ninjas Proxy` as provider to create a new credential (use search if necessary).
+Select `Ninjasproxy` to create a new credential (use search if necessary).
 
 ---
 

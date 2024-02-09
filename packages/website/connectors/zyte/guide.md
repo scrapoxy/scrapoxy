@@ -50,7 +50,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Zyte` as provider to create a new credential (use search if necessary).
+Select `Zyte` to create a new credential (use search if necessary).
 
 ---
 

@@ -37,7 +37,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Nimble` as provider to create a new credential (use search if necessary).
+Select `Nimble` to create a new credential (use search if necessary).
 
 ---
 

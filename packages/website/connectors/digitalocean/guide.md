@@ -46,7 +46,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Digital Ocean` as provider to create a new credential (use search if necessary).
+Select `Digital Ocean` to create a new credential (use search if necessary).
 
 ---
 

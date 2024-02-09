@@ -51,7 +51,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Proxidize` as provider to create a new credential (use search if necessary).
+Select `Proxidize` to create a new credential (use search if necessary).
 
 ---
 

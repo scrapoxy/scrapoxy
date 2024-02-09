@@ -148,7 +148,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `AWS` as provider to create a new credential (use search if necessary).
+Select `AWS` to create a new credential (use search if necessary).
 
 ---
 

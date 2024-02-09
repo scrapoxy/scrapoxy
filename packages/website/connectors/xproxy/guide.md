@@ -62,7 +62,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `XProxy` as provider to create a new credential (use search if necessary).
+Select `XProxy` to create a new credential (use search if necessary).
 
 ---
 

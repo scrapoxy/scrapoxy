@@ -53,8 +53,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_server_select.png)
 
-1. In the `Static IP Providers` section,
-2. Select `IPRoyal` as provider to create a new credential (use search if necessary).
+Select `IPRoyal` with type `Static IP` as provider to create a new credential (use search if necessary).
 
 ---
 
@@ -150,8 +149,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_residential_select.png)
 
-1. In the `Dynamic IP Providers` section,
-2. Select `IPRoyal` as provider to create a new credential (use search if necessary).
+Select `IPRoyal` with type `Dynamic IP` to create a new credential (use search if necessary).
 
 ---
 

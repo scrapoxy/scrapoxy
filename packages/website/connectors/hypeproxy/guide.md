@@ -45,9 +45,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-1. On the left menu, click on `Marketplace`;
-2. Search for `hypeproxy`;
-3. Click on `Create` button.
+Select `HypeProxy` to create a new credential (use search if necessary).
 
 ---
 

@@ -47,9 +47,21 @@ features:
     details: MIT Licensed, with the source code available on Github.
 
 providers:
-    - tier: "Proxies Services"
+    - tier: ""
       size: 'medium'
       items:
+        - name: 'AWS'
+          url: 'https://aws.amazon.com'
+          img: '/assets/images/aws.svg'
+        - name: 'Azure'
+          url: 'https://azure.microsoft.com'
+          img: '/assets/images/azure.svg'
+        - name: 'DigitalOcean'
+          url: 'https://www.digitalocean.com'
+          img: '/assets/images/digitalocean.svg'
+        - name: 'GCP'
+          url: 'https://cloud.google.com'
+          img: '/assets/images/gcp.svg'
         - name: 'HypeProxy'
           url: 'https://hypeproxy.io'
           img: '/assets/images/hypeproxy.svg'
@@ -62,6 +74,12 @@ providers:
         - name: 'Ninjas Proxy'
           url: 'https://ninjasproxy.com'
           img: '/assets/images/ninjasproxy.svg'
+        - name: 'OVH'
+          url: 'https://www.ovh.com'
+          img: '/assets/images/ovh.svg'
+        - name: 'Proxidize'
+          url: 'https://proxidize.com'
+          img: '/assets/images/proxidize.svg'
         - name: 'Proxy Cheap'
           url: 'https://app.proxy-cheap.com/r/lt6xyT'
           img: '/assets/images/proxy-cheap.svg'
@@ -74,33 +92,9 @@ providers:
         - name: 'Zyte'
           url: 'https://www.zyte.com'
           img: '/assets/images/zyte.svg'
-    - tier: 'Hardware'
-      size: 'medium'
-      items:
-        - name: 'Proxidize'
-          url: 'https://proxidize.com'
-          img: '/assets/images/proxidize.svg'
         - name: 'XProxy'
           url: 'https://xproxy.io'
           img: '/assets/images/xproxy.svg'
-    - tier: 'Datacenter Providers'
-      size: 'medium'
-      items:
-        - name: 'AWS'
-          url: 'https://aws.amazon.com'
-          img: '/assets/images/aws.svg'
-        - name: 'Azure'
-          url: 'https://azure.microsoft.com'
-          img: '/assets/images/azure.svg'
-        - name: 'GCP'
-          url: 'https://cloud.google.com'
-          img: '/assets/images/gcp.svg'
-        - name: 'OVH'
-          url: 'https://www.ovh.com'
-          img: '/assets/images/ovh.svg'
-        - name: 'DigitalOcean'
-          url: 'https://www.digitalocean.com'
-          img: '/assets/images/digitalocean.svg'
 
 sponsors:
     - tier: "Platinum"

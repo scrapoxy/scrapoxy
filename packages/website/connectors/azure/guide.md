@@ -124,7 +124,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Azure` as provider to create a new credential (use search if necessary).
+Select `Azure` to create a new credential (use search if necessary).
 
 ---
 

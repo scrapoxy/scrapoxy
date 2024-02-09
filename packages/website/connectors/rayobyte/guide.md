@@ -40,7 +40,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Rayobyte` as provider to create a new credential (use search if necessary).
+Select `Rayobyte` to create a new credential (use search if necessary).
 
 
 ---

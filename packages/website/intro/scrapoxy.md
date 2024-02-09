@@ -15,8 +15,10 @@ It also smartly handles **traffic routing 🔀** to minimize bans and increase *
 ## What is not Scrapoxy?
 
 Scrapoxy is not:
-- a webscraper like [Scrapy](https://scrapy.org) or [Crawlee](https://crawlee.dev);
-- a proxy service like [IP Royal](https://iproyal.com).
+- a webscraper like [Scrapy](https://scrapy.org), [Crawlee](https://crawlee.dev) or [Octoparse](https://www.octoparse.com);
+- a cloud provider like [AWS](https://aws.amazon.com), [GCP](https://cloud.google.com) or [Azure](https://azure.microsoft.com);
+- a browser farm like [Puppeteer](https://pptr.dev), [Selenium](https://www.selenium.dev) or [Playwright](https://playwright.dev);
+- a proxy service like [Rayobyte](https://www.rayobyte.com), [IP Royal](https://iproyal.com) or [Zyte](https://www.zyte.com).
 
 
 ## Why Scrapoxy?
@@ -73,7 +75,7 @@ to create a diversity of proxies.
 
 ### 💻 Hardware materials 💻
 
-Scrapoxy supports many 4G proxy farms hardware types, like [Proxidize](https://proxidize.com) or [XProxy.io](https://xproxy.io). 
+Scrapoxy supports many 4G proxy farms hardware types like [Proxidize](https://proxidize.com).
 
 It uses their APIs to handle IP rotation on 4G networks.
 
@@ -150,9 +152,9 @@ Scrapoxy is suitable for both beginners and experts.
 It can be started in seconds using Docker, or be deployed in a complex, distributed environment with Kubernetes.
 
 
-### 🔓 Open Source 🔓
+### 🔓 Free and Open Source 🔓
 
-And of course, Scrapoxy is open source, under the MIT license. 
+And of course, Scrapoxy remains free and open source, under the MIT license. 
 
 I simply ask you to give me **credit** if you redistribute or use it in a project 🙌. 
 

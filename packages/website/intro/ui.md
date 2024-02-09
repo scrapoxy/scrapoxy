@@ -83,7 +83,7 @@ Upon the first connection:
 The settings for the connector's credential include:
 1. **Type**: The provider of the credential;
 2. **Name**: A unique name for the credential within the project;
-3. **Options**: Configuration options for the credential, dependent on the type of provider. In this case, you are required to enter the Token of IPRoyal.
+3. **Options**: Configuration options for the credential, dependent on the type of provider.
 
 ::: info
 When you save the settings, Scrapoxy performs a validation test to ensure that the entered credentials are valid.

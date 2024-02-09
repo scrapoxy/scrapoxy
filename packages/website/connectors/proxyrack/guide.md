@@ -38,7 +38,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Proxyrack` as provider to create a new credential (use search if necessary).
+Select `Proxyrack` to create a new credential (use search if necessary).
 
 ---
 

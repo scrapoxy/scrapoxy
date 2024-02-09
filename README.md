@@ -36,7 +36,7 @@ to create a diversity of proxies.
 
 ### 💻 Hardware materials 💻
 
-Scrapoxy supports many 4G proxy farms hardware types, like [Proxidize](https://proxidize.com) or [XProxy.io](https://xproxy.io).
+Scrapoxy supports many 4G proxy farms hardware types like [Proxidize](https://proxidize.com).
 
 It uses their APIs to handle IP rotation on 4G networks.
 
@@ -113,9 +113,9 @@ Scrapoxy is suitable for both beginners and experts.
 It can be started in seconds using Docker, or be deployed in a complex, distributed environment with Kubernetes.
 
 
-### 🔓 Open Source 🔓
+### 🔓 Free and Open Source 🔓
 
-And of course, Scrapoxy is open source, under the MIT license.
+And of course, Scrapoxy remains free and open source, under the MIT license.
 
 I simply ask you to give me **credit** if you redistribute or use it in a project 🙌.
 

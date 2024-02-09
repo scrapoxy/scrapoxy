@@ -103,45 +103,24 @@ export default defineConfig({
             {
                 text: 'Connectors',
                 collapsed: false,
+                base: '/connectors/',
                 items: [
-                    {
-                        text: 'Proxy List',
-                        base: '/connectors/',
-                        link: 'freeproxies/guide'
-                    },
-                    {
-                        text: 'Datacenter/Cloud',
-                        base: '/connectors/',
-                        items: [
-                            {text: 'AWS', link: 'aws/guide'},
-                            {text: 'Azure', link: 'azure/guide'},
-                            {text: 'Digital Ocean', link: 'digitalocean/guide'},
-                            {text: 'GCP', link: 'gcp/guide'},
-                            {text: 'OVH', link: 'ovh/guide'},
-                        ]
-                    },
-                    {
-                        text: 'Proxies Services',
-                        base: '/connectors/',
-                        items: [
-                            {text: 'HypeProxy', link: 'hypeproxy/guide'},
-                            {text: 'IP Royal', link: 'iproyal/guide'},
-                            {text: 'Nimble', link: 'nimbleway/guide'},
-                            {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
-                            {text: 'Proxy-Cheap', link: 'proxy-cheap/guide'},
-                            {text: 'Proxy Rack', link: 'proxyrack/guide'},
-                            {text: 'Rayobyte', link: 'rayobyte/guide'},
-                            {text: 'Zyte', link: 'zyte/guide'},
-                        ]
-                    },
-                    {
-                        text: 'Hardware',
-                        base: '/connectors/',
-                        items: [
-                            {text: 'Proxidize', link: 'proxidize/guide'},
-                            {text: 'XProxy', link: 'xproxy/guide'},
-                        ]
-                    },
+                    {text: 'Proxy List', link: 'freeproxies/guide'},
+                    {text: 'AWS', link: 'aws/guide'},
+                    {text: 'Azure', link: 'azure/guide'},
+                    {text: 'Digital Ocean', link: 'digitalocean/guide'},
+                    {text: 'GCP', link: 'gcp/guide'},
+                    {text: 'HypeProxy', link: 'hypeproxy/guide'},
+                    {text: 'IP Royal', link: 'iproyal/guide'},
+                    {text: 'Nimble', link: 'nimbleway/guide'},
+                    {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
+                    {text: 'OVH', link: 'ovh/guide'},
+                    {text: 'Proxidize', link: 'proxidize/guide'},
+                    {text: 'Proxy-Cheap', link: 'proxy-cheap/guide'},
+                    {text: 'Proxy Rack', link: 'proxyrack/guide'},
+                    {text: 'Rayobyte', link: 'rayobyte/guide'},
+                    {text: 'XProxy', link: 'xproxy/guide'},
+                    {text: 'Zyte', link: 'zyte/guide'},
                 ],
             },
             {
