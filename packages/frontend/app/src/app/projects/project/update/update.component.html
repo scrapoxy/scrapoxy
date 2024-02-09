@@ -30,7 +30,9 @@
                                         id="name"
                                         formControlName="name"
                                         placeholder="Enter the name"
+                                        autocomplete="off"
                                         data-form-type="other"
+                                        data-lpignore="true"
                                         [valid]="c.dirty || c.touched ? c.valid : undefined" />
 
                                     @if (c.dirty || c.touched) {
@@ -56,7 +58,9 @@
                                         cFormControl
                                         id="username"
                                         value="{{ username }}"
-                                        data-form-type="other" />
+                                        autocomplete="off"
+                                        data-form-type="other"
+                                        data-lpignore="true" />
 
                                     <button
                                         cButton
@@ -82,7 +86,9 @@
                                         cFormControl
                                         id="password"
                                         value="{{ password }}"
-                                        data-form-type="other" />
+                                        autocomplete="off"
+                                        data-form-type="other"
+                                        data-lpignore="true" />
 
                                     <button
                                         cButton

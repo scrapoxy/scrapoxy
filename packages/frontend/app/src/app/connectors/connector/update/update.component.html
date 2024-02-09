@@ -65,7 +65,9 @@
                                         id="name"
                                         formControlName="name"
                                         placeholder="Enter the name"
+                                        autocomplete="off"
                                         data-form-type="other"
+                                        data-lpignore="true"
                                         [autofocus]="true"
                                         [valid]="c.dirty || c.touched ? c.valid : undefined" />
 

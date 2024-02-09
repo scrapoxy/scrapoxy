@@ -6,7 +6,9 @@
             'is-invalid': validValue === false,
             'is-valid': validValue === true
         }"
+        autocomplete="off"
         data-form-type="other"
+        data-lpignore="true"
         [disabled]="disabled"
         [value]="value"
         (keyup)="onValueChange($event)"
