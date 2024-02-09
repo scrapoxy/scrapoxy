@@ -154,8 +154,218 @@ It can either reboot a hardware dongle or remove proxy instances from a subscrip
 
 ### Response
 
+Valid status code: `204`
+
+The response has no content.
+
+
+## Get all sources providing proxy lists sources for a connector
+
+### Request
+
+URL: `/api/scraper/project/connectors/<uuid of the connector>/sources`
+
+Method: `GET`
+
+Replace `<uuid of the connector>` by the UUID of the connector.
+
+
+### Response
+
 Type: `application/json`
+
+Valid status code: `200`
+
+Response payload:
+
+```json
+[
+    {
+        "id": "<uuid of the source>",
+        "connectorId": "<uuid of the connector>",
+        "projectId": "<uuid of the project>",
+        "url": "<url of the source>",
+        "delay": "<delay between two fetches of the source>",
+        "lastRefreshTs": "<date of the last refresh of the source>",
+        "lastRefreshError": "<error message if the last refresh of the source is in error>"
+    },
+    ...
+]
+```
+
+
+## Add multiple sources providing proxy lists for a connector
+
+### Request
+
+URL: `/api/scraper/project/connectors/<uuid of the connector>/sources`
+
+Method: `POST`
+
+Replace `<uuid of the connector>` by the UUID of the connector.
+
+Request payload:
+
+```json
+[
+    {
+        "url": "<url of the source>",
+        "delay": "<delay between two fetches of the source>"
+    },
+    ...
+]
+```
+
+
+### Response
 
 Valid status code: `204`
 
 The response has no content.
+
+
+## Remove multiple sources providing proxy lists for a connector
+
+### Request
+
+URL: `/api/scraper/project/connectors/<uuid of the connector>/sources/remove`
+
+Method: `POST`
+
+Replace `<uuid of the connector>` by the UUID of the connector.
+
+Request payload:
+
+```json
+[
+    "<uuid of the source>",
+    ...
+]
+```
+
+::: info
+If the payload is empty, all sources will be removed.
+:::
+
+
+### Response
+
+Valid status code: `204`
+
+The response has no content.
+
+
+## Get all freeproxies of a connector
+
+### Request
+
+URL: `/api/scraper/project/connectors/<uuid of the connector>/freeproxies`
+
+Method: `GET`
+
+Replace `<uuid of the connector>` by the UUID of the connector.
+
+
+### Response
+
+Type: `application/json`
+
+Valid status code: `200`
+
+Response payload:
+
+```json
+[
+    {
+        "id": "<uuid of the freeproxy>",
+        "connectorId": "<uuid of the connector>",
+        "projectId": "<uuid of the project>",
+        "key": "<key of the freeproxy in the connector>",
+        "type": "<protocol type like http/https/socks4/socks5>",
+        "address": {
+            "hostname": "<hostname of the freeproxy>",
+            "port": "<port of the freeproxy>"
+        },
+        "auth": { // or undefined if no authentication
+            "username": "<username of the freeproxy>",
+            "password": "<password>"
+        },
+        "fingerprint": "<fingerprint of the freeproxy if online>",
+        "fingerprintError": "<error message if the fingerprint of the freeproxy is in error>",
+        "timeoutDisconnected": "<maximum duration for connecting to a freeproxy before considering it as offline>",
+        "timeoutUnreachable": "if enabled, maximum duration for a freeproxy to be offline before being removed from the pool, otherwise undefined",
+        "disconnectedTs": "<date of the last disconnection of the freeproxy or undefined if online>"
+    },
+    ...
+]
+```
+
+
+## Add multiple freeproxies for a connector
+
+### Request
+
+URL: `/api/scraper/project/connectors/<uuid of the connector>/freeproxies`
+
+Method: `POST`
+
+Replace `<uuid of the connector>` by the UUID of the connector.
+
+Request payload:
+
+```json
+[
+    {
+        "key": "<key of the freeproxy in the connector>",
+        "type": "<protocol type like http/https/socks4/socks5>",
+        "address": {
+            "hostname": "<hostname of the freeproxy>",
+            "port": "<port of the freeproxy>"
+        },
+        "auth": { // or undefined if no authentication
+            "username": "<username of the freeproxy>",
+            "password": "<password>"
+        },
+    },
+    ...
+]
+```
+
+::: info
+Use `<hostname>:<port>` for the `key` field.
+:::
+
+
+### Response
+
+Valid status code: `204`
+
+The response has no content.
+
+
+## Remove multiple freeproxies for a connector
+
+### Request
+
+URL: `/api/scraper/project/connectors/<uuid of the connector>/freeproxies/remove`
+
+Method: `POST`
+
+Replace `<uuid of the connector>` by the UUID of the connector.
+
+Request payload:
+
+```json
+{
+    "ids": [
+        "<uuid of the freeproxy>",
+        ...
+    ],
+    "duplicate": "<true to remove all duplicates of the freeproxies>",
+    "offline": "<true to remove all offline freeproxies>"
+}
+```
+
+::: info
+All parameters are optionals and if the payload is empty, all freeproxies will be removed.
+:::

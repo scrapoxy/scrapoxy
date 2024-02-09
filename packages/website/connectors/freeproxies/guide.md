@@ -58,9 +58,17 @@ Complete the form with the following information:
 1. **Credential**: The previous credential;
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create.
+4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
+5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
+6. **Freeproxies Timeout**: Same as `Proxies Timeout` but for the freeproxies pool;
+7. **Freeproxies Kick**: Same as `Proxies Kick` but for the freeproxies pool.
+
+:::info
+Adjust `Freeproxies Timeout` to a higher value to avoid removing proxies from the freeproxies pool too quickly.
+:::
 
 
-### Step 3: Add some proxies
+### Step 3: Add a proxies source
 
 ![Connector Update Select](spx_connector_update_select.png)
 
@@ -68,7 +76,24 @@ On the connector, click on `Update`.
 
 ---
 
-![Connector Update](spx_connector_update.png)
+![Connector Source Add](spx_connector_source_add.png)
+
+1. Fill the URL of the proxy list;
+2. Choose the refresh rate;
+3. Click on `Add`.
+
+Here is a good URL example from [ProxyScrape](https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&proxy_format=protocolipport&format=text).
+The URL must return a list of proxies, one per line. 
+Scrapoxy will automatically fetch the list of proxies from the URL and update the connector.
+
+::: info
+It is recommended to activate `Freeproxies Kick` to curate offline proxies from the freeproxies pool.
+Proxies will be added again when Scrapoxy fetches the list from the URL.
+:::
+
+### Step 4: Add manually some proxies
+
+![Connector Proxies Add](spx_connector_proxies_add.png)
 
 Copy / Paste a list of proxies in the textarea.
 
@@ -88,18 +113,19 @@ Scrapoxy supports theses formats:
 
 --- 
 
-![Connector Update 2](spx_connector_update2.png)
+![Connector Proxies Manage](spx_connector_proxies_manage.png)
 
 Scrapoxy will assess the availability of proxies and retain only those
 that are currently accessible for the connector.
 
 The provided buttons offer the following functionalities:
 - **Delete One Proxy**: Remove a specific proxy from the list;
-- **Delete Offline Proxies**: Eliminate proxies that are either offline or in a waiting state for fingerprinting.;
+- **Delete Offline Proxies**: Eliminate proxies that are either offline or in a waiting state for fingerprinting;
+- **Delete Duplicates**: Remove proxies that share the same outbound IP address;
 - **Delete All Proxies**: Clear the entire proxy list.
 
 
-### Step 3: Start the connector
+### Step 4: Start the connector
 
 ![Connector Start](spx_connector_start.png)
 
