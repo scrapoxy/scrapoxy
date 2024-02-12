@@ -37,7 +37,7 @@ function askFingerprintLoop(
     switch (mode) {
         case 0: {
             requestPromise = axios.get(
-                'http://api.ipify.org',
+                'https://fingerprint.scrapoxy.io/api/text',
                 {
                     proxy,
                     headers: {
@@ -55,7 +55,7 @@ function askFingerprintLoop(
 
         case 1: {
             requestPromise = axios.get(
-                'https://api.ipify.org',
+                'https://fingerprint.scrapoxy.io/api/text',
                 {
                     proxy,
                     headers: {
@@ -85,7 +85,7 @@ function askFingerprintLoop(
             };
 
             requestPromise = axios.get(
-                'https://api.ipify.org',
+                'https://fingerprint.scrapoxy.io/api/text',
                 {
                     httpsAgent,
                     validateStatus: (statusCode) => statusCode === 200,

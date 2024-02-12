@@ -373,14 +373,14 @@ export function testConnector(
     jest.it(
         'should get a response without proxy',
         async() => {
-            const res = await instance.get('https://api.ipify.org');
+            const res = await instance.get('https://fingerprint.scrapoxy.io/api/json');
 
             jest.expect(res.status)
                 .toBe(200);
 
             jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-            myIp = res.data;
+            myIp = res.data.ip;
             jest.expect(myIp.length)
                 .toBeGreaterThan(0);
 
@@ -391,7 +391,7 @@ export function testConnector(
         'should get different IPs with HTTP over HTTP',
         async() => {
             const res = await instance.get(
-                'http://api.ipify.org',
+                'http://fingerprint.scrapoxy.io/api/json',
                 {
                     headers: {
                         'Proxy-Authorization': `Basic ${token}`,
@@ -410,7 +410,7 @@ export function testConnector(
             jest.expect(res.headers)
                 .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-            const ip = res.data;
+            const ip = res.data.ip;
 
             jest.expect(ip.length)
                 .toBeGreaterThan(0);
@@ -423,7 +423,7 @@ export function testConnector(
         'should get different IPs with HTTPS over HTTP',
         async() => {
             const res = await instance.get(
-                'https://api.ipify.org',
+                'https://fingerprint.scrapoxy.io/api/json',
                 {
                     headers: {
                         'Proxy-Authorization': `Basic ${token}`,
@@ -442,7 +442,7 @@ export function testConnector(
             jest.expect(res.headers)
                 .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-            const ip = res.data;
+            const ip = res.data.ip;
 
             jest.expect(ip.length)
                 .toBeGreaterThan(0);
@@ -465,7 +465,7 @@ export function testConnector(
 
             try {
                 const res = await instance.get(
-                    'https://api.ipify.org',
+                    'https://fingerprint.scrapoxy.io/api/json',
                     {
                         httpsAgent,
                     }
@@ -477,7 +477,7 @@ export function testConnector(
                 jest.expect(res.headers)
                     .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-                const ip = res.data;
+                const ip = res.data.ip;
 
                 jest.expect(ip.length)
                     .toBeGreaterThan(0);
@@ -505,7 +505,7 @@ export function testConnector(
 
             try {
                 const res = await instance.get(
-                    'https://api.ipify.org',
+                    'https://fingerprint.scrapoxy.io/api/json',
                     {
                         httpsAgent,
                     }
@@ -516,7 +516,7 @@ export function testConnector(
 
                 jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
 
-                const ip = res.data;
+                const ip = res.data.ip;
 
                 jest.expect(ip.length)
                     .toBeGreaterThan(0);
