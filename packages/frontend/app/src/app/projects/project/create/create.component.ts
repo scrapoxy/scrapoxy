@@ -46,7 +46,7 @@ export class ProjectCreateComponent implements IHasModification {
             ],
             autoRotate: [
                 {
-                    enabled: true,
+                    enabled: false,
                     min: ONE_MINUTE_IN_MS * 30,
                     max: ONE_MINUTE_IN_MS * 30,
                 },
@@ -58,11 +58,11 @@ export class ProjectCreateComponent implements IHasModification {
                 ],
             ],
             autoScaleUp: [
-                true, Validators.required,
+                false, Validators.required,
             ],
             autoScaleDown: [
                 {
-                    enabled: true,
+                    enabled: false,
                     value: ONE_MINUTE_IN_MS * 10,
                 },
                 [
