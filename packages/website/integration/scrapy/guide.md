@@ -110,3 +110,52 @@ SPIDER_MIDDLEWARES = {
 }
 ```
 
+
+## Step 8: Integrate scrapy-impersonate (optional)
+
+The library [scrapy-impersonate](https://github.com/jxlil/scrapy-impersonate) is a Scrapy download handler. 
+This project integrates [curl_cffi](https://github.com/yifeikong/curl_cffi) to perform HTTP requests, 
+so it can impersonate browsers' TLS signatures or JA3 fingerprints.
+
+To use it, first install the package:
+
+```shell
+pip install scrapy-impersonate
+```
+
+And add the following lines to `settings.py`:
+
+```python
+TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+DOWNLOAD_HANDLERS = {
+    "http": "scrapy_impersonate.ImpersonateDownloadHandler",
+    "https": "scrapy_impersonate.ImpersonateDownloadHandler",
+}
+```
+
+In your scraper, include additional metadata with the request,
+specifically setting the `verify` option to `False` within the impersonate_args.
+This will bypass SSL certificate verification.
+
+```python
+class ExampleSpider(Spider):
+    name = "example"
+    allowed_domains = ["browserleaks.com"]
+
+    def start_requests(self):
+        yield Request(
+            url="https://tls.browserleaks.com/json",
+            dont_filter=True,
+            meta={
+                "impersonate": "chrome110",
+                "impersonate_args": {
+                    "verify": False,
+                },
+            },
+            callback=self.parse
+        )
+```
+
+In this example, the request will emulate a Chrome 110 browser,
+but you have the flexibility to choose from [many other useragents](https://github.com/jxlil/scrapy-impersonate?tab=readme-ov-file#supported-browsers).
