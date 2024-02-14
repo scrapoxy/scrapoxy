@@ -206,6 +206,12 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
         return res.data;
     }
 
+    async getAllProjectCredentialsNames(projectId: string): Promise<string[]> {
+        const res = await this.instance.get<string[]>(`projects/${projectId}/credentials/names`);
+
+        return res.data;
+    }
+
     async getCredentialById(
         projectId: string, credentialId: string
     ): Promise<ICredentialData> {
@@ -271,6 +277,12 @@ export class CommanderFrontendClient implements ICommanderFrontendClient {
 
     async getAllProjectConnectorsAndProxiesById(projectId: string): Promise<IConnectorProxiesView[]> {
         const res = await this.instance.get<IConnectorProxiesView[]>(`projects/${projectId}/connectors`);
+
+        return res.data;
+    }
+
+    async getAllProjectConnectorsNames(projectId: string): Promise<string[]> {
+        const res = await this.instance.get<string[]>(`projects/${projectId}/connectors/names`);
 
         return res.data;
     }

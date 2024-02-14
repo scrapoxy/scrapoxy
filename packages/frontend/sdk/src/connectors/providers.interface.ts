@@ -16,6 +16,10 @@ export interface IConnectorConfig {
 
     description: string;
 
+    defaultCredentialName: string;
+
+    defaultConnectorName: string;
+
     url?: string;
 
     type: EConnectorType;

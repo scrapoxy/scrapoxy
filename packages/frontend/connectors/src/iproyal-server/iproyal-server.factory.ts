@@ -25,6 +25,8 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'IPRoyal Server',
        description: 'IPRoyal is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies',
+       defaultCredentialName: 'IPRoyal Server Credential',
+       defaultConnectorName: 'IPRoyal Server Connector',
        url: 'https://iproyal.com',
        type: EConnectorType.StaticIp,
        canInstall: false,

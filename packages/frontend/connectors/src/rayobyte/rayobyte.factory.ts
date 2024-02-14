@@ -25,6 +25,8 @@ export class ConnectorRayobyteFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Rayobyte',
         description: 'Rayobyte is an US platform that provides diverse and rotating residential, datacenter, and mobile proxies.',
+        defaultCredentialName: 'Rayobyte Credential',
+        defaultConnectorName: 'Rayobyte Connector',
         url: 'https://rayobyte.com',
         type: EConnectorType.StaticIp,
         canInstall: false,

@@ -14,6 +14,7 @@ import {
     ActivatedRoute,
     Router,
 } from '@angular/router';
+import { getFreename } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
     ConnectorprovidersService,
@@ -89,10 +90,25 @@ export class CredentialCreateComponent implements OnInit, IHasModification {
 
         this.changeDetectorRef.detectChanges();
 
-        this.form.patchValue({
-            name: 'My credential',
-            config: void 0,
-        });
+        try {
+            const existings = await this.commander.getAllProjectCredentialsNames(this.projectId);
+            const name = getFreename(
+                factory.config.defaultCredentialName,
+                existings
+            );
+
+            this.form.patchValue({
+                name,
+                config: void 0,
+            });
+        } catch (err: any) {
+            console.error(err);
+
+            this.toastsService.error(
+                'Credential Create',
+                err.message
+            );
+        }
     }
 
     isModified(): boolean {
@@ -119,7 +135,10 @@ export class CredentialCreateComponent implements OnInit, IHasModification {
             );
 
             await this.router.navigate([
-                '/projects', this.projectId, 'credentials',
+                '/projects',
+                this.projectId,
+                'connectors',
+                'create',
             ]);
         } catch (err: any) {
             console.error(err);

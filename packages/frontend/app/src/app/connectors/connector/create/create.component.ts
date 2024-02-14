@@ -15,6 +15,7 @@ import {
     Router,
 } from '@angular/router';
 import {
+    getFreename,
     ONE_SECOND_IN_MS,
     ONE_YEAR_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
@@ -57,6 +58,8 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
     projectId: string;
 
     projectName = '';
+
+    private namesExistings: string[] = [];
 
     constructor(
         private readonly changeDetectorRef: ChangeDetectorRef,
@@ -125,15 +128,12 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
         this.projectId = this.route.snapshot.params.projectId;
 
         try {
-            this.credentials = await this.commander.getAllProjectCredentials(
+            const credentials = await this.commander.getAllProjectCredentials(
                 this.projectId,
                 null
-            )
-                .then((credentials) => credentials.sort((
-                    a, b
-                ) => a.name.localeCompare(b.name)));
+            );
 
-            if (this.credentials.length <= 0) {
+            if (credentials.length <= 0) {
                 await this.router.navigate([
                     '/projects', this.projectId, 'marketplace',
                 ]);
@@ -141,8 +141,14 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
                 return;
             }
 
+            this.credentials = credentials.sort((
+                a, b
+            ) => a.name.localeCompare(b.name));
+
+            this.namesExistings = await this.commander.getAllProjectConnectorsNames(this.projectId);
+
             const connectorToCreate: IConnectorToCreate = {
-                name: 'My connector',
+                name: '',
                 credentialId: null as any,
                 proxiesMax: 1,
                 proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
@@ -228,5 +234,17 @@ export class ConnectorCreateComponent implements OnInit, IHasModification {
         componentRef.instance.connectorId = void 0;
         componentRef.instance.credentialId = credential.id;
         componentRef.instance.createMode = true;
+
+        if (!this.form.value.name ||
+          this.form.value.name.length <= 0) {
+            const name = getFreename(
+                factory.config.defaultConnectorName,
+                this.namesExistings
+            );
+
+            this.form.patchValue({
+                name,
+            });
+        }
     }
 }

@@ -171,3 +171,20 @@ export function randomNames(count: number): string[] {
 
     return namesArr;
 }
+
+export function getFreename(
+    prefix: string, existings: string[]
+): string {
+    if (!existings.includes(prefix)) {
+        return prefix;
+    }
+
+    let suffix = 2;
+    let name = `${prefix} ${suffix}`;
+    while (existings.includes(name)) {
+        name = `${prefix} ${suffix}`;
+        suffix++;
+    }
+
+    return name;
+}

@@ -91,6 +91,8 @@ export interface IStorageService {
     //////////// CREDENTIALS ////////////
     getAllProjectCredentials: (projectId: string, type: string | null) => Promise<ICredentialView[]>;
 
+    getAllProjectCredentialsNames: (projectId: string) => Promise<string[]>;
+
     getCredentialById: (projectId: string, credentialId: string) => Promise<ICredentialData>;
 
     getCredentialConnectorsCountById: (projectId: string, credentialId: string, active: boolean) => Promise<number>;
@@ -105,6 +107,8 @@ export interface IStorageService {
 
     //////////// CONNECTORS ////////////
     getAllProjectConnectorsAndProxiesById: (projectId: string) => Promise<IConnectorProxiesView[]>;
+
+    getAllProjectConnectorsNames: (projectId: string) => Promise<string[]>;
 
     getAllConnectorProxiesById: (projectId: string, connectorId: string) => Promise<IConnectorProxiesView>;
 

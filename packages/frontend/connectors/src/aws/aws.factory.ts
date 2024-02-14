@@ -26,6 +26,8 @@ export class ConnectorAwsFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Amazon Web Services',
         description: 'Amazon Web Services is a subsidiary of Amazon that provides on-demand cloud computing. In 2023, AWS has 100 data centers in 31 regions.',
+        defaultCredentialName: 'AWS Credential',
+        defaultConnectorName: 'AWS Connector',
         url: 'https://aws.amazon.com',
         type: EConnectorType.Datacenter,
         canInstall: true,

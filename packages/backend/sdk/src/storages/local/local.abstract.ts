@@ -858,6 +858,19 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         }
     }
 
+    async getAllProjectCredentialsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectCredentialsNames(): projectId=${projectId}`);
+
+        const projectModel = this.projects.get(projectId);
+
+        if (!projectModel) {
+            throw new ProjectNotFoundError(projectId);
+        }
+
+        return Array.from(projectModel.credentials.values())
+            .map((c) => c.name);
+    }
+
     async getCredentialById(
         projectId: string, credentialId: string
     ): Promise<ICredentialData> {
@@ -1034,6 +1047,19 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
         return Array.from(projectModel.connectors.values())
             .map(toConnectorProxiesView);
+    }
+
+    async getAllProjectConnectorsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectConnectorsNames(): projectId=${projectId}`);
+
+        const projectModel = this.projects.get(projectId);
+
+        if (!projectModel) {
+            throw new ProjectNotFoundError(projectId);
+        }
+
+        return Array.from(projectModel.connectors.values())
+            .map((c) => c.name);
     }
 
     async getAllConnectorProxiesById(

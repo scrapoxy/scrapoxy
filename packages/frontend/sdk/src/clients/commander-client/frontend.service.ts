@@ -168,7 +168,6 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
     async getAllProjectCredentials(
         projectId: string, type: string | null
     ): Promise<ICredentialView[]> {
-
         const params: any = {};
 
         if (type) {
@@ -182,6 +181,13 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
                 params,
             }
         ));
+
+        return res;
+    }
+
+    async getAllProjectCredentialsNames(projectId: string): Promise<string[]> {
+        const res = await lastValueFrom(this.client
+            .get<string[]>(`${this.baseUrl}/projects/${projectId}/credentials/names`));
 
         return res;
     }
@@ -259,6 +265,13 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
     async getAllProjectConnectorsAndProxiesById(projectId: string): Promise<IConnectorProxiesView[]> {
         const res = await lastValueFrom(this.client
             .get<IConnectorProxiesView[]>(`${this.baseUrl}/projects/${projectId}/connectors`));
+
+        return res;
+    }
+
+    async getAllProjectConnectorsNames(projectId: string): Promise<string[]> {
+        const res = await lastValueFrom(this.client
+            .get<string[]>(`${this.baseUrl}/projects/${projectId}/connectors/names`));
 
         return res;
     }

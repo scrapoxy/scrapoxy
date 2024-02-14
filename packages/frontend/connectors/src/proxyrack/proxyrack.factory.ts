@@ -25,6 +25,8 @@ export class ConnectorProxyrackFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Proxyrack',
         description: 'Proxyrack is an online platform that provides diverse and rotating residential, datacenter, and mobile proxies.',
+        defaultCredentialName: 'Proxyrack Credential',
+        defaultConnectorName: 'Proxyrack Connector',
         url: 'https://proxyrack.com',
         type: EConnectorType.DynamicIP,
         canInstall: false,

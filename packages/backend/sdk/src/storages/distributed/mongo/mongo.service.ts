@@ -1076,6 +1076,25 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         return credentialsModel;
     }
 
+    async getAllProjectCredentialsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectCredentialsNames(): projectId=${projectId}`);
+
+        const names = await this.colCredentials.find(
+            {
+                projectId,
+            },
+            {
+                projection: {
+                    name: 1,
+                },
+            }
+        )
+            .map((c) => c.name)
+            .toArray();
+
+        return names;
+    }
+
     async getCredentialById(
         projectId: string, credentialId: string
     ): Promise<ICredentialData> {
@@ -1257,6 +1276,25 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
         }
 
         return Array.from(connectorsMap.values());
+    }
+
+    async getAllProjectConnectorsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectConnectorsNames(): projectId=${projectId}`);
+
+        const names = await this.colConnector.find(
+            {
+                projectId,
+            },
+            {
+                projection: {
+                    name: 1,
+                },
+            }
+        )
+            .map((c) => c.name)
+            .toArray();
+
+        return names;
     }
 
     async getAllConnectorProxiesById(

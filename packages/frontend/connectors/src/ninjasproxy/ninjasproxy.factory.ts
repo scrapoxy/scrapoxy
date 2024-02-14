@@ -23,8 +23,10 @@ export class ConnectorNinjasproxyFactory implements IConnectorFactory {
     readonly type = CONNECTOR_NINJASPROXY_TYPE;
 
    readonly config: IConnectorConfig = {
-       name: 'Ninjas proxy',
+       name: 'Ninjas Proxy',
        description: 'Ninjas proxy is a provider that offers static and residential proxies',
+       defaultCredentialName: 'Ninjas Proxy Credential',
+       defaultConnectorName: 'Ninjas Proxy Connector',
        url: 'https://ninjasproxy.com/',
        type: EConnectorType.StaticIp,
        canInstall: false,

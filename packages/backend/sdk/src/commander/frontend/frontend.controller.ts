@@ -222,6 +222,14 @@ export class CommanderFrontendController {
         return credentials;
     }
 
+    @Get('projects/:projectId/credentials/names')
+    @UseGuards(CommanderFrontendRoleGuard)
+    async getAllProjectCredentialsNames(@Param('projectId') projectId: string): Promise<string[]> {
+        const names = await this.commander.getAllProjectCredentialsNames(projectId);
+
+        return names;
+    }
+
     @Get('projects/:projectId/credentials/:credentialId')
     @UseGuards(CommanderFrontendRoleGuard)
     async getCredentialById(
@@ -316,6 +324,14 @@ export class CommanderFrontendController {
         const connectors = await this.commander.getAllProjectConnectorsAndProxiesById(projectId);
 
         return connectors;
+    }
+
+    @Get('projects/:projectId/connectors/names')
+    @UseGuards(CommanderFrontendRoleGuard)
+    async getAllProjectConnectorsNames(@Param('projectId') projectId: string): Promise<string[]> {
+        const names = await this.commander.getAllProjectConnectorsNames(projectId);
+
+        return names;
     }
 
     @Get('projects/:projectId/connectors/:connectorId')

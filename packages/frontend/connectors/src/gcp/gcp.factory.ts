@@ -27,6 +27,8 @@ export class ConnectorGcpFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'Google Cloud Platform',
        description: 'Google Cloud Platform is a cloud computing services that runs on the same infrastructure that Google uses internally. In 2023, GCP has 148 data centers in 49 regions.',
+       defaultCredentialName: 'GCP Credential',
+       defaultConnectorName: 'GCP Connector',
        url: 'https://cloud.google.com',
        type: EConnectorType.Datacenter,
        canInstall: true,

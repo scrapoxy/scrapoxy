@@ -365,6 +365,14 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         return credentials;
     }
 
+    async getAllProjectCredentialsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectCredentialsNames(): projectId=${projectId}`);
+
+        const names = await this.database.getAllProjectCredentialsNames(projectId);
+
+        return names;
+    }
+
     async getCredentialById(
         projectId: string, credentialId: string
     ): Promise<ICredentialData> {
@@ -438,6 +446,14 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
         const cps = await this.database.getAllProjectConnectorsAndProxiesById(projectId);
 
         return cps;
+    }
+
+    async getAllProjectConnectorsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectConnectorsNames(): projectId=${projectId}`);
+
+        const names = await this.database.getAllProjectConnectorsNames(projectId);
+
+        return names;
     }
 
     async getAllConnectorProxiesById(

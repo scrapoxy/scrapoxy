@@ -383,6 +383,14 @@ export class CommanderFrontendService extends ACommanderService {
         return credentials;
     }
 
+    async getAllProjectCredentialsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectCredentialsNames(): projectId=${projectId}`);
+
+        const names = await this.storageproviders.storage.getAllProjectCredentialsNames(projectId);
+
+        return names;
+    }
+
     async getCredentialById(
         projectId: string, credentialId: string
     ): Promise<ICredentialData> {
@@ -542,6 +550,14 @@ export class CommanderFrontendService extends ACommanderService {
         const connectors = await this.storageproviders.storage.getAllProjectConnectorsAndProxiesById(projectId);
 
         return connectors;
+    }
+
+    async getAllProjectConnectorsNames(projectId: string): Promise<string[]> {
+        this.logger.debug(`getAllProjectConnectorsNames(): projectId=${projectId}`);
+
+        const names = await this.storageproviders.storage.getAllProjectConnectorsNames(projectId);
+
+        return names;
     }
 
     async getAllConnectorProxiesById(

@@ -25,6 +25,8 @@ export class ConnectorProxidizeFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'Proxidize',
        description: 'Proxidize is a revolutionary mobile proxy network creation and management platform built on mobile devices allowing businesses to create ultra-powerful proxies that are incomparable to anything else.',
+       defaultCredentialName: 'Proxidize Credential',
+       defaultConnectorName: 'Proxidize Connector',
        url: 'https://proxidize.com',
        type: EConnectorType.Hardware,
        canInstall: false,

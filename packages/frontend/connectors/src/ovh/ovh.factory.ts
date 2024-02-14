@@ -26,6 +26,8 @@ export class ConnectorOvhFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'OVH Cloud',
        description: 'OVH Cloud is a french cloud computing service created by OVH. In 2023, OVH Cloud has 34 data centers in 8 regions.',
+       defaultCredentialName: 'OVH Cloud Credential',
+       defaultConnectorName: 'OVH Cloud Connector',
        url: 'https://www.ovhcloud.com',
        type: EConnectorType.Datacenter,
        canInstall: true,

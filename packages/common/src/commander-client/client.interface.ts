@@ -67,6 +67,8 @@ export interface ICommanderFrontendClient {
     //////////// CREDENTIALS ////////////
     getAllProjectCredentials: (projectId: string, type: string | null) => Promise<ICredentialView[]>;
 
+    getAllProjectCredentialsNames: (projectId: string) => Promise<string[]>;
+
     getCredentialById: (projectId: string, credentialId: string) => Promise<ICredentialData>;
 
     createCredential: (projectId: string, credentialToCreate: ICredentialToCreate) => Promise<ICredentialView>;
@@ -83,6 +85,8 @@ export interface ICommanderFrontendClient {
     getAllConnectorsTypes: () => Promise<string[]>;
 
     getAllProjectConnectorsAndProxiesById: (projectId: string) => Promise<IConnectorProxiesView[]>;
+
+    getAllProjectConnectorsNames: (projectId: string) => Promise<string[]>;
 
     getAllConnectorProxiesById: (projectId: string, connectorId: string) => Promise<IConnectorProxiesView>;
 
