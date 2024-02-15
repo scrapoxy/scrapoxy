@@ -54,7 +54,14 @@ import type {
 
 
 const FILTER_INSTANCE_TYPES = [
-    't2.nano', 't2.micro',
+    't4g.nano',
+    't3a.nano',
+    't3.nano',
+    't2.nano',
+    't4g.micro',
+    't3a.micro',
+    't3.micro',
+    't2.micro',
 ];
 
 
