@@ -163,5 +163,5 @@ function tick() {
         .catch(() => {});
 }
 
-setInterval(tick, 10000);
+setInterval(tick, 60000);
 tick();
