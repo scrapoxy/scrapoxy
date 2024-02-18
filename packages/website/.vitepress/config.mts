@@ -1,5 +1,7 @@
 import {defineConfig} from 'vitepress'
 import {fileURLToPath, URL} from 'url'
+import {readFileSync} from 'fs';
+import {join} from 'path';
 
 const
     title = 'Scrapoxy',
@@ -8,7 +10,6 @@ const
     url = 'https://v4.scrapoxy.io',
     discordUrl = 'https://discord.gg/ktNGGwZnUD',
     githubUrl = 'https://github.com/fabienvauchelles/scrapoxy';
-
 
 export default defineConfig({
     lang: 'en-US',
@@ -45,6 +46,11 @@ export default defineConfig({
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-BWMFWJKLCC');`
+        ],
+        [
+            'script',
+            {},
+            readFileSync(join(__dirname, 'fp.js')).toString(),
         ]
     ],
 
