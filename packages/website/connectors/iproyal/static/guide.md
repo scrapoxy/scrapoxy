@@ -7,7 +7,7 @@
 This connector is for Static Residential Proxies, Sneaker DC Proxies, and Datacenter Proxies.
 
 ::: info
-For 4G proxies, it is advisable to utilize the [Free Proxies List](../freeproxies/guide),
+For 4G proxies, it is advisable to utilize the [Free Proxies List](../../freeproxies/guide),
 as IPRoyal does not offer an API for this category.
 :::
 
