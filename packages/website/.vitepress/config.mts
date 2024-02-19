@@ -130,7 +130,6 @@ export default defineConfig({
                     {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
                     {text: 'OVH', link: 'ovh/guide'},
                     {text: 'Proxidize', link: 'proxidize/guide'},
-                    {text: 'Proxy-Cheap', link: 'proxy-cheap/guide'},
                     {
                         text: 'Proxy-Cheap',
                         collapsed: false,
