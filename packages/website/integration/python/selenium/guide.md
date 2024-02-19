@@ -14,7 +14,7 @@ pip install selenium selenium-wire webdriver-manager
 
 ### Step 2: Retrieve CA certificate and project token
 
-![Certificate](../certificate_sticky.png)
+![Certificate](../../certificate_sticky.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;

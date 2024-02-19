@@ -134,14 +134,31 @@ export default defineConfig({
                 collapsed: false,
                 base: '/integration/',
                 items: [
-                    {text: 'Python', link: 'python/guide'},
-                    {text: 'Node.js', link: 'nodejs/guide'},
-                    {text: 'Scrapy', link: 'scrapy/guide'},
-                    {text: 'Crawlee', link: 'crawlee/guide'},
-                    {text: 'Selenium', link: 'selenium/guide'},
-                    {text: 'Puppeteer', link: 'puppeteer/guide'},
-                    {text: 'Playwright', link: 'playwright/guide'},
                     {text: 'API Reference', link: 'api-reference'},
+                    {
+                        text: 'Python',
+                        collapsed: false,
+                        base: '/integration/python/',
+                        items: [
+                            {text: 'HRequests', link: 'hrequests/guide'},
+                            {text: 'Requests', link: 'requests/guide'},
+                            {text: 'Scrapy', link: 'scrapy/guide'},
+                            {text: 'Selenium', link: 'selenium/guide'},
+
+                        ]
+                    },
+                    {
+                        text: 'Javascript',
+                        collapsed: false,
+                        base: '/integration/js/',
+                        items: [
+                            {text: 'Axios', link: 'axios/guide'},
+                            {text: 'Crawlee', link: 'crawlee/guide'},
+                            {text: 'Playwright', link: 'playwright/guide'},
+                            {text: 'Puppeteer', link: 'puppeteer/guide'},
+                        ]
+                    },
+
                 ]
             },
             {

@@ -1,8 +1,6 @@
-# NodeJS Integration
+# Axios
 
-![NodeJS](nodejs.svg){width=230 nozoom}
-
-## Axios
+![Axios](axios.svg){width=230 nozoom}
 
 [Axios](https://axios-http.com) is a library to make HTTP requests. It handles CA certificate and proxy.
 
@@ -12,16 +10,16 @@ Consequently, using node `https` or` node-fetch` libraries is not feasible.
 :::
 
 
-### Step 1: Install the library
+## Step 1: Install the library
 
 ```shell
 npm install axios
 ```
 
 
-### Step 2: Retrieve CA certificate and project token
+## Step 2: Retrieve CA certificate and project token
 
-![Certificate](../certificate.png)
+![Certificate](../../certificate.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Click on `Download CA certificate` and save the file;
@@ -32,7 +30,7 @@ It is assumed that file is saved in `/tmp/scrapoxy-ca.crt`.
 :::
 
 
-### Step 3: Create and run the script
+## Step 3: Create and run the script
 
 Create a file name `axios.js` with the following content:
 
@@ -80,7 +78,7 @@ node axios.js
 ```
 
 
-### Step 4: Sticky session (optional)
+## Step 4: Sticky session (optional)
 
 To reuse the same proxy instance for all requests, add the following line:
 

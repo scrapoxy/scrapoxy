@@ -21,7 +21,7 @@ npx playwright install
 
 ### Step 2: Retrieve project token
 
-![Token](../token_sticky.png)
+![Token](../../token_sticky.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;

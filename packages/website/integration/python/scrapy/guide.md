@@ -14,7 +14,7 @@ pip install scrapy scrapoxy
 
 ### Step 2: Retrieve project token
 
-![Token](../token.png)
+![Token](../../token.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Remember the project token (format is `USERNAME:PASSWORD`).
