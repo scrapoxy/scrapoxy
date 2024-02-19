@@ -18,12 +18,7 @@ pip install hrequests[all]
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;
-3. Click on `Download CA certificate` and save the file;
-4. Remember the project token.
-
-::: info
-It is assumed that file is saved in `/tmp/scrapoxy-ca.crt`.
-:::
+3. Remember the project token.
 
 
 ## Step 3: Create and run the script
@@ -33,15 +28,14 @@ Create a file name `hrequests.py` with the following content:
 ```python
 import hrequests
 
-ca = "/tmp/scrapoxy-ca.crt"
 proxy = "http://USERNAME:PASSWORD@localhost:8888"
 
 session = hrequests.Session()
 
 r = session.get(
     "https://fingerprint.scrapoxy.io",
-    proxies={"http": proxy, "https": proxy},
-    verify=ca
+    proxy=proxy,
+    verify=False
 )
 
 session.close()
