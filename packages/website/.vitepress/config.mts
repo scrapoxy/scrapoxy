@@ -117,12 +117,29 @@ export default defineConfig({
                     {text: 'Digital Ocean', link: 'digitalocean/guide'},
                     {text: 'GCP', link: 'gcp/guide'},
                     {text: 'HypeProxy', link: 'hypeproxy/guide'},
-                    {text: 'IP Royal', link: 'iproyal/guide'},
+                    {
+                        text: 'IP Royal',
+                        collapsed: false,
+                        base: '/connectors/iproyal/',
+                        items: [
+                            {text: 'Static IP', link: 'static/guide'},
+                            {text: 'Dynamic IP', link: 'dynamic/guide'},
+                        ]
+                    },
                     {text: 'Nimble', link: 'nimbleway/guide'},
                     {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},
                     {text: 'OVH', link: 'ovh/guide'},
                     {text: 'Proxidize', link: 'proxidize/guide'},
                     {text: 'Proxy-Cheap', link: 'proxy-cheap/guide'},
+                    {
+                        text: 'Proxy-Cheap',
+                        collapsed: false,
+                        base: '/connectors/proxy-cheap/',
+                        items: [
+                            {text: 'Static IP', link: 'static/guide'},
+                            {text: 'Dynamic IP', link: 'dynamic/guide'},
+                        ]
+                    },
                     {text: 'Proxy Rack', link: 'proxyrack/guide'},
                     {text: 'Rayobyte', link: 'rayobyte/guide'},
                     {text: 'XProxy', link: 'xproxy/guide'},
