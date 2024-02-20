@@ -92,9 +92,6 @@ providers:
         - name: 'Zyte'
           url: 'https://www.zyte.com'
           img: '/assets/images/zyte.svg'
-        - name: 'XProxy'
-          url: 'https://xproxy.io'
-          img: '/assets/images/xproxy.svg'
 
 sponsors:
     - tier: "Platinum"
