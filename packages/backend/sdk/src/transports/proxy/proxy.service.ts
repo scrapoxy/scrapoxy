@@ -471,6 +471,7 @@ export abstract class ATransportProxyService implements ITransportService {
                         host: urlOpts.hostname as string,
                         port: urlOpts.port as number,
                     },
+                    timeout,
                 };
 
                 SocksClient.createConnection(
@@ -490,18 +491,28 @@ export abstract class ATransportProxyService implements ITransportService {
                                 const optionsTls: ConnectionOptions = {
                                     socket: info!.socket,
                                     requestCert: true,
-                                    rejectUnauthorized: false,
+                                    rejectUnauthorized: false, // Can accept MITM...
                                     timeout: args.timeout,
                                 };
 
                                 if (isUrl(args.hostname)) {
-                                    optionsTls.servername = args.hostname as string;
+                                    optionsTls.servername = urlOpts.hostname as string;
                                 }
 
                                 socket = connect(optionsTls);
                             } else {
                                 socket = info!.socket as Socket;
                             }
+
+                            socket.on(
+                                'error',
+                                (errSocket) => {
+                                    oncreate(
+                                        errSocket,
+                                        void 0 as any
+                                    );
+                                }
+                            );
 
                             socket.on(
                                 'close',
@@ -654,6 +665,16 @@ export abstract class ATransportProxyService implements ITransportService {
                     );
                 } else {
                     const socket = info!.socket as Socket;
+
+                    socket.on(
+                        'error',
+                        (errSocket) => {
+                            callback(
+                                errSocket,
+                                void 0 as any
+                            );
+                        }
+                    );
 
                     socket.on(
                         'close',
