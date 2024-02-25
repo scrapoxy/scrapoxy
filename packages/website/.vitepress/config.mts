@@ -7,7 +7,7 @@ const
     title = 'Scrapoxy',
     description = 'The super proxies aggregator',
     iconUrl = '/assets/images/scrapoxy.svg',
-    url = 'https://v4.scrapoxy.io',
+    url = 'https://scrapoxy.io',
     discordUrl = 'https://discord.gg/ktNGGwZnUD',
     githubUrl = 'https://github.com/fabienvauchelles/scrapoxy';
 
@@ -24,10 +24,10 @@ export default defineConfig({
         ['link', {rel: 'icon', type: 'image/svg+xml', href: iconUrl}],
         ['meta', {property: 'og:type', content: 'website'}],
         ['meta', {property: 'og:title', content: title}],
-        ['meta', {property: 'og:image', content: `${url}/assets/images/logo200.jpg`}],
+        ['meta', {property: 'og:image', content: `${url}/assets/images/scrapoxy-embedded.png`}],
         ['meta', {property: 'og:url', content: url}],
         ['meta', {property: 'og:description', content: description}],
-        ['meta', {name: 'twitter:card', content: 'summary'}],
+        ['meta', {name: 'twitter:card', content: 'summary_large_image'}],
         ['meta', {name: 'twitter:url', content: url}],
         ['meta', {name: 'twitter:site', content: '@scrapoxy_io'}],
         ['meta', {name: 'twitter:creator', content: '@fabienv'}],
