@@ -195,6 +195,13 @@ async function command(
             });
     });
 
+    const configRaw = JSON.stringify(
+        config,
+        void 0,
+        2
+    );
+    logger.debug(`Start options are: ${configRaw}`);
+
     if (config.commander) {
         await app.listen(getEnvCommanderPort());
     } else {
