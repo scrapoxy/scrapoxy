@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.5.1
+
+### Features
+
+- **frontend**: auto-generate a free name at credential and connector creation
+- **website**: add scrapy-impersonate documentation to scrapy
+
+### Bug fixes
+
+- **aws**: add new instance type like t4g.nano
+- **freeproxy**: allow bracket in URLs
+- **transport**: add missing timeout on connections
+- **log**: add more log at startup
+- **website**: reorganize the documentation tree
+
+
 ## 4.5.0
 
 ### Features
