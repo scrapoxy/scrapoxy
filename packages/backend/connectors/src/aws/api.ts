@@ -20,6 +20,7 @@ import type {
     IAwsError,
     IAwsImage,
     IAwsInstance,
+    IAwsInstanceType,
 } from './aws.interface';
 import type {
     AxiosInstance,
@@ -173,7 +174,7 @@ export class AwsApi {
     }
 
     //////////// INSTANCES TYPES ////////////
-    public async describeInstancesTypes(instancesFilter?: string[]): Promise<string[]> {
+    public async describeInstancesTypes(instancesFilter?: string[]): Promise<IAwsInstanceType[]> {
         const data = new AxiosFormData({
             Action: 'DescribeInstanceTypes',
         });
@@ -192,12 +193,10 @@ export class AwsApi {
             data
         )
             .then((r) => r.data.DescribeInstanceTypesResponse as IAwsDescribeInstancesTypesResponse);
-        const types: string[] = [];
+        const types: IAwsInstanceType[] = [];
         for (const instanceTypeSet of response.instanceTypeSet) {
             if (instanceTypeSet) {
-                for (const instanceTypeSetItem of instanceTypeSet.item) {
-                    types.push(instanceTypeSetItem.instanceType[ 0 ]);
-                }
+                types.push(...instanceTypeSet.item);
             }
         }
 

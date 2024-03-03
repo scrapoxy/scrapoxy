@@ -336,7 +336,8 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
             parameters.region,
             this.agents
         );
-        const types = await api.describeInstancesTypes(FILTER_INSTANCE_TYPES);
+        const instancesTypes = await api.describeInstancesTypes(FILTER_INSTANCE_TYPES);
+        const types = instancesTypes.map((t) => t.instanceType[ 0 ]);
 
         return types;
     }

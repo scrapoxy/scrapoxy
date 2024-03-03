@@ -30,6 +30,11 @@ export interface IAwsDescribeRegionsResponse {
 //////////// INSTANCES TYPES ////////////
 export interface IAwsInstanceType {
     instanceType: string[];
+    processorInfo: {
+        supportedArchitectures: ({
+            item: string[];
+        } | undefined)[];
+    }[];
 }
 
 

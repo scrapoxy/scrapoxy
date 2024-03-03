@@ -142,19 +142,50 @@ class AwsInstallCommand extends ATaskCommand {
             }
 
             case 1: {
+                // Find the instance type to get the architecture
+                const instancesTypes = await api.describeInstancesTypes([
+                    this.data.instanceType,
+                ]);
+                const architectures: string[] = [];
+                for (const instanceType of instancesTypes) {
+                    for (const info of instanceType.processorInfo) {
+                        if (info?.supportedArchitectures) {
+                            for (const architecture of info.supportedArchitectures) {
+                                if (architecture?.item) {
+                                    architectures.push(...architecture.item);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                let
+                    architecture: string,
+                    name: string;
+
+                if (architectures.includes('arm64')) {
+                    architecture = 'arm64';
+                    name = 'ubuntu/images/hvm-ssd/ubuntu-lunar-23.04-arm64-server-*';
+                } else if (architectures.includes('x86_64')) {
+                    architecture = 'x86_64';
+                    name = 'ubuntu/images/hvm-ssd/ubuntu-lunar-23.04-amd64-server-*';
+                } else {
+                    throw new Error(`Cannot find any architecture for the instance type ${this.data.instanceType}`);
+                }
+
                 // Find the image
                 const images = await api.describeImages({
-                    architecture: 'x86_64',
+                    architecture,
                     imageType: 'machine',
                     isPublic: true,
-                    name: 'ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*',
+                    name,
                     ownerAlias: 'amazon',
                     state: 'available',
                     virtualizationType: 'hvm',
                 });
 
                 if (images.length <= 0) {
-                    throw new Error('Cannot find any ubuntu 22.04 image');
+                    throw new Error('Cannot find any ubuntu 23.04 image');
                 }
 
                 const imagesSorted = images.sort((
