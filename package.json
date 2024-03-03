@@ -18,6 +18,7 @@
         "nx": "nx",
         "build": "nx run-many --target=build",
         "build:production": "nx run-many --target=build --configuration production",
+        "build:docker": "nx run-many --target=build-docker --configuration production",
         "lint": "nx run-many --target=lint",
         "prepare": "husky install",
         "start:frontend-app": "nx serve frontend-app",

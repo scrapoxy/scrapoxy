@@ -25,6 +25,11 @@
                 "^production"
             ]
         },
+        "build-docker": {
+            "dependsOn": [
+                "build"
+            ]
+        },
         "test": {
             "inputs": [
                 "default",
