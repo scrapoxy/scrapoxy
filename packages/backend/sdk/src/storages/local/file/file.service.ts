@@ -263,7 +263,12 @@ export class StorageFileService extends AStorageLocal<IStorageFileModuleConfig> 
             const data = await fs.readFile(this.config.filename);
             store = JSON.parse(data.toString());
         } catch (err: any) {
-            this.loggerFile.error(`Cannot read store: ${err.message}`);
+            if (err.code === 'ENOENT') {
+                this.loggerFile.log(`File ${this.config.filename} created at startup`);
+            } else {
+                this.loggerFile.error(`Cannot read store: ${err.message}`);
+            }
+
             store = {
                 migrations: [],
                 params: {},
