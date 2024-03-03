@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import {
@@ -29,8 +30,10 @@ import type { LoggerService } from '@nestjs/common';
 
 async function command(
     config: IAppStartModuleConfig,
-    logger: LoggerService
+    loggerService: LoggerService
 ) {
+    const logger = new Logger('StartCommand');
+
     // Update and check options
     config.storage = getEnvStorageType(config.storage);
     config.distributed = config.distributed ?? process.env.DISTRIBUTED_MODE ?? 'both';
@@ -85,7 +88,7 @@ async function command(
     if (config.test) {
         const filename = process.env.DATACENTER_LOCAL_FILENAME ?? 'datacenters-local.json';
         datacenterLocalApp = new DatacenterLocalApp(
-            logger,
+            loggerService,
             filename
         );
 
@@ -108,7 +111,7 @@ async function command(
             10
         );
         proxyLocalApp = new ProxyLocalApp(
-            logger,
+            loggerService,
             timeout,
             'proxy-local'
         );
@@ -123,7 +126,7 @@ async function command(
         AppStartModule.forRoot(config),
         new ScrapoxyExpressAdapter(),
         {
-            logger,
+            logger: loggerService,
         }
     );
     app.enableShutdownHooks();
@@ -203,7 +206,11 @@ async function command(
     logger.debug(`Start options are: ${configRaw}`);
 
     if (config.commander) {
-        await app.listen(getEnvCommanderPort());
+        const commanderPort = getEnvCommanderPort();
+
+        await app.listen(commanderPort);
+
+        logger.log(`Commander is listening at port ${commanderPort}`);
     } else {
         await app.init();
     }
