@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.5.2
+
+### Bug fixes
+
+- **aws**: use the correct architecture to install and create instances
+- **log**: don't throw error if there is no configuration file at startup
+
+
 ## 4.5.1
 
 ### Features
