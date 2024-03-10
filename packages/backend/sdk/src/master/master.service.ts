@@ -398,9 +398,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         // Attach metrics for this connection
         const metrics = new ConnectionMetrics(
             proxy,
-            this.metricsProxies
-        );
-        metrics.register(
+            this.metricsProxies,
             sIn,
             sOut
         );
@@ -419,7 +417,10 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         );
 
         // Start request
+        metrics.addRequestHeaders(reqArgs);
+
         proxyReq = request(reqArgs);
+
         proxyReq.on(
             'error',
             (err: any) => {
@@ -439,6 +440,8 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         proxyReq.on(
             'response',
             (proxyRes: IncomingMessage) => {
+                metrics.addResponseHeaders(proxyRes);
+
                 proxyRes.on(
                     'error',
                     (err: any) => {
@@ -734,13 +737,10 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         // Attach metrics for this connection
         const metrics = new ConnectionMetrics(
             proxy,
-            this.metricsProxies
-        );
-        metrics.register(
+            this.metricsProxies,
             sIn,
             sOut
         );
-
         let transport: ITransportService;
         try {
             const factory = this.connectorproviders.getFactory(proxy.type);

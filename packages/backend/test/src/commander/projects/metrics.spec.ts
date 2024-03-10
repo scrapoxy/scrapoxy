@@ -302,7 +302,7 @@ describe(
                                 'Proxy-Authorization': `Basic ${token}`,
                             },
                             params: {
-                                size: size,
+                                size,
                             },
                             proxy: {
                                 host: 'localhost',
@@ -321,9 +321,9 @@ describe(
                     expect(store.view.project.stops)
                         .toBe(0);
                     expect(store.view.project.bytesReceived)
-                        .toBe(size * 2);
+                        .toBeGreaterThan(size * 2);
                     expect(store.view.project.bytesSent)
-                        .toBe(0);
+                        .toBeGreaterThan(0);
                 });
 
                 const metrics = await commanderApp.frontendClient.getProjectMetricsById(project.id);
@@ -333,9 +333,9 @@ describe(
                 expect(metrics.project.stops)
                     .toBe(0);
                 expect(metrics.project.bytesReceived)
-                    .toBe(size * 2);
+                    .toBeGreaterThan(size * 2);
                 expect(metrics.project.bytesSent)
-                    .toBe(0);
+                    .toBeGreaterThan(0);
             }
         );
 
@@ -426,7 +426,7 @@ describe(
                         generateData(size),
                         {
                             params: {
-                                size: size,
+                                size,
                             },
                             headers: {
                                 'Proxy-Authorization': `Basic ${token}`,
@@ -448,9 +448,10 @@ describe(
                     expect(store.view.project.requests)
                         .toBe(4);
                     expect(store.view.project.bytesReceived)
-                        .toBe(size * 2);
+                        .toBeGreaterThan(size * 2);
                     expect(store.view.project.bytesSent)
-                        .toBe(size * 2);
+                        .toBeGreaterThan(size * 2);
+
                 });
 
                 const metrics = await commanderApp.frontendClient.getProjectMetricsById(project.id);
@@ -458,9 +459,9 @@ describe(
                 expect(metrics.project.requests)
                     .toBe(4);
                 expect(metrics.project.bytesReceived)
-                    .toBe(size * 2);
+                    .toBeGreaterThan(size * 2);
                 expect(metrics.project.bytesSent)
-                    .toBe(size * 2);
+                    .toBeGreaterThan(size * 2);
             }
         );
 

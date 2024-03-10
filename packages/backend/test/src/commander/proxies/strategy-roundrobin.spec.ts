@@ -295,7 +295,9 @@ describe(
                     );
                 }
 
-                let bytesReceived: number | undefined = void 0;
+                let
+                    bytesReceived: number | undefined = void 0,
+                    bytesSend: number | undefined = void 0;
                 await waitFor(() => {
                     expect(client.views)
                         .toHaveLength(2);
@@ -303,8 +305,15 @@ describe(
                     for (const proxyFound of client.proxies) {
                         expect(proxyFound.requests)
                             .toBe(sequentialRequestsCount / 4);
-                        expect(proxyFound.bytesSent)
-                            .toBe(0);
+
+                        if (bytesSend) {
+                            expect(proxyFound.bytesSent)
+                                .toBe(bytesSend);
+                        } else {
+                            expect(proxyFound.bytesSent)
+                                .toBeGreaterThan(0);
+                            bytesSend = proxyFound.bytesSent;
+                        }
 
                         if (bytesReceived) {
                             expect(proxyFound.bytesReceived)
@@ -326,7 +335,7 @@ describe(
                         expect(proxyFound.requests)
                             .toBe(sequentialRequestsCount / 4);
                         expect(proxyFound.bytesSent)
-                            .toBe(0);
+                            .toBe(bytesSend);
                         expect(proxyFound.bytesReceived)
                             .toBe(bytesReceived);
                     }
@@ -370,7 +379,7 @@ describe(
                             .toBeGreaterThanOrEqual(10);
 
                         expect(proxyFound.bytesSent)
-                            .toBe(0);
+                            .toBeGreaterThan(0);
 
                         requestsTotal += proxyFound.requests;
                     }
