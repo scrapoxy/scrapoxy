@@ -95,6 +95,7 @@ export default defineConfig({
                 items: [
                     {text: 'Command line', link: 'command-line'},
                     {text: 'Environment variables', link: 'env'},
+                    {text: 'Stickies Sessions', link: 'sticky'},
                 ]
             },
             {
