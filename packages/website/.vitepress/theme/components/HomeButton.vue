@@ -114,7 +114,8 @@ onUnmounted(() => {
 
             <img
                 v-if="img"
-                :src="img"/>
+                :src="img"
+                nozoom />
         </component>
     </div>
 </template>
