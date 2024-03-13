@@ -108,9 +108,7 @@ export class ConnectorNinjasproxyService implements IConnectorService {
         return proxiesFiltered as IConnectorProxyRefreshed[];
     }
 
-    async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
-
+    async startProxies(): Promise<void> {
         // Not used
     }
 

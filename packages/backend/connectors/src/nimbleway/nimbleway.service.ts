@@ -44,9 +44,7 @@ export class ConnectorNimblewayService implements IConnectorService {
         return proxies;
     }
 
-    async startProxies(keys: string[]): Promise<void> {
-        this.logger.debug(`startProxies(): keys.length=${keys.length}`);
-
+    async startProxies(): Promise<void> {
         // Not used
     }
 
