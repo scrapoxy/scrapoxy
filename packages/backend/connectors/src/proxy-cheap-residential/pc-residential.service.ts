@@ -24,8 +24,8 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
 }
 
 
-export class ConnectorProxyCheapService implements IConnectorService {
-    private readonly logger = new Logger(ConnectorProxyCheapService.name);
+export class ConnectorProxyCheapResidentialService implements IConnectorService {
+    private readonly logger = new Logger(ConnectorProxyCheapResidentialService.name);
 
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`getProxies(): keys.length=${keys.length}`);

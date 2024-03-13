@@ -9,7 +9,7 @@ import {
 import { CONNECTOR_PROXY_CHEAP_SERVER_TYPE } from '@scrapoxy/common';
 import { ProxyCheapServerApi } from './api';
 import { EProxyCheapNetworkType } from './pc-server.interface';
-import { ConnectorProxyCheapService } from './pc-server.service';
+import { ConnectorProxyCheapServerService } from './pc-server.service';
 import {
     schemaConfig,
     schemaCredential,
@@ -89,7 +89,7 @@ export class ConnectorProxyCheapServerFactory implements IConnectorFactory, OnMo
     }
 
     async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
-        return new ConnectorProxyCheapService(
+        return new ConnectorProxyCheapServerService(
             connector.credentialConfig,
             connector.connectorConfig,
             this.agents

@@ -103,8 +103,8 @@ function convertToProxy(proxy: IProxyCheapProxy): IConnectorProxyRefreshed | und
 }
 
 
-export class ConnectorProxyCheapService implements IConnectorService {
-    private readonly logger = new Logger(ConnectorProxyCheapService.name);
+export class ConnectorProxyCheapServerService implements IConnectorService {
+    private readonly logger = new Logger(ConnectorProxyCheapServerService.name);
 
     private readonly api: ProxyCheapServerApi;
 

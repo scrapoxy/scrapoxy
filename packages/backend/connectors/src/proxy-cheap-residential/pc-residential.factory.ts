@@ -5,7 +5,7 @@ import {
     validate,
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE } from '@scrapoxy/common';
-import { ConnectorProxyCheapService } from './pc-residential.service';
+import { ConnectorProxyCheapResidentialService } from './pc-residential.service';
 import {
     schemaConfig,
     schemaCredential,
@@ -73,7 +73,7 @@ export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory,
     }
 
     async buildConnectorService(): Promise<IConnectorService> {
-        return new ConnectorProxyCheapService();
+        return new ConnectorProxyCheapResidentialService();
     }
 
     async buildInstallCommand(): Promise<ITaskToCreate> {
