@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.6.0
+
+### Features
+
+- **proxy-seller**: add [Proxy-Seller connector](https://proxy-seller.com/?partner=GR930FP5IOO78P)
+
+### Bug fixes
+
+- **metrics**: include request and response headers size in metrics
+- **website**: add stickies session documentation
+
+
 ## 4.5.2
 
 ### Bug fixes
