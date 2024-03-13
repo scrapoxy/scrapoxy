@@ -113,6 +113,7 @@ export interface IConnectorToRefresh {
     projectId: string;
     name: string;
     type: string;
+    proxiesMax: number;
     error: string | null;
     credentialConfig: any;
     connectorConfig: any;

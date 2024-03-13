@@ -33,10 +33,8 @@ export class ConnectorNimblewayService implements IConnectorService {
         return keys.map(convertToProxy);
     }
 
-    async createProxies(
-        count: number, excludeKeys: string[]
-    ): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`createProxies(): count=${count} / excludeKeys.length=${excludeKeys.length}`);
+    async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
+        this.logger.debug(`createProxies(): count=${count}`);
 
         const proxies: IConnectorProxyRefreshed[] = [];
         for (let i = 0; i < count; ++i) {

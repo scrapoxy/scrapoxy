@@ -1407,6 +1407,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             name: connectorModel.name,
             projectId: connectorModel.projectId,
             type: connectorModel.type,
+            proxiesMax: connectorModel.proxiesMax,
             error: connectorModel.error,
             credentialConfig: credentialModel.config,
             connectorConfig: connectorModel.config,

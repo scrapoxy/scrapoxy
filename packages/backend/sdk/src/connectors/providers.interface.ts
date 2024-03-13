@@ -53,9 +53,9 @@ export interface IConnectorFactory {
 export interface IConnectorService {
     getProxies: (keys: string[]) => Promise<IConnectorProxyRefreshed[]>;
 
-    createProxies: (count: number, excludeKeys: string[]) => Promise<IConnectorProxyRefreshed[]>;
+    createProxies: (count: number, totalCount: number, excludeKeys: string[]) => Promise<IConnectorProxyRefreshed[]>;
 
-    startProxies: (keys: string[]) => Promise<void>;
+    startProxies: (keys: string[], totalCount: number) => Promise<void>;
 
-    removeProxies: (keys: IProxyKeyToRemove[]) => Promise<string[]>;
+    removeProxies: (keys: IProxyKeyToRemove[], totalCount: number) => Promise<string[]>;
 }

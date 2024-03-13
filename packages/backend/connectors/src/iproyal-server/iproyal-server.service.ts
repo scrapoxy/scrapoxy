@@ -101,9 +101,9 @@ export class ConnectorIproyalService implements IConnectorService {
     }
 
     async createProxies(
-        count: number, excludeKeys: string[]
+        count: number, totalCount: number, excludeKeys: string[]
     ): Promise<IConnectorProxyRefreshed[]> {
-        this.logger.debug(`createProxies(): count=${count} / excludeKeys.length=${excludeKeys.length}`);
+        this.logger.debug(`createProxies(): count=${count} / totalCount=${totalCount} / excludeKeys.length=${excludeKeys.length}`);
 
         const proxies = await this.api.getAllProxies(
             this.connectorConfig.product,

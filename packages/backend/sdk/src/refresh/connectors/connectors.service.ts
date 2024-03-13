@@ -67,12 +67,19 @@ export class RefreshConnectorsService extends ARefresh<IConnectorToRefresh> {
             const promiseToCreate = orders.proxiesToCreateCount > 0 ?
                 service.createProxies(
                     orders.proxiesToCreateCount,
+                    connector.proxiesMax,
                     connector.proxiesKeys
                 ) : Promise.resolve([]);
             const promiseToStart = orders.keysToStart.length > 0 ?
-                service.startProxies(orders.keysToStart) : Promise.resolve();
+                service.startProxies(
+                    orders.keysToStart,
+                    connector.proxiesMax
+                ) : Promise.resolve();
             const promiseToRemove = orders.keysToRemove.length > 0 ?
-                service.removeProxies(orders.keysToRemove) : Promise.resolve([]);
+                service.removeProxies(
+                    orders.keysToRemove,
+                    connector.proxiesMax
+                ) : Promise.resolve([]);
             const [
                 proxiesCreated, , proxiesRemoved,
             ] = await Promise.all([
