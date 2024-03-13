@@ -1,0 +1,138 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['countryCode']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="countryCode">Country</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="countryCode"
+                        formControlName="countryCode"
+                        [attr.disabled]="processingCountries ? true : null"
+                        (change)="selectCountry()">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="all">All</option>
+                        @for (country of countries; track country) {
+                            <option value="{{ country.code }}">{{ country.name }}</option>
+                        }
+                    </select>
+
+                    @if (processingCountries) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['region']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="region">Region</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="region"
+                        formControlName="region"
+                        [attr.disabled]="processingRegions ? true : null"
+                        (change)="selectRegion()">
+                        <option [ngValue]="null" disabled>----- Select Region ------</option>
+                        <option value="all">All</option>
+                        @for (region of regions; track region) {
+                            <option value="{{ region }}">{{ region }}</option>
+                        }
+                    </select>
+
+                    @if (processingRegions) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['city']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="city">City</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="city"
+                        formControlName="city"
+                        [attr.disabled]="processingCities ? true : null"
+                        (change)="selectCity()">
+                        <option [ngValue]="null" disabled>----- Select City ------</option>
+                        <option value="all">All</option>
+                        @for (city of cities; track city) {
+                            <option value="{{ city }}">{{ city }}</option>
+                        }
+                    </select>
+
+                    @if (processingCities) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['isp']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="isp">ISP</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="isp"
+                        formControlName="isp"
+                        [attr.disabled]="processingIsps ? true : null">
+                        <option [ngValue]="null" disabled>----- Select ISP ------</option>
+                        <option value="all">All</option>
+                        @for (isp of isps; track isp) {
+                            <option value="{{ isp }}">{{ isp }}</option>
+                        }
+                    </select>
+
+                    @if (processingIsps) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['title']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="title">List Title</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="title"
+                    formControlName="title"
+                    placeholder="Enter the List Title"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Title is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>

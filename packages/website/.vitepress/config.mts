@@ -141,6 +141,15 @@ export default defineConfig({
                         ]
                     },
                     {text: 'Proxy Rack', link: 'proxyrack/guide'},
+                    {
+                        text: 'Proxy-Seller',
+                        collapsed: false,
+                        base: '/connectors/proxy-seller/',
+                        items: [
+                            {text: 'Static IP', link: 'static/guide'},
+                            {text: 'Dynamic IP', link: 'dynamic/guide'},
+                        ]
+                    },
                     {text: 'Rayobyte', link: 'rayobyte/guide'},
                     {text: 'XProxy', link: 'xproxy/guide'},
                     {text: 'Zyte', link: 'zyte/guide'},

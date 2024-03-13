@@ -30,6 +30,10 @@ export * from './proxy-cheap-server';
 
 export * from './proxy-local';
 
+export * from './proxy-seller-residential';
+
+export * from './proxy-seller-server';
+
 export * from './proxyrack';
 
 export * from './rayobyte';
