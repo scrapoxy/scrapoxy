@@ -113,6 +113,7 @@ describe(
                     }),
                     MasterModule.forRoot({
                         port: 0,
+                        certificate: void 0,
                         master: fakeConfig,
                         refreshMetrics: fakeConfig,
                         trackSockets: true,

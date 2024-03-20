@@ -1,11 +1,12 @@
 import {
     ClientRequest,
-    createServer,
+    createServer as createServerHttp,
     IncomingMessage,
     request,
     Server,
     ServerResponse,
 } from 'http';
+import { createServer as createServerHttps } from 'https';
 import { Socket } from 'net';
 import { PassThrough } from 'stream';
 import {
@@ -97,7 +98,11 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
     ) {
         this.sockets = config.trackSockets ? new Sockets() : void 0;
 
-        this.server = createServer();
+        if (config.certificate) {
+            this.server = createServerHttps(config.certificate);
+        } else {
+            this.server = createServerHttp();
+        }
         this.server.on(
             'request',
             (

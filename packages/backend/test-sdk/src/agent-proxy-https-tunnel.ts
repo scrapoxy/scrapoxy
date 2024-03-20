@@ -2,13 +2,15 @@ import { EventEmitter } from 'events';
 import {
     ClientRequest,
     IncomingMessage,
-    request,
+    request as requestHttp,
 } from 'http';
+import { request as requestHttps } from 'https';
 import { Socket } from 'net';
 import { connect } from 'tls';
 import { isUrl } from '@scrapoxy/backend-sdk';
 import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
+import type { ICreateConnectionAutoOptions } from '@scrapoxy/backend-sdk';
 import type {
     IncomingHttpHeaders,
     OutgoingHttpHeaders,
@@ -22,6 +24,7 @@ export interface IAgentProxyHttpsTunnelConfig {
     port: number;
     ca?: string;
     headers?: OutgoingHttpHeaders;
+    tls?: ICreateConnectionAutoOptions;
 }
 
 
@@ -46,7 +49,17 @@ export class AgentProxyHttpsTunnel extends EventEmitter {
             path: `${opts.host}:${port}`,
             headers: this.config.headers ?? {},
         };
-        const proxyReq = request(proxyReqOptions);
+        let proxyReq: ClientRequest;
+
+        if (this.config.tls) {
+            proxyReq = requestHttps({
+                ...proxyReqOptions,
+                ...this.config.tls,
+            });
+        } else {
+            proxyReq = requestHttp(proxyReqOptions);
+        }
+
         proxyReq.on(
             'error',
             (err: any) => {

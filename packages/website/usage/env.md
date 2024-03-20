@@ -37,6 +37,8 @@ To start Scrapoxy, it is mandatory to set the secrets `BACKEND_JWT_SECRET` and `
 
 - `MASTER_PORT` : Port of the Master. The default value is `8888`.
 - `MASTER_TIMEOUT` : Timeout in milliseconds when the Master relays a request to a proxy endpoint. The default value is `60000` (1 minute).
+- `MASTER_CERTIFICATE_CERT` : Certificate to activate TLS support on the Master
+- `MASTER_CERTIFICATE_KEY` : Secret key of the certificate. Both values must be set to activate TLS.
 
 
 ### Probe

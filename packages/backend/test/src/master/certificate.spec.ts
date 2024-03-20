@@ -1,16 +1,17 @@
+import { Agent } from 'https';
 import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { ConnectorDatacenterLocalModule } from '@scrapoxy/backend-connectors';
 import {
     CommanderMasterClientService,
+    generateCertificateFromCaTest,
     generateCertificateSelfSignedForTest,
     MasterModule,
     MasterService,
+    readCaCert,
 } from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
-    generateData,
-    GeneratorCheckStream,
     TestServers,
     USERAGENT_TEST,
 } from '@scrapoxy/backend-test-sdk';
@@ -25,6 +26,7 @@ import {
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     randomName,
     SCRAPOXY_HEADER_PREFIX,
+    SCRAPOXY_HEADER_PREFIX_LC,
 } from '@scrapoxy/common';
 import { Proxy } from '@scrapoxy/proxy-sdk';
 import axios from 'axios';
@@ -40,7 +42,7 @@ import type { OutgoingHttpHeaders } from 'http';
 
 
 describe(
-    'Master - Transfer big file',
+    'Master - Certificate',
     () => {
         const certificateProxy = generateCertificateSelfSignedForTest();
         const
@@ -49,23 +51,31 @@ describe(
                 validateStatus: () => true,
             }),
             key = randomName(),
+            postData = {
+                firstName: 'john',
+                lastName: 'doe',
+            },
             proxyServer: Proxy = new Proxy(
                 new Logger('Proxy'),
                 ONE_MINUTE_IN_MS,
                 certificateProxy.cert,
                 certificateProxy.key
             ),
-            servers = new TestServers(),
-            size = 1024 * 1024;
+            servers = new TestServers();
         let
             app: INestApplication,
             ca: string,
+            certificateMaster: ICertificate,
             certificateMitm: ICertificate,
+            master: MasterService,
             port: number,
             proxy: IProxyToConnect;
 
         beforeAll(async() => {
             // Get certificates
+            ca = await readCaCert();
+            certificateMaster = await generateCertificateFromCaTest();
+            certificateMitm = await generateCertificateFromCaTest();
 
             // Start target and proxy
             await Promise.all([
@@ -79,14 +89,15 @@ describe(
                 },
                 certificate: certificateProxy,
             };
+
             proxy = {
                 id: formatProxyId(
                     connectorId,
                     key
                 ),
-                connectorId: connectorId,
-                projectId: uuid(),
                 type: CONNECTOR_DATACENTER_LOCAL_TYPE,
+                connectorId,
+                projectId: uuid(),
                 key,
                 config,
                 useragent: generateUseragent(),
@@ -110,7 +121,7 @@ describe(
                     }),
                     MasterModule.forRoot({
                         port: 0,
-                        certificate: void 0,
+                        certificate: certificateMaster,
                         master: fakeConfig,
                         refreshMetrics: fakeConfig,
                         trackSockets: true,
@@ -136,8 +147,10 @@ describe(
             app = moduleRef.createNestApplication();
 
             await app.listen(0);
-            port = app.get<MasterService>(MasterService).port as number;
+            master = app.get<MasterService>(MasterService);
+            port = master.port as number;
         });
+
 
         afterAll(async() => {
             await Promise.all([
@@ -146,107 +159,152 @@ describe(
         });
 
         describe(
-            'Download',
+            'HTTP over HTTP requests',
             () => {
                 it(
-                    'should download with HTTP over HTTP proxy',
+                    'should request GET',
                     async() => {
                         const res = await instance.get(
-                            `${servers.urlHttp}/file/big`,
+                            `${servers.urlHttp}/mirror/headers`,
                             {
                                 headers: {
                                     'Proxy-Authorization': 'Basic fake_token',
                                 },
-                                params: {
-                                    size,
-                                },
-                                responseType: 'stream',
                                 proxy: {
                                     host: 'localhost',
-                                    port: port,
-                                    protocol: 'http',
+                                    port,
+                                    protocol: 'https',
                                 },
+                                httpsAgent: new Agent({
+                                    ca,
+                                }),
                             }
                         );
 
                         expect(res.status)
                             .toBe(200);
-
-                        await GeneratorCheckStream.from(
-                            res.data,
-                            {
-                                maxSize: size,
-                            }
-                        );
+                        expect(res.statusText)
+                            .toBe('OK');
+                        expect(res.headers)
+                            .toHaveProperty(
+                                `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                proxy.id
+                            );
                     }
                 );
+            }
+        );
 
+        describe(
+            'HTTPS over HTTP requests',
+            () => {
                 it(
-                    'should download with HTTPS over HTTP',
+                    'should request GET',
                     async() => {
                         const res = await instance.get(
-                            `${servers.urlHttps}/file/big`,
+                            `${servers.urlHttps}/mirror/headers`,
                             {
                                 headers: {
                                     'Proxy-Authorization': 'Basic fake_token',
                                 },
-                                params: {
-                                    size,
-                                },
-                                responseType: 'stream',
                                 proxy: {
                                     host: 'localhost',
-                                    port: port,
-                                    protocol: 'http',
+                                    port,
+                                    protocol: 'https',
                                 },
+                                httpsAgent: new Agent({
+                                    ca,
+                                }),
                             }
                         );
 
                         expect(res.status)
                             .toBe(200);
-
-                        await GeneratorCheckStream.from(
-                            res.data,
-                            {
-                                maxSize: size,
-                            }
-                        );
+                        expect(res.statusText)
+                            .toBe('OK');
+                        expect(res.headers)
+                            .toHaveProperty(
+                                `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                proxy.id
+                            );
                     }
                 );
 
                 it(
-                    'should download with HTTPS over HTTP tunnel (MITM mode)',
+                    'should request POST',
+                    async() => {
+                        const res = await instance.post(
+                            `${servers.urlHttps}/mirror/payload`,
+                            postData,
+                            {
+                                headers: {
+                                    'Proxy-Authorization': 'Basic fake_token',
+                                },
+                                proxy: {
+                                    host: 'localhost',
+                                    port,
+                                    protocol: 'https',
+                                },
+                                httpsAgent: new Agent({
+                                    ca,
+                                }),
+                            }
+                        );
+
+                        expect(res.status)
+                            .toBe(200);
+                        expect(res.statusText)
+                            .toBe('OK');
+                        expect(res.data)
+                            .toEqual(postData);
+                        expect(res.headers)
+                            .toHaveProperty(
+                                `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                proxy.id
+                            );
+                    }
+                );
+            }
+        );
+
+        describe(
+            'HTTPS over HTTP tunnel requests (MITM mode)',
+            () => {
+                it(
+                    'should request GET',
                     async() => {
                         const httpsAgent = new AgentProxyHttpsTunnel({
                             hostname: 'localhost',
-                            port: port,
+                            port,
                             ca,
                             headers: {
                                 'Proxy-Authorization': 'Basic fake_token',
+                            },
+                            tls: {
+                                ca,
                             },
                         });
 
                         try {
                             const res = await instance.get(
-                                `${servers.urlHttps}/file/big`,
+                                `${servers.urlHttps}/mirror/headers`,
                                 {
-                                    params: {
-                                        size,
-                                    },
-                                    responseType: 'stream',
                                     httpsAgent,
                                 }
                             );
 
                             expect(res.status)
                                 .toBe(200);
+                            expect(res.statusText)
+                                .toBe('OK');
+                            expect(res.headers)
+                                .toHaveProperty(
+                                    `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                    proxy.id
+                                );
 
-                            await GeneratorCheckStream.from(
-                                res.data,
-                                {
-                                    maxSize: size,
-                                }
-                            );
+                            expect(httpsAgent.headers)
+                                .toEqual({});
                         } finally {
                             httpsAgent.close();
                         }
@@ -254,40 +312,43 @@ describe(
                 );
 
                 it(
-                    'should download with HTTPS over HTTP tunnel (tunnel mode)',
+                    'should request POST',
                     async() => {
-                        const headersConnect: OutgoingHttpHeaders = {
-                            'Proxy-Authorization': 'Basic fake_token',
-                        };
-                        headersConnect[ `${SCRAPOXY_HEADER_PREFIX}-Mode` ] = 'tunnel';
-
                         const httpsAgent = new AgentProxyHttpsTunnel({
                             hostname: 'localhost',
-                            port: port,
-                            headers: headersConnect,
+                            port,
+                            ca,
+                            headers: {
+                                'Proxy-Authorization': 'Basic fake_token',
+                            },
+                            tls: {
+                                ca,
+                            },
                         });
 
                         try {
-                            const res = await instance.get(
-                                `${servers.urlHttps}/file/big`,
+                            const res = await instance.post(
+                                `${servers.urlHttps}/mirror/payload`,
+                                postData,
                                 {
-                                    params: {
-                                        size,
-                                    },
-                                    responseType: 'stream',
                                     httpsAgent,
                                 }
                             );
 
                             expect(res.status)
                                 .toBe(200);
+                            expect(res.statusText)
+                                .toBe('OK');
+                            expect(res.data)
+                                .toEqual(postData);
+                            expect(res.headers)
+                                .toHaveProperty(
+                                    `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                    proxy.id
+                                );
 
-                            await GeneratorCheckStream.from(
-                                res.data,
-                                {
-                                    maxSize: size,
-                                }
-                            );
+                            expect(httpsAgent.headers)
+                                .toEqual({});
                         } finally {
                             httpsAgent.close();
                         }
@@ -297,102 +358,10 @@ describe(
         );
 
         describe(
-            'Upload',
+            'HTTPS over HTTP tunnel requests (tunnel mode)',
             () => {
                 it(
-                    'should upload with HTTP over HTTP proxy',
-                    async() => {
-                        const res = await instance.post(
-                            `${servers.urlHttp}/file/big`,
-                            generateData(size),
-                            {
-                                params: {
-                                    size,
-                                },
-                                headers: {
-                                    'Proxy-Authorization': 'Basic fake_token',
-                                    'Content-Type': 'application/octet-stream',
-                                    'Content-Length': size.toString(),
-                                },
-                                proxy: {
-                                    host: 'localhost',
-                                    port: port,
-                                    protocol: 'http',
-                                },
-                            }
-                        );
-
-                        expect(res.status)
-                            .toBe(200);
-                    }
-                );
-
-                it(
-                    'should upload with HTTPS over HTTP',
-                    async() => {
-                        const res = await instance.post(
-                            `${servers.urlHttps}/file/big`,
-                            generateData(size),
-                            {
-                                params: {
-                                    size,
-                                },
-                                headers: {
-                                    'Proxy-Authorization': 'Basic fake_token',
-                                    'Content-Type': 'application/octet-stream',
-                                    'Content-Length': size.toString(),
-                                },
-                                proxy: {
-                                    host: 'localhost',
-                                    port: port,
-                                    protocol: 'http',
-                                },
-                            }
-                        );
-
-                        expect(res.status)
-                            .toBe(200);
-                    }
-                );
-
-                it(
-                    'should upload with HTTPS over HTTP tunnel (MITM mode)',
-                    async() => {
-                        const httpsAgent = new AgentProxyHttpsTunnel({
-                            hostname: 'localhost',
-                            port: port,
-                            ca,
-                            headers: {
-                                'Proxy-Authorization': 'Basic fake_token',
-                            },
-                        });
-
-                        try {
-                            const res = await instance.post(
-                                `${servers.urlHttps}/file/big`,
-                                generateData(size),
-                                {
-                                    params: {
-                                        size,
-                                    },
-                                    headers: {
-                                        'Content-Type': 'application/octet-stream',
-                                        'Content-Length': size.toString(),
-                                    },
-                                    httpsAgent,
-                                }
-                            );
-
-                            expect(res.status)
-                                .toBe(200);
-                        } finally {
-                            httpsAgent.close();
-                        }
-                    }
-                );
-
-                it(
-                    'should upload with HTTPS over HTTP tunnel (tunnel mode)',
+                    'should request GET',
                     async() => {
                         const headersConnect: OutgoingHttpHeaders = {
                             'Proxy-Authorization': 'Basic fake_token',
@@ -401,28 +370,75 @@ describe(
 
                         const httpsAgent = new AgentProxyHttpsTunnel({
                             hostname: 'localhost',
-                            port: port,
+                            port,
                             headers: headersConnect,
+                            tls: {
+                                ca,
+                            },
                         });
 
                         try {
-                            const res = await instance.post(
-                                `${servers.urlHttps}/file/big`,
-                                generateData(size),
+                            const res = await instance.get(
+                                `${servers.urlHttps}/mirror/headers`,
                                 {
-                                    params: {
-                                        size,
-                                    },
-                                    headers: {
-                                        'Content-Type': 'application/octet-stream',
-                                        'Content-Length': size.toString(),
-                                    },
                                     httpsAgent,
                                 }
                             );
 
                             expect(res.status)
                                 .toBe(200);
+                            expect(res.statusText)
+                                .toBe('OK');
+
+                            expect(httpsAgent.headers)
+                                .toHaveProperty(
+                                    `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                    proxy.id
+                                );
+                        } finally {
+                            httpsAgent.close();
+                        }
+                    }
+                );
+
+                it(
+                    'should request POST',
+                    async() => {
+                        const headersConnect: OutgoingHttpHeaders = {
+                            'Proxy-Authorization': 'Basic fake_token',
+                        };
+                        headersConnect[ `${SCRAPOXY_HEADER_PREFIX}-Mode` ] = 'tunnel';
+
+                        const httpsAgent = new AgentProxyHttpsTunnel({
+                            hostname: 'localhost',
+                            port,
+                            headers: headersConnect,
+                            tls: {
+                                ca,
+                            },
+                        });
+
+                        try {
+                            const res = await instance.post(
+                                `${servers.urlHttps}/mirror/payload`,
+                                postData,
+                                {
+                                    httpsAgent,
+                                }
+                            );
+
+                            expect(res.status)
+                                .toBe(200);
+                            expect(res.statusText)
+                                .toBe('OK');
+                            expect(res.data)
+                                .toEqual(postData);
+
+                            expect(httpsAgent.headers)
+                                .toHaveProperty(
+                                    `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
+                                    proxy.id
+                                );
                         } finally {
                             httpsAgent.close();
                         }

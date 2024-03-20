@@ -16,6 +16,7 @@ import type {
     ICommanderRefreshClientModuleConfig,
 } from '../commander-client';
 import type { DynamicModule } from '@nestjs/common';
+import type { ICertificate } from '@scrapoxy/common';
 
 
 export interface IMasterRefreshClientModuleConfig extends ICommanderRefreshClientModuleConfig {
@@ -25,6 +26,7 @@ export interface IMasterRefreshClientModuleConfig extends ICommanderRefreshClien
 
 export interface IMasterModuleConfig {
     port: number;
+    certificate: ICertificate | undefined;
     master: ICommanderMasterClientModuleConfig;
     refreshMetrics: IMasterRefreshClientModuleConfig;
     trackSockets: boolean;
@@ -68,11 +70,27 @@ export class MasterModule {
             10
         );
 
+        const
+            certificateCert = process.env.MASTER_CERTIFICATE_CERT,
+            certificateKey = process.env.MASTER_CERTIFICATE_KEY;
+        let certificate: ICertificate | undefined;
+
+        if (certificateCert && certificateCert.length >= 0 &&
+            certificateKey && certificateKey.length >= 0) {
+            certificate = {
+                cert: certificateCert,
+                key: certificateKey,
+            };
+        } else {
+            certificate = void 0;
+        }
+
         const config: IMasterModuleConfig = {
             port: port !== void 0 ? port : parseInt(
                 process.env.MASTER_PORT ?? '8888',
                 10
             ),
+            certificate,
             master: getEnvCommanderMasterClientModuleConfig(
                 url,
                 version
