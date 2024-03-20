@@ -96,7 +96,7 @@ describe(
                     key
                 ),
                 type: CONNECTOR_DATACENTER_LOCAL_TYPE,
-                connectorId: connectorId,
+                connectorId,
                 projectId: uuid(),
                 key,
                 config,

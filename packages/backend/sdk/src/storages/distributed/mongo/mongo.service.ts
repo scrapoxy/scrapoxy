@@ -1322,7 +1322,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
         const proxiesModel = await this.colProxies.find(
             {
-                connectorId: connectorId,
+                connectorId,
                 projectId,
             },
             {
@@ -1364,7 +1364,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
         const proxiesModel = await this.colProxies.find(
             {
-                connectorId: connectorId,
+                connectorId,
                 projectId,
             },
             {

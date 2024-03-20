@@ -687,7 +687,7 @@ export class StorageDistributedConnService implements IStorageService, IProbeSer
 
         const update: IProxyLastConnectionToUpdate = {
             projectId,
-            connectorId: connectorId,
+            connectorId,
             proxyId,
             lastConnectionTs,
         };

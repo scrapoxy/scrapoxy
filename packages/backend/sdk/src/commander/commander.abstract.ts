@@ -133,7 +133,7 @@ export abstract class ACommanderService {
                 fp
             ),
             projectId,
-            connectorId: connectorId,
+            connectorId,
             key: fp.key,
             type: fp.type,
             address: fp.address,

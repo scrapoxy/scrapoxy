@@ -205,7 +205,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             const proxyModel: IProxyModel = {
                 ...proxy,
                 id,
-                connectorId: connectorId,
+                connectorId,
                 projectId,
                 type: connectorFound.type,
                 key: proxy.key,

@@ -213,7 +213,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                     connectorId,
                     remoteProxy.key
                 ),
-                connectorId: connectorId,
+                connectorId,
                 projectId,
                 type: remoteProxy.type,
                 key: remoteProxy.key,
@@ -414,7 +414,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                         connectorId,
                         remoteProxy.key
                     ),
-                    connectorId: connectorId,
+                    connectorId,
                     projectId,
                     type: remoteProxy.type,
                     key: remoteProxy.key,

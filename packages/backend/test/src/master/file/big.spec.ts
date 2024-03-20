@@ -84,7 +84,7 @@ describe(
                     connectorId,
                     key
                 ),
-                connectorId: connectorId,
+                connectorId,
                 projectId: uuid(),
                 type: CONNECTOR_DATACENTER_LOCAL_TYPE,
                 key,
