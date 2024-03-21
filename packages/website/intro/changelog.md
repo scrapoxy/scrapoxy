@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.6.1
+
+### Features
+
+- **master**: add HTTPS support to master
+
+
 ## 4.6.0
 
 ### Features
