@@ -2,6 +2,11 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import {
+    DocumentBuilder,
+    SwaggerModule,
+} from '@nestjs/swagger';
+import {
+    CommanderScraperModule,
     DatacenterLocalApp,
     getEnvStorageDistributedModuleConfig,
     getEnvStorageType,
@@ -10,7 +15,10 @@ import {
     ScrapoxyExpressAdapter,
     SUBSCRIPTION_LOCAL_DEFAULTS,
 } from '@scrapoxy/backend-sdk';
-import { ONE_MINUTE_IN_MS } from '@scrapoxy/common';
+import {
+    capitalize,
+    ONE_MINUTE_IN_MS,
+} from '@scrapoxy/common';
 import { sigstop } from '@scrapoxy/proxy-sdk';
 import {
     Command,
@@ -24,7 +32,10 @@ import {
 import { v4 as uuid } from 'uuid';
 import { getEnvCommanderPort } from './start.helpers';
 import { AppStartModule } from './start.module';
-import type { IAppStartModuleConfig } from './start.module';
+import type {
+    IAppStartModuleConfig,
+    IPackageInfo,
+} from './start.interface';
 import type { LoggerService } from '@nestjs/common';
 
 
@@ -177,6 +188,28 @@ async function command(
         await app.startAllMicroservices();
     }
 
+    const swaggerConfig = new DocumentBuilder()
+        .setTitle(capitalize(config.package.name))
+        .setVersion(config.package.version)
+        .setDescription(config.package.description)
+        .addBasicAuth()
+        .build();
+    const document = SwaggerModule.createDocument(
+        app,
+        swaggerConfig,
+        {
+            include: [
+                CommanderScraperModule,
+            ],
+        }
+    );
+
+    SwaggerModule.setup(
+        'api',
+        app,
+        document
+    );
+
     sigstop(() => {
         (async() => {
             await app.close();
@@ -219,7 +252,7 @@ async function command(
 
 export function addCommand(
     program: Command,
-    version: string,
+    pkg: IPackageInfo,
     logger: LoggerService
 ) {
     program
@@ -229,7 +262,7 @@ export function addCommand(
                 isDefault: true,
             }
         )
-        .description('Start Scrapoxy')
+        .description(`Start ${capitalize(pkg.name)}`)
         .addOption(new Option(
             '-s, --standalone',
             'Run as a standalone instance'
@@ -289,7 +322,7 @@ export function addCommand(
             'Activate test connectors'
         ))
         .action((config: IAppStartModuleConfig) => {
-            config.version = version;
+            config.package = pkg;
 
             return command(
                 config,

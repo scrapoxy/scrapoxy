@@ -1,3 +1,9 @@
+import { ADDRESS_SWAGGER_PROPS } from '../address';
+import { CONNECTOR_VIEW_SWAGGER_PROPS } from '../connectors';
+import {
+    FINGERPRINT_RESPONSE_META,
+    FINGERPRINT_RESPONSE_SWAGGER_PROPS,
+} from '../fingerprint';
 import {
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
@@ -36,6 +42,9 @@ export enum EProxyStatus {
 }
 
 
+export const PROXY_STATUS_KEYS = Object.values(EProxyStatus) as string[];
+
+
 export enum EConnectMode {
     TUNNEL = 'tunnel',
     MITM = 'mitm',
@@ -44,6 +53,7 @@ export enum EConnectMode {
 
 
 const PROXY_BASE_META = [
+    ...FINGERPRINT_RESPONSE_META,
     'id',
     'type',
     'connectorId',
@@ -53,10 +63,65 @@ const PROXY_BASE_META = [
     'status',
     'removing',
     'removingForce',
-    'fingerprint',
-    'fingerprintError',
     'createdTs',
 ];
+
+
+export const PROXY_BASE_SWAGGER_PROPS = {
+    ...FINGERPRINT_RESPONSE_SWAGGER_PROPS,
+    id: {
+        type: 'string',
+        description: 'uuid of the connector + \':\' + key of the proxy',
+        example: 'e7e5142f-b3e3-410b-bce2-8c43a7e32712:i-0123456789abcdef0',
+    },
+    type: {
+        type: 'string',
+        enum: PROXY_TYPE_KEYS,
+        description: 'type of provider',
+        example: 'aws',
+    },
+    connectorId: {
+        type: 'string',
+        description: 'uuid of the connector',
+        example: 'e7e5142f-b3e3-410b-bce2-8c43a7e32712',
+    },
+    projectId: {
+        type: 'string',
+        description: 'uuid of the project',
+        example: '8accdab6-a5c4-4cef-9a29-86f0c91ff1e1',
+    },
+    key: {
+        type: 'string',
+        description: 'unique key of the proxy in the connector',
+        example: 'i-0123456789abcdef0',
+    },
+    name: {
+        type: 'string',
+        description: 'name of the proxy',
+        example: 'myproxy-1',
+    },
+    status: {
+        type: 'string',
+        enum: PROXY_STATUS_KEYS,
+        description: 'status of the proxy from STARTING, STARTED, STOPPING, STOPPED or ERROR',
+        example: 'STARTED',
+    },
+    removing: {
+        type: 'boolean',
+        description: 'true if the proxy is being removed',
+        example: false,
+    },
+    removingForce: {
+        type: 'boolean',
+        description: 'true if the proxy is being removed by force',
+        example: false,
+    },
+    createdTs: {
+        type: 'number',
+        description: 'timestamp in ms of the proxy creation',
+        example: 1711791332000,
+    },
+};
 
 
 export interface IProxyBase extends IFingerprintResponse {
@@ -106,11 +171,30 @@ export interface IProxySync extends IProxyData {
 
 export const PROXY_VIEW_META = [
     ...PROXY_BASE_META,
-    'connections',
     'requests',
     'bytesReceived',
     'bytesSent',
 ];
+
+
+export const PROXY_VIEW_SWAGGER_PROPS = {
+    ...PROXY_BASE_SWAGGER_PROPS,
+    requests: {
+        type: 'number',
+        description: 'number of requests made by the proxy',
+        example: 54,
+    },
+    bytesReceived: {
+        type: 'number',
+        description: 'number of bytes received by the proxy',
+        example: 549128323,
+    },
+    bytesSent: {
+        type: 'number',
+        description: 'number of bytes sent by the proxy',
+        example: 123456789,
+    },
+};
 
 
 export interface IProxyView extends IProxyBase {
@@ -147,6 +231,23 @@ export interface IConnectorProxyRefreshed {
     status: EProxyStatus;
     config: any;
 }
+
+
+export const CONNECTOR_PROXIES_VIEW_SWAGGER_PROPS = {
+    connector: {
+        type: 'object',
+        properties: CONNECTOR_VIEW_SWAGGER_PROPS,
+        description: 'Connector information',
+    },
+    proxies: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: PROXY_VIEW_SWAGGER_PROPS,
+        },
+        description: 'List of proxies of the connector',
+    },
+};
 
 
 export interface IConnectorProxiesView {
@@ -251,6 +352,20 @@ export interface IProxyKeyToRemove {
 }
 
 
+export const PROXY_ID_TO_REMOVE_SWAGGER_PROPS = {
+    id: {
+        type: 'string',
+        description: 'uuid of the connector + \':\' + key of the proxy',
+        example: 'e7e5142f-b3e3-410b-bce2-8c43a7e32712:i-0123456789abcdef0',
+    },
+    force: {
+        type: 'boolean',
+        description: 'true to force the removal',
+        example: false,
+    },
+};
+
+
 export interface IProxyIdToRemove {
     id: string;
     force: boolean;
@@ -270,10 +385,46 @@ export interface ICreateRemoveLocalProxies {
 }
 
 
+export const PROXY_TRANSPORT_AUTH_SWAGGER_PROPS = {
+    username: {
+        type: 'string',
+        description: 'username of the proxy',
+        example: 'myadmin',
+    },
+    password: {
+        type: 'string',
+        description: 'password of the proxy',
+        example: 'mypassw0rd!',
+    },
+};
+
+
 export interface IProxyTransportAuth {
     username: string;
     password: string;
 }
+
+
+export const PROXY_TRANSPORT_META = [
+    'type', 'address', 'auth',
+];
+
+
+export const PROXY_TRANSPORT_SWAGGER_PROPS = {
+    type: {
+        type: 'string',
+        enum: PROXY_TYPE_KEYS,
+    },
+    address: {
+        type: 'object',
+        properties: ADDRESS_SWAGGER_PROPS,
+    },
+    auth: {
+        type: 'object',
+        properties: PROXY_TRANSPORT_AUTH_SWAGGER_PROPS,
+        nullable: true,
+    },
+};
 
 
 export interface IProxyTransport {

@@ -1,0 +1,946 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/scraper/project": {
+            "get": {
+                "operationId": "CommanderScraperController_getProjectByToken",
+                "summary": "",
+                "description": "Get project information",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Project found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "uuid of the project",
+                                            "example": "a8d90805-31c8-43cb-8b14-91d4ca17450f"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "name of the project",
+                                            "example": "My Project"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "OFF",
+                                                "CALM",
+                                                "HOT"
+                                            ],
+                                            "description": "status of the project from OFF, CALM or HOT",
+                                            "example": "HOT"
+                                        },
+                                        "connectorDefaultId": {
+                                            "type": "string",
+                                            "nullable": true,
+                                            "description": "default connector ID or undefined",
+                                            "example": "e48d69b8-016b-423b-9ed7-d31ac616b1cf"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/status": {
+            "post": {
+                "operationId": "CommanderScraperController_setProjectStatus",
+                "summary": "",
+                "description": "Change project's status",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "OFF",
+                                            "CALM",
+                                            "HOT"
+                                        ],
+                                        "description": "status of the project from OFF, CALM or HOT",
+                                        "example": "HOT"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Project status updated"
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/connectors": {
+            "get": {
+                "operationId": "CommanderScraperController_getAllProjectConnectorsAndProxiesById",
+                "summary": "",
+                "description": "Get all connectors and proxies of the project",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Connectors and proxies found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "connector": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "uuid of the connector",
+                                                        "example": "faf62e6a-f048-4bec-9415-719cb92c1063"
+                                                    },
+                                                    "projectId": {
+                                                        "type": "string",
+                                                        "description": "uuid of the project",
+                                                        "example": "b87142ec-c86a-4fb5-ad79-5a829b36bf83"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "description": "name of the connector",
+                                                        "example": "My AWS Connector"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "description": "type of provider",
+                                                        "example": "aws"
+                                                    },
+                                                    "active": {
+                                                        "type": "boolean",
+                                                        "description": "true if the connector is active",
+                                                        "example": true
+                                                    },
+                                                    "proxiesMax": {
+                                                        "type": "number",
+                                                        "description": "maximum number of proxies to use",
+                                                        "example": 10
+                                                    },
+                                                    "error": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "error message if the connector is in error",
+                                                        "example": "too many instances requested"
+                                                    },
+                                                    "certificateEndAt": {
+                                                        "type": "number",
+                                                        "nullable": true,
+                                                        "description": "timestamp in ms of the end of the certificate for datacenter provider",
+                                                        "example": 1711788736000
+                                                    }
+                                                },
+                                                "description": "Connector information"
+                                            },
+                                            "proxies": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "fingerprint": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "ip": {
+                                                                    "type": "string",
+                                                                    "description": "IP address of the proxy",
+                                                                    "example": "13.38.69.243"
+                                                                },
+                                                                "useragent": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "User agent for the fingerprinted request",
+                                                                    "example": "Mozilla/5.0 (Linux x86_64; en-US) Gecko/20100101 Firefox/69.9"
+                                                                },
+                                                                "asnName": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "Name of the Autonomous System Number (ASN) of this IP address",
+                                                                    "example": "AMAZON-02"
+                                                                },
+                                                                "asnNetwork": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "Network of this IP address",
+                                                                    "example": "13.36.0.0/14"
+                                                                },
+                                                                "continentCode": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "2-letter continent code of the IP Address",
+                                                                    "example": "EU"
+                                                                },
+                                                                "continentName": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "Continent name of the IP Address",
+                                                                    "example": "Europe"
+                                                                },
+                                                                "countryCode": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "2-letter country code of the IP Address",
+                                                                    "example": "FR"
+                                                                },
+                                                                "countryName": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "Country name of the IP Address",
+                                                                    "example": "France"
+                                                                },
+                                                                "cityName": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "City name of the IP Address",
+                                                                    "example": "Paris"
+                                                                },
+                                                                "timezone": {
+                                                                    "type": "string",
+                                                                    "nullable": true,
+                                                                    "description": "Timezone of the IP Address",
+                                                                    "example": "Europe/Paris"
+                                                                },
+                                                                "latitude": {
+                                                                    "type": "number",
+                                                                    "nullable": true,
+                                                                    "description": "Latitude of the IP Address",
+                                                                    "example": 48.8323
+                                                                },
+                                                                "longitude": {
+                                                                    "type": "number",
+                                                                    "nullable": true,
+                                                                    "description": "Longitude of the IP Address",
+                                                                    "example": 2.4075
+                                                                }
+                                                            },
+                                                            "description": "Fingerprint data"
+                                                        },
+                                                        "fingerprintError": {
+                                                            "type": "string",
+                                                            "nullable": true,
+                                                            "description": "Error message if fingerprinting failed",
+                                                            "example": "Timeout error"
+                                                        },
+                                                        "id": {
+                                                            "type": "string",
+                                                            "description": "uuid of the connector + ':' + key of the proxy",
+                                                            "example": "e7e5142f-b3e3-410b-bce2-8c43a7e32712:i-0123456789abcdef0"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "http",
+                                                                "https",
+                                                                "socks4",
+                                                                "socks5"
+                                                            ],
+                                                            "description": "type of provider",
+                                                            "example": "aws"
+                                                        },
+                                                        "connectorId": {
+                                                            "type": "string",
+                                                            "description": "uuid of the connector",
+                                                            "example": "e7e5142f-b3e3-410b-bce2-8c43a7e32712"
+                                                        },
+                                                        "projectId": {
+                                                            "type": "string",
+                                                            "description": "uuid of the project",
+                                                            "example": "8accdab6-a5c4-4cef-9a29-86f0c91ff1e1"
+                                                        },
+                                                        "key": {
+                                                            "type": "string",
+                                                            "description": "unique key of the proxy in the connector",
+                                                            "example": "i-0123456789abcdef0"
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "description": "name of the proxy",
+                                                            "example": "myproxy-1"
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "STARTED",
+                                                                "STARTING",
+                                                                "STOPPING",
+                                                                "STOPPED",
+                                                                "ERROR"
+                                                            ],
+                                                            "description": "status of the proxy from STARTING, STARTED, STOPPING, STOPPED or ERROR",
+                                                            "example": "STARTED"
+                                                        },
+                                                        "removing": {
+                                                            "type": "boolean",
+                                                            "description": "true if the proxy is being removed",
+                                                            "example": false
+                                                        },
+                                                        "removingForce": {
+                                                            "type": "boolean",
+                                                            "description": "true if the proxy is being removed by force",
+                                                            "example": false
+                                                        },
+                                                        "createdTs": {
+                                                            "type": "number",
+                                                            "description": "timestamp in ms of the proxy creation",
+                                                            "example": 1711791332000
+                                                        },
+                                                        "requests": {
+                                                            "type": "number",
+                                                            "description": "number of requests made by the proxy",
+                                                            "example": 54
+                                                        },
+                                                        "bytesReceived": {
+                                                            "type": "number",
+                                                            "description": "number of bytes received by the proxy",
+                                                            "example": 549128323
+                                                        },
+                                                        "bytesSent": {
+                                                            "type": "number",
+                                                            "description": "number of bytes sent by the proxy",
+                                                            "example": 123456789
+                                                        }
+                                                    }
+                                                },
+                                                "description": "List of proxies of the connector"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/proxies/remove": {
+            "post": {
+                "operationId": "CommanderScraperController_askProxiesToRemove",
+                "summary": "",
+                "description": "Ask to remove some proxies",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "uuid of the connector + ':' + key of the proxy",
+                                            "example": "e7e5142f-b3e3-410b-bce2-8c43a7e32712:i-0123456789abcdef0"
+                                        },
+                                        "force": {
+                                            "type": "boolean",
+                                            "description": "true to force the removal",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Proxies asked to be removed"
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/connectors/{connectorId}/freeproxies": {
+            "get": {
+                "operationId": "CommanderScraperController_getAllProjectFreeproxiesById",
+                "summary": "",
+                "description": "Get all freeproxies of a connector",
+                "parameters": [
+                    {
+                        "name": "connectorId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Freeproxies found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "http",
+                                                    "https",
+                                                    "socks4",
+                                                    "socks5"
+                                                ]
+                                            },
+                                            "address": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "hostname": {
+                                                        "type": "string",
+                                                        "description": "hostname of the proxy",
+                                                        "example": "116.226.159.130"
+                                                    },
+                                                    "port": {
+                                                        "type": "number",
+                                                        "description": "TCP port of the proxy",
+                                                        "example": 3128
+                                                    }
+                                                }
+                                            },
+                                            "auth": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "username": {
+                                                        "type": "string",
+                                                        "description": "username of the proxy",
+                                                        "example": "myadmin"
+                                                    },
+                                                    "password": {
+                                                        "type": "string",
+                                                        "description": "password of the proxy",
+                                                        "example": "mypassw0rd!"
+                                                    }
+                                                },
+                                                "nullable": true
+                                            },
+                                            "key": {
+                                                "type": "string",
+                                                "description": "name of the instance",
+                                                "example": "i-0123456789abcdef1"
+                                            },
+                                            "fingerprint": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ip": {
+                                                        "type": "string",
+                                                        "description": "IP address of the proxy",
+                                                        "example": "13.38.69.243"
+                                                    },
+                                                    "useragent": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "User agent for the fingerprinted request",
+                                                        "example": "Mozilla/5.0 (Linux x86_64; en-US) Gecko/20100101 Firefox/69.9"
+                                                    },
+                                                    "asnName": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "Name of the Autonomous System Number (ASN) of this IP address",
+                                                        "example": "AMAZON-02"
+                                                    },
+                                                    "asnNetwork": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "Network of this IP address",
+                                                        "example": "13.36.0.0/14"
+                                                    },
+                                                    "continentCode": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "2-letter continent code of the IP Address",
+                                                        "example": "EU"
+                                                    },
+                                                    "continentName": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "Continent name of the IP Address",
+                                                        "example": "Europe"
+                                                    },
+                                                    "countryCode": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "2-letter country code of the IP Address",
+                                                        "example": "FR"
+                                                    },
+                                                    "countryName": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "Country name of the IP Address",
+                                                        "example": "France"
+                                                    },
+                                                    "cityName": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "City name of the IP Address",
+                                                        "example": "Paris"
+                                                    },
+                                                    "timezone": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "Timezone of the IP Address",
+                                                        "example": "Europe/Paris"
+                                                    },
+                                                    "latitude": {
+                                                        "type": "number",
+                                                        "nullable": true,
+                                                        "description": "Latitude of the IP Address",
+                                                        "example": 48.8323
+                                                    },
+                                                    "longitude": {
+                                                        "type": "number",
+                                                        "nullable": true,
+                                                        "description": "Longitude of the IP Address",
+                                                        "example": 2.4075
+                                                    }
+                                                },
+                                                "description": "Fingerprint data"
+                                            },
+                                            "fingerprintError": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "description": "Error message if fingerprinting failed",
+                                                "example": "Timeout error"
+                                            },
+                                            "id": {
+                                                "type": "string",
+                                                "description": "uuid of the connector + ':' + key of the freeproxy",
+                                                "example": "0b765994-cad3-4b1a-ba65-3af27e69ef47:93.175.130.76"
+                                            },
+                                            "connectorId": {
+                                                "type": "string",
+                                                "description": "uuid of the connector",
+                                                "example": "0b765994-cad3-4b1a-ba65-3af27e69ef47"
+                                            },
+                                            "projectId": {
+                                                "type": "string",
+                                                "description": "uuid of the project",
+                                                "example": "7c1d1da2-0271-401f-a4dd-076de4870f8b"
+                                            },
+                                            "timeoutDisconnected": {
+                                                "type": "number",
+                                                "description": "maximum duration in ms for connecting to a freeproxy before considering it as offline",
+                                                "example": 5000
+                                            },
+                                            "timeoutUnreachable": {
+                                                "type": "number",
+                                                "nullable": true,
+                                                "description": "if enabled, maximum duration in ms for a freeproxy to be offline before being removed from the pool, otherwise undefined",
+                                                "example": 60000
+                                            },
+                                            "disconnectedTs": {
+                                                "type": "number",
+                                                "nullable": true,
+                                                "description": "timestamp of the last disconnection of the freeproxy or undefined if online",
+                                                "example": 1711790541000
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "CommanderScraperController_createFreeproxies",
+                "summary": "",
+                "description": "Add multiple freeproxies for a connector",
+                "parameters": [
+                    {
+                        "name": "connectorId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "http",
+                                                "https",
+                                                "socks4",
+                                                "socks5"
+                                            ]
+                                        },
+                                        "address": {
+                                            "type": "object",
+                                            "properties": {
+                                                "hostname": {
+                                                    "type": "string",
+                                                    "description": "hostname of the proxy",
+                                                    "example": "116.226.159.130"
+                                                },
+                                                "port": {
+                                                    "type": "number",
+                                                    "description": "TCP port of the proxy",
+                                                    "example": 3128
+                                                }
+                                            }
+                                        },
+                                        "auth": {
+                                            "type": "object",
+                                            "properties": {
+                                                "username": {
+                                                    "type": "string",
+                                                    "description": "username of the proxy",
+                                                    "example": "myadmin"
+                                                },
+                                                "password": {
+                                                    "type": "string",
+                                                    "description": "password of the proxy",
+                                                    "example": "mypassw0rd!"
+                                                }
+                                            },
+                                            "nullable": true
+                                        },
+                                        "key": {
+                                            "type": "string",
+                                            "description": "name of the instance",
+                                            "example": "i-0123456789abcdef1"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Freeproxies created"
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/connectors/{connectorId}/freeproxies/remove": {
+            "post": {
+                "operationId": "CommanderScraperController_removeFreeproxies",
+                "summary": "",
+                "description": "Remove multiple freeproxies for a connector",
+                "parameters": [
+                    {
+                        "name": "connectorId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "description": "uuid of the proxy",
+                                            "example": "cca47a38-06b1-4c8c-a620-b7f0f357cd81"
+                                        },
+                                        "nullable": true
+                                    },
+                                    "duplicate": {
+                                        "type": "boolean",
+                                        "nullable": true,
+                                        "description": "true to remove all duplicates of the freeproxies",
+                                        "example": true
+                                    },
+                                    "onlyOffline": {
+                                        "type": "boolean",
+                                        "nullable": true,
+                                        "description": "true to remove all offline freeproxies",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Freeproxies removed"
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/connectors/{connectorId}/sources": {
+            "get": {
+                "operationId": "CommanderScraperController_getAllProjectSourcesById",
+                "summary": "",
+                "description": "Get all sources providing proxy lists sources for a connector",
+                "parameters": [
+                    {
+                        "name": "connectorId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sources found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "url": {
+                                                "type": "string",
+                                                "description": "url of the source",
+                                                "example": "http://source-of-urls.com/list.csv"
+                                            },
+                                            "delay": {
+                                                "type": "number",
+                                                "description": "delay in ms between 2 fetches of the source",
+                                                "example": 60000
+                                            },
+                                            "id": {
+                                                "type": "string",
+                                                "description": "uuid of the source",
+                                                "example": "b79b9533-a764-4bf2-9ff8-64aa7d4e7508"
+                                            },
+                                            "connectorId": {
+                                                "type": "string",
+                                                "description": "uuid of the connector",
+                                                "example": "5f7895e6-a48d-4831-95d8-51b0b55ddcc2"
+                                            },
+                                            "projectId": {
+                                                "type": "string",
+                                                "description": "uuid of the project",
+                                                "example": "77c3302e-41e3-43f7-b033-4bd802f2d521"
+                                            },
+                                            "lastRefreshTs": {
+                                                "type": "number",
+                                                "nullable": true,
+                                                "description": "timestamp in ms of the last refresh of the source",
+                                                "example": 1711791332000
+                                            },
+                                            "lastRefreshError": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "description": "error message if the last refresh of the source is in error",
+                                                "example": "domain not found"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "CommanderScraperController_createSources",
+                "summary": "",
+                "description": "Add multiple sources providing proxy lists for a connector",
+                "parameters": [
+                    {
+                        "name": "connectorId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "url": {
+                                            "type": "string",
+                                            "description": "url of the source",
+                                            "example": "http://source-of-urls.com/list.csv"
+                                        },
+                                        "delay": {
+                                            "type": "number",
+                                            "description": "delay in ms between 2 fetches of the source",
+                                            "example": 60000
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Sources created"
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/scraper/project/connectors/{connectorId}/sources/remove": {
+            "post": {
+                "operationId": "CommanderScraperController_removeSources",
+                "summary": "",
+                "description": "Remove multiple sources providing proxy lists for a connector",
+                "parameters": [
+                    {
+                        "name": "connectorId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Sources removed"
+                    },
+                    "403": {
+                        "description": "Project not found or wrong credential"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "",
+        "description": "",
+        "version": "1.0.0",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "basic": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        },
+        "schemas": {}
+    }
+}

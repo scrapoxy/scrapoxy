@@ -4,7 +4,7 @@
         "name": "Fabien Vauchelles",
         "url": "https://www.linkedin.com/in/fabienvauchelles"
     },
-    "description": "Scrapoxy is a super-proxy aggregator for scrapers",
+    "description": "Scrapoxy is a super proxy aggregator, allowing you to manage all proxies in one place, rather than spreading it across multiple scrapers",
     "url": "https://github.com/fabienvauchelles/scrapoxy",
     "homepage": "https://scrapoxy.io",
     "repository": {

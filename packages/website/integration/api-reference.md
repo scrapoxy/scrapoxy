@@ -5,6 +5,15 @@ Scrapoxy provides a REST API to manage your instances directly from the scraper.
 Base URL is `http://localhost:8890` (depending on your configuration).
 
 
+## Swagger
+
+Scrapoxy exposes a Swagger UI on `http://localhost:8890/api`.
+
+Additionally, it offers:
+- a Swagger JSON file at `http://localhost:8890/api-json`
+- a YAML file at `http://localhost:8890/api-yaml`
+
+
 ## Authentication
 
 Scrapoxy employs HTTP Basic Authentication for request authentication.
@@ -99,26 +108,39 @@ Response payload:
             "type": "<type of provider>",
             "active": "<true if the connector is active>",
             "proxiesMax": "<maximum number of proxies to use>",
-            "proxiesTimeoutDisconnected": "<maximum duration for connecting to a proxy before considering it as offline>",
-            "proxiesTimeoutUnreachable": {
-                "enabled": "<do we check maximum duration for connecting to a proxy before removing it>",
-                "value": "<maximum duration>"
-            },
             "error": "<error message if the connector is in error>",
-            "certificateEndAt": "<date of the end of the certificate for datacenter provider>"
+            "certificateEndAt": "<timestamp in ms of the end of the certificate for datacenter provider>"
         },
         "proxies": [
             {
-                "id": "<uuid of the proxy>",
+                "id": "<uuid of the connector + ':' + key of the proxy>",
                 "type": "<type of provider>",
                 "connectorId": "<uuid of the connector>",
                 "projectId": "<uuid of the project>",
-                "key": "<key of the proxy in the connector>",
+                "key": "<unique key of the proxy in the connector>",
                 "name": "<name of the proxy>",
                 "status": "<status of the proxy from STARTING, STARTED, STOPPING, STOPPED or ERROR>",
                 "removing": "<true if the proxy is being removed>",
                 "removingForce": "<true if the proxy is being removed by force (see below)>",
-                "createdTs": "<date of creation of the proxy>"
+                "fingerprint": {
+                    "ip": "<IP address of the proxy>",
+                    "useragent": "<user agent for the fingerprinted request>",
+                    "asnName": "<name of the Autonomous System Number (ASN) of this IP address>",
+                    "asnNetwork": "<network of this IP address>",
+                    "continentCode": "<2-letter continent code of the IP Address>",
+                    "continentName": "<continent name of the IP Address>",
+                    "countryCode": "<2-letter country code of the IP Address>",
+                    "countryName": "<country name of the IP Address>",
+                    "cityName": "<city name of the IP Address>",
+                    "timezone": "<timezone of the IP Address>",
+                    "latitude": "<latitude of the IP Address>",
+                    "longitude": "<longitude of the IP Address>"
+                },
+                "fingerprintError": "<error message if fingerprinting failed>",
+                "createdTs": "<timestamp in ms of the proxy creation>",
+                "requests": "<number of requests made by the proxy>",
+                "bytesReceived": "<number of bytes received by the proxy>",
+                "bytesSent": "<number of bytes sent by the proxy>",
             },
             ...
         ]
@@ -128,7 +150,7 @@ Response payload:
 ```
 
 
-## Ask to remove somes proxies
+## Ask to remove some proxies
 
 ### Request
 
@@ -141,7 +163,7 @@ Request payload:
 ```json
 [
     {
-        "id": "<uuid of the proxy>",
+        "id": "<uuid of the connector + ':' + key of the proxy>",
         "force": "<true to force the removal>"
     },
     ...
@@ -185,8 +207,8 @@ Response payload:
         "connectorId": "<uuid of the connector>",
         "projectId": "<uuid of the project>",
         "url": "<url of the source>",
-        "delay": "<delay between two fetches of the source>",
-        "lastRefreshTs": "<date of the last refresh of the source>",
+        "delay": "<delay in ms between 2 fetches of the source>",
+        "lastRefreshTs": "<timestamp in ms of the last refresh of the source>",
         "lastRefreshError": "<error message if the last refresh of the source is in error>"
     },
     ...
@@ -210,7 +232,7 @@ Request payload:
 [
     {
         "url": "<url of the source>",
-        "delay": "<delay between two fetches of the source>"
+        "delay": "<delay in ms between 2 fetches of the source>"
     },
     ...
 ]
@@ -277,24 +299,24 @@ Response payload:
 ```json
 [
     {
-        "id": "<uuid of the freeproxy>",
+        "id": "<uuid of the connector + ':' + key of the freeproxy>",
         "connectorId": "<uuid of the connector>",
         "projectId": "<uuid of the project>",
         "key": "<key of the freeproxy in the connector>",
         "type": "<protocol type like http/https/socks4/socks5>",
         "address": {
-            "hostname": "<hostname of the freeproxy>",
-            "port": "<port of the freeproxy>"
+            "hostname": "<hostname of the proxy>",
+            "port": "<TCP port of the proxy>"
         },
         "auth": { // or undefined if no authentication
-            "username": "<username of the freeproxy>",
-            "password": "<password>"
+            "username": "<username of the proxy>",
+            "password": "<password of the proxy>"
         },
         "fingerprint": "<fingerprint of the freeproxy if online>",
         "fingerprintError": "<error message if the fingerprint of the freeproxy is in error>",
-        "timeoutDisconnected": "<maximum duration for connecting to a freeproxy before considering it as offline>",
-        "timeoutUnreachable": "if enabled, maximum duration for a freeproxy to be offline before being removed from the pool, otherwise undefined",
-        "disconnectedTs": "<date of the last disconnection of the freeproxy or undefined if online>"
+        "timeoutDisconnected": "<maximum duration in ms for connecting to a freeproxy before considering it as offline>",
+        "timeoutUnreachable": "if enabled, maximum duration in ms for a freeproxy to be offline before being removed from the pool, otherwise undefined",
+        "disconnectedTs": "<timestamp of the last disconnection of the freeproxy or undefined if online>"
     },
     ...
 ]

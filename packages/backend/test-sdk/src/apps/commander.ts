@@ -1,3 +1,7 @@
+import {
+    DocumentBuilder,
+    SwaggerModule,
+} from '@nestjs/swagger';
 import { Test } from '@nestjs/testing';
 import {
     ConnectorDatacenterLocalModule,
@@ -156,6 +160,26 @@ export class CommanderApp {
         this.app.enableShutdownHooks();
         this.app.useGlobalFilters(new LogExceptionFilter());
         await storageModules.connect(this.app);
+
+        const swaggerConfig = new DocumentBuilder()
+            .addBasicAuth()
+            .build();
+        const document = SwaggerModule.createDocument(
+            this.app,
+            swaggerConfig,
+            {
+                include: [
+                    CommanderScraperModule,
+                ],
+            }
+        );
+
+        SwaggerModule.setup(
+            'api',
+            this.app,
+            document
+        );
+
         await this.app.listen(0);
 
         this.commanderUsersClient = await CommanderUsersClient.generateUser(

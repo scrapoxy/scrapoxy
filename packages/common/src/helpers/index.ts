@@ -8,6 +8,8 @@ export * from './safe-join';
 
 export * from './sleep';
 
+export * from './string';
+
 export * from './unit';
 
 export * from './useragent';

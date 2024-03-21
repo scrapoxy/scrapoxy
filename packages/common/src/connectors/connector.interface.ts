@@ -33,6 +33,52 @@ export const CONNECTOR_VIEW_META = [
 ];
 
 
+export const CONNECTOR_VIEW_SWAGGER_PROPS = {
+    id: {
+        type: 'string',
+        description: 'uuid of the connector',
+        example: 'faf62e6a-f048-4bec-9415-719cb92c1063',
+    },
+    projectId: {
+        type: 'string',
+        description: 'uuid of the project',
+        example: 'b87142ec-c86a-4fb5-ad79-5a829b36bf83',
+    },
+    name: {
+        type: 'string',
+        description: 'name of the connector',
+        example: 'My AWS Connector',
+    },
+    type: {
+        type: 'string',
+        description: 'type of provider',
+        example: 'aws',
+    },
+    active: {
+        type: 'boolean',
+        description: 'true if the connector is active',
+        example: true,
+    },
+    proxiesMax: {
+        type: 'number',
+        description: 'maximum number of proxies to use',
+        example: 10,
+    },
+    error: {
+        type: 'string',
+        nullable: true,
+        description: 'error message if the connector is in error',
+        example: 'too many instances requested',
+    },
+    certificateEndAt: {
+        type: 'number',
+        nullable: true,
+        description: 'timestamp in ms of the end of the certificate for datacenter provider',
+        example: 1711788736000,
+    },
+};
+
+
 export interface IConnectorView {
     id: string;
     projectId: string;

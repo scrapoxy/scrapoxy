@@ -4,9 +4,11 @@ import { ConsoleLogger } from '@nestjs/common';
 import { Command } from 'commander';
 import { addCommandCheckConnectors } from './commands/check-connectors';
 import { addCommandStart } from './commands/start';
+import type { IPackageInfo } from './commands/start/start.interface';
 
 
-function getPackageVersion(): string {
+function getPackageInfo(): IPackageInfo {
+    let info: IPackageInfo;
     try {
         const filename = resolve(
             __dirname,
@@ -17,10 +19,20 @@ function getPackageVersion(): string {
             'utf8'
         ));
 
-        return packageJson.version;
+        info = {
+            name: packageJson.name,
+            version: packageJson.version,
+            description: packageJson.description,
+        };
     } catch (err) {
-        return 'unknown';
+        info = {
+            name: 'unknown',
+            version: 'unknown',
+            description: 'unknown',
+        };
     }
+
+    return info;
 }
 
 
@@ -34,17 +46,17 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Prepare command line
-const version = getPackageVersion();
+const pkg = getPackageInfo();
 const program = new Command();
 program
-    .name('scrapoxy')
-    .version(version)
-    .description('Scrapoxy');
+    .name(pkg.name)
+    .version(pkg.version)
+    .description(pkg.description);
 
 
 addCommandStart(
     program,
-    version,
+    pkg,
     logger
 );
 addCommandCheckConnectors(

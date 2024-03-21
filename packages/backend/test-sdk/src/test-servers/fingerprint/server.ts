@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import { SCRAPOXY_USER_AGENT_PREFIX } from '@scrapoxy/common';
 import * as express from 'express';
 import { DEFAULT_FINGERPRINT } from './fingerprint.constants';
 import type { IFingerprint } from '@scrapoxy/common';
@@ -17,7 +18,7 @@ import type { Request } from 'express';
 import type { AddressInfo } from 'net';
 
 
-const USERAGENT_REGEXP = new RegExp('^Scrapoxy\/[^ ]+ \([^;]+; [^;]+; [^;]+\)$');
+const USERAGENT_REGEXP = new RegExp(`^${SCRAPOXY_USER_AGENT_PREFIX}\/[^ ]+ \([^;]+; [^;]+; [^;]+\)$`);
 
 
 @Controller()

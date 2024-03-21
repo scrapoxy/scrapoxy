@@ -54,27 +54,8 @@ import {
     StorageMemoryModule,
 } from '@scrapoxy/backend-sdk';
 import { getEnvCommanderPort } from './start.helpers';
+import type { IAppStartModuleConfig } from './start.interface';
 import type { DynamicModule } from '@nestjs/common';
-
-
-export interface IAppStartModuleConfig {
-    version: string;
-    standalone?: boolean;
-    master?: boolean;
-    commander?: boolean;
-    distributed?: string;
-    frontend?: boolean;
-    refreshAll?: boolean;
-    refreshConnectors?: boolean;
-    refreshFreeproxies?: boolean;
-    refreshMetrics?: boolean;
-    refreshProxies?: boolean;
-    refreshTasks?: boolean;
-    storage?: string;
-    test?: boolean;
-    datacenterLocalAppUrl?: string;
-    proxyLocalAppUrl?: string;
-}
 
 
 @Module({
@@ -184,7 +165,7 @@ export class AppStartModule {
             imports.push(
                 CommanderCaCertificateModule,
                 CommanderEventsModule.forRoot(),
-                CommanderFrontendModule.forRoot(options.version),
+                CommanderFrontendModule.forRoot(options.package.version),
                 CommanderMasterModule.forRoot(),
                 CommanderRefreshModule.forRootFromEnv(),
                 CommanderScraperModule,
@@ -225,7 +206,7 @@ export class AppStartModule {
         if (options.master) {
             imports.push(MasterModule.forRootFromEnv(
                 commanderUrl,
-                options.version,
+                options.package.version,
                 trackSockets
             ));
         }
@@ -234,7 +215,7 @@ export class AppStartModule {
         if (options.refreshConnectors) {
             imports.push(RefreshConnectorsModule.forRoot(
                 commanderUrl,
-                options.version
+                options.package.version
             ));
         }
 
@@ -242,11 +223,11 @@ export class AppStartModule {
             imports.push(
                 RefreshFreeproxiesModule.forRoot(
                     commanderUrl,
-                    options.version
+                    options.package.version
                 ),
                 RefreshSourcesModule.forRoot(
                     commanderUrl,
-                    options.version
+                    options.package.version
                 )
             );
         }
@@ -254,14 +235,14 @@ export class AppStartModule {
         if (options.refreshMetrics) {
             imports.push(RefreshMetricsModule.forRoot(
                 commanderUrl,
-                options.version
+                options.package.version
             ));
         }
 
         if (options.refreshProxies) {
             imports.push(RefreshProxiesModule.forRoot(
                 commanderUrl,
-                options.version,
+                options.package.version,
                 trackSockets
             ));
         }
@@ -269,7 +250,7 @@ export class AppStartModule {
         if (options.refreshTasks) {
             imports.push(RefreshTasksModule.forRoot(
                 commanderUrl,
-                options.version
+                options.package.version
             ));
         }
 

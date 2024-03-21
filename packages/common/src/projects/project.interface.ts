@@ -16,6 +16,19 @@ export enum EProjectStatus {
 }
 
 
+export const PROJECT_STATUS_KEYS = Object.keys(EProjectStatus);
+
+
+export const PROJECT_STATUS_SWAGGER_PROPS = {
+    status: {
+        type: 'string',
+        enum: PROJECT_STATUS_KEYS,
+        description: 'status of the project from OFF, CALM or HOT',
+        example: 'HOT',
+    },
+};
+
+
 export interface IProjectStatus {
     status: EProjectStatus;
 }
@@ -47,8 +60,33 @@ export const PROJECT_VIEW_META = [
     'name',
     'status',
     'connectorDefaultId',
-    'certificateEndAt',
 ];
+
+
+export const PROJECT_VIEW_SWAGGER_PROPS = {
+    id: {
+        type: 'string',
+        description: 'uuid of the project',
+        example: 'a8d90805-31c8-43cb-8b14-91d4ca17450f',
+    },
+    name: {
+        type: 'string',
+        description: 'name of the project',
+        example: 'My Project',
+    },
+    status: {
+        type: 'string',
+        enum: PROJECT_STATUS_KEYS,
+        description: 'status of the project from OFF, CALM or HOT',
+        example: 'HOT',
+    },
+    connectorDefaultId: {
+        type: 'string',
+        nullable: true,
+        description: 'default connector ID or undefined',
+        example: 'e48d69b8-016b-423b-9ed7-d31ac616b1cf',
+    },
+};
 
 
 export interface IProjectView extends IProjectConnectorDefaultId {
