@@ -67,6 +67,10 @@
     }
 }
 
+.field-coupon .name {
+    font-weight: bold;
+}
+
 .provider-buttons {
     display: flex;
 
@@ -80,5 +84,15 @@
 
     .btn:last-child {
         margin-left: auto;
+    }
+}
+
+.blink {
+    animation: blinker 1.2s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0.3;
     }
 }

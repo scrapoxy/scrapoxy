@@ -25,6 +25,7 @@ export class ConnectorNinjasproxyFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'Ninjas Proxy',
        description: 'Ninjas proxy is a provider that offers static and residential proxies',
+       coupon: null,
        defaultCredentialName: 'Ninjas Proxy Credential',
        defaultConnectorName: 'Ninjas Proxy Connector',
        url: 'https://ninjasproxy.com/',

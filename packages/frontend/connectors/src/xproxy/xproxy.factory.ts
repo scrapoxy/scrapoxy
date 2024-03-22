@@ -25,6 +25,7 @@ export class ConnectorXProxyFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'XProxy',
         description: 'XProxy creates a secure proxy that supports HTTP, SOCKS5, IPv4, IPv6 with 4G/5G dongles',
+        coupon: null,
         defaultCredentialName: 'XProxy Credential',
         defaultConnectorName: 'XProxy Connector',
         url: 'https://xproxy.io',

@@ -25,6 +25,7 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'IPRoyal Residential',
        description: 'IPRoyal is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies',
+       coupon: null,
        defaultCredentialName: 'IPRoyal Residential Credential',
        defaultConnectorName: 'IPRoyal Residential Connector',
        url: 'https://iproyal.com',

@@ -47,6 +47,14 @@
                             <div class="field-value">{{ getTypeDescription(connector.config.type) }}</div>
                         </div>
 
+                        <div class="provider-field field-single" *ngIf="connector.config.coupon as c">
+                            <div class="field-title">Coupon</div>
+                            <div class="field-value field-coupon blink">
+                                <span class="name">{{ c.name }}</span>
+                                {{ c.description }}
+                            </div>
+                        </div>
+
                         <div class="provider-field field-multiple">
                             <div class="field-value">{{ connector.config.description }}</div>
                         </div>

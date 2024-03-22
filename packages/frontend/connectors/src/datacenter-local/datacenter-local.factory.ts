@@ -26,6 +26,7 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Local datacenter',
         description: 'Local datacenter is test datacenter for Scrapoxy internal use.',
+        coupon: null,
         defaultCredentialName: 'Local Datacenter Credential',
         defaultConnectorName: 'Local Datacenter Connector',
         url: 'https://scrapoxy.io',

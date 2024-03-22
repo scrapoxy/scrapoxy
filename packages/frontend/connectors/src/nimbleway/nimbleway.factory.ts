@@ -25,6 +25,7 @@ export class ConnectorNimblewayFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Nimble',
         description: 'Nimble is an experience seamless data-gathering with high-performance residential proxies, optimized for superior quality and granular control.',
+        coupon: null,
         defaultCredentialName: 'Nimble Credential',
         defaultConnectorName: 'Nimble Connector',
         url: 'https://tracking.nimbleway.com/SH4a',

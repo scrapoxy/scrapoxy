@@ -26,6 +26,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Digital Ocean',
         description: 'Digital Ocean is an US multinational cloud provider. In 2023, Digital Ocean has 15 data centers in 9 regions.',
+        coupon: null,
         defaultCredentialName: 'Digital Ocean Credential',
         defaultConnectorName: 'Digital Ocean Connector',
         url: 'https://www.digitalocean.com',

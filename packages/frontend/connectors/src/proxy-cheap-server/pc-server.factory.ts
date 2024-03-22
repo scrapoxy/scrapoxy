@@ -25,6 +25,7 @@ export class ConnectorProxyCheapServerFactory implements IConnectorFactory {
    readonly config: IConnectorConfig = {
        name: 'Proxy-Cheap Server',
        description: 'Proxy-Cheap offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale.',
+       coupon: null,
        defaultCredentialName: 'Proxy-Cheap Server Credential',
        defaultConnectorName: 'Proxy-Cheap Server Connector',
        url: 'https://app.proxy-cheap.com/r/lt6xyT',

@@ -25,6 +25,7 @@ export class ConnectorZyteFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Zyte Smartproxy Manager API',
         description: 'Zyte (formely Crawlera) is a proxies service for Data Extraction.',
+        coupon: null,
         defaultCredentialName: 'Zyte Credential',
         defaultConnectorName: 'Zyte Connector',
         url: 'https://zyte.com',

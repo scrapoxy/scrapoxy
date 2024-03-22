@@ -11,10 +11,19 @@ export enum EConnectorType {
 }
 
 
+export interface ICoupon {
+    name: string;
+
+    description: string;
+}
+
+
 export interface IConnectorConfig {
     name: string;
 
     description: string;
+
+    coupon: ICoupon | null;
 
     defaultCredentialName: string;
 

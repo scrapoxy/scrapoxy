@@ -25,6 +25,10 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
    readonly config: IConnectorConfig = {
        name: 'Proxy-Seller Residential',
        description: 'Proxy-Seller\'s residential proxy service provides business users with a premium, affordable solution to access data, ensuring top-tier quality and performance for enterprise needs.',
+       coupon: {
+           name: 'SCRAPOXY',
+           description: '(20% off all plans)',
+       },
        defaultCredentialName: 'Proxy-Seller Residential Credential',
        defaultConnectorName: 'Proxy-Seller Residential Connector',
        url: 'https://proxy-seller.com/?partner=GR930FP5IOO78P',

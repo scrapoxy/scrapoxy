@@ -25,6 +25,7 @@ export class ConnectorHypeproxyFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'HypeProxy',
         description: 'Ultra-stable EU Mobile Proxies with Unlimited IP Rotations and 100% Clean IPs. Specially designed to meet your needs: data scraping, browser automation, account creation, growth hacking, SEO...',
+        coupon: null,
         defaultCredentialName: 'HypeProxy Credential',
         defaultConnectorName: 'HypeProxy Connector',
         url: 'https://hypeproxy.io',

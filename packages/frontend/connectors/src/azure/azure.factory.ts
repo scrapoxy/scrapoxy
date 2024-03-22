@@ -26,6 +26,7 @@ export class ConnectorAzureFactory implements IConnectorFactory {
     readonly config: IConnectorConfig = {
         name: 'Azure',
         description: 'Azure is a cloud computing service created by Microsoft. In 2023, Azure has 160 data centers in 60 regions.',
+        coupon: null,
         defaultCredentialName: 'Azure Credential',
         defaultConnectorName: 'Azure Connector',
         url: 'https://azure.microsoft.com',
