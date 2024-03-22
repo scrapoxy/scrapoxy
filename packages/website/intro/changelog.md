@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.6.2
+
+### Features
+
+- **frontend**: add coupon field in marketplace
+- **proxy-seller*: add proxy-seller coupon
+
+
 ## 4.6.1
 
 ### Features
