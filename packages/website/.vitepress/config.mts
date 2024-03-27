@@ -115,6 +115,7 @@ export default defineConfig({
                     {text: 'Proxy List', link: 'freeproxies/guide'},
                     {text: 'AWS', link: 'aws/guide'},
                     {text: 'Azure', link: 'azure/guide'},
+                    {text: 'Bright Data', link: 'brightdata/guide'},
                     {text: 'Digital Ocean', link: 'digitalocean/guide'},
                     {text: 'GCP', link: 'gcp/guide'},
                     {text: 'HypeProxy', link: 'hypeproxy/guide'},

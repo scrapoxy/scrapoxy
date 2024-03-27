@@ -17,6 +17,7 @@ import { IconModule } from '@coreui/icons-angular';
 import {
     ConnectorAwsModule,
     ConnectorAzureModule,
+    ConnectorBrightdataModule,
     ConnectorDatacenterLocalModule,
     ConnectorDigitaloceanModule,
     ConnectorFreeproxiesModule,
@@ -63,6 +64,7 @@ import { LoginComponent } from './login/login.component';
         CallbackComponent,
         ConnectorAwsModule,
         ConnectorAzureModule,
+        ConnectorBrightdataModule,
         ConnectorDatacenterLocalModule,
         ConnectorDigitaloceanModule,
         ConnectorFreeproxiesModule,

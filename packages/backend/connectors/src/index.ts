@@ -2,6 +2,8 @@ export * from './aws';
 
 export * from './azure';
 
+export * from './brightdata';
+
 export * from './datacenter-local';
 
 export * from './digitalocean';

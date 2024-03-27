@@ -4,6 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import {
     ConnectorAwsModule,
     ConnectorAzureModule,
+    ConnectorBrightdataModule,
     ConnectorDatacenterLocalModule,
     ConnectorDigitaloceanModule,
     ConnectorFreeproxiesModule,
@@ -67,6 +68,7 @@ export class AppStartModule {
         const imports: any = [
             ConnectorAwsModule,
             ConnectorAzureModule,
+            ConnectorBrightdataModule,
             ConnectorDigitaloceanModule,
             ConnectorFreeproxiesModule,
             ConnectorGcpModule,
