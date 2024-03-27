@@ -5,7 +5,7 @@ import {
     EProxyStatus,
     EProxyType,
 } from '@scrapoxy/common';
-import { IXproxyApi } from './api';
+import { XproxyApi } from './api';
 import type {
     IConnectorXProxyCredential,
     IXProxyDevice,
@@ -56,13 +56,13 @@ function convertToProxy(
 export class ConnectorXProxyService implements IConnectorService {
     private readonly logger = new Logger(ConnectorXProxyService.name);
 
-    private readonly api: IXproxyApi;
+    private readonly api: XproxyApi;
 
     constructor(
         private readonly credentialConfig: IConnectorXProxyCredential,
         agents: Agents
     ) {
-        this.api = new IXproxyApi(
+        this.api = new XproxyApi(
             this.credentialConfig.apiUrl,
             this.credentialConfig.apiUsername,
             this.credentialConfig.apiPassword,

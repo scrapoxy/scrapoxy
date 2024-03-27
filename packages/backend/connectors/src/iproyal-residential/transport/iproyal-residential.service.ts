@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import {
     ATransportResidentialService,
+
     TransportprovidersService,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_IPROYAL_RESIDENTIAL_TYPE } from './iproyal-residential.constants';
-import type { IProxyToConnectConfigIproyalResidential } from './iproyal-residential.interface';
 import type {
     IConnectorIproyalResidentialConfig,
     IConnectorIproyalResidentialCredential,
     IIproyalResidentialSessionOptions,
 } from '../iproyal-residential.interface';
+import type { IProxyToConnectConfigResidential } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -59,7 +60,7 @@ export class TransportIproyalResidentialService extends ATransportResidentialSer
         const
             connectorConfig = connector.connectorConfig as IConnectorIproyalResidentialConfig,
             credentialConfig = connector.credentialConfig as IConnectorIproyalResidentialCredential,
-            proxyConfig = proxy.config as IProxyToConnectConfigIproyalResidential;
+            proxyConfig = proxy.config as IProxyToConnectConfigResidential;
 
         proxyConfig.address = {
             hostname: 'geo.iproyal.com',

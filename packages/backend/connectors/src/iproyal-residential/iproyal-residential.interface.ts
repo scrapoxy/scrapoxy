@@ -14,17 +14,6 @@ export interface IConnectorIproyalResidentialConfig {
 }
 
 
-export interface IIproyalResidentialProxy {
-    id: number;
-    credentials: string;
-}
-
-
-export interface IIproyalResidentialProxiesResponse {
-    data: IIproyalResidentialProxy[];
-}
-
-
 export interface IIproyalResidentialSessionOptions {
     session: string;
     lifetime: string;

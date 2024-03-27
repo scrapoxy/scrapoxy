@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import {
     ATransportResidentialService,
+
     TransportprovidersService,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_NIMBLEWAY_TYPE } from './nimbleway.constants';
 import { formatUsername } from '../nimbleway.helpers';
-import type { IProxyToConnectConfigNimbleway } from './nimbleway.interface';
 import type {
     IConnectorNimblewayConfig,
     IConnectorNimblewayCredential,
 } from '../nimbleway.interface';
+import type { IProxyToConnectConfigResidential } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -32,7 +33,7 @@ export class TransportNimblewayService extends ATransportResidentialService {
         const
             connectorConfig = connector.connectorConfig as IConnectorNimblewayConfig,
             credentialConfig = connector.credentialConfig as IConnectorNimblewayCredential,
-            proxyConfig = proxy.config as IProxyToConnectConfigNimbleway;
+            proxyConfig = proxy.config as IProxyToConnectConfigResidential;
 
         proxyConfig.address = {
             hostname: 'ip.nimbleway.com',

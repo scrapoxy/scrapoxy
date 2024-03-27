@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import {
     ATransportResidentialService,
+
     TransportprovidersService,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE } from './pc-residential.constants';
-import type { IProxyToConnectConfigProxyCheapResidential } from './pc-residential.interface';
 import type {
     IConnectorProxyCheapResidentialConfig,
     IConnectorProxyCheapResidentialCredential,
     IProxyCheapResidentialSessionOptions,
 } from '../pc-residential.interface';
+import type { IProxyToConnectConfigResidential } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -49,7 +50,7 @@ export class TransportProxyCheapResidentialService extends ATransportResidential
         const
             connectorConfig = connector.connectorConfig as IConnectorProxyCheapResidentialConfig,
             credentialConfig = connector.credentialConfig as IConnectorProxyCheapResidentialCredential,
-            proxyConfig = proxy.config as IProxyToConnectConfigProxyCheapResidential;
+            proxyConfig = proxy.config as IProxyToConnectConfigResidential;
 
         proxyConfig.address = {
             hostname: 'proxy.proxy-cheap.com',

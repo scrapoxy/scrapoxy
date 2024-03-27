@@ -7,7 +7,7 @@ import {
     validate,
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_XPROXY_TYPE } from '@scrapoxy/common';
-import { IXproxyApi } from './api';
+import { XproxyApi } from './api';
 import { ConnectorXProxyService } from './xproxy.service';
 import { schemaCredential } from './xproxy.validation';
 import type { IConnectorXProxyCredential } from './xproxy.interface';
@@ -51,7 +51,7 @@ export class ConnectorXProxyFactory implements IConnectorFactory, OnModuleDestro
         );
 
         try {
-            const api = new IXproxyApi(
+            const api = new XproxyApi(
                 config.apiUrl,
                 config.apiUsername,
                 config.apiPassword,

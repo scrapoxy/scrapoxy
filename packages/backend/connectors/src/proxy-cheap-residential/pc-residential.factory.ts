@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-    Agents,
     ConnectorprovidersService,
     validate,
 } from '@scrapoxy/backend-sdk';
@@ -15,7 +14,6 @@ import type {
     IConnectorProxyCheapResidentialConfig,
     IConnectorProxyCheapResidentialCredential,
 } from './pc-residential.interface';
-import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
     IConnectorFactory,
@@ -28,7 +26,7 @@ import type {
 
 
 @Injectable()
-export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory, OnModuleDestroy {
+export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory {
     readonly type = CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE;
 
     readonly config: IConnectorConfig = {
@@ -37,14 +35,8 @@ export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory,
         useCertificate: false,
     };
 
-    private readonly agents: Agents = new Agents();
-
     constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
-    }
-
-    onModuleDestroy() {
-        this.agents.close();
     }
 
     async validateCredentialConfig(config: IConnectorProxyCheapResidentialCredential): Promise<void> {

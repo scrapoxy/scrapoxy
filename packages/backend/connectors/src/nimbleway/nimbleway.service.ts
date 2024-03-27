@@ -49,6 +49,8 @@ export class ConnectorNimblewayService implements IConnectorService {
     }
 
     async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
+        this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
+
         return keys.map((k) => k.key);
     }
 }

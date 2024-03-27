@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
     ATransportResidentialService,
+
     TransportprovidersService,
 } from '@scrapoxy/backend-sdk';
 import { TRANSPORT_PROXYRACK_TYPE } from './proxyrack.constants';
@@ -9,11 +10,11 @@ import {
     formatUsername,
     productToHostname,
 } from '../proxyrack.helpers';
-import type { IProxyToConnectConfigProxyrack } from './proxyrack.interface';
 import type {
     IConnectorProxyrackConfig,
     IConnectorProxyrackCredential,
 } from '../proxyrack.interface';
+import type { IProxyToConnectConfigResidential } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -36,7 +37,7 @@ export class TransportProxyrackService extends ATransportResidentialService {
         const
             connectorConfig = connector.connectorConfig as IConnectorProxyrackConfig,
             credentialConfig = connector.credentialConfig as IConnectorProxyrackCredential,
-            proxyConfig = proxy.config as IProxyToConnectConfigProxyrack;
+            proxyConfig = proxy.config as IProxyToConnectConfigResidential;
 
         proxyConfig.address = {
             hostname: productToHostname(credentialConfig.product),

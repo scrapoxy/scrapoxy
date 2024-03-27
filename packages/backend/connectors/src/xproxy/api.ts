@@ -7,7 +7,7 @@ import type {
 import type { AxiosInstance } from 'axios';
 
 
-export class IXproxyApi {
+export class XproxyApi {
     private readonly instance: AxiosInstance;
 
     constructor(
