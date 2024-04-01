@@ -1,11 +1,24 @@
 # Changelog
 
+## 4.7.0
+
+### Features
+
+- **brightdata**: add BrightData connector for ISP and DC proxies
+- **backend**: add Swagger endpoint for scraper API
+- **frontend**: show coupon in marketplace
+
+### Bug fixes
+
+- **misc**: many small corrections
+
+
 ## 4.6.2
 
 ### Features
 
 - **frontend**: add coupon field in marketplace
-- **proxy-seller*: add proxy-seller coupon
+- **proxy-seller**: add proxy-seller coupon
 
 
 ## 4.6.1
