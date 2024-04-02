@@ -7,7 +7,7 @@ Ensure that [Docker](https://www.docker.com) is installed on your computer.
 Open the **terminal** and run the following command:
 
 ```shell
-docker run -d -p 8888:8888 -p 8890:8890 -e AUTH_LOCAL_USERNAME=admin -e AUTH_LOCAL_PASSWORD=password -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 fabienvauchelles/scrapoxy
+docker run -d -p 8888:8888 -p 8890:8890 -v ./scrapoxy:/cfg -e AUTH_LOCAL_USERNAME=admin -e AUTH_LOCAL_PASSWORD=password -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 -e STORAGE_FILE_FILENAME=/cfg/scrapoxy.json fabienvauchelles/scrapoxy
 ```
 
 Replace `admin`, `password`, `secret1` and `secret2` with your own values.
