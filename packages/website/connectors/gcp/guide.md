@@ -159,6 +159,11 @@ You can retain most of the default values if they are suitable for your use case
 
 ### Step 3: Install the connector
 
+::: warning
+Do not reuse an installation from a prior setup:
+Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
+:::
+
 ![Connector Install Select](spx_connector_install_select.png)
 
 On the connector list, click on `Install`.
@@ -191,6 +196,11 @@ When the installation is finished, click on `Connectors`.
 
 1. Start the project;
 2. Start the connector.
+
+::: tip
+Installation creates a custom image for **this** region.
+If you have multiple regions across multiple connectors, you must perform the installation step for each region.
+:::
 
 
 ### Other: Uninstall the connector
