@@ -4,7 +4,6 @@ import {
     ConnectorprovidersService,
     CredentialInvalidError,
     CredentialQueryNotFoundError,
-    TRANSPORT_PROXY_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -42,7 +41,6 @@ export class ConnectorRayobyteFactory implements IConnectorFactory, OnModuleDest
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_PROXY_TYPE,
         useCertificate: false,
     };
 

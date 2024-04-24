@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_PROXY_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_NINJASPROXY_TYPE,
     EProxyStatus,
@@ -55,6 +58,7 @@ function convertToProxy(proxy: INinjasproxyProxy): IConnectorProxyRefreshed | un
     };
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_NINJASPROXY_TYPE,
+        transportType: TRANSPORT_PROXY_TYPE,
         key: proxy.address,
         name: proxy.address,
         status: EProxyStatus.STARTED,

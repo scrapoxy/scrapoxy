@@ -16,7 +16,6 @@ import {
     schemaConfig,
     schemaCredential,
 } from './iproyal-residential.validation';
-import { TRANSPORT_IPROYAL_RESIDENTIAL_TYPE } from './transport/iproyal-residential.constants';
 import type {
     IConnectorIproyalResidentialConfig,
     IConnectorIproyalResidentialCredential,
@@ -42,7 +41,6 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory, On
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_IPROYAL_RESIDENTIAL_TYPE,
         useCertificate: false,
     };
 

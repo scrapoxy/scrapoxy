@@ -3,7 +3,6 @@ import {
     Agents,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TRANSPORT_PROXY_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_HYPEPROXY_TYPE } from '@scrapoxy/common';
@@ -30,7 +29,6 @@ export class ConnectorHypeproxyFactory implements IConnectorFactory, OnModuleDes
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_PROXY_TYPE,
         useCertificate: false,
     };
 

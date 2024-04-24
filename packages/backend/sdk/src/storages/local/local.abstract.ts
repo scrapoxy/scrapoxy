@@ -208,6 +208,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 connectorId,
                 projectId,
                 type: connectorFound.type,
+                transportType: '', // Not used
                 key: proxy.key,
                 name: proxy.key,
                 config: void 0,

@@ -8,7 +8,6 @@ import {
     CredentialInvalidError,
     CredentialQueryNotFoundError,
     getEnvAssetsPath,
-    TRANSPORT_PROXY_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -54,7 +53,6 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_PROXY_TYPE,
         useCertificate: false,
     };
 

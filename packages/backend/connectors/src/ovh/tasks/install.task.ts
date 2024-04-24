@@ -4,6 +4,7 @@ import {
     fingerprint,
     InstallScriptBuilder,
     TaskStepError,
+    TRANSPORT_DATACENTER_TYPE,
     TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
@@ -192,6 +193,7 @@ class OvhInstallCommand extends ATaskCommand {
                         key
                     ),
                     type: CONNECTOR_OVH_TYPE,
+                    transportType: TRANSPORT_DATACENTER_TYPE,
                     connectorId: this.task.connectorId,
                     projectId: this.task.projectId,
                     key,

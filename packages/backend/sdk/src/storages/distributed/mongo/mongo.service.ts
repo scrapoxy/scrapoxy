@@ -1830,6 +1830,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 connectorId: proxy.connectorId,
                 projectId: proxy.projectId,
                 type: proxy.type,
+                transportType: proxy.transportType,
                 key: proxy.key,
                 name: proxy.name,
                 config: proxy.config,

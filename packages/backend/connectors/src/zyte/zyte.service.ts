@@ -5,6 +5,7 @@ import {
     EProxyStatus,
 } from '@scrapoxy/common';
 import { ZyteApi } from './api';
+import { TRANSPORT_ZYTE_TYPE } from './transport/zyte.constants';
 import type { IConnectorZyteCredential } from './zyte.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
@@ -16,6 +17,7 @@ import type {
 function convertToProxy(session: string): IConnectorProxyRefreshed {
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_ZYTE_TYPE,
+        transportType: TRANSPORT_ZYTE_TYPE,
         key: session,
         name: session,
         status: EProxyStatus.STARTED,

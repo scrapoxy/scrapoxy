@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { CommanderRefreshClientService } from '@scrapoxy/backend-sdk';
+import {
+    CommanderRefreshClientService,
+    TRANSPORT_PROXY_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_FREEPROXIES_TYPE,
     EProxyStatus,
@@ -22,6 +25,7 @@ function convertToProxy(f: IFreeproxy): IConnectorProxyRefreshed {
     };
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_FREEPROXIES_TYPE,
+        transportType: TRANSPORT_PROXY_TYPE,
         key: f.key,
         name: f.key,
         status: !!f.fingerprint ? EProxyStatus.STARTED : EProxyStatus.STARTING,

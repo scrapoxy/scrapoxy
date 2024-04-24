@@ -7,7 +7,6 @@ import { EFingerprintMode } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import { REFRESH_PROXIES_CONFIG } from './proxies.constants';
 import { CommanderRefreshClientService } from '../../commander-client';
-import { ConnectorprovidersService } from '../../connectors';
 import { NoProxyToRefreshError } from '../../errors';
 import { fingerprint } from '../../fingerprint';
 import { TransportprovidersService } from '../../transports';
@@ -30,7 +29,6 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
     constructor(
         @Inject(REFRESH_PROXIES_CONFIG)
         private readonly config: IRefreshProxiesModuleConfig,
-        private readonly connectorproviders: ConnectorprovidersService,
         private readonly commander: CommanderRefreshClientService,
         private readonly transportproviders: TransportprovidersService
     ) {
@@ -69,8 +67,7 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
         let proxiesRefreshed: IProxyRefreshed[];
         try {
             proxiesRefreshed = await Promise.all(proxiesToRefresh.proxies.map((proxy) => {
-                const factory = this.connectorproviders.getFactory(proxy.type);
-                const transport = this.transportproviders.getTransportByType(factory.config.transportType);
+                const transport = this.transportproviders.getTransportByType(proxy.transportType);
                 const payload: IFingerprintRequest = {
                     installId: proxiesToRefresh.installId,
                     mode: EFingerprintMode.CONNECTOR,

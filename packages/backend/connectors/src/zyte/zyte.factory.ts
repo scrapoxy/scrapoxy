@@ -7,7 +7,6 @@ import {
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_ZYTE_TYPE } from '@scrapoxy/common';
 import { ZyteApi } from './api';
-import { TRANSPORT_ZYTE_TYPE } from './transport/zyte.constants';
 import { ConnectorZyteService } from './zyte.service';
 import {
     schemaConfig,
@@ -36,7 +35,6 @@ export class ConnectorZyteFactory implements IConnectorFactory, OnModuleDestroy 
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_ZYTE_TYPE,
         useCertificate: false,
     };
 

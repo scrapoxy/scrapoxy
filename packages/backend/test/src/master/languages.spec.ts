@@ -2,7 +2,10 @@ import { exec } from 'child_process';
 import { join } from 'path';
 import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ConnectorDatacenterLocalModule } from '@scrapoxy/backend-connectors';
+import {
+    ConnectorDatacenterLocalModule,
+    TRANSPORT_DATACENTER_LOCAL_TYPE,
+} from '@scrapoxy/backend-connectors';
 import {
     CommanderMasterClientService,
     generateCertificateFromCaTest,
@@ -133,6 +136,7 @@ describe(
                     key
                 ),
                 type: CONNECTOR_DATACENTER_LOCAL_TYPE,
+                transportType: TRANSPORT_DATACENTER_LOCAL_TYPE,
                 connectorId,
                 projectId: uuid(),
                 key,

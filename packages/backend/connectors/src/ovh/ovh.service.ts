@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_DATACENTER_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_OVH_TYPE,
     EProxyStatus,
@@ -62,6 +65,7 @@ function convertToProxy(
     };
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_OVH_TYPE,
+        transportType: TRANSPORT_DATACENTER_TYPE,
         key: instance.id,
         name: instance.name,
         config,

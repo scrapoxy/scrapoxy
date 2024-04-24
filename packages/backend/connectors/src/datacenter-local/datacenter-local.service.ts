@@ -9,6 +9,7 @@ import {
     EProxyStatus,
     randomNames,
 } from '@scrapoxy/common';
+import { TRANSPORT_DATACENTER_LOCAL_TYPE } from './transport/datacenter-local.constants';
 import type {
     IConnectorDatacenterLocalConfig,
     IConnectorDatacenterLocalCredential,
@@ -58,6 +59,7 @@ function convertToProxy(instance: IInstanceDatacenterLocalView): IConnectorProxy
     };
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_DATACENTER_LOCAL_TYPE,
+        transportType: TRANSPORT_DATACENTER_LOCAL_TYPE,
         key: instance.id,
         name: instance.id,
         config,

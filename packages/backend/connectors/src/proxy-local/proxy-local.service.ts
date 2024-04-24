@@ -5,6 +5,7 @@ import {
     EProxyStatus,
 } from '@scrapoxy/common';
 import { ProxyLocalApi } from './api';
+import { TRANSPORT_PROXY_LOCAL_TYPE } from './transport/proxy-local.constants';
 import type { IConnectorProxyLocalCredential } from './proxy-local.interface';
 import type { IConnectorProxyRefreshedConfigProxyLocal } from './transport/proxy-local.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
@@ -23,6 +24,7 @@ function convertToProxy(
     };
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_PROXY_LOCAL_TYPE,
+        transportType: TRANSPORT_PROXY_LOCAL_TYPE,
         key: session,
         name: session,
         status: EProxyStatus.STARTED,

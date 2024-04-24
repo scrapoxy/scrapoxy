@@ -16,7 +16,6 @@ import {
     schemaConfig,
     schemaCredential,
 } from './proxy-local.validation';
-import { TRANSPORT_PROXY_LOCAL_TYPE } from './transport/proxy-local.constants';
 import type {
     IConnectorProxyLocalConfig,
     IConnectorProxyLocalCredential,
@@ -41,7 +40,6 @@ export class ConnectorProxyLocalFactory implements IConnectorFactory, OnModuleDe
 
     readonly config: IConnectorConfig = {
         refreshDelay: 2000,
-        transportType: TRANSPORT_PROXY_LOCAL_TYPE,
         useCertificate: false,
     };
 

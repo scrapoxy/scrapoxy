@@ -140,6 +140,7 @@ export interface IProxyBase extends IFingerprintResponse {
 
 export const PROXY_DATA_META = [
     ...PROXY_BASE_META,
+    'transportType',
     'config',
     'useragent',
     'timeoutDisconnected',
@@ -150,6 +151,7 @@ export const PROXY_DATA_META = [
 
 
 export interface IProxyData extends IProxyBase {
+    transportType: string;
     config: any;
     useragent: string;
     timeoutDisconnected: number;
@@ -226,6 +228,7 @@ export interface IProxyMetricsAdd {
 
 export interface IConnectorProxyRefreshed {
     type: string;
+    transportType: string;
     key: string;
     name: string;
     status: EProxyStatus;
@@ -265,6 +268,7 @@ export interface IConnectorProxiesSync {
 export const PROXY_TO_CONNECT_META = [
     'id',
     'type',
+    'transportType',
     'connectorId',
     'projectId',
     'key',
@@ -277,6 +281,7 @@ export const PROXY_TO_CONNECT_META = [
 export interface IProxyToConnect {
     id: string;
     type: string;
+    transportType: string;
     projectId: string;
     connectorId: string;
     key: string;

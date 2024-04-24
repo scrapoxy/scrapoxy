@@ -1,6 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ConnectorDatacenterLocalModule } from '@scrapoxy/backend-connectors';
+import {
+    ConnectorDatacenterLocalModule,
+    TRANSPORT_DATACENTER_LOCAL_TYPE,
+} from '@scrapoxy/backend-connectors';
 import {
     CommanderMasterClientService,
     generateCertificateFromCaTest,
@@ -90,6 +93,7 @@ describe(
                 connectorId,
                 projectId: uuid(),
                 type: CONNECTOR_DATACENTER_LOCAL_TYPE,
+                transportType: TRANSPORT_DATACENTER_LOCAL_TYPE,
                 key,
                 config,
                 useragent: generateUseragent(),

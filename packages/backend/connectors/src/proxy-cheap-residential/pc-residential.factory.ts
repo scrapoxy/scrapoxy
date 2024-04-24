@@ -9,7 +9,6 @@ import {
     schemaConfig,
     schemaCredential,
 } from './pc-residential.validation';
-import { TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE } from './transport/pc-residential.constants';
 import type {
     IConnectorProxyCheapResidentialConfig,
     IConnectorProxyCheapResidentialCredential,
@@ -31,7 +30,6 @@ export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory 
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE,
         useCertificate: false,
     };
 

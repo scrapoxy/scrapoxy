@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_PROXY_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_PROXY_SELLER_RESIDENTIAL_TYPE,
     EProxyStatus,
@@ -38,6 +41,8 @@ function convertToProxy(
         },
     };
     const p: IConnectorProxyRefreshed = {
+        type: CONNECTOR_PROXY_SELLER_RESIDENTIAL_TYPE,
+        transportType: TRANSPORT_PROXY_TYPE,
         name: `${list.title}${index.toString(10)
             .padStart(
                 5,
@@ -46,7 +51,7 @@ function convertToProxy(
         key: `${list.login}${index}`,
         config,
         status: EProxyStatus.STARTED,
-        type: CONNECTOR_PROXY_SELLER_RESIDENTIAL_TYPE,
+
     };
 
     return p;

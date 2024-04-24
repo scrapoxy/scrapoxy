@@ -27,7 +27,6 @@ import {
     DatacenterLocalInstallFactory,
     DatacenterLocalUninstallFactory,
 } from './tasks';
-import { TRANSPORT_DATACENTER_LOCAL_TYPE } from './transport/datacenter-local.constants';
 import type {
     IConnectorDatacenterLocalConfig,
     IConnectorDatacenterLocalCredential,
@@ -63,7 +62,6 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
 
     readonly config: IConnectorConfig = {
         refreshDelay: 2000,
-        transportType: TRANSPORT_DATACENTER_LOCAL_TYPE,
         useCertificate: true,
     };
 

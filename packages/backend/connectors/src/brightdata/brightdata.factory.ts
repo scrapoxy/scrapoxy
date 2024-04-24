@@ -20,7 +20,6 @@ import {
     schemaConfig,
     schemaCredential,
 } from './brightdata.validation';
-import { TRANSPORT_BRIGHTDATA_TYPE } from './transport/brightdata.constants';
 import type {
     IBrightdataZoneView,
     IConnectorBrightdataConfig,
@@ -47,7 +46,6 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_BRIGHTDATA_TYPE,
         useCertificate: false,
     };
 

@@ -78,6 +78,7 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     projectId: freeproxy.projectId,
                     connectorId: freeproxy.connectorId,
                     type: CONNECTOR_FREEPROXIES_TYPE,
+                    transportType: TRANSPORT_PROXY_TYPE,
                     config,
                     key: freeproxy.key,
                     useragent: 'not_used',

@@ -17,8 +17,6 @@ import type {
 export interface IConnectorConfig {
     refreshDelay: number;
 
-    transportType: string;
-
     useCertificate: boolean;
 }
 

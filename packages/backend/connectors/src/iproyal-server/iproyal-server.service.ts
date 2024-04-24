@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_PROXY_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_IPROYAL_SERVER_TYPE,
     EProxyStatus,
@@ -60,6 +63,7 @@ function convertToProxy(session: IIproyalServerProxy): IConnectorProxyRefreshed 
     const key = session.id.toString();
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_IPROYAL_SERVER_TYPE,
+        transportType: TRANSPORT_PROXY_TYPE,
         key,
         name: key,
         status: EProxyStatus.STARTED,

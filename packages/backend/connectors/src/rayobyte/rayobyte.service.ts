@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_PROXY_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_RAYOBYTE_TYPE,
     EProxyStatus,
@@ -59,6 +62,7 @@ function convertToProxy(line: string): IConnectorProxyRefreshed | undefined {
     const name = `${hostname}:${port}`;
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_RAYOBYTE_TYPE,
+        transportType: TRANSPORT_PROXY_TYPE,
         key: name,
         name: name,
         status: EProxyStatus.STARTED,

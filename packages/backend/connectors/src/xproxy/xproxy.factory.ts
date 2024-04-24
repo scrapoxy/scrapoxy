@@ -3,7 +3,6 @@ import {
     Agents,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TRANSPORT_HARDWARE_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_XPROXY_TYPE } from '@scrapoxy/common';
@@ -30,7 +29,6 @@ export class ConnectorXProxyFactory implements IConnectorFactory, OnModuleDestro
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_HARDWARE_TYPE,
         useCertificate: false,
     };
 

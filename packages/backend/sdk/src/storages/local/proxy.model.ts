@@ -18,6 +18,7 @@ export function toProxyToConnect(proxy: IProxyModel): IProxyToConnect {
     const connect: IProxyToConnect = {
         id: proxy.id,
         type: proxy.type,
+        transportType: proxy.transportType,
         connectorId: proxy.connectorId,
         projectId: proxy.projectId,
         key: proxy.key,
@@ -34,6 +35,7 @@ export function toProxyToRefresh(proxy: IProxyModel): IProxyToRefresh {
     const connect: IProxyToRefresh = {
         id: proxy.id,
         type: proxy.type,
+        transportType: proxy.transportType,
         connectorId: proxy.connectorId,
         projectId: proxy.projectId,
         key: proxy.key,

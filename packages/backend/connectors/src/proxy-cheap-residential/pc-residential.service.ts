@@ -4,6 +4,7 @@ import {
     CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE,
     EProxyStatus,
 } from '@scrapoxy/common';
+import { TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE } from './transport/pc-residential.constants';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type{
     IConnectorProxyRefreshed,
@@ -14,6 +15,7 @@ import type{
 function convertToProxy(session: string): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE,
+        transportType: TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE,
         key: session,
         name: session,
         status: EProxyStatus.STARTED,

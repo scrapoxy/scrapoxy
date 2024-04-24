@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_DATACENTER_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_DIGITALOCEAN_TYPE,
     EProxyStatus,
@@ -53,6 +56,7 @@ function convertToProxy(
     };
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_DIGITALOCEAN_TYPE,
+        transportType: TRANSPORT_DATACENTER_TYPE,
         key: droplet.id.toString(10),
         name: droplet.name,
         config,

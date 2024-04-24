@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import {
     CommanderRefreshClientService,
     ConnectorprovidersService,
-    TRANSPORT_PROXY_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import { CONNECTOR_FREEPROXIES_TYPE } from '@scrapoxy/common';
@@ -28,7 +27,6 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_PROXY_TYPE,
         useCertificate: false,
     };
 

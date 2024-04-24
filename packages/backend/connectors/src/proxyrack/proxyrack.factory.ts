@@ -16,7 +16,6 @@ import {
     schemaConfig,
     schemaCredential,
 } from './proxyrack.validation';
-import { TRANSPORT_PROXYRACK_TYPE } from './transport/proxyrack.constants';
 import type {
     IConnectorProxyrackConfig,
     IConnectorProxyrackCredential,
@@ -43,7 +42,6 @@ export class ConnectorProxyrackFactory implements IConnectorFactory, OnModuleDes
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_PROXYRACK_TYPE,
         useCertificate: false,
     };
 

@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_DATACENTER_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_AZURE_TYPE,
     randomName,
@@ -73,6 +76,7 @@ export class ConnectorAzureService implements IConnectorService {
             };
             const proxy: IConnectorProxyRefreshed = {
                 type: CONNECTOR_AZURE_TYPE,
+                transportType: TRANSPORT_DATACENTER_TYPE,
                 key: vm.id,
                 name: vm.name,
                 config,

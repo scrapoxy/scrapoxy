@@ -40,7 +40,6 @@ import {
     CommanderMasterClientService,
     CommanderRefreshClientService,
 } from '../commander-client';
-import { ConnectorprovidersService } from '../connectors';
 import {
     parseBasicFromAuthorizationHeader,
     parseDomain,
@@ -91,7 +90,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
     constructor(
         private readonly commanderConnect: CommanderMasterClientService,
         private readonly commanderRefresh: CommanderRefreshClientService,
-        private readonly connectorproviders: ConnectorprovidersService,
         @Inject(MASTER_MODULE_CONFIG)
         private readonly config: IMasterModuleConfig,
         private readonly transportproviders: TransportprovidersService
@@ -365,8 +363,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         let reqArgs: ClientRequestArgs,
             transport: ATransportService;
         try {
-            const factory = this.connectorproviders.getFactory(proxy.type);
-            transport = this.transportproviders.getTransportByType(factory.config.transportType);
+            transport = this.transportproviders.getTransportByType(proxy.transportType);
 
             const urlOpts = urlToUrlOptions(req.url as string);
 
@@ -748,8 +745,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         );
         let transport: ATransportService;
         try {
-            const factory = this.connectorproviders.getFactory(proxy.type);
-            transport = this.transportproviders.getTransportByType(factory.config.transportType);
+            transport = this.transportproviders.getTransportByType(proxy.transportType);
 
             // Start request
             transport.connect(

@@ -51,8 +51,8 @@ export class RefreshConnectorsService extends ARefresh<IConnectorToRefresh> {
                 this.commander
             );
             const proxies = await service.getProxies(connector.proxiesKeys);
-            const transport = this.transportproviders.getTransportByType(factory.config.transportType);
             for (const proxy of proxies) {
+                const transport = this.transportproviders.getTransportByType(proxy.transportType);
                 transport.completeProxyConfig(
                     proxy,
                     connector
@@ -91,6 +91,7 @@ export class RefreshConnectorsService extends ARefresh<IConnectorToRefresh> {
                 proxiesRemoved.length > 0
             ) {
                 for (const proxy of proxiesCreated) {
+                    const transport = this.transportproviders.getTransportByType(proxy.transportType);
                     transport.completeProxyConfig(
                         proxy,
                         connector

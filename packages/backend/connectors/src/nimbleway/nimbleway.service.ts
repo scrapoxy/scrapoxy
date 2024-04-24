@@ -4,6 +4,7 @@ import {
     EProxyStatus,
     randomName,
 } from '@scrapoxy/common';
+import { TRANSPORT_NIMBLEWAY_TYPE } from './transport/nimbleway.constants';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -14,6 +15,7 @@ import type {
 function convertToProxy(key: string): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_NIMBLEWAY_TYPE,
+        transportType: TRANSPORT_NIMBLEWAY_TYPE,
         key: key,
         name: key,
         status: EProxyStatus.STARTED,

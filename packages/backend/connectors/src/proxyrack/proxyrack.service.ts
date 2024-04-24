@@ -6,6 +6,7 @@ import {
     randomName,
 } from '@scrapoxy/common';
 import { ProxyrackApi } from './api';
+import { TRANSPORT_PROXYRACK_TYPE } from './transport/proxyrack.constants';
 import type {
     IConnectorProxyrackConfig,
     IConnectorProxyrackCredential,
@@ -21,6 +22,7 @@ import type {
 function convertSessionToProxy(session: IProxyrackSession): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_PROXYRACK_TYPE,
+        transportType: TRANSPORT_PROXYRACK_TYPE,
         key: session.session,
         name: session.session,
         status: session.proxy.online ? EProxyStatus.STARTED : EProxyStatus.STARTING,
@@ -34,6 +36,7 @@ function convertSessionToProxy(session: IProxyrackSession): IConnectorProxyRefre
 function convertNameToProxy(name: string): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_PROXYRACK_TYPE,
+        transportType: TRANSPORT_PROXYRACK_TYPE,
         key: name,
         name,
         status: EProxyStatus.STARTING,

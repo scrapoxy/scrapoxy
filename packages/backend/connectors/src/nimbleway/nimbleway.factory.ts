@@ -15,7 +15,6 @@ import {
     schemaConfig,
     schemaCredential,
 } from './nimbleway.validation';
-import { TRANSPORT_NIMBLEWAY_TYPE } from './transport/nimbleway.constants';
 import type {
     IConnectorNimblewayConfig,
     IConnectorNimblewayCredential,
@@ -41,7 +40,6 @@ export class ConnectorNimblewayFactory implements IConnectorFactory, OnModuleDes
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_NIMBLEWAY_TYPE,
         useCertificate: false,
     };
 

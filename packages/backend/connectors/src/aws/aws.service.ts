@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_DATACENTER_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_AWS_TYPE,
     EProxyStatus,
@@ -77,6 +80,7 @@ export class ConnectorAwsService implements IConnectorService {
             };
             const proxy: IConnectorProxyRefreshed = {
                 type: CONNECTOR_AWS_TYPE,
+                transportType: TRANSPORT_DATACENTER_TYPE,
                 key: i.instanceId[ 0 ],
                 name: i.instanceId[ 0 ],
                 config,
@@ -108,6 +112,7 @@ export class ConnectorAwsService implements IConnectorService {
             };
             const proxy: IConnectorProxyRefreshed = {
                 type: CONNECTOR_AWS_TYPE,
+                transportType: TRANSPORT_DATACENTER_TYPE,
                 key: i.instanceId[ 0 ],
                 name: i.instanceId[ 0 ],
                 config,

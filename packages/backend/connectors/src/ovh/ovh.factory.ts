@@ -7,7 +7,6 @@ import {
     CredentialInvalidError,
     CredentialQueryNotFoundError,
     TasksService,
-    TRANSPORT_DATACENTER_TYPE,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -80,7 +79,6 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
 
     readonly config: IConnectorConfig = {
         refreshDelay: 10000,
-        transportType: TRANSPORT_DATACENTER_TYPE,
         useCertificate: true,
     };
 

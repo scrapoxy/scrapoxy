@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    TRANSPORT_HARDWARE_TYPE,
+} from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_PROXIDIZE_TYPE,
     EProxyStatus,
@@ -51,6 +54,7 @@ function convertToProxy(
     };
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_PROXIDIZE_TYPE,
+        transportType: TRANSPORT_HARDWARE_TYPE,
         key: d.Index.toString(10),
         name: d.public_ip_http_ipv4,
         status: convertStatus(d.Status),

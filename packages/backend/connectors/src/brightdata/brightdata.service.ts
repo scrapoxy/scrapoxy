@@ -6,6 +6,7 @@ import {
 } from '@scrapoxy/common';
 import { BrightdataApi } from './api';
 import { EBrightdataProductType } from './brightdata.interface';
+import { TRANSPORT_BRIGHTDATA_TYPE } from './transport/brightdata.constants';
 import type {
     IConnectorBrightdataConfig,
     IConnectorBrightdataCredential,
@@ -48,6 +49,7 @@ function convertToProxy(
     };
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_BRIGHTDATA_TYPE,
+        transportType: TRANSPORT_BRIGHTDATA_TYPE,
         key,
         name: key,
         status: EProxyStatus.STARTED,
