@@ -9,6 +9,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { parseFreeproxy } from '@scrapoxy/common';
+import { ToastsService } from '@scrapoxy/frontend-sdk';
 import type { IFreeproxyBase } from '@scrapoxy/common';
 
 
@@ -21,7 +22,10 @@ export class FreeproxiesAddComponent {
 
     form: FormGroup;
 
-    constructor(fb: FormBuilder) {
+    constructor(
+        fb: FormBuilder,
+        private readonly toastsService: ToastsService
+    ) {
         this.form = fb.group({
             list: [
                 '',
@@ -39,12 +43,19 @@ export class FreeproxiesAddComponent {
             .map(parseFreeproxy)
             .filter(p => !!p) as IFreeproxyBase[];
 
-        this.add.emit(freeproxies);
+        if (freeproxies.length > 0) {
+            this.add.emit(freeproxies);
 
-        this.form.reset({
-            list: '',
-        });
+            this.form.reset({
+                list: '',
+            });
 
-        this.form.markAsPristine();
+            this.form.markAsPristine();
+        } else {
+            this.toastsService.error(
+                'Freeproxies Add',
+                'No proxy found in the list. Please verify the URL format.'
+            );
+        }
     }
 }
