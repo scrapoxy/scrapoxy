@@ -14,16 +14,13 @@ import { TRANSPORT_PROXY_TYPE } from './proxy.constants';
 import {
     createConnectionAuto,
     isUrl,
-    parseBodyError,
     urlOptionsToUrl,
 } from '../../helpers';
 import { HttpTransportError } from '../errors';
 import { TransportprovidersService } from '../providers.service';
+import { ATransportService } from '../transport.abstract';
 import type { IUrlOptions } from '../../helpers';
-import type { ITransportService } from '../transport.interface';
 import type {
-    IConnectorProxyRefreshed,
-    IConnectorToRefresh,
     IProxyToConnect,
     IProxyToRefresh,
     IProxyTransport,
@@ -38,11 +35,7 @@ import type { SocksProxyType } from 'socks/typings/common/constants';
 import type { ConnectionOptions } from 'tls';
 
 
-export abstract class ATransportProxyService implements ITransportService {
-    abstract type: string;
-
-    abstract completeProxyConfig(proxy: IConnectorProxyRefreshed, connector: IConnectorToRefresh): void;
-
+export abstract class ATransportProxyService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
@@ -364,7 +357,7 @@ export abstract class ATransportProxyService implements ITransportService {
                         );
 
                         if (proxyRes.statusCode !== 200) {
-                            parseBodyError(
+                            this.parseBodyError(
                                 proxyRes,
                                 (err: any) => {
                                     oncreate(

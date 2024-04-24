@@ -11,16 +11,13 @@ import {
 import {
     createConnectionAuto,
     isUrl,
-    parseBodyError,
     urlOptionsToUrl,
 } from '../../helpers';
 import { HttpTransportError } from '../errors';
+import { ATransportService } from '../transport.abstract';
 import type { IProxyToConnectConfigDatacenter } from './datacenter.interface';
 import type { IUrlOptions } from '../../helpers';
-import type { ITransportService } from '../transport.interface';
 import type {
-    IConnectorProxyRefreshed,
-    IConnectorToRefresh,
     IProxyToConnect,
     IProxyToRefresh,
 } from '@scrapoxy/common';
@@ -33,13 +30,7 @@ import type {
 import type { ConnectionOptions } from 'tls';
 
 
-export abstract class ATransportDatacenterService implements ITransportService {
-    abstract type: string;
-
-    abstract completeProxyConfig(
-        proxy: IConnectorProxyRefreshed, connector: IConnectorToRefresh
-    ): void;
-
+export abstract class ATransportDatacenterService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
@@ -146,7 +137,7 @@ export abstract class ATransportDatacenterService implements ITransportService {
                         );
 
                         if (proxyRes.statusCode !== 200) {
-                            parseBodyError(
+                            this.parseBodyError(
                                 proxyRes,
                                 (err: any) => {
                                     oncreate(
@@ -304,5 +295,22 @@ export abstract class ATransportDatacenterService implements ITransportService {
         );
 
         proxyReq.end();
+    }
+
+    protected override parseBodyError(
+        r: IncomingMessage, callback: (err: Error) => void
+    ) {
+        const errorHeader = r.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string;
+
+        if (errorHeader && errorHeader.length > 0) {
+            callback(new Error(errorHeader));
+
+            return;
+        }
+
+        super.parseBodyError(
+            r,
+            callback
+        );
     }
 }

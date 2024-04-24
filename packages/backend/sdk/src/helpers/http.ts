@@ -1,14 +1,8 @@
-import {
-    Agent as AgentHttp,
-    IncomingMessage,
-} from 'http';
+import { Agent as AgentHttp } from 'http';
 import { Agent as AgentHttps } from 'https';
 import { Socket } from 'net';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import {
-    ONE_SECOND_IN_MS,
-    SCRAPOXY_HEADER_PREFIX_LC,
-} from '@scrapoxy/common';
+import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import type { NestApplicationOptions } from '@nestjs/common';
 import type { CreateAxiosDefaults } from 'axios';
@@ -48,37 +42,6 @@ export class Agents {
     close() {
         this.httpInstance.destroy();
         this.httpsInstance.destroy();
-    }
-}
-
-
-export function parseBodyError(
-    r: IncomingMessage, callback: (err: Error) => void
-) {
-    const errorHeader = r.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string;
-
-    if (errorHeader && errorHeader.length > 0) {
-        callback(new Error(errorHeader));
-    } else {
-        const buffers: Buffer[] = [];
-        r.on(
-            'error',
-            (err: any) => {
-                callback(err);
-            }
-        );
-        r.on(
-            'end',
-            () => {
-                const body = Buffer.concat(buffers)
-                    .toString();
-                callback(new Error(body));
-            }
-        );
-        r.on(
-            'data',
-            (chunk) => buffers.push(chunk)
-        );
     }
 }
 

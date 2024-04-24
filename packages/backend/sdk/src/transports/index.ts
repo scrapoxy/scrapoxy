@@ -4,7 +4,7 @@ export * from './errors';
 
 export * from './hardware';
 
-export * from './transport.interface';
+export * from './transport.abstract';
 
 export * from './providers.module';
 

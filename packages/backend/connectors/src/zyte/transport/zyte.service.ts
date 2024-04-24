@@ -6,10 +6,10 @@ import { Socket } from 'net';
 import { connect } from 'tls';
 import { Injectable } from '@nestjs/common';
 import {
+    ATransportService,
     createConnectionAuto,
     HttpTransportError,
     isUrl,
-    parseBodyError,
     TransportprovidersService,
     urlOptionsToUrl,
 } from '@scrapoxy/backend-sdk';
@@ -20,10 +20,7 @@ import type {
     IConnectorZyteConfig,
     IConnectorZyteCredential,
 } from '../zyte.interface';
-import type {
-    ITransportService,
-    IUrlOptions,
-} from '@scrapoxy/backend-sdk';
+import type { IUrlOptions } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -39,10 +36,12 @@ import type { ConnectionOptions } from 'tls';
 
 
 @Injectable()
-export class TransportZyteService implements ITransportService {
+export class TransportZyteService extends ATransportService {
     readonly type = TRANSPORT_ZYTE_TYPE;
 
     constructor(transportproviders: TransportprovidersService) {
+        super();
+
         transportproviders.register(this);
     }
 
@@ -318,7 +317,7 @@ export class TransportZyteService implements ITransportService {
                         );
 
                         if (proxyRes.statusCode !== 200) {
-                            parseBodyError(
+                            this.parseBodyError(
                                 proxyRes,
                                 (err: any) => {
                                     oncreate(

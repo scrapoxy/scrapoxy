@@ -8,16 +8,13 @@ import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
 import {
     createConnectionAuto,
     isUrl,
-    parseBodyError,
     urlOptionsToUrl,
 } from '../../helpers';
 import { HttpTransportError } from '../errors';
+import { ATransportService } from '../transport.abstract';
 import type { IProxyToConnectConfigResidential } from './residential.interface';
 import type { IUrlOptions } from '../../helpers';
-import type { ITransportService } from '../transport.interface';
 import type {
-    IConnectorProxyRefreshed,
-    IConnectorToRefresh,
     IProxyToConnect,
     IProxyToRefresh,
 } from '@scrapoxy/common';
@@ -29,13 +26,7 @@ import type {
 import type { ConnectionOptions } from 'tls';
 
 
-export abstract class ATransportResidentialService implements ITransportService {
-    abstract type: string;
-
-    abstract completeProxyConfig(
-        proxy: IConnectorProxyRefreshed, connector: IConnectorToRefresh
-    ): void;
-
+export abstract class ATransportResidentialService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
@@ -281,7 +272,7 @@ export abstract class ATransportResidentialService implements ITransportService 
                         );
 
                         if (proxyRes.statusCode !== 200) {
-                            parseBodyError(
+                            this.parseBodyError(
                                 proxyRes,
                                 (err: any) => {
                                     oncreate(

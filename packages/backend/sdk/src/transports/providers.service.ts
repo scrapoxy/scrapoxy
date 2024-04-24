@@ -3,16 +3,16 @@ import {
     Logger,
 } from '@nestjs/common';
 import { TransportNotFoundError } from '../errors';
-import type { ITransportService } from './transport.interface';
+import type { ATransportService } from './transport.abstract';
 
 
 @Injectable()
 export class TransportprovidersService {
     private readonly logger = new Logger(TransportprovidersService.name);
 
-    private readonly transports = new Map<string, ITransportService>();
+    private readonly transports = new Map<string, ATransportService>();
 
-    register(transport: ITransportService) {
+    register(transport: ATransportService) {
         if (!transport.type || transport.type.length <= 0) {
             throw new Error('Transport type should not be empty');
         }
@@ -29,7 +29,7 @@ export class TransportprovidersService {
         );
     }
 
-    getTransportByType(type: string): ITransportService {
+    getTransportByType(type: string): ATransportService {
         const transport = this.transports.get(type);
 
         if (!transport) {

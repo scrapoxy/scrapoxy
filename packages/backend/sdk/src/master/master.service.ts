@@ -54,7 +54,7 @@ import {
     TransportprovidersService,
 } from '../transports';
 import type { IMasterModuleConfig } from './master.module';
-import type { ITransportService } from '../transports';
+import type { ATransportService } from '../transports';
 import type {
     OnModuleDestroy,
     OnModuleInit,
@@ -363,7 +363,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
 
         // Build request
         let reqArgs: ClientRequestArgs,
-            transport: ITransportService;
+            transport: ATransportService;
         try {
             const factory = this.connectorproviders.getFactory(proxy.type);
             transport = this.transportproviders.getTransportByType(factory.config.transportType);
@@ -746,7 +746,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             sIn,
             sOut
         );
-        let transport: ITransportService;
+        let transport: ATransportService;
         try {
             const factory = this.connectorproviders.getFactory(proxy.type);
             transport = this.transportproviders.getTransportByType(factory.config.transportType);

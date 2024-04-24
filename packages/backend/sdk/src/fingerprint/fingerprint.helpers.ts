@@ -10,7 +10,7 @@ import {
     formatUseragent,
     urlToUrlOptions,
 } from '../helpers';
-import type { ITransportService } from '../transports';
+import type { ATransportService } from '../transports';
 import type {
     IFingerprint,
     IFingerprintOptions,
@@ -135,7 +135,7 @@ function fingerprintRequest(
 
 function fingerprintImpl(
     url: string,
-    transport: ITransportService,
+    transport: ATransportService,
     proxy: IProxyToRefresh,
     payload: IFingerprintRequest,
     sockets: Sockets,
@@ -217,7 +217,7 @@ function fingerprintImpl(
 
 
 export function fingerprint(
-    transport: ITransportService,
+    transport: ATransportService,
     proxy: IProxyToRefresh,
     options: IFingerprintOptions,
     fingerprintPayload: IFingerprintRequest,

@@ -6,10 +6,10 @@ import { Socket } from 'net';
 import { connect } from 'tls';
 import { Injectable } from '@nestjs/common';
 import {
+    ATransportService,
     createConnectionAuto,
     HttpTransportError,
     isUrl,
-    parseBodyError,
     TransportprovidersService,
     urlOptionsToUrl,
     urlToUrlOptions,
@@ -21,10 +21,7 @@ import type {
     IConnectorProxyLocalConfig,
     IConnectorProxyLocalCredential,
 } from '../proxy-local.interface';
-import type {
-    ITransportService,
-    IUrlOptions,
-} from '@scrapoxy/backend-sdk';
+import type { IUrlOptions } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -40,10 +37,12 @@ import type { ConnectionOptions } from 'tls';
 
 
 @Injectable()
-export class TransportProxyLocalService implements ITransportService {
+export class TransportProxyLocalService extends ATransportService {
     readonly type = TRANSPORT_PROXY_LOCAL_TYPE;
 
     constructor(transportproviders: TransportprovidersService) {
+        super();
+
         transportproviders.register(this);
     }
 
@@ -217,6 +216,23 @@ export class TransportProxyLocalService implements ITransportService {
         proxyReq.end();
     }
 
+    protected override parseBodyError(
+        r: IncomingMessage, callback: (err: Error) => void
+    ) {
+        const errorHeader = r.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyerror` ] as string;
+
+        if (errorHeader && errorHeader.length > 0) {
+            callback(new Error(errorHeader));
+
+            return;
+        }
+
+        super.parseBodyError(
+            r,
+            callback
+        );
+    }
+
     private buildRequestArgsHttp(
         method: string | undefined,
         urlOpts: IUrlOptions,
@@ -341,7 +357,7 @@ export class TransportProxyLocalService implements ITransportService {
                         );
 
                         if (proxyRes.statusCode !== 200) {
-                            parseBodyError(
+                            this.parseBodyError(
                                 proxyRes,
                                 (err: any) => {
                                     oncreate(
