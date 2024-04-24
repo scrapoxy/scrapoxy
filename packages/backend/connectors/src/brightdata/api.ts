@@ -93,13 +93,22 @@ export class BrightdataApi {
     }
 
     async refreshStaticIps(
-        zone: string, ips: string[]
+        zone: string,
+        ips: string[],
+        country?: string
     ): Promise<void> {
+        const payload: any = {
+            zone,
+            ips,
+        };
+
+        if (country && country.length > 0) {
+            payload.country = country;
+        }
+
         await this.instance.post(
             'zone/ips/refresh',
-            {
-                zone, ips,
-            }
+            payload
         );
     }
 }

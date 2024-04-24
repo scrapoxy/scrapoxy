@@ -152,9 +152,10 @@ const names = [
 ];
 
 
-export function randomName(): string {
+export function randomName(prefix?: string): string {
+    prefix = prefix ?? names[ Math.floor(Math.random() * names.length) ];
+
     const
-        prefix = names[ Math.floor(Math.random() * names.length) ],
         suffix = Math.floor(Math.random() * 1000000000)
             .toString(10);
 
@@ -162,11 +163,13 @@ export function randomName(): string {
 }
 
 
-export function randomNames(count: number): string[] {
+export function randomNames(
+    count: number, prefix?: string
+): string[] {
     const namesArr: string[] = [];
 
     for (let i = 0; i < count; ++i) {
-        namesArr.push(randomName());
+        namesArr.push(randomName(prefix));
     }
 
     return namesArr;

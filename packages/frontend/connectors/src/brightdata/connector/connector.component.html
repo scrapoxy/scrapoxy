@@ -1,14 +1,15 @@
 <ng-container [formGroup]="subForm">
-    @if (subForm.controls['zone']; as c) {
+    @if (subForm.controls['zoneName']; as c) {
         <c-row>
-            <label cLabel cCol md="2" for="zone">Zone</label>
+            <label cLabel cCol md="2" for="zoneName">Zone</label>
 
             <c-col md="10">
                 <c-input-group>
                     <select
                         cSelect
-                        id="zone"
-                        formControlName="zone"
+                        id="zoneName"
+                        formControlName="zoneName"
+                        (change)="zoneNameChanged()"
                         [attr.disabled]="processingZones ? true : null">
                         <option [ngValue]="null" disabled>----- Select Zone ------</option>
                         @for (zone of zones; track zone.name) {
@@ -21,6 +22,24 @@
                             <svg cIcon name="cilLoopCircular" class="spin"></svg>
                         </span>
                     }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+
+    @if (subForm.controls['country']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="country" formControlName="country">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="all">All</option>
+                        @for (country of countries; track country.code) {
+                            <option [value]="country.code">{{country.name}}</option>
+                        }
+                    </select>
                 </c-input-group>
             </c-col>
         </c-row>

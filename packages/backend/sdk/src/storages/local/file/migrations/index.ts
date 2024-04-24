@@ -4,6 +4,7 @@ import { migration as migration0003 } from './0003-freeproxies';
 import { migration as migration0004 } from './0004-iproyal';
 import { migration as migration0005 } from './0005-format';
 import { migration as migration0006 } from './0006-sources';
+import { migration as migration0007 } from './0007-brightdata-v2';
 
 
 export default [
@@ -13,4 +14,5 @@ export default [
     migration0004,
     migration0005,
     migration0006,
+    migration0007,
 ];

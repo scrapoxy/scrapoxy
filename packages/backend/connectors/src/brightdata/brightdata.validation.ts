@@ -1,4 +1,5 @@
 import * as Joi from 'joi';
+import { BRIGHTDATA_PRODUCT_TYPES } from './brightdata.interface';
 
 
 const schemaCredential = Joi.object({
@@ -6,7 +7,12 @@ const schemaCredential = Joi.object({
         .required(),
 });
 const schemaConfig = Joi.object({
-    zone: Joi.string()
+    zoneName: Joi.string()
+        .required(),
+    zoneType: Joi.string()
+        .required()
+        .valid(...BRIGHTDATA_PRODUCT_TYPES),
+    country: Joi.string()
         .required(),
 });
 

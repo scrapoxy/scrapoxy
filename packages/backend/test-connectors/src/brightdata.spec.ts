@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import {
     ConnectorBrightdataModule,
+    EBrightdataProductType,
     IConnectorBrightdataConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
@@ -13,7 +14,9 @@ describe(
     () => {
         const agents = new Agents();
         const connectorConfig: IConnectorBrightdataConfig = {
-                zone: 'isp_shared',
+                zoneName: 'isp_shared',
+                zoneType: EBrightdataProductType.RESIDENTIAL,
+                country: 'us',
             },
             credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/brightdata/credentials.json');
         const credentialConfig = JSON.parse(credentialConfigData.toString());

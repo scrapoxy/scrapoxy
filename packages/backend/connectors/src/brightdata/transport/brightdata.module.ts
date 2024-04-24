@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TransportprovidersModule } from '@scrapoxy/backend-sdk';
-import { TransportBrightdataService } from './brightdata.service';
+import { TransportBrightdataResidentialService } from './brightdata-residential.service';
+import { TransportBrightdataServerService } from './brightdata-server.service';
 
 
 @Module({
@@ -8,7 +9,7 @@ import { TransportBrightdataService } from './brightdata.service';
         TransportprovidersModule,
     ],
     providers: [
-        TransportBrightdataService,
+        TransportBrightdataResidentialService, TransportBrightdataServerService,
     ],
 })
 export class TransportBrightdataModule {}

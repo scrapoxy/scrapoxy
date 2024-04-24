@@ -5,8 +5,8 @@ import {
     EProxyStatus,
 } from '@scrapoxy/common';
 import { BrightdataApi } from './api';
-import { EBrightdataProductType } from './brightdata.interface';
-import { TRANSPORT_BRIGHTDATA_TYPE } from './transport/brightdata.constants';
+import { getBrightdataPrefix } from './brightdata.helpers';
+import { TRANSPORT_BRIGHTDATA_SERVER_TYPE } from './transport';
 import type {
     IConnectorBrightdataConfig,
     IConnectorBrightdataCredential,
@@ -19,29 +19,10 @@ import type {
 } from '@scrapoxy/common';
 
 
-function getPrefix(zoneType: EBrightdataProductType): string {
-    switch (zoneType) {
-        case EBrightdataProductType.DATACENTER: {
-            return 'DCT';
-        }
-
-        case EBrightdataProductType.ISP: {
-            return 'ISP';
-        }
-
-        case EBrightdataProductType.RESIDENTIAL: {
-            return 'RES';
-        }
-
-        case EBrightdataProductType.MOBILE: {
-            return 'MOB';
-        }
-    }
-}
-
-
 function convertToProxy(
-    key: string, username: string, password: string
+    key: string,
+    username: string,
+    password: string
 ): IConnectorProxyRefreshed {
     const config: ITransportProxyRefreshedConfigBrightdata = {
         username,
@@ -49,7 +30,7 @@ function convertToProxy(
     };
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_BRIGHTDATA_TYPE,
-        transportType: TRANSPORT_BRIGHTDATA_TYPE,
+        transportType: TRANSPORT_BRIGHTDATA_SERVER_TYPE,
         key,
         name: key,
         status: EProxyStatus.STARTED,
@@ -60,8 +41,8 @@ function convertToProxy(
 }
 
 
-export class ConnectorBrightdataService implements IConnectorService {
-    private readonly logger = new Logger(ConnectorBrightdataService.name);
+export class ConnectorBrightdataServerService implements IConnectorService {
+    private readonly logger = new Logger(ConnectorBrightdataServerService.name);
 
     private readonly api: BrightdataApi;
 
@@ -112,20 +93,28 @@ export class ConnectorBrightdataService implements IConnectorService {
             .map((k) => k.key.slice(3));
 
         if (ipsForced.length > 0) {
-            await this.api.refreshStaticIps(
-                this.connectorConfig.zone,
-                ipsForced
-            );
+            if (this.connectorConfig.country === 'all') {
+                await this.api.refreshStaticIps(
+                    this.connectorConfig.zoneName,
+                    ipsForced
+                );
+            } else {
+                await this.api.refreshStaticIps(
+                    this.connectorConfig.zoneName,
+                    ipsForced,
+                    this.connectorConfig.country
+                );
+            }
         }
 
         return keys.map((k) => k.key);
     }
 
-    private async getActiveProxies() {
+    private async getActiveProxies(): Promise<IConnectorProxyRefreshed[]> {
         const status = await this.api.getStatus();
-        const zone = await this.api.getZone(this.connectorConfig.zone);
-        const ips = await this.api.getZoneRouteIps(this.connectorConfig.zone);
-        const prefix = getPrefix(zone.plan.product);
+        const zone = await this.api.getZone(this.connectorConfig.zoneName);
+        const ips = await this.api.getZoneRouteIps(this.connectorConfig.zoneName);
+        const prefix = getBrightdataPrefix(zone.plan.product);
         const proxies = ips
             .map((ip) => convertToProxy(
                 `${prefix}${ip}`,

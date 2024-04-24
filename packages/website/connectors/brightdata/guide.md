@@ -49,6 +49,25 @@ Click on `Add token`.
 1. Remember the token;
 2. and click on `Got it`.
 
+### Add a zone
+
+![Brightdata New Zone Select](brightdata_new_zone_select.png)
+
+1. On the left menu, click on the zone icon;
+2. Click on `Add`.
+
+---
+
+![Brightdata New Zone](brightdata_new_zone.png)
+
+Choose between Residential, ISP, Datacenter or Mobiles proxies.
+
+For ISP or Datacenter proxies, select the number of required instances.
+
+::: warning
+Do not add a Geolocation targeting filter, as Scrapoxy will manage this parameter.
+:::
+
 
 ## Scrapoxy
 
@@ -84,7 +103,8 @@ Complete the form with the following information:
 3. **# Proxies**: The number of instances to create;
 4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
 5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
-6. **Zone**: The zone to use.
+6. **Zone**: The zone to use;
+7. **Country**: Select the country to use, or `All` to use all countries.
 
 And click on `Create`.
 
@@ -104,6 +124,11 @@ And click on `Create`.
 Within this connector, you can perform 2 actions on the proxies:
 1. **Trash button**: Initiates a proxy rotation. The session is temporarily removed and will be reused later.
 2. **Cross button**: Requests a replacement from BrightData to permanently replace the IP, which comes with associated costs.
+
+::: info
+If a country is chosen from the configuration menu,
+the trash button will swap the current instance with an instance of the selected country.
+:::
 
 
 ### Other: Stop the connector

@@ -1,3 +1,3 @@
-export * from './brightdata.module';
+export * from './brightdata.constants';
 
-export * from './brightdata.service';
+export * from './brightdata.module';

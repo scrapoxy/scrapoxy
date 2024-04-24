@@ -11,11 +11,13 @@ import {
     EBrightdataQueryCredential,
 } from '@scrapoxy/common';
 import { BrightdataApi } from './api';
+import { ConnectorBrightdataResidentialService } from './brightdata-residential.service';
+import { ConnectorBrightdataServerService } from './brightdata-server.service';
 import {
     BRIGHTDATA_PRODUCT_TYPES,
+    EBrightdataProductType,
     EBrightdataStatus,
 } from './brightdata.interface';
-import { ConnectorBrightdataService } from './brightdata.service';
 import {
     schemaConfig,
     schemaCredential,
@@ -99,11 +101,31 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
     }
 
     async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
-        return new ConnectorBrightdataService(
-            connector.credentialConfig,
-            connector.connectorConfig,
-            this.agents
-        );
+        const config = connector.connectorConfig as IConnectorBrightdataConfig;
+
+        switch (config.zoneType) {
+            case EBrightdataProductType.MOBILE:
+            case EBrightdataProductType.RESIDENTIAL: {
+                return new ConnectorBrightdataResidentialService(
+                    connector.credentialConfig,
+                    connector.connectorConfig,
+                    this.agents
+                );
+            }
+
+            case EBrightdataProductType.DATACENTER:
+            case EBrightdataProductType.ISP: {
+                return new ConnectorBrightdataServerService(
+                    connector.credentialConfig,
+                    connector.connectorConfig,
+                    this.agents
+                );
+            }
+
+            default: {
+                throw new Error('Unknown zone type');
+            }
+        }
     }
 
     async buildInstallCommand(): Promise<ITaskToCreate> {

@@ -1,10 +1,23 @@
+export enum EBrightdataProductType {
+    DATACENTER = 'dc',
+    ISP = 'res_static',
+    RESIDENTIAL = 'res_rotating',
+    MOBILE = 'mobile',
+}
+
+
+export const BRIGHTDATA_PRODUCT_TYPES = Object.values(EBrightdataProductType);
+
+
 export interface IConnectorBrightdataCredential {
     token: string;
 }
 
 
 export interface IConnectorBrightdataConfig {
-    zone: string;
+    zoneName: string;
+    zoneType: EBrightdataProductType;
+    country: string;
 }
 
 
@@ -23,17 +36,6 @@ export interface IBrightdataStatus {
     customer: string;
     status: EBrightdataStatus;
 }
-
-
-export enum EBrightdataProductType {
-    DATACENTER = 'dc',
-    ISP = 'res_static',
-    RESIDENTIAL = 'res_rotating',
-    MOBILE = 'mobile',
-}
-
-
-export const BRIGHTDATA_PRODUCT_TYPES = Object.values(EBrightdataProductType);
 
 
 export interface IBrightdataZoneView {

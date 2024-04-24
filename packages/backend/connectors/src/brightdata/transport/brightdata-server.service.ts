@@ -3,7 +3,7 @@ import {
     ATransportResidentialService,
     TransportprovidersService,
 } from '@scrapoxy/backend-sdk';
-import { TRANSPORT_BRIGHTDATA_TYPE } from './brightdata.constants';
+import { TRANSPORT_BRIGHTDATA_SERVER_TYPE } from './brightdata.constants';
 import type { IConnectorBrightdataConfig } from '../brightdata.interface';
 import type { IProxyToConnectConfigResidential } from '@scrapoxy/backend-sdk';
 import type {
@@ -32,8 +32,8 @@ function formatUsername(
 
 
 @Injectable()
-export class TransportBrightdataService extends ATransportResidentialService {
-    readonly type = TRANSPORT_BRIGHTDATA_TYPE;
+export class TransportBrightdataServerService extends ATransportResidentialService {
+    readonly type = TRANSPORT_BRIGHTDATA_SERVER_TYPE;
 
     constructor(transportproviders: TransportprovidersService) {
         super();
@@ -57,7 +57,7 @@ export class TransportBrightdataService extends ATransportResidentialService {
 
         proxyConfig.username = formatUsername(
             proxyConfig.username,
-            connectorConfig.zone,
+            connectorConfig.zoneName,
             proxy.key,
             ip
         );
