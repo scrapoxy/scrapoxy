@@ -79,24 +79,54 @@ export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase |
     }
 
     const hostStrSplit = hostStr.split(':');
+    let hostname: string;
+    let portStr: string;
 
-    if (hostStrSplit.length !== 2) {
-        return;
+    switch (hostStrSplit.length) {
+        case 2: {
+            [
+                hostname, portStr,
+            ] = hostStrSplit;
+            break;
+        }
+
+        case 4: {
+            let
+                password: string,
+                username: string;
+            [
+                hostname,
+                portStr,
+                username,
+                password,
+            ] = hostStrSplit;
+            auth = {
+                username,
+                password,
+            };
+            break;
+        }
+
+        default: {
+            return;
+        }
     }
 
-    const [
-        hostname, portStr,
-    ] = hostStrSplit;
-    const port = parseInt(
-        portStr,
-        10
-    );
+    let port: number;
+    try {
+        port = parseInt(
+            portStr,
+            10
+        );
 
-    if (
-        !port ||
-        port < 1 ||
-        port > 65535
-    ) {
+        if (
+            !port ||
+            port < 1 ||
+            port > 65535
+        ) {
+            return;
+        }
+    } catch (err: any) {
         return;
     }
 

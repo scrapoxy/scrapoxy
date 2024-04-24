@@ -36,6 +36,9 @@ describe(
                 expect(parseFreeproxy('myhostname:1234:4'))
                     .toBeUndefined();
 
+                expect(parseFreeproxy('myhostname:1234:username:password:other'))
+                    .toBeUndefined();
+
                 expect(parseFreeproxy('myhostname:fakeport'))
                     .toBeUndefined();
             }
@@ -109,6 +112,20 @@ describe(
         it(
             'should parse auth',
             () => {
+                expect(parseFreeproxy('myhostname:1234:mylogin:mypassword'))
+                    .toEqual({
+                        type: EProxyType.HTTP,
+                        key: 'myhostname:1234',
+                        address: {
+                            hostname: 'myhostname',
+                            port: 1234,
+                        },
+                        auth: {
+                            username: 'mylogin',
+                            password: 'mypassword',
+                        },
+                    } as IFreeproxyBase);
+
                 expect(parseFreeproxy('http://mylogin:mypassword@myhostname:1234'))
                     .toEqual({
                         type: EProxyType.HTTP,
