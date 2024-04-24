@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.7.1
+
+### Bug fixes
+
+- **frontend**: correct proxy URL parsing
+- **frontend**: show proxies error message
+- **transport**: set transport type to proxy level
+
+
 ## 4.7.0
 
 ### Features
