@@ -13,6 +13,22 @@ export function formatFreeproxyId(
 }
 
 
+function hashCode(str: string): number {
+    let hash = 0;
+
+    if (str.length <= 0) {
+        return hash;
+    }
+
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+    }
+
+    return Math.abs(hash % 100000);
+}
+
+
 export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase | undefined {
     if (!raw || raw.length <= 0) {
         return;
@@ -130,8 +146,17 @@ export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase |
         return;
     }
 
+    let key: string;
+
+    if (auth) {
+        const hash = hashCode(`${auth.username}:${auth.password}`);
+        key = `${hostname}:${port}:${hash}`;
+    } else {
+        key = `${hostname}:${port}`;
+    }
+
     return {
-        key: `${hostname}:${port}`,
+        key,
         type,
         address: {
             hostname,
