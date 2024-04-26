@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.7.2
+
+### Bug fixes
+
+- **freeproxy**: include auth info in key generation
+
+
 ## 4.7.1
 
 ### Bug fixes
