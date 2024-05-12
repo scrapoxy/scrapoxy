@@ -28,6 +28,14 @@ export class MetricsStore {
             this.view.project.requests += view.project.requests;
         }
 
+        if (view.project.requestsValid) {
+            this.view.project.requestsValid += view.project.requestsValid;
+        }
+
+        if (view.project.requestsInvalid) {
+            this.view.project.requestsInvalid += view.project.requestsInvalid;
+        }
+
         if (view.project.stops) {
             this.view.project.stops += view.project.stops;
         }
@@ -52,6 +60,8 @@ export class MetricsStore {
 
         if (view.project.snapshot) {
             this.view.project.snapshot.requests += view.project.snapshot.requests;
+            this.view.project.snapshot.requestsValid += view.project.snapshot.requestsValid;
+            this.view.project.snapshot.requestsInvalid += view.project.snapshot.requestsInvalid;
             this.view.project.snapshot.stops += view.project.snapshot.stops;
             this.view.project.snapshot.bytesReceived += view.project.snapshot.bytesReceived;
             this.view.project.snapshot.bytesSent += view.project.snapshot.bytesSent;
@@ -81,6 +91,8 @@ export class MetricsStore {
 
                 windowFound.count += window.count;
                 windowFound.requests += window.requests;
+                windowFound.requestsValid += window.requestsValid;
+                windowFound.requestsInvalid += window.requestsInvalid;
                 windowFound.stops += window.stops;
                 windowFound.bytesReceived += window.bytesReceived;
                 windowFound.bytesSent += window.bytesSent;

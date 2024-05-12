@@ -194,6 +194,8 @@ export interface IRangeMetrics {
 export const PROJECT_METRICS_META = [
     'id',
     'requests',
+    'requestsValid',
+    'requestsInvalid',
     'stops',
     'proxiesCreated',
     'proxiesRemoved',
@@ -210,6 +212,8 @@ export const PROJECT_METRICS_META = [
 export interface IProjectMetrics {
     id: string;
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     stops: number;
     proxiesCreated: number;
     proxiesRemoved: number;
@@ -232,6 +236,8 @@ export interface IProjectMetricsView {
 export interface IProjectMetricsAdd {
     id: string;
     requests?: number;
+    requestsValid?: number;
+    requestsInvalid?: number;
     stops?: number;
     proxiesCreated?: number;
     proxiesRemoved?: number;

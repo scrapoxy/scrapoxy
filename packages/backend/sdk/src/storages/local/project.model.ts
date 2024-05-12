@@ -32,6 +32,8 @@ export function toProjectMetricsView(p: IProjectModel): IProjectMetricsView {
         project: {
             id: p.id,
             requests: p.requests,
+            requestsValid: p.requestsValid,
+            requestsInvalid: p.requestsInvalid,
             stops: p.stops,
             proxiesCreated: p.proxiesCreated,
             proxiesRemoved: p.proxiesRemoved,

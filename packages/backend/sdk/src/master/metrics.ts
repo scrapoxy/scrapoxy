@@ -104,7 +104,16 @@ export class ConnectionMetrics {
             }
         }
 
-        this.getMetrics().bytesReceived += size;
+        const metrics = this.getMetrics();
+        metrics.bytesReceived += size;
+
+        if (res.statusCode) {
+            if (res.statusCode < 400) {
+                metrics.requestsValid += 1;
+            } else {
+                metrics.requestsInvalid += 1;
+            }
+        }
     }
 
     unregister() {
@@ -126,6 +135,8 @@ export class ConnectionMetrics {
                 projectId: this.proxy.projectId,
                 connectorId: this.proxy.connectorId,
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 bytesReceived: 0,
                 bytesSent: 0,
             };

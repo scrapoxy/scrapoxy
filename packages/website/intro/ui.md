@@ -210,9 +210,21 @@ A proxy is characterized by the following attributes:
 4. **Status**: Indicates the current status of the proxy (refer to the descriptions below);
 5. **Received**: The amount of bytes received by the proxy;
 6. **Sent**: The amount of bytes sent by the proxy;
-7. **Requests**: The number of requests made by the proxy;
+7. **Requests**: The number of requests made by the proxy and the success rate;
 8. **Uptime**: The uptime of the proxy, representing the duration between its creation and the current moment;
 9. **Delete**: Manually remove the proxy from the pool.
+
+The **Success Rate** is calculated as follows: 
+
+`Valid Requests / (Valid + Invalid Requests) * 100`
+
+Notes:
+
+This metric is applicable only when the Project settings `Intercept HTTPS requests with MITM` is enabled.
+The total number of requests may vary from the sum of valid and invalid requests due to its dependence on whether the setting is enabled.
+
+Requests with HTTP status code below 400 are considered valid, other invalids.
+
 
 ### Proxy status
 
@@ -273,23 +285,25 @@ Additionally, it provides a ranking of top countries, cities, and ASNs (Autonomo
 
 ![Metrics](metrics.png)
 
-
 In the `Metrics` section, Scrapoxy provides a set of metrics for monitoring your project.
 These metrics include:
+
 1. **Range**: Adjusts the window of the metrics (e.g., 1 minute, 5 minutes);
 2. **Received**: Total amount of bytes received by all proxies;
 3. **Sent**: Total amount of bytes sent by all proxies;
-4. **Received rate**: Current rate of data received by all proxies;
-5. **Sent rate**: Current rate of data sent by all proxies;
-6. **Requests**: Total number of requests made by all proxies;
-7. **Stops**: Total number of "delete" delete orders;
-8. **Proxies Created**: Total number of proxies created;
-9. **Proxies Removed**: Total number of proxies deleted;
-10. **Avg Requests Before Stop**: Average number of requests made by proxy before removal from the pool;
-11. **Avg Uptime Before Stop**: Average uptime for a proxy before removal from the pool;
-12. **Data received & sent**: Amount of data received and sent by all proxies over time;
-13. **Requests sent**: Number of requests made by all proxies over time;
-14. **Stop orders received**: Number of "stop" orders received over time.
+4. **Requests**: Total number of requests made by all proxies;
+5. **Stops**: Total number of "delete" delete orders;
+6. **Received rate**: Current rate of data received by all proxies;
+7. **Sent rate**: Current rate of data sent by all proxies;
+8. **Valid requests**: Number of valid requests made by all proxies (if MITM is enabled);
+9. **Invalid requests**: Number of invalid requests made by all proxies (if MITM is enabled);
+10. **Proxies Created**: Total number of proxies created;
+11. **Proxies Removed**: Total number of proxies deleted;
+12. **Avg Requests Before Stop**: Average number of requests made by proxy before removal from the pool;
+13. **Avg Uptime Before Stop**: Average uptime for a proxy before removal from the pool;
+14. **Data received & sent**: Amount of data received and sent by all proxies over time;
+15. **Requests sent**: Number of requests made by all proxies over time;
+16. **Stop orders received**: Number of "stop" orders received over time.
 
 ::: info
 Only the last 3 charts use the window setting.

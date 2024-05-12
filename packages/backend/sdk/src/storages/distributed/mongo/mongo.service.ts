@@ -652,6 +652,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 size: c.size,
                 count: 0,
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 stops: 0,
                 bytesReceived: 0,
                 bytesSent: 0,
@@ -675,6 +677,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             proxiesMin: create.project.proxiesMin,
             useragentOverride: create.project.useragentOverride,
             requests: 0,
+            requestsValid: 0,
+            requestsInvalid: 0,
             stops: 0,
             proxiesCreated: 0,
             proxiesRemoved: 0,
@@ -692,6 +696,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             },
             snapshot: {
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 stops: 0,
                 bytesSent: 0,
                 bytesReceived: 0,
@@ -903,6 +909,14 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 $inc.requests = view.project.requests;
             }
 
+            if (view.project.requestsValid) {
+                $inc.requestsValid = view.project.requestsValid;
+            }
+
+            if (view.project.requestsInvalid) {
+                $inc.requestsInvalid = view.project.requestsInvalid;
+            }
+
             if (view.project.stops) {
                 $inc.stops = view.project.stops;
             }
@@ -927,6 +941,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
 
             if (view.project.snapshot) {
                 $inc[ 'snapshot.requests' ] = view.project.snapshot.requests;
+                $inc[ 'snapshot.requestsValid' ] = view.project.snapshot.requestsValid;
+                $inc[ 'snapshot.requestsInvalid' ] = view.project.snapshot.requestsInvalid;
                 $inc[ 'snapshot.stops' ] = view.project.snapshot.stops;
                 $inc[ 'snapshot.bytesReceived' ] = view.project.snapshot.bytesReceived;
                 $inc[ 'snapshot.bytesSent' ] = view.project.snapshot.bytesSent;
@@ -989,6 +1005,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         $inc: {
                             count: window.count,
                             requests: window.requests,
+                            requestsValid: window.requestsValid,
+                            requestsInvalid: window.requestsInvalid,
                             stops: window.stops,
                             bytesReceived: window.bytesReceived,
                             bytesSent: window.bytesSent,
@@ -1846,6 +1864,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 disconnectedTs: proxy.disconnectedTs,
                 autoRotateDelayFactor: proxy.autoRotateDelayFactor,
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 bytesSent: 0,
                 bytesReceived: 0,
                 nextRefreshTs: 0,
@@ -1907,20 +1927,26 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             bytesReceived: number;
             bytesSent: number;
             requests: number;
+            requestsValid: number;
+            requestsInvalid: number;
         }>();
 
         for (const proxy of proxies) {
             let projectMetrics = projectsMetrics.get(proxy.projectId);
 
             if (projectMetrics) {
+                projectMetrics.requests += proxy.requests;
+                projectMetrics.requestsValid += proxy.requestsValid;
+                projectMetrics.requestsInvalid += proxy.requestsInvalid;
                 projectMetrics.bytesReceived += proxy.bytesReceived;
                 projectMetrics.bytesSent += proxy.bytesSent;
-                projectMetrics.requests += proxy.requests;
             } else {
                 projectMetrics = {
+                    requests: proxy.requests,
+                    requestsValid: proxy.requestsValid,
+                    requestsInvalid: proxy.requestsInvalid,
                     bytesReceived: proxy.bytesReceived,
                     bytesSent: proxy.bytesSent,
-                    requests: proxy.requests,
                 };
                 projectsMetrics.set(
                     proxy.projectId,
@@ -1934,6 +1960,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 .updateOne({
                     $inc: {
                         requests: proxy.requests,
+                        requestsValid: proxy.requestsValid,
+                        requestsInvalid: proxy.requestsInvalid,
                         bytesReceived: proxy.bytesReceived,
                         bytesSent: proxy.bytesSent,
                     },
@@ -1951,6 +1979,8 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         'snapshot.bytesReceived': projectMetrics.bytesReceived,
                         'snapshot.bytesSent': projectMetrics.bytesSent,
                         'snapshot.requests': projectMetrics.requests,
+                        'snapshot.requestsValid': projectMetrics.requestsValid,
+                        'snapshot.requestsInvalid': projectMetrics.requestsInvalid,
                     },
                     $set: {
                         lastDataTs: nowTime,

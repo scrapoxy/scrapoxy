@@ -222,6 +222,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 timeoutUnreachable: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
                 disconnectedTs: null,
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 bytesReceived: 0,
                 bytesSent: 0,
                 nextRefreshTs: 0,
@@ -487,6 +489,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 size: c.size,
                 count: 0,
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 stops: 0,
                 bytesReceived: 0,
                 bytesSent: 0,
@@ -513,6 +517,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             proxiesMin: create.project.proxiesMin,
             useragentOverride: create.project.useragentOverride,
             requests: 0,
+            requestsValid: 0,
+            requestsInvalid: 0,
             stops: 0,
             proxiesCreated: 0,
             proxiesRemoved: 0,
@@ -534,6 +540,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             },
             snapshot: {
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
                 stops: 0,
                 bytesReceived: 0,
                 bytesSent: 0,
@@ -738,6 +746,14 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                     projectModel.requests += view.project.requests;
                 }
 
+                if (view.project.requestsValid) {
+                    projectModel.requestsValid += view.project.requestsValid;
+                }
+
+                if (view.project.requestsInvalid) {
+                    projectModel.requestsInvalid += view.project.requestsInvalid;
+                }
+
                 if (view.project.stops) {
                     projectModel.stops += view.project.stops;
                 }
@@ -762,6 +778,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
                 if (view.project.snapshot) {
                     projectModel.snapshot.requests += view.project.snapshot.requests;
+                    projectModel.snapshot.requestsValid += view.project.snapshot.requestsValid;
+                    projectModel.snapshot.requestsInvalid += view.project.snapshot.requestsInvalid;
                     projectModel.snapshot.stops += view.project.snapshot.stops;
                     projectModel.snapshot.bytesReceived += view.project.snapshot.bytesReceived;
                     projectModel.snapshot.bytesSent += view.project.snapshot.bytesSent;
@@ -791,6 +809,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
                         windowModel.count += window.count;
                         windowModel.requests += window.requests;
+                        windowModel.requestsValid += window.requestsValid;
+                        windowModel.requestsInvalid += window.requestsInvalid;
                         windowModel.stops += window.stops;
                         windowModel.bytesReceived += window.bytesReceived;
                         windowModel.bytesSent += window.bytesSent;
@@ -1549,6 +1569,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                     const proxyModel: IProxyModel = {
                         ...proxy,
                         requests: 0,
+                        requestsValid: 0,
+                        requestsInvalid: 0,
                         bytesSent: 0,
                         bytesReceived: 0,
                         nextRefreshTs: 0,
@@ -1685,6 +1707,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
             if (projectModel) {
                 projectModel.snapshot.requests += proxy.requests;
+                projectModel.snapshot.requestsValid += proxy.requestsValid;
+                projectModel.snapshot.requestsInvalid += proxy.requestsInvalid;
                 projectModel.snapshot.bytesReceived += proxy.bytesReceived;
                 projectModel.snapshot.bytesSent += proxy.bytesSent;
 
@@ -1695,6 +1719,8 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
 
             if (proxyModel) {
                 proxyModel.requests += proxy.requests;
+                proxyModel.requestsValid += proxy.requestsValid;
+                proxyModel.requestsInvalid += proxy.requestsInvalid;
                 proxyModel.bytesReceived += proxy.bytesReceived;
                 proxyModel.bytesSent += proxy.bytesSent;
             }

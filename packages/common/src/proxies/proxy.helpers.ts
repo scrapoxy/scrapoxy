@@ -48,6 +48,8 @@ export function toProxyView(model: IProxyView): IProxyView {
         fingerprintError: model.fingerprintError,
         createdTs: model.createdTs,
         requests: model.requests,
+        requestsValid: model.requestsValid,
+        requestsInvalid: model.requestsInvalid,
         bytesReceived: model.bytesReceived,
         bytesSent: model.bytesSent,
     };
@@ -105,6 +107,8 @@ export function toProxySync(p: IProxySync): IProxySync {
         disconnectedTs: p.disconnectedTs,
         autoRotateDelayFactor: p.autoRotateDelayFactor,
         requests: p.requests,
+        requestsValid: p.requestsValid,
+        requestsInvalid: p.requestsInvalid,
     };
 
     return sync;

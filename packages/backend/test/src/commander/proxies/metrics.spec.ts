@@ -261,6 +261,10 @@ describe(
                     const proxyFound = client.views[ 0 ].proxies[ 0 ];
                     expect(proxyFound.requests)
                         .toBe(1);
+                    expect(proxyFound.requestsValid)
+                        .toBe(1);
+                    expect(proxyFound.requestsInvalid)
+                        .toBe(0);
 
                     bytesReceived = proxyFound.bytesReceived;
                     bytesSent = proxyFound.bytesSent;
@@ -273,6 +277,10 @@ describe(
                 const proxy = view.proxies[ 0 ];
                 expect(proxy.requests)
                     .toBe(1);
+                expect(proxy.requestsValid)
+                    .toBe(1);
+                expect(proxy.requestsInvalid)
+                    .toBe(0);
                 expect(proxy.bytesReceived)
                     .toBe(bytesReceived);
                 expect(proxy.bytesSent)
@@ -306,6 +314,10 @@ describe(
                     for (const proxy of client.views[ 0 ].proxies) {
                         expect(proxy.requests)
                             .toBe(10);
+                        expect(proxy.requestsValid)
+                            .toBe(10);
+                        expect(proxy.requestsInvalid)
+                            .toBe(0);
                         expect(proxy.bytesReceived)
                             .toBe(bytesReceived * requestsByProxies);
                         expect(proxy.bytesSent)
@@ -321,6 +333,10 @@ describe(
                 for (const proxy of view.proxies) {
                     expect(proxy.requests)
                         .toBe(10);
+                    expect(proxy.requestsValid)
+                        .toBe(10);
+                    expect(proxy.requestsInvalid)
+                        .toBe(0);
                     expect(proxy.bytesReceived)
                         .toBe(bytesReceived * requestsByProxies);
                     expect(proxy.bytesSent)

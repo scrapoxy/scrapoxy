@@ -1,5 +1,7 @@
 export interface ISnapshot {
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     stops: number;
     bytesReceived: number;
     bytesSent: number;
@@ -13,6 +15,8 @@ export interface IWindow {
     size: number;
     count: number;
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     stops: number;
     bytesReceived: number;
     bytesSent: number;
@@ -26,6 +30,8 @@ export interface IWindowAdd {
     size: number;
     count: number;
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     stops: number;
     bytesReceived: number;
     bytesSent: number;

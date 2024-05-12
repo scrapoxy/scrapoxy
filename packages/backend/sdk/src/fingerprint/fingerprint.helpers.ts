@@ -166,6 +166,8 @@ function fingerprintImpl(
     const fingerprintPayload: IFingerprintPayload = {
         ...payload,
         requests: proxy.requests,
+        requestsValid: proxy.requestsValid,
+        requestsInvalid: proxy.requestsInvalid,
         bytesReceived: proxy.bytesReceived,
         bytesSent: proxy.bytesSent,
     };

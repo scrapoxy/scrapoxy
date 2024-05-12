@@ -86,6 +86,8 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,
+                    requestsValid: 0,
+                    requestsInvalid: 0,
                 };
 
                 return fingerprint(

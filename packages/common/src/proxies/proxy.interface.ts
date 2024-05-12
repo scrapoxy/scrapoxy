@@ -162,18 +162,22 @@ export interface IProxyData extends IProxyBase {
 
 
 export const PROXY_SYNC_META = [
-    ...PROXY_DATA_META, 'requests',
+    ...PROXY_DATA_META, 'requestsValid', 'requestsInvalid',
 ];
 
 
 export interface IProxySync extends IProxyData {
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
 }
 
 
 export const PROXY_VIEW_META = [
     ...PROXY_BASE_META,
     'requests',
+    'requestsValid',
+    'requestsInvalid',
     'bytesReceived',
     'bytesSent',
 ];
@@ -184,6 +188,16 @@ export const PROXY_VIEW_SWAGGER_PROPS = {
     requests: {
         type: 'number',
         description: 'number of requests made by the proxy',
+        example: 54,
+    },
+    requestsValid: {
+        type: 'number',
+        description: 'number of response with statusCode < 400',
+        example: 54,
+    },
+    requestsInvalid: {
+        type: 'number',
+        description: 'number of response with statusCode >= 400',
         example: 54,
     },
     bytesReceived: {
@@ -201,6 +215,8 @@ export const PROXY_VIEW_SWAGGER_PROPS = {
 
 export interface IProxyView extends IProxyBase {
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     bytesReceived: number;
     bytesSent: number;
 }
@@ -211,6 +227,8 @@ export interface IProxyViewUI extends IProxyBase {
     online: boolean;
     elapsed: number;
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     bytesReceived: number;
     bytesSent: number;
 }
@@ -221,6 +239,8 @@ export interface IProxyMetricsAdd {
     projectId: string;
     connectorId: string;
     requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     bytesReceived: number;
     bytesSent: number;
 }
@@ -293,16 +313,20 @@ export interface IProxyToConnect {
 
 export const PROXY_TO_REFRESH_META = [
     ...PROXY_TO_CONNECT_META,
+    'requests',
+    'requestsValid',
+    'requestsInvalid',
     'bytesReceived',
     'bytesSent',
-    'requests',
 ];
 
 
 export interface IProxyToRefresh extends IProxyToConnect {
+    requests: number;
+    requestsValid: number;
+    requestsInvalid: number;
     bytesReceived: number;
     bytesSent: number;
-    requests: number;
 }
 
 

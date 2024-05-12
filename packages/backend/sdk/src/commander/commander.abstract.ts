@@ -92,6 +92,8 @@ export abstract class ACommanderService {
                     id: projectId,
                     snapshot: {
                         requests: 0,
+                        requestsValid: 0,
+                        requestsInvalid: 0,
                         stops: proxiesFound.length,
                         bytesReceived: 0,
                         bytesSent: 0,

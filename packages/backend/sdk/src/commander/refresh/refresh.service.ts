@@ -98,6 +98,8 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                     size: window.size,
                     count: 1,
                     requests: project.project.snapshot.requests,
+                    requestsValid: project.project.snapshot.requestsValid,
+                    requestsInvalid: project.project.snapshot.requestsInvalid,
                     stops: project.project.snapshot.stops,
                     bytesReceived: project.project.snapshot.bytesReceived,
                     bytesSent: project.project.snapshot.bytesSent,
@@ -107,11 +109,15 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                 if (window.count >= window.delay) {
                     add.count -= window.count;
                     add.requests -= window.requests;
+                    add.requestsValid -= window.requestsValid;
+                    add.requestsInvalid -= window.requestsInvalid;
                     add.stops -= window.stops;
                     add.bytesReceived -= window.bytesReceived;
                     add.bytesSent -= window.bytesSent;
                     add.snapshot = {
                         requests: window.requests,
+                        requestsValid: window.requestsValid,
+                        requestsInvalid: window.requestsInvalid,
                         stops: window.stops,
                         bytesReceived: window.bytesReceived,
                         bytesSent: window.bytesSent,
@@ -124,11 +130,15 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                 project: {
                     id: project.project.id,
                     requests: project.project.snapshot.requests,
+                    requestsValid: project.project.snapshot.requestsValid,
+                    requestsInvalid: project.project.snapshot.requestsInvalid,
                     stops: project.project.snapshot.stops,
                     bytesReceived: project.project.snapshot.bytesReceived,
                     bytesSent: project.project.snapshot.bytesSent,
                     snapshot: {
                         requests: -project.project.snapshot.requests,
+                        requestsValid: -project.project.snapshot.requestsValid,
+                        requestsInvalid: -project.project.snapshot.requestsInvalid,
                         stops: -project.project.snapshot.stops,
                         bytesReceived: -project.project.snapshot.bytesReceived,
                         bytesSent: -project.project.snapshot.bytesSent,
@@ -232,6 +242,8 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                 disconnectedTs: nowTime,
                 autoRotateDelayFactor: Math.random(),
                 requests: 0,
+                requestsValid: 0,
+                requestsInvalid: 0,
             };
             localProxiesCreatedMap.set(
                 localProxy.key,
@@ -434,6 +446,8 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                     disconnectedTs: nowTime,
                     autoRotateDelayFactor: Math.random(),
                     requests: 0,
+                    requestsValid: 0,
+                    requestsInvalid: 0,
                 };
                 localProxiesMap.set(
                     localProxy.key,

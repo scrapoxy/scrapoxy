@@ -303,8 +303,13 @@ describe(
                         .toHaveLength(2);
 
                     for (const proxyFound of client.proxies) {
+                        const count = sequentialRequestsCount / 4;
                         expect(proxyFound.requests)
-                            .toBe(sequentialRequestsCount / 4);
+                            .toBe(count);
+                        expect(proxyFound.requestsValid)
+                            .toBe(count);
+                        expect(proxyFound.requestsInvalid)
+                            .toBe(0);
 
                         if (bytesSend) {
                             expect(proxyFound.bytesSent)
@@ -332,8 +337,13 @@ describe(
 
                 for (const view of views) {
                     for (const proxyFound of view.proxies) {
+                        const count = sequentialRequestsCount / 4;
                         expect(proxyFound.requests)
-                            .toBe(sequentialRequestsCount / 4);
+                            .toBe(count);
+                        expect(proxyFound.requestsValid)
+                            .toBe(count);
+                        expect(proxyFound.requestsInvalid)
+                            .toBe(0);
                         expect(proxyFound.bytesSent)
                             .toBe(bytesSend);
                         expect(proxyFound.bytesReceived)
@@ -377,6 +387,10 @@ describe(
                     for (const proxyFound of client.proxies) {
                         expect(proxyFound.requests)
                             .toBeGreaterThanOrEqual(10);
+                        expect(proxyFound.requestsValid)
+                            .toBeGreaterThanOrEqual(10);
+                        expect(proxyFound.requestsInvalid)
+                            .toBe(0);
 
                         expect(proxyFound.bytesSent)
                             .toBeGreaterThan(0);

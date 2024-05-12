@@ -279,6 +279,8 @@ export class EventsConnectorsClient {
         const proxyCreated: IProxyView = {
             ...proxy,
             requests: 0,
+            requestsValid: 0,
+            requestsInvalid: 0,
             bytesReceived: 0,
             bytesSent: 0,
         };
@@ -366,6 +368,8 @@ export class EventsConnectorsClient {
 
                 if (proxyFound) {
                     proxyFound.requests += proxy.requests;
+                    proxyFound.requestsValid += proxy.requestsValid;
+                    proxyFound.requestsInvalid += proxy.requestsInvalid;
                     proxyFound.bytesReceived += proxy.bytesReceived;
                     proxyFound.bytesSent += proxy.bytesSent;
                 }

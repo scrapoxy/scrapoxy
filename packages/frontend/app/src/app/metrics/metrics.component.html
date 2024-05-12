@@ -133,9 +133,25 @@
             </c-col>
 
             <c-col md="6" xl="3">
+                <c-widget-stat-f title="valid requests" color="success" [value]="projectMetrics.requestsValid">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilCheckAlt" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
+                <c-widget-stat-f title="invalid requests" color="warning" [value]="projectMetrics.requestsInvalid">
+                    <ng-template cTemplateId="widgetIconTemplate">
+                        <svg cIcon name="cilX" size="xl"></svg>
+                    </ng-template>
+                </c-widget-stat-f>
+            </c-col>
+
+            <c-col md="6" xl="3">
                 <c-widget-stat-f title="proxies created" color="success" [value]="projectMetrics.proxiesCreated">
                     <ng-template cTemplateId="widgetIconTemplate">
-                        <svg cIcon name="cilHappy" size="xl"></svg>
+                        <svg cIcon name="cilPlus" size="xl"></svg>
                     </ng-template>
                 </c-widget-stat-f>
             </c-col>
@@ -143,11 +159,13 @@
             <c-col md="6" xl="3">
                 <c-widget-stat-f title="proxies removed" color="warning" [value]="projectMetrics.proxiesRemoved">
                     <ng-template cTemplateId="widgetIconTemplate">
-                        <svg cIcon name="cilFrown" size="xl"></svg>
+                        <svg cIcon name="cilMinus" size="xl"></svg>
                     </ng-template>
                 </c-widget-stat-f>
             </c-col>
+        </c-row>
 
+        <c-row>
             <c-col md="6">
                 <widget-range
                     color="primary"

@@ -270,6 +270,8 @@ export class EventsProxiesClient {
                         Math.floor((this.nowTime - proxy.createdTs) / 1000)
                     ),
                     requests: 0,
+                    requestsValid: 0,
+                    requestsInvalid: 0,
                     bytesReceived: 0,
                     bytesSent: 0,
                 };
@@ -322,6 +324,8 @@ export class EventsProxiesClient {
 
                 if (proxyFound) {
                     proxyFound.requests += proxy.requests;
+                    proxyFound.requestsValid += proxy.requestsValid;
+                    proxyFound.requestsInvalid += proxy.requestsInvalid;
                     proxyFound.bytesReceived += proxy.bytesReceived;
                     proxyFound.bytesSent += proxy.bytesSent;
                 }

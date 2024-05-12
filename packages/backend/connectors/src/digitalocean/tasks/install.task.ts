@@ -173,6 +173,8 @@ class DigitalOceanInstallCommand extends ATaskCommand {
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,
+                    requestsValid: 0,
+                    requestsInvalid: 0,
                 };
                 const sockets = new Sockets();
                 try {

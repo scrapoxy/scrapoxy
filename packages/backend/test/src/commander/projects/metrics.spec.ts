@@ -205,6 +205,10 @@ describe(
 
                     expect(store.view.project.requests)
                         .toBe(0);
+                    expect(store.view.project.requestsValid)
+                        .toBe(0);
+                    expect(store.view.project.requestsInvalid)
+                        .toBe(0);
                     expect(store.view.project.stops)
                         .toBe(0);
                     expect(store.view.project.bytesReceived)
@@ -236,6 +240,10 @@ describe(
                 const metrics = await commanderApp.frontendClient.getProjectMetricsById(project.id);
 
                 expect(metrics.project.requests)
+                    .toBe(0);
+                expect(metrics.project.requestsValid)
+                    .toBe(0);
+                expect(metrics.project.requestsInvalid) // TODO: add a test for success rate
                     .toBe(0);
                 expect(metrics.project.stops)
                     .toBe(0);
@@ -318,6 +326,10 @@ describe(
 
                     expect(store.view.project.requests)
                         .toBe(2);
+                    expect(store.view.project.requestsValid)
+                        .toBe(2);
+                    expect(store.view.project.requestsInvalid)
+                        .toBe(0);
                     expect(store.view.project.stops)
                         .toBe(0);
                     expect(store.view.project.bytesReceived)
@@ -330,6 +342,10 @@ describe(
 
                 expect(metrics.project.requests)
                     .toBe(2);
+                expect(metrics.project.requestsValid)
+                    .toBe(2);
+                expect(metrics.project.requestsInvalid)
+                    .toBe(0);
                 expect(metrics.project.stops)
                     .toBe(0);
                 expect(metrics.project.bytesReceived)
@@ -447,17 +463,24 @@ describe(
 
                     expect(store.view.project.requests)
                         .toBe(4);
+                    expect(store.view.project.requestsValid)
+                        .toBe(4);
+                    expect(store.view.project.requestsInvalid)
+                        .toBe(0);
                     expect(store.view.project.bytesReceived)
                         .toBeGreaterThan(size * 2);
                     expect(store.view.project.bytesSent)
                         .toBeGreaterThan(size * 2);
-
                 });
 
                 const metrics = await commanderApp.frontendClient.getProjectMetricsById(project.id);
 
                 expect(metrics.project.requests)
                     .toBe(4);
+                expect(metrics.project.requestsValid)
+                    .toBe(4);
+                expect(metrics.project.requestsInvalid)
+                    .toBe(0);
                 expect(metrics.project.bytesReceived)
                     .toBeGreaterThan(size * 2);
                 expect(metrics.project.bytesSent)

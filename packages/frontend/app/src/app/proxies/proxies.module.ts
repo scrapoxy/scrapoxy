@@ -20,6 +20,7 @@ import { SharedSpxModule } from '@scrapoxy/frontend-sdk';
 import { ProxiesComponent } from './proxies.component';
 import { routes } from './proxies.routes';
 import { ProxyStatusComponent } from './proxy-status/status.component';
+import { SuccessRateComponent } from './success-rate/rate.component';
 
 
 @NgModule({
@@ -39,7 +40,7 @@ import { ProxyStatusComponent } from './proxy-status/status.component';
         TooltipModule,
     ],
     declarations: [
-        ProxiesComponent, ProxyStatusComponent,
+        ProxiesComponent, ProxyStatusComponent, SuccessRateComponent,
     ],
     providers: [
         provideRouter(routes),

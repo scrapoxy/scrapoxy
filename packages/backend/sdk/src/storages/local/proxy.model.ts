@@ -42,9 +42,11 @@ export function toProxyToRefresh(proxy: IProxyModel): IProxyToRefresh {
         config: proxy.config,
         useragent: proxy.useragent,
         timeoutDisconnected: proxy.timeoutDisconnected,
+        requests: proxy.requests,
+        requestsValid: proxy.requestsValid,
+        requestsInvalid: proxy.requestsInvalid,
         bytesReceived: proxy.bytesReceived,
         bytesSent: proxy.bytesSent,
-        requests: proxy.requests,
     };
 
     return connect;

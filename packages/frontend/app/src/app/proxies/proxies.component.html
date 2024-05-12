@@ -56,7 +56,7 @@
                                         <th
                                             scope="col"
                                             class="col-proxy-requests"
-                                            cTooltip="# Requests initiated by the proxy"
+                                            cTooltip="# Requests initiated by the proxy (and success rate)"
                                             cTooltipPlacement="top">
                                             Requests
                                         </th>
@@ -108,6 +108,10 @@
 
                                             <td class="col-proxy-requests">
                                                 {{ proxy.requests | numberUnit }}
+
+                                                <success-rate
+                                                    [valid]="proxy.requestsValid"
+                                                    [invalid]="proxy.requestsInvalid"></success-rate>
                                             </td>
 
                                             <td class="col-proxy-uptime">
