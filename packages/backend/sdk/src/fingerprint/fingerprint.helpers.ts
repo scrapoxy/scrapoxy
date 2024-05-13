@@ -137,7 +137,7 @@ function fingerprintImpl(
     url: string,
     transport: ATransportService,
     proxy: IProxyToRefresh,
-    payload: IFingerprintRequest,
+    fpRequest: IFingerprintRequest,
     sockets: Sockets,
     useragent: string,
     followRedirectCount: number,
@@ -163,8 +163,9 @@ function fingerprintImpl(
         proxy,
         sockets
     );
-    const fingerprintPayload: IFingerprintPayload = {
-        ...payload,
+    const fpPayload: IFingerprintPayload = {
+        ...fpRequest,
+        version: 2,
         requests: proxy.requests,
         requestsValid: proxy.requestsValid,
         requestsInvalid: proxy.requestsInvalid,
@@ -174,7 +175,7 @@ function fingerprintImpl(
 
     return fingerprintRequest(
         reqArgs,
-        fingerprintPayload
+        fpPayload
     )
         .catch((err: any) => {
             if (err instanceof RedirectError) {
@@ -192,7 +193,7 @@ function fingerprintImpl(
                     location,
                     transport,
                     proxy,
-                    payload,
+                    fpRequest,
                     sockets,
                     useragent,
                     followRedirectCount - 1,
@@ -205,7 +206,7 @@ function fingerprintImpl(
                     url,
                     transport,
                     proxy,
-                    payload,
+                    fpRequest,
                     sockets,
                     useragent,
                     followRedirectCount,
@@ -222,14 +223,14 @@ export function fingerprint(
     transport: ATransportService,
     proxy: IProxyToRefresh,
     options: IFingerprintOptions,
-    fingerprintPayload: IFingerprintRequest,
+    fpRequest: IFingerprintRequest,
     sockets: Sockets
 ): Promise<IFingerprint> {
     return fingerprintImpl(
         options.url,
         transport,
         proxy,
-        fingerprintPayload,
+        fpRequest,
         sockets,
         options.useragent,
         options.followRedirectMax,

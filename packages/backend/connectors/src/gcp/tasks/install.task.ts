@@ -262,7 +262,7 @@ class GcpInstallCommand extends ATaskCommand {
                 };
                 const sockets = new Sockets();
                 try {
-                    const payload: IFingerprintRequest = {
+                    const fpRequest: IFingerprintRequest = {
                         installId: this.data.installId,
                         mode: EFingerprintMode.INSTALL,
                         connectorType: proxy.type,
@@ -273,7 +273,7 @@ class GcpInstallCommand extends ATaskCommand {
                         this.transport,
                         proxy,
                         this.data.fingerprintOptions,
-                        payload,
+                        fpRequest,
                         sockets
                     );
                 } catch (err: any) {

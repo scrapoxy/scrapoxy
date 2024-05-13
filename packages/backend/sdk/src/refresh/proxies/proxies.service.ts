@@ -68,7 +68,7 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
         try {
             proxiesRefreshed = await Promise.all(proxiesToRefresh.proxies.map((proxy) => {
                 const transport = this.transportproviders.getTransportByType(proxy.transportType);
-                const payload: IFingerprintRequest = {
+                const fpRequest: IFingerprintRequest = {
                     installId: proxiesToRefresh.installId,
                     mode: EFingerprintMode.CONNECTOR,
                     connectorType: proxy.type,
@@ -79,7 +79,7 @@ export class RefreshProxiesService extends ARefresh<IProxiesToRefresh> implement
                     transport,
                     proxy,
                     this.config.fingerprint,
-                    payload,
+                    fpRequest,
                     sockets
                 )
                     .then((fp) => {

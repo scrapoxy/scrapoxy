@@ -105,6 +105,7 @@ export interface IFingerprintRequest {
 
 
 export interface IFingerprintPayload extends IFingerprintRequest {
+    version: number;
     requests: number;
     requestsValid: number;
     requestsInvalid: number;

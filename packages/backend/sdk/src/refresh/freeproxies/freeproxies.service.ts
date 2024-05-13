@@ -62,7 +62,7 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
         let freeproxiesRefreshed: IFreeproxyRefreshed[];
         try {
             freeproxiesRefreshed = await Promise.all(freeproxieToRefresh.freeproxies.map((freeproxy) => {
-                const payload: IFingerprintRequest = {
+                const fpRequest: IFingerprintRequest = {
                     installId: freeproxieToRefresh.installId,
                     mode: EFingerprintMode.FREEPROXIES,
                     connectorType: CONNECTOR_FREEPROXIES_TYPE,
@@ -94,7 +94,7 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     transport,
                     proxy,
                     this.config.fingerprint,
-                    payload,
+                    fpRequest,
                     sockets
                 )
                     .then((fp) => {
