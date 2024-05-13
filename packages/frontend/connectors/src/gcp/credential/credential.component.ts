@@ -69,6 +69,26 @@ export class CredentialGcpComponent implements ICredentialComponent, OnInit {
         return !!navigator.clipboard;
     }
 
+    onPrivateKeyChanged() {
+        const privateKeyControl = this.subForm.get('privateKey');
+
+        if (!privateKeyControl) {
+            return;
+        }
+
+        const privateKey = privateKeyControl.value;
+
+        if (!privateKey || privateKey.length <= 0) {
+            return;
+        }
+
+        const privateCleaned = privateKey.replace(
+            /\\n/g,
+            '\n'
+        );
+        privateKeyControl.setValue(privateCleaned);
+    }
+
     async pasteCredentials() {
         const dataRaw = await navigator.clipboard.readText();
         try {
