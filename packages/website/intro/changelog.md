@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.8.0
+
+### Features
+
+- **success rate**: add success rate metrics to proxies and project
+
+### Bug fixes
+
+- **gcp**: fix copy/paste with GCP private key
+
+
 ## 4.7.2
 
 ### Bug fixes
