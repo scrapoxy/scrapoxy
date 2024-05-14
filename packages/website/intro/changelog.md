@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.8.1
+
+### Bug fixes
+
+- **ninjasproxy**: update the API url
+
+
 ## 4.8.0
 
 ### Features
