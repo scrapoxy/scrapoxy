@@ -13,7 +13,7 @@ export class NinjasproxyApi {
     ) {
         this.instance = axios.create({
             ...agents.axiosDefaults,
-            baseURL: 'https://api.ninjasproxy.com/v1',
+            baseURL: 'https://proxyapi.ninjasproxy.com/api/v1',
             params: {
                 apiKey,
             },
@@ -21,7 +21,6 @@ export class NinjasproxyApi {
     }
 
     async getAllProxies(): Promise<INinjasproxyProxy[]> {
-
         const res = await this.instance.get<INinjasproxyProxy[]>('myProxies');
 
         return res.data;
