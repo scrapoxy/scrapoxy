@@ -22,6 +22,8 @@ export * from './iproyal-residential';
 
 export * from './iproyal-server';
 
+export * from './netnut';
+
 export * from './nimbleway';
 
 export * from './ninjasproxy';

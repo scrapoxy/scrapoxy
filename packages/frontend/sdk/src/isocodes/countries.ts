@@ -233,6 +233,7 @@ const isocodeCountriesAlpha2: { [key: string]: string } = {
     UA: 'Ukraine',
     AE: 'United Arab Emirates',
     GB: 'United Kingdom',
+    UK: 'United Kingdom',
     UM: 'Minor Outlying Islands',
     US: 'United States of America',
     UY: 'Uruguay',

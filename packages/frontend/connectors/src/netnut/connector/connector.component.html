@@ -1,0 +1,37 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['proxyType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="proxyType">Type</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="proxyType" formControlName="proxyType">
+                        <option [ngValue]="null" disabled>----- Select Type ------</option>
+                        <option value="res">Residential</option>
+                        <option value="stc">ISP</option>
+                        <option value="mob">Mobile</option>
+                        <option value="dc">Datacenter</option>
+                    </select>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+
+    @if (subForm.controls['country']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="country" formControlName="country">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="any">All</option>
+                        @for (country of countries; track country.code) {
+                            <option [value]="country.code">{{country.name}}</option>
+                        }
+                    </select>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+</ng-container>
