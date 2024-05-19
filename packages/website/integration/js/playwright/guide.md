@@ -26,9 +26,25 @@ npx playwright install
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;
 3. Remember the project token (format is `USERNAME:PASSWORD`).
+4. Click on `Update`.
 
 
-### Step 3: Create and run the script
+### Step 3: Retrieve and install Scrapoxy Certificate
+
+![Certificate](../../certificate.png)
+
+1. Open Scrapoxy User interface, and go to the project `Settings`;
+2. Click on `Download CA certificate` and save the file `scrapoxy-ca.crt`;
+3. Remember the project token (format is `USERNAME:PASSWORD`).
+
+Install the certificate with the following command:
+
+```shell
+certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n scrapoxy -i ./scrapoxy-ca.crt
+````
+
+
+### Step 4: Create and run the script
 
 Create a file name `playwright.js` with the following content:
 
