@@ -495,9 +495,11 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                         const setCookieHeader = proxyResHeaders[ 'set-cookie' ] as string[];
 
                         if (req.url?.startsWith('https:')) {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Path=/; Domain=.${domain}; HttpOnly; Secure; SameSite=None`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Domain=.${domain}; HttpOnly; Secure; SameSite=None`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; HttpOnly; Secure; SameSite=None`);
                         } else {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Path=/; Domain=.${domain}; HttpOnly`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Domain=.${domain}; HttpOnly`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; HttpOnly`);
                         }
                     } else if (proxyname) {
                         proxyResHeaders[ 'set-cookie' ] = proxyResHeaders[ 'set-cookie' ] ?? [];
@@ -505,9 +507,11 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                         const setCookieHeader = proxyResHeaders[ 'set-cookie' ] as string[];
 
                         if (req.url?.startsWith('https:')) {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Path=/; Domain=.${domain}; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Domain=.${domain}; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
                         } else {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Path=/; Domain=.${domain}; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Domain=.${domain}; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
                         }
                     }
                 }
