@@ -1,8 +1,19 @@
 import * as fs from 'fs';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import type { AxiosResponse } from 'axios';
 
+
+interface IAxiosResponseExtended extends AxiosResponse {
+    m: string;
+    using: string;
+}
+
+class AxiosErrorExt extends AxiosError {
+    m: string | undefined = void 0;
+
+    using: string | undefined = void 0;
+}
 
 const tokensRaw = process.env.TOKENS as string;
 
@@ -29,11 +40,11 @@ function askFingerprintLoop(
 ): Promise<void> {
     const token = tokens[ tokenIndex ];
     const [
-        name, login, password,
+        using, login, password,
     ] = token.split(':');
     const proxyAuthorization = `Basic ${Buffer.from(`${login}:${password}`)
         .toString('base64')}`;
-    let requestPromise: Promise<[AxiosResponse, string, string]>;
+    let requestPromise: Promise<IAxiosResponseExtended>;
     switch (mode) {
         case 0: {
             requestPromise = axios.get(
@@ -46,9 +57,20 @@ function askFingerprintLoop(
                     validateStatus: (statusCode) => statusCode === 200,
                 }
             )
-                .then((res) => [
-                    res, 'http  ', name,
-                ]);
+                .then((res) => {
+                    const resExtended = res as IAxiosResponseExtended;
+                    resExtended.m = 'http  ';
+                    resExtended.using = using;
+
+                    return resExtended;
+                })
+                .catch((err: AxiosError) => {
+                    const errExt = err as AxiosErrorExt;
+                    errExt.m = 'http  ';
+                    errExt.using = using;
+
+                    throw errExt;
+                });
 
             break;
         }
@@ -64,9 +86,20 @@ function askFingerprintLoop(
                     validateStatus: (statusCode) => statusCode === 200,
                 }
             )
-                .then((res) => [
-                    res, 'https ', name,
-                ]);
+                .then((res) => {
+                    const resExtended = res as IAxiosResponseExtended;
+                    resExtended.m = 'https ';
+                    resExtended.using = using;
+
+                    return resExtended;
+                })
+                .catch((err: AxiosError) => {
+                    const errExt = err as AxiosErrorExt;
+                    errExt.m = 'https ';
+                    errExt.using = using;
+
+                    throw errExt;
+                });
 
             break;
         }
@@ -91,9 +124,20 @@ function askFingerprintLoop(
                     validateStatus: (statusCode) => statusCode === 200,
                 }
             )
-                .then((res) => [
-                    res, 'httpsc', name,
-                ]);
+                .then((res) => {
+                    const resExtended = res as IAxiosResponseExtended;
+                    resExtended.m = 'httpsc';
+                    resExtended.using = using;
+
+                    return resExtended;
+                })
+                .catch((err: AxiosError) => {
+                    const errExt = err as AxiosErrorExt;
+                    errExt.m = 'httpsc';
+                    errExt.using = using;
+
+                    throw errExt;
+                });
 
             break;
         }
@@ -104,14 +148,12 @@ function askFingerprintLoop(
     }
 
     return requestPromise
-        .then(([
-            res, m, name,
-        ]) => {
+        .then((res) => {
             const ip = res.data;
-            console.log(`[${m}] found ip ${ip} using ${name}`);
+            console.log(`[${res.m}] found ip ${ip} using ${res.using}`);
         })
         .catch((err: any) => {
-            console.error(`get error: ${err.message}`);
+            console.error(`[${err.m}] get error using ${err.using}: ${err.message}`);
         })
         .finally(() => {
             if (mode >= 2) {
