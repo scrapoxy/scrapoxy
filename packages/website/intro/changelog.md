@@ -1,5 +1,18 @@
 # Changelog
 
+
+## 4.9.0
+
+### Features
+
+- **netnut**: add [NetNut](https://netnut.io?ref=ymzmmmu) connector
+
+### Bug fixes
+
+- **sticky**: correct cookie injection for sticky sessions
+
+
+
 ## 4.8.1
 
 ### Bug fixes
