@@ -104,16 +104,6 @@ export interface IFingerprintRequest {
 }
 
 
-export interface IFingerprintPayload extends IFingerprintRequest {
-    version: number;
-    requests: number;
-    requestsValid: number;
-    requestsInvalid: number;
-    bytesReceived: number;
-    bytesSent: number;
-}
-
-
 export const FINGERPRINT_RESPONSE_META = [
     'fingerprint', 'fingerprintError',
 ];

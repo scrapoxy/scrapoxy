@@ -14,7 +14,6 @@ import type { ATransportService } from '../transports';
 import type {
     IFingerprint,
     IFingerprintOptions,
-    IFingerprintPayload,
     IFingerprintRequest,
     IProxyToRefresh,
 } from '@scrapoxy/common';
@@ -28,10 +27,7 @@ class RedirectError extends Error {
 }
 
 
-function fingerprintRequest(
-    args: ClientRequestArgs,
-    payload: IFingerprintPayload
-) {
+function fingerprintRequest(args: ClientRequestArgs) {
     return new Promise<IFingerprint>((
         resolve, reject
     ) => {
@@ -126,9 +122,7 @@ function fingerprintRequest(
             );
         }
 
-        const payloadRaw = JSON.stringify(payload);
-
-        req.end(payloadRaw);
+        req.end();
     });
 }
 
@@ -149,12 +143,22 @@ function fingerprintImpl(
         throw new Error('Invalid url');
     }
 
+    urlOpts.pathname += '?version=2'
+        + '&installId=' + fpRequest.installId
+        + '&mode=' + fpRequest.mode
+        + '&connectorType=' + fpRequest.connectorType
+        + '&proxyId=' + encodeURIComponent(fpRequest.proxyId)
+        + '&requests=' + proxy.requests
+        + '&requestsValid=' + proxy.requestsValid
+        + '&requestsInvalid=' + proxy.requestsInvalid
+        + '&bytesReceived=' + proxy.bytesReceived
+        + '&bytesSent=' + proxy.bytesSent;
+
     const reqArgs = transport.buildFingerprintRequestArgs(
-        'POST',
+        'GET',
         urlOpts,
         {
             Host: urlOpts.hostname,
-            'Content-Type': 'application/json',
             'User-Agent': useragent,
         },
         {
@@ -163,20 +167,8 @@ function fingerprintImpl(
         proxy,
         sockets
     );
-    const fpPayload: IFingerprintPayload = {
-        ...fpRequest,
-        version: 2,
-        requests: proxy.requests,
-        requestsValid: proxy.requestsValid,
-        requestsInvalid: proxy.requestsInvalid,
-        bytesReceived: proxy.bytesReceived,
-        bytesSent: proxy.bytesSent,
-    };
 
-    return fingerprintRequest(
-        reqArgs,
-        fpPayload
-    )
+    return fingerprintRequest(reqArgs)
         .catch((err: any) => {
             if (err instanceof RedirectError) {
                 const location = (err as RedirectError).location;
