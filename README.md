@@ -28,7 +28,7 @@ Scrapoxy handles the startup/shutdown of proxy instances to rotate IP addresses 
 
 ### 🌐 Proxy Services 🌐
 
-Scrapoxy supports many proxy services like [Rayobyte](https://rayobyte.com), [IPRoyal](https://iproyal.com/?r=432273) or [Zyte](https://www.zyte.com).
+Scrapoxy supports many proxy services like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IPRoyal](https://iproyal.com/?r=432273) or [Zyte](https://www.zyte.com).
 
 It connects to these services and uses a variety of parameters such as country or OS type,
 to create a diversity of proxies.

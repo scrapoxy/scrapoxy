@@ -96,7 +96,7 @@ providers:
           url: 'https://www.proxyrack.com'
           img: '/assets/images/proxyrack.svg'
         - name: 'Rayobyte'
-          url: 'https://www.rayobyte.com'
+          url: 'https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com'
           img: '/assets/images/rayobyte.svg'
         - name: 'Zyte'
           url: 'https://www.zyte.com'
