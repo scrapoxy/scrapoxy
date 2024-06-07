@@ -28,7 +28,7 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'IPRoyal Server Credential',
        defaultConnectorName: 'IPRoyal Server Connector',
-       url: 'https://iproyal.com',
+       url: 'https://iproyal.com/?r=432273',
        type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,

@@ -8,7 +8,7 @@ Scrapoxy supports HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
 For instance, public proxies can be obtained from:
 - [ProxyScrape](https://proxyscrape.com/free-proxy-list)
 - [Spys One](https://spys.one)
-- [IPRoyal](https://iproyal.com/free-proxy-list)
+- [IPRoyal](https://iproyal.com/free-proxy-list?r=432273)
 - [Free Proxy CZ](http://free-proxy.cz)
 - [Free Proxy World](https://www.freeproxy.world)
 - [Proxy List Download](https://www.proxy-list.download)

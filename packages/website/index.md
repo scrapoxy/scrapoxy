@@ -69,7 +69,7 @@ providers:
           url: 'https://hypeproxy.io'
           img: '/assets/images/hypeproxy.svg'
         - name: 'IPRoyal'
-          url: 'https://iproyal.com'
+          url: 'https://iproyal.com/?r=432273'
           img: '/assets/images/iproyal.svg'
         - name: 'NetNut'
           url: 'https://netnut.io?ref=ymzmmmu'

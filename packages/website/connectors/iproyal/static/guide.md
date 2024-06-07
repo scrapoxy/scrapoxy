@@ -2,7 +2,7 @@
 
 ![IPRoyal](/assets/images/iproyal.svg){width=230 nozoom}
 
-[IPRoyal](https://iproyal.com) is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies
+[IPRoyal](https://iproyal.com/?r=432273) is a proxy provider that offers a versatile selection of different proxies. These include top-end residential proxies, datacenter proxies, and even niche-specific sneaker proxies
 
 This connector is for Static Residential Proxies, Sneaker DC Proxies, and Datacenter Proxies.
 
@@ -22,7 +22,7 @@ An active IPRoyal subscription is required on Static Residential Proxies, Sneake
 
 ## IPRoyal Dashboard
 
-Connect to [Dashboard](https://dashboard.iproyal.com).
+Connect to [Dashboard](https://dashboard.iproyal.com?r=432273).
 
 
 ### Get the account credentials
