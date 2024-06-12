@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.10.0
+
+### Features
+
+- **brightdata**: add support for Residential and Mobile proxies for [BrightData](https://get.brightdata.com/khkl3keb25ld)
+- **fingerprint**: use GET instead of POST method to access fingerprint server (to bypass firewall restrictions)
+
+### Bug fixes
+
+- **website**: misc fixes
+
 
 ## 4.9.0
 
