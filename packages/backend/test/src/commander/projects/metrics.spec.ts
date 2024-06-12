@@ -243,7 +243,7 @@ describe(
                     .toBe(0);
                 expect(metrics.project.requestsValid)
                     .toBe(0);
-                expect(metrics.project.requestsInvalid) // TODO: add a test for success rate
+                expect(metrics.project.requestsInvalid)
                     .toBe(0);
                 expect(metrics.project.stops)
                     .toBe(0);
