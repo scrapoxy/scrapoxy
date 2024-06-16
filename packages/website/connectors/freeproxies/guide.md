@@ -5,8 +5,11 @@ Users have the flexibility to either utilize their own private proxies or incorp
 
 Scrapoxy supports HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
 
+Here is an [example from ProxyScrape](https://proxyscrape.com/blog/scrapoxy-the-ultimate-tool-for-unrestricted-web-scraping?ref=odgynzc)
+demonstrating how to integrate a proxy list into Scrapoxy.
+
 For instance, public proxies can be obtained from:
-- [ProxyScrape](https://proxyscrape.com/free-proxy-list)
+- [ProxyScrape](https://proxyscrape.com/free-proxy-list?ref=odgynzc)
 - [Spys One](https://spys.one)
 - [IPRoyal](https://iproyal.com/free-proxy-list?r=432273)
 - [Free Proxy CZ](http://free-proxy.cz)
