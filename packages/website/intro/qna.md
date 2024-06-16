@@ -1,5 +1,43 @@
 # Questions & Answers
 
+## General
+
+### Can I access to the master without username:password (e.g. http://localhost:8888) ?
+
+Scrapoxy typically uses a `username:password` combination to select the appropriate project 
+and as a security measure to prevent unauthorized access to the master.
+
+However, you can bypass this security layer by using the [proxy-chain](https://www.npmjs.com/package/proxy-chain) library.
+    
+```js
+const puppeteer = require('puppeteer');
+const proxyChain = require('proxy-chain');
+
+(async() => {
+    const proxyUrl = await proxyChain.anonymizeProxy({
+        url: 'http://username:password@localhost:8888',
+        port: 38888
+    });
+
+    // Prints something like "http://127.0.0.1:38888"
+    console.log(proxyUrl);
+
+    const browser = await puppeteer.launch({
+        args: [`--proxy-server=${proxyUrl}`],
+    });
+
+    // Do your magic here...
+    const page = await browser.newPage();
+    await page.goto('https://www.example.com');
+    await page.screenshot({ path: 'example.png' });
+    await browser.close();
+
+    // Clean up
+    await proxyChain.closeAnonymizedProxy(proxyUrl, true);
+})();
+```
+
+
 ## Errors
 
 ### I've got an error `no such file or directory, open 'scrapoxy.json'` at startup
