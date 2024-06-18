@@ -150,13 +150,16 @@ Complete the form with the following information:
 1. **Credential**: The previous credential;
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
-4. **Location**: The region where the instances will be created;
-5. **Port**: The port of the proxy (on Azure);
-6. **Resource Group Name**: The resource group to host the instances;
-7. **VM size**: The size of the VM;
-8. **Storage Type**: The type of storage;
-9. **Prefix**: The prefix for all resources created on Azure;
-10. **Image Resource Group Name**: The resource group where the image is stored.
+4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
+5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
+6. **Location**: The region where the instances will be created;
+7. **Port**: The port of the proxy (on Azure);
+8. **Resource Group Name**: The resource group to host the instances;
+9. **VM size**: The size of the VM;
+10. **Spot Instance**: If enabled, the VM will be a spot instance;
+11. **Storage Type**: The type of storage;
+12. **Prefix**: The prefix for all resources created on Azure;
+13. **Image Resource Group Name**: The resource group where the image is stored.
 
 And click on `Create`.
 
@@ -164,17 +167,21 @@ And click on `Create`.
 You can retain most of the default values if they are suitable for your use case.
 :::
 
+::: warning
+If you change the VM size or use Spot Instance, please uninstall and install connector.
+:::
+
 
 ### Step 3: Install the connector
+
+![Connector Install Select](spx_connector_install_select.png)
+
+On the connector list, click on `Install`.
 
 ::: warning
 Do not reuse an installation from a prior setup:
 Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
 :::
-
-![Connector Install Select](spx_connector_install_select.png)
-
-On the connector list, click on `Install`.
 
 ---
 
