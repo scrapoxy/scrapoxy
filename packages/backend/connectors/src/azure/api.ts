@@ -193,6 +193,7 @@ export class AzureApi {
             {
                 params: {
                     'api-version': '2021-04-01',
+                    forceDeletionTypes: 'Microsoft.Compute/virtualMachines',
                 },
             }
         );
