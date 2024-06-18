@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.10.1
+
+### Features
+
+- **azure**: add support for Spot Instance (thanks to [Julien Maitrehenry](https://github.com/jmaitrehenry))
+- **fingerprint**: use GET instead of POST method to access fingerprint server (to bypass firewall restrictions)
+
+### Bug fixes
+
+- **azure**: handle running deployment to avoid duplicate instances creation 
+
+
 ## 4.10.0
 
 ### Features
