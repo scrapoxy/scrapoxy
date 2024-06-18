@@ -138,6 +138,16 @@ class AzureInstallCommand extends ATaskCommand {
                 // Create VM reference
                 const installScript = await new InstallScriptBuilder(this.data.certificate)
                     .build();
+                let sku = '20_04-lts-gen2';
+
+                if (this.data.vmSize.startsWith('Standard_A1')) {
+                    sku = '20_04-lts';
+                }
+
+                if (this.data.vmSize.startsWith('Standard_D2pl')) {
+                    sku = '20_04-lts-arm64';
+                }
+
                 const template = new AzureVmsTemplateBuilder(
                     `${this.data.prefix}img`,
                     this.data.port
@@ -147,7 +157,7 @@ class AzureInstallCommand extends ATaskCommand {
                         {
                             publisher: 'canonical',
                             offer: '0001-com-ubuntu-server-focal',
-                            sku: '20_04-lts-gen2',
+                            sku,
                             version: 'latest',
                         },
                         installScript
@@ -169,6 +179,9 @@ class AzureInstallCommand extends ATaskCommand {
                                 },
                                 storageAccountType: {
                                     value: this.data.storageAccountType,
+                                },
+                                createdAt: {
+                                    value: Math.floor(Date.now() / 1000).toString(),
                                 },
                             },
                         },

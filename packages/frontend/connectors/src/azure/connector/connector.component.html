@@ -116,6 +116,26 @@
             </c-col>
         </c-row>
     }
+    @if (subForm.controls['useSpotInstances']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="useSpotInstances">Spot Instance</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    
+                    <c-col md="8">
+                        <c-form-check [switch]="true" sizing="lg">
+                            <input
+                                type="checkbox"
+                                cFormCheckInput
+                                id="useSpotInstances"
+                                formControlName="useSpotInstances" />
+                        </c-form-check>
+                    </c-col>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
     @if (subForm.controls['storageAccountType']; as c) {
         <c-row>
             <label cLabel cCol md="2" for="storageAccountType">Storage Type</label>

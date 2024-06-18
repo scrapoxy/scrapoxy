@@ -133,6 +133,14 @@ export class AzureResourceGroupState {
         for (const name of this.networkInterfacesMap.keys()) {
             this.publicIpAddressesMap.delete(name);
         }
+
+        // Discard newly created IP
+        for (const name of this.publicIpAddressesMap.keys()) {
+            const ip = this.publicIpAddressesMap.get(name);
+            if((ip!.tags?.createdAt ?? 0) > (Math.floor(Date.now() / 1000)-180).toString()) {
+                this.publicIpAddressesMap.delete(name);
+            }
+        }
     }
 
     get disks(): IAzureDisk[] {

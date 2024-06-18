@@ -56,6 +56,7 @@ import type {
 
 const FILTER_VM_SIZES = [
     'Standard_B1ls', 'Standard_B1s', 'Standard_B2s',
+    'Standard_A1_v2', 'Standard_D2plds_v5',
 ];
 
 

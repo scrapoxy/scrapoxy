@@ -98,7 +98,7 @@ export class ConnectorAzureService implements IConnectorService {
             this.connectorConfig.prefix,
             this.connectorConfig.port
         )
-            .addVms(namesLimit)
+            .addVms(namesLimit, this.connectorConfig.useSpotInstances)
             .build();
 
         await this.api.createDeployment(
@@ -123,6 +123,9 @@ export class ConnectorAzureService implements IConnectorService {
                         },
                         storageAccountType: {
                             value: this.connectorConfig.storageAccountType,
+                        },
+                        createdAt: {
+                            value: Math.floor(Date.now() / 1000).toString(),
                         },
                     },
                 },

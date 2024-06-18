@@ -44,6 +44,9 @@ export class AzureVmsTemplateBuilder {
         storageAccountType: {
             type: 'string',
         },
+        createdAt: {
+            type: 'string',
+        }
     };
 
     constructor(
@@ -138,9 +141,9 @@ export class AzureVmsTemplateBuilder {
         return this;
     }
 
-    addVms(names: string[]): AzureVmsTemplateBuilder {
+    addVms(names: string[], useSpotInstances: boolean): AzureVmsTemplateBuilder {
         for (const name of names) {
-            this.addVm(name);
+            this.addVm(name, useSpotInstances);
         }
 
         return this;
@@ -166,6 +169,9 @@ export class AzureVmsTemplateBuilder {
             },
             sku: {
                 name: 'Basic',
+            },
+            tags: {
+                createdAt: '[parameters(\'createdAt\')]'
             },
         };
         this.resources.push(publicIpAddress);
@@ -198,13 +204,16 @@ export class AzureVmsTemplateBuilder {
                     },
                 ],
             },
+            tags: {
+                createdAt: '[parameters(\'createdAt\')]'
+            },
         };
         this.resources.push(nic);
 
         return this;
     }
 
-    private addVm(name: string): AzureVmsTemplateBuilder {
+    private addVm(name: string, useSpotInstances: boolean): AzureVmsTemplateBuilder {
         this.addVmIp(name);
         this.addVmNic(name);
 
@@ -245,8 +254,18 @@ export class AzureVmsTemplateBuilder {
                     },
                 },
             },
-        };
+        } as any;
 
+        if(useSpotInstances) {
+            vm.properties = {
+                ...vm.properties,
+                priority: "Spot",
+                evictionPolicy: "Deallocate",
+                billingProfile: {
+                    maxPrice: -1
+                }
+            }
+        }
         this.resources.push(vm);
 
         this.parameters.subscriptionId = {

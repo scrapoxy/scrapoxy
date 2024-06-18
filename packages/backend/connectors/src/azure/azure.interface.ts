@@ -32,6 +32,7 @@ export interface IConnectorAzureConfig {
     storageAccountType: string;
     prefix: string;
     imageResourceGroupName: string;
+    useSpotInstances: boolean;
 }
 
 
@@ -76,6 +77,9 @@ export interface IAzurePublicIpAddress extends IAzureResource {
     properties: {
         ipAddress?: string;
     };
+    tags: {
+        createdAt?: string;
+    }
 }
 
 
