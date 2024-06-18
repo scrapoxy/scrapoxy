@@ -32,6 +32,7 @@ export interface IConnectorAzureConfig {
     storageAccountType: string;
     prefix: string;
     imageResourceGroupName: string;
+    useSpotInstances: boolean;
 }
 
 

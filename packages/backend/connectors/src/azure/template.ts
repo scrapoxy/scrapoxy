@@ -142,9 +142,15 @@ export class AzureVmsTemplateBuilder {
         return this;
     }
 
-    addVms(names: string[]): AzureVmsTemplateBuilder {
+    addVms(
+        names: string[],
+        useSpotInstances: boolean
+    ): AzureVmsTemplateBuilder {
         for (const name of names) {
-            this.addVm(name);
+            this.addVm(
+                name,
+                useSpotInstances
+            );
         }
 
         return this;
@@ -208,11 +214,14 @@ export class AzureVmsTemplateBuilder {
         return this;
     }
 
-    private addVm(name: string): AzureVmsTemplateBuilder {
+    private addVm(
+        name: string,
+        useSpotInstances: boolean
+    ): AzureVmsTemplateBuilder {
         this.addVmIp(name);
         this.addVmNic(name);
 
-        const vm = {
+        const vm: any = {
             type: 'Microsoft.Compute/virtualMachines',
             apiVersion: '2019-12-01',
             name: `${this.prefix}-${name}-vm`,
@@ -250,6 +259,17 @@ export class AzureVmsTemplateBuilder {
                 },
             },
         };
+
+        if (useSpotInstances) {
+            vm.properties = {
+                ...vm.properties,
+                priority: 'Spot',
+                evictionPolicy: 'Deallocate',
+                billingProfile: {
+                    maxPrice: -1,
+                },
+            };
+        }
 
         this.resources.push(vm);
 

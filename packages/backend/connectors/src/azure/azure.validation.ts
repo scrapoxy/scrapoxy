@@ -32,6 +32,8 @@ const schemaConfig = Joi.object({
     imageResourceGroupName: Joi.string()
         .pattern(azureNamePattern)
         .required(),
+    useSpotInstances: Joi.boolean()
+        .required(),
 });
 
 

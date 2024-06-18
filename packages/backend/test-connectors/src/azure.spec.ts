@@ -30,6 +30,7 @@ describe(
                 storageAccountType: AZURE_DEFAULT_STORAGE_ACCOUNT_TYPE,
                 prefix: `spxtest${suffix}`,
                 imageResourceGroupName: `spxtest_image_${suffix}_rg`,
+                useSpotInstances: false,
             },
             credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/azure/credentials.json');
         const credentialConfig = JSON.parse(credentialConfigData.toString());

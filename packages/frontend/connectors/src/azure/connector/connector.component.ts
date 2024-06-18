@@ -91,6 +91,9 @@ export class ConnectorAzureComponent implements IConnectorComponent, OnInit {
             imageResourceGroupName: [
                 void 0, Validators.required,
             ],
+            useSpotInstances: [
+                void 0, Validators.required,
+            ],
         });
     }
 
@@ -115,6 +118,7 @@ export class ConnectorAzureComponent implements IConnectorComponent, OnInit {
                 storageAccountType: AZURE_DEFAULT_STORAGE_ACCOUNT_TYPE,
                 prefix: 'spx',
                 imageResourceGroupName: `${SCRAPOXY_DATACENTER_PREFIX}_image_rg`,
+                useSpotInstances: false,
             });
         }
 
