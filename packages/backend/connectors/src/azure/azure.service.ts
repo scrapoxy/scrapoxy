@@ -5,6 +5,7 @@ import {
 } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_AZURE_TYPE,
+    EProxyStatus,
     randomName,
     randomNames,
 } from '@scrapoxy/common';
@@ -67,7 +68,10 @@ export class ConnectorAzureService implements IConnectorService {
 
         await this.api.cleanResourceGroupState(state);
 
-        return state.virtualMachines.map((vm) => {
+        const vms = new Map<string, IConnectorProxyRefreshed>();
+
+        // Deployed VMs
+        for (const vm of state.virtualMachines) {
             const config: ITransportProxyRefreshedConfigDatacenter = {
                 address: vm.hostname ? {
                     hostname: vm.hostname,
@@ -83,8 +87,37 @@ export class ConnectorAzureService implements IConnectorService {
                 status: vm.status,
             };
 
-            return proxy;
-        });
+            vms.set(
+                proxy.key,
+                proxy
+            );
+        }
+
+        // VM Deployment in progress
+        for (const deploymentName of state.deploymentNames) {
+            const key = `${this.connectorConfig.prefix}-${deploymentName}-vm`;
+
+            if (!vms.has(key)) {
+                const config: ITransportProxyRefreshedConfigDatacenter = {
+                    address: void 0,
+                };
+                const proxy: IConnectorProxyRefreshed = {
+                    type: CONNECTOR_AZURE_TYPE,
+                    transportType: TRANSPORT_DATACENTER_TYPE,
+                    key,
+                    name: deploymentName,
+                    config,
+                    status: EProxyStatus.STARTING,
+                };
+
+                vms.set(
+                    proxy.key,
+                    proxy
+                );
+            }
+        }
+
+        return Array.from(vms.values());
     }
 
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
@@ -123,6 +156,9 @@ export class ConnectorAzureService implements IConnectorService {
                         },
                         storageAccountType: {
                             value: this.connectorConfig.storageAccountType,
+                        },
+                        vmNames: {
+                            value: namesLimit,
                         },
                     },
                 },

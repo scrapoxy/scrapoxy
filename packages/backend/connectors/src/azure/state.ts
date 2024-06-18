@@ -1,5 +1,6 @@
 import { convertAzureStateToProxyStatus } from './azure.helpers';
 import type {
+    IAzureDeployment,
     IAzureDisk,
     IAzureNetworkInterface,
     IAzurePublicIpAddress,
@@ -58,13 +59,16 @@ export class AzureResourceGroupState {
 
     private readonly virtualMachinesMap = new Map<string, IAzureVirtualMachineSimple>();
 
+    private readonly deploymentNamesSet = new Set<string>();
+
     constructor(
         prefix: string,
         public resourceGroupName: string,
         disks: IAzureDisk[],
         publicIpAddresses: IAzurePublicIpAddress[],
         networkInterfaces: IAzureNetworkInterface[],
-        virtualMachines: IAzureVirtualMachine[]
+        virtualMachines: IAzureVirtualMachine[],
+        deployments: IAzureDeployment[]
     ) {
         // Add disks
         buildResourceMap(
@@ -129,6 +133,18 @@ export class AzureResourceGroupState {
             }
         }
 
+        // Add deploymnent names
+        for (const deployment of deployments) {
+            for (const name of deployment.properties.parameters?.vmNames?.value ?? []) {
+                this.deploymentNamesSet.add(name);
+
+                // Do not remove resources associated with deployment
+                this.publicIpAddressesMap.delete(name);
+                this.networkInterfacesMap.delete(name);
+                this.disksMap.delete(name);
+            }
+        }
+
         // Discard used IPs
         for (const name of this.networkInterfacesMap.keys()) {
             this.publicIpAddressesMap.delete(name);
@@ -151,7 +167,17 @@ export class AzureResourceGroupState {
         return Array.from(this.virtualMachinesMap.values());
     }
 
+    get deploymentNames(): string[] {
+        return Array.from(this.deploymentNamesSet);
+    }
+
     get empty(): boolean {
-        return this.disksMap.size + this.publicIpAddressesMap.size + this.networkInterfacesMap.size + this.virtualMachinesMap.size <= 0;
+        const totalSize = this.disksMap.size
+            + this.publicIpAddressesMap.size
+            + this.networkInterfacesMap.size
+            + this.virtualMachinesMap.size
+            + this.deploymentNamesSet.size;
+
+        return totalSize <= 0;
     }
 }

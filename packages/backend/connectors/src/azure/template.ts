@@ -44,6 +44,10 @@ export class AzureVmsTemplateBuilder {
         storageAccountType: {
             type: 'string',
         },
+        vmNames: {
+            type: 'array',
+            defaultValue: [],
+        },
     };
 
     constructor(

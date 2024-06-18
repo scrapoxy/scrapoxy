@@ -25,6 +25,7 @@ import type {
 import type { IOAuthToken } from '@scrapoxy/common';
 import type {
     AxiosInstance,
+    AxiosRequestConfig,
     AxiosResponse,
 } from 'axios';
 
@@ -205,11 +206,16 @@ export class AzureApi {
         prefix: string
     ): Promise<AzureResourceGroupState> {
         const [
+            deployments,
             vms,
             nics,
             ips,
             disks,
         ] = await Promise.all([
+            this.listDeployments(
+                resourceGroupName,
+                EAzureProvisioningState.Running
+            ),
             this.listVirtualMachines(),
             this.listNetworkInterfaces(resourceGroupName),
             this.listPublicIpAddresses(resourceGroupName),
@@ -222,7 +228,8 @@ export class AzureApi {
             disks,
             ips,
             nics,
-            vms
+            vms,
+            deployments
         );
     }
 
@@ -446,6 +453,28 @@ export class AzureApi {
     }
 
     //////////// DEPLOYMENTS ////////////
+    async listDeployments(
+        resourceGroupName: string,
+        provisioningState?: EAzureProvisioningState
+    ): Promise<IAzureDeployment[]> {
+        const config: AxiosRequestConfig = {
+            params: {
+                'api-version': '2021-04-01',
+            },
+        };
+
+        if (provisioningState) {
+            config.params.$filter = `provisioningState eq '${provisioningState}'`;
+        }
+
+        const response = await this.instanceManagement.get<IAzureValue<IAzureDeployment[]>>(
+            `resourceGroups/${resourceGroupName}/providers/Microsoft.Resources/deployments`,
+            config
+        );
+
+        return response.data.value;
+    }
+
     async getDeployment(
         resourceGroupName: string, deploymentName: string
     ): Promise<IAzureDeployment> {

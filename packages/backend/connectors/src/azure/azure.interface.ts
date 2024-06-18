@@ -144,6 +144,7 @@ export enum EAzureProvisioningState {
 
 export interface IAzureDeployment extends IAzureResource {
     properties: {
+        parameters: any;
         provisioningState: EAzureProvisioningState;
         error?: IAzureError;
     };
