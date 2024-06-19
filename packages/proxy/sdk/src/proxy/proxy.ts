@@ -201,7 +201,6 @@ export class Proxy implements IProxy {
                 this.sockets.remove(socket);
             }
         );
-        this.sockets.add(socket);
 
         if (req.headers[ `${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-metrics` ] !== 'ignore') {
             ++this.connectsCountValue;
