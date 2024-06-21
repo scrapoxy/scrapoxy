@@ -92,11 +92,14 @@ class WebController {
         }
     }
 
+    @Get('timeout')
+    async timeoutGet(): Promise<string> {
+        return this.timeoutImpl();
+    }
+
     @Post('timeout')
     async timeoutPost(): Promise<string> {
-        await sleep(ONE_SECOND_IN_MS);
-
-        return 'never_sent';
+        return this.timeoutImpl();
     }
 
     @Get('file/big')
@@ -199,6 +202,12 @@ class WebController {
         } catch (err: any) {
             throw new BadRequestException(err.message);
         }
+    }
+
+    private async timeoutImpl(): Promise<string> {
+        await sleep(ONE_SECOND_IN_MS);
+
+        return 'never_sent';
     }
 }
 

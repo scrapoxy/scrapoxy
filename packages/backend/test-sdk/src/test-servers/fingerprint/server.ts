@@ -3,6 +3,7 @@ import { Server } from 'net';
 import {
     BadRequestException,
     Controller,
+    Get,
     HttpCode,
     Module,
     Post,
@@ -23,9 +24,19 @@ const USERAGENT_REGEXP = new RegExp(`^${SCRAPOXY_USER_AGENT_PREFIX}\/[^ ]+ \([^;
 
 @Controller()
 class FingerprintController {
+    @Get('json')
+    @HttpCode(200)
+    getFingerprintGET(@Req() req: Request): Promise<IFingerprint | undefined> {
+        return this.getFingerprintImpl(req);
+    }
+
     @Post('json')
     @HttpCode(200)
-    async getFingerprint(@Req() req: Request): Promise<IFingerprint | undefined> {
+    getFingerprintPOST(@Req() req: Request): Promise<IFingerprint | undefined> {
+        return this.getFingerprintImpl(req);
+    }
+
+    private async getFingerprintImpl(req: Request): Promise<IFingerprint | undefined> {
         // Check useragent
         const userAgent = req.headers[ 'user-agent' ] as string;
 

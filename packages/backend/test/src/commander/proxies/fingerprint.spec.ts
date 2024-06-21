@@ -267,9 +267,8 @@ describe(
                 it(
                     'should have a default fingerprint',
                     async() => {
-                        const res = await axios.post<IFingerprint>(
+                        const res = await axios.get<IFingerprint>(
                             servers.urlFingerprint,
-                            {},
                             {
                                 headers: {
                                     'Proxy-Authorization': `Basic ${token!}`,
