@@ -37,21 +37,34 @@ class ProxyLoggerConsole implements IProxyLogger {
             process.env.TIMEOUT ?? '60000', // One minute
             10
         );
-    const [
-        cert, key,
-    ] = await Promise.all([
-        fs.readFile('certificate.pem')
-            .then((buffer) => buffer.toString()),
-        fs.readFile('certificate.key')
-            .then((buffer) => buffer.toString()),
-    ]);
     const logger = new ProxyLoggerConsole();
-    const proxy = new Proxy(
-        logger,
-        timeout,
-        cert,
-        key
-    );
+    let proxy: Proxy;
+    try {
+        const [
+            cert, key,
+        ] = await Promise.all([
+            fs.readFile('certificate.pem')
+                .then((buffer) => buffer.toString()),
+            fs.readFile('certificate.key')
+                .then((buffer) => buffer.toString()),
+        ]);
+
+        proxy = new Proxy(
+            logger,
+            timeout,
+            cert,
+            key
+        );
+    } catch (err: any) {
+        if (err?.code === 'ENOENT') {
+            proxy = new Proxy(
+                logger,
+                timeout
+            );
+        } else {
+            throw err;
+        }
+    }
 
     sigstop(() => {
         proxy.close()

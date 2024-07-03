@@ -52,7 +52,7 @@ export interface IAzureInstallCommandData extends IConnectorAzureCredential {
     location: string;
     hostname: string | undefined;
     port: number;
-    certificate: ICertificate;
+    certificate: ICertificate | null;
     resourceGroupName: string;
     vmName: string;
     vmSize: string;
@@ -74,6 +74,7 @@ const schemaData = schemaCredential.keys({
     port: Joi.number()
         .required(),
     certificate: Joi.object()
+        .allow(null)
         .required(),
     resourceGroupName: Joi.string()
         .required(),
