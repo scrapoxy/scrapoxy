@@ -434,11 +434,6 @@ export abstract class ATransportProxyService extends ATransportService {
         timeout: number,
         type: SocksProxyType
     ): ClientRequestArgs {
-        if (config.auth) {
-            const token = btoa(`${config.auth.username}:${config.auth.password}`);
-            headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
-        }
-
         return {
             method,
             hostname: config.address.hostname,
@@ -466,6 +461,11 @@ export abstract class ATransportProxyService extends ATransportService {
                     },
                     timeout,
                 };
+
+                if (config.auth) {
+                    options.proxy.userId = config.auth.username;
+                    options.proxy.password = config.auth.password;
+                }
 
                 SocksClient.createConnection(
                     options,
