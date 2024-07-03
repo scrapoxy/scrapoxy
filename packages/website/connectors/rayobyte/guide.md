@@ -24,6 +24,12 @@ Connect to [Dashboard](https://billing.rayobyte.com/hosting/aff.php?aff=2444&red
 
 ---
 
+![Rayobyte Auth Type](rayobyte_authtype.png)
+
+Choose 'Username / Password' as Authorization Type.
+
+---
+
 ![Rayobyte Key](rayobyte_key.png)
 
 1. Click on `IPV4 PROXIES`;
@@ -76,6 +82,10 @@ And click on `Create`.
 
 1. Start the project;
 2. Start the connector.
+
+::: info
+If the proxies were just ordered, it may take between 5 and 10 minutes to be available.
+:::
 
 
 ### Step 4: Interact with proxies
