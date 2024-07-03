@@ -139,6 +139,10 @@ Complete the form with the following information:
 
 And click on `Create`.
 
+::: info
+It may take Azure up to 10 minutes to reflect the changes.
+:::
+
 
 ### Step 2: Create a new connector
 
