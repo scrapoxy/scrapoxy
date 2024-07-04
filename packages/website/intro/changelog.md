@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.10.2
+
+### Bug fixes
+
+- **transport**: fix usage of username & password for SOCKS proxy
+
+
 ## 4.10.1
 
 ### Features
