@@ -9,7 +9,7 @@ import {
     Validators,
 } from '@angular/forms';
 import {
-    CONNECTOR_NIMBLEWAY_TYPE,
+    CONNECTOR_BRIGHTDATA_TYPE,
     EBrightdataQueryCredential,
 } from '@scrapoxy/common';
 import {
@@ -27,26 +27,26 @@ import type {
 
 
 @Component({
-    selector: `connector-${CONNECTOR_NIMBLEWAY_TYPE}`,
+    selector: `connector-${CONNECTOR_BRIGHTDATA_TYPE}`,
     templateUrl: 'connector.component.html',
 })
 export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit {
-    countries: IIsocodeCountry[];
+    @Input()
+    form: FormGroup;
 
     @Input()
-        form: FormGroup;
+    projectId: string;
 
     @Input()
-        projectId: string;
-
-    @Input()
-        credentialId: string;
+    credentialId: string;
 
     @Input()
     connectorId: string | undefined;
 
     @Input()
-        createMode: boolean;
+    createMode: boolean;
+
+    countries: IIsocodeCountry[];
 
     zones: IBrightdataZoneView[] = [];
 
