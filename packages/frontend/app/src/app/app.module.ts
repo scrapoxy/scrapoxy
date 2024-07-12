@@ -37,6 +37,7 @@ import {
     ConnectorProxySellerResidentialModule,
     ConnectorProxySellerServerModule,
     ConnectorRayobyteModule,
+    ConnectorSmartproxyModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
 } from '@scrapoxy/frontend-connectors';
@@ -85,6 +86,7 @@ import { LoginComponent } from './login/login.component';
         ConnectorProxySellerResidentialModule,
         ConnectorProxySellerServerModule,
         ConnectorRayobyteModule,
+        ConnectorSmartproxyModule,
         ConnectorXProxyModule,
         ConnectorZyteModule,
         HttpClientModule,

@@ -1,0 +1,57 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['country']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select cSelect id="country" formControlName="country">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="all">All</option>
+                        @for (country of countries; track country.code) {
+                            <option [value]="country.code">{{country.name}}</option>
+                        }
+                    </select>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['sessionDuration']; as c) {
+        <c-row [ngStyle]="{'display': hasSessionDuration ? 'flex': 'none'}">
+            <label cLabel cCol md="2" for="sessionDuration">Session Duration (min)</label>
+
+            <c-col md="10">
+                <c-input-group class="has-validation">
+                    <input
+                        type="number"
+                        cFormControl
+                        id="sessionDuration"
+                        formControlName="sessionDuration"
+                        placeholder="Enter the duration"
+                        min="1"
+                        max="1440"
+                        autocomplete="off"
+                        data-form-type="other"
+                        data-lpignore="true"
+                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                    @if (c.dirty || c.touched) {
+                        <c-form-feedback [valid]="c.valid">
+                            @if (c.errors; as errs) {
+                                @if (errs['required']) {
+                                    <div>Duration is required.</div>
+                                }
+                                @if (errs['min']) {
+                                    <div>Duration must be at least 1 minute.</div>
+                                }
+                                @if (errs['max']) {
+                                    <div>Duration must be at most 1440 minutes.</div>
+                                }
+                            }
+                        </c-form-feedback>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+</ng-container>

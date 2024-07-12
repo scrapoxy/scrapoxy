@@ -24,6 +24,7 @@ import {
     ConnectorProxySellerResidentialModule,
     ConnectorProxySellerServerModule,
     ConnectorRayobyteModule,
+    ConnectorSmartproxyModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
 } from '@scrapoxy/backend-connectors';
@@ -87,6 +88,7 @@ export class AppStartModule {
             ConnectorProxidizeModule,
             ConnectorProxyrackModule,
             ConnectorRayobyteModule,
+            ConnectorSmartproxyModule,
             ConnectorXProxyModule,
             ConnectorZyteModule,
             ProbeModule.forRootFromEnv(),

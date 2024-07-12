@@ -42,6 +42,8 @@ export * from './proxyrack';
 
 export * from './rayobyte';
 
+export * from './smartproxy';
+
 export * from './xproxy';
 
 export * from './zyte';
