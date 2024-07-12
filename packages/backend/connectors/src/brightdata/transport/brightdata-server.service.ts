@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import {
-    ATransportResidentialService,
-    TransportprovidersService,
-} from '@scrapoxy/backend-sdk';
+import { TransportprovidersService } from '@scrapoxy/backend-sdk';
+import { ATransportBrightdataService } from './brightdata.abstract';
 import { TRANSPORT_BRIGHTDATA_SERVER_TYPE } from './brightdata.constants';
 import type { IConnectorBrightdataConfig } from '../brightdata.interface';
 import type { IProxyToConnectConfigResidential } from '@scrapoxy/backend-sdk';
@@ -32,7 +30,7 @@ function formatUsername(
 
 
 @Injectable()
-export class TransportBrightdataServerService extends ATransportResidentialService {
+export class TransportBrightdataServerService extends ATransportBrightdataService {
     readonly type = TRANSPORT_BRIGHTDATA_SERVER_TYPE;
 
     constructor(transportproviders: TransportprovidersService) {

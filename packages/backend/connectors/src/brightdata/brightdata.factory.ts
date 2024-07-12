@@ -101,14 +101,14 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
     }
 
     async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
-        const config = connector.connectorConfig as IConnectorBrightdataConfig;
+        const connectorConfig = connector.connectorConfig as IConnectorBrightdataConfig;
 
-        switch (config.zoneType) {
+        switch (connectorConfig.zoneType) {
             case EBrightdataProductType.MOBILE:
             case EBrightdataProductType.RESIDENTIAL: {
                 return new ConnectorBrightdataResidentialService(
                     connector.credentialConfig,
-                    connector.connectorConfig,
+                    connectorConfig,
                     this.agents
                 );
             }
@@ -117,7 +117,7 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
             case EBrightdataProductType.ISP: {
                 return new ConnectorBrightdataServerService(
                     connector.credentialConfig,
-                    connector.connectorConfig,
+                    connectorConfig,
                     this.agents
                 );
             }
