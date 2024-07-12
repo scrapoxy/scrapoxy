@@ -31,8 +31,6 @@ import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
     templateUrl: 'connector.component.html',
 })
 export class ConnectorProxySellerServerComponent implements IConnectorComponent, OnInit {
-    EProxySellerNetworkType = EProxySellerNetworkType;
-
     @Input()
         form: FormGroup;
 
@@ -47,6 +45,8 @@ export class ConnectorProxySellerServerComponent implements IConnectorComponent,
 
     @Input()
         createMode: boolean;
+
+    EProxySellerNetworkType = EProxySellerNetworkType;
 
     countries: string[] = [];
 

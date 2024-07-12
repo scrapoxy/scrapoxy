@@ -30,8 +30,6 @@ import type {
     templateUrl: 'connector.component.html',
 })
 export class ConnectorSmartproxyComponent implements IConnectorComponent, OnInit {
-    countries: IIsocodeCountry[] = [];
-
     @Input()
     form: FormGroup;
 
@@ -46,6 +44,8 @@ export class ConnectorSmartproxyComponent implements IConnectorComponent, OnInit
 
     @Input()
     createMode: boolean;
+
+    countries: IIsocodeCountry[] = [];
 
     readonly subForm: FormGroup;
 

@@ -22,8 +22,6 @@ import type {
     templateUrl: 'connector.component.html',
 })
 export class ConnectorNetnutComponent implements IConnectorComponent, OnInit {
-    countries: IIsocodeCountry[];
-
     @Input()
         form: FormGroup;
 
@@ -38,6 +36,8 @@ export class ConnectorNetnutComponent implements IConnectorComponent, OnInit {
 
     @Input()
         createMode: boolean;
+
+    countries: IIsocodeCountry[];
 
     readonly subForm: FormGroup;
 
