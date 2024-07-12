@@ -5,15 +5,22 @@
 [Bright Data](https://get.brightdata.com/khkl3keb25ld) provides award-winning proxy networks, AI-powered web scrapers, 
 and business-ready datasets for download. Welcome to the internet’s most trusted web data platform.
 
-::: info
-This connector supports Datacenter and ISP proxies, 
-with plans to integrate Residential and Mobile proxies in the future.
-:::
-
-
 ## Prerequisites
 
 An active Bright Data subscription is required.
+
+Please contact support to:
+
+1. Whitelist the domain `fingerprint.scrapoxy.io` ;
+2. Adjust the rate limit for `fingerprint.scrapoxy.io` if you plan to use more than 10 proxies simultaneously.
+
+The rate limit is calculated as follows:
+
+`Ratelimit = Number of simultaneaous proxies x 2800 requests per day`
+
+For example, 100 proxies requires 280,000 requests per day.
+
+Additionally, set the Proxies Timeout to 30 seconds (see Connector configuration below).
 
 
 ## Bright Data Dashboard
@@ -107,6 +114,10 @@ Complete the form with the following information:
 7. **Country**: Select the country to use, or `All` to use all countries.
 
 And click on `Create`.
+
+::: warning
+To prevent rate limit issues, please set the `Proxies Timeout` to 30 seconds.
+:::
 
 
 ### Step 3: Start the connector
