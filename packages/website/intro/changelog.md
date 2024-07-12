@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.11.0
+
+### Features
+
+- **smartproxy**: added support for [Smartproxy](https://smartproxy.pxf.io/Qy5mVo)
+- **task**: enabled naming tasks for better identification
+
+### Bug fixes
+
+- **test**: fixed issues with fingerprints in tests.
+- **misc**: updated and corrected some documentation and naming conventions
+
+
 ## 4.10.2
 
 ### Bug fixes
