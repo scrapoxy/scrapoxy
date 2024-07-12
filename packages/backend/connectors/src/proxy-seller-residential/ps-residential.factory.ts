@@ -233,7 +233,7 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
             stream.pipe(createGunzip())
                 .on(
                     'error',
-                    (err) => {
+                    (err: any) => {
                         reject(err);
                     }
                 )
