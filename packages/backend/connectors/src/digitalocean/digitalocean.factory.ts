@@ -197,6 +197,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
         };
         const taskToCreate: ITaskToCreate = {
             type: DigitalInstallOceanFactory.type,
+            name: `Install DO on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: DigitalInstallOceanFactory.stepMax,
             message: 'Installing DigitalOcean connector...',
             data,
@@ -218,6 +219,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
         };
         const taskToCreate: ITaskToCreate = {
             type: DigitalUninstallOceanFactory.type,
+            name: `Uninstall DO on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: DigitalUninstallOceanFactory.stepMax,
             message: 'Uninstalling Digital Ocean connector...',
             data,

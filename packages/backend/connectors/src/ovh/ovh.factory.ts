@@ -187,6 +187,7 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
         };
         const taskToCreate: ITaskToCreate = {
             type: OvhInstallFactory.type,
+            name: `Install OVH on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: OvhInstallFactory.stepMax,
             message: 'Installing OVH connector...',
             data,
@@ -210,6 +211,7 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
         };
         const taskToCreate: ITaskToCreate = {
             type: OvhUninstallFactory.type,
+            name: `Uninstall OVH on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: OvhUninstallFactory.stepMax,
             message: 'Uninstalling OVH connector...',
             data,

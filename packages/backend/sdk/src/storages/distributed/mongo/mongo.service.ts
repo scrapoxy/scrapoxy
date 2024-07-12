@@ -2601,6 +2601,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
             projectId: task.projectId,
             connectorId: task.connectorId,
             type: task.type,
+            name: task.name,
             running: task.running,
             cancelled: task.cancelled,
             stepCurrent: task.stepCurrent,

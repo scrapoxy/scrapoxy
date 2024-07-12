@@ -189,6 +189,7 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
         };
         const taskToCreate: ITaskToCreate = {
             type: GcpInstallFactory.type,
+            name: `Install GCP on connector ${connector.name} in zone ${connectorConfig.zone}`,
             stepMax: GcpInstallFactory.stepMax,
             message: 'Installing GCP connector...',
             data,
@@ -215,6 +216,7 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
         };
         const taskToCreate: ITaskToCreate = {
             type: GcpUninstallFactory.type,
+            name: `Uninstall GCP on connector ${connector.name} in zone ${connectorConfig.zone}`,
             stepMax: GcpUninstallFactory.stepMax,
             message: 'Uninstalling GCP connector...',
             data,

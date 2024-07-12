@@ -165,6 +165,7 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
         }
 
         const
+            connectorConfig = connector.config as IConnectorDatacenterLocalConfig,
             credentialConfig = credential.config as IConnectorDatacenterLocalCredential;
         const data: IDatacenterLocalInstallCommandData = {
             url: this.moduleConfig.url,
@@ -175,6 +176,7 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
         };
         const taskToCreate: ITaskToCreate = {
             type: DatacenterLocalInstallFactory.type,
+            name: `Install DC local on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: DatacenterLocalInstallFactory.stepMax,
             message: 'Installing Local connector...',
             data,
@@ -198,6 +200,7 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
         };
         const taskToCreate: ITaskToCreate = {
             type: DatacenterLocalUninstallFactory.type,
+            name: `Uninstall DC local on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: DatacenterLocalUninstallFactory.stepMax,
             message: 'Uninstalling Local connector...',
             data,

@@ -3,6 +3,7 @@ export const TASK_VIEW_META = [
     'projectId',
     'connectorId',
     'type',
+    'name',
     'running',
     'cancelled',
     'stepCurrent',
@@ -19,6 +20,7 @@ export interface ITaskView {
     projectId: string;
     connectorId: string;
     type: string;
+    name: string;
     running: boolean;
     cancelled: boolean;
     stepCurrent: number;
@@ -43,6 +45,7 @@ export interface ITaskData extends ITaskView {
 
 export interface ITaskToCreate {
     type: string;
+    name: string;
     stepMax: number;
     message: string;
     data: any;

@@ -179,6 +179,7 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         };
         const taskToCreate: ITaskToCreate = {
             type: AwsInstallFactory.type,
+            name: `Install AWS on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: AwsInstallFactory.stepMax,
             message: 'Installing AWS image...',
             data,
@@ -204,6 +205,7 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         };
         const taskToCreate: ITaskToCreate = {
             type: AwsUninstallFactory.type,
+            name: `Uninstall AWS on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: AwsUninstallFactory.stepMax,
             message: 'Uninstalling Aws datacenter...',
             data,

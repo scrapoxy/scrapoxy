@@ -184,6 +184,7 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
         };
         const taskToCreate: ITaskToCreate = {
             type: AzureInstallFactory.type,
+            name: `Install Azure on connector ${connector.name} in location ${connectorConfig.location}`,
             stepMax: AzureInstallFactory.stepMax,
             message: 'Installing Azure connector...',
             data,
@@ -209,6 +210,7 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
         };
         const taskToCreate: ITaskToCreate = {
             type: AzureUninstallFactory.type,
+            name: `Uninstall Azure on connector ${connector.name} in location ${connectorConfig.location}`,
             stepMax: AzureUninstallFactory.stepMax,
             message: 'Uninstalling Azure connector...',
             data,

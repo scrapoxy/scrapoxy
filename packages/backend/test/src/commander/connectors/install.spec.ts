@@ -41,6 +41,11 @@ describe(
     () => {
         const logger = new Logger();
         const
+            connectorConfig: IConnectorDatacenterLocalConfig = {
+                region: 'europe',
+                size: 'small',
+                imageId: void 0,
+            },
             datacenterLocalApp = new DatacenterLocalApp(logger),
             servers = new TestServers();
         let
@@ -119,11 +124,6 @@ describe(
             );
 
             // Create 2 connectors
-            const connectorConfig: IConnectorDatacenterLocalConfig = {
-                region: 'europe',
-                size: 'small',
-                imageId: void 0,
-            };
             connector = await commanderApp.frontendClient.createConnector(
                 project.id,
                 {
@@ -249,6 +249,8 @@ describe(
                             .toBe(connector.id);
                         expect(task.type)
                             .toBe('imagecreate::datacenter-local');
+                        expect(task.name)
+                            .toBe(`Install DC local on connector ${connector.name} in region ${connectorConfig.region}`);
                         expect(task.running)
                             .toBeTruthy();
                         expect(task.cancelled)
@@ -271,6 +273,8 @@ describe(
                                 .toBe(connector.id);
                             expect(taskFound.type)
                                 .toBe('imagecreate::datacenter-local');
+                            expect(taskFound.name)
+                                .toBe(`Install DC local on connector ${connector.name} in region ${connectorConfig.region}`);
                             expect(taskFound.running)
                                 .toBeTruthy();
                             expect(taskFound.cancelled)

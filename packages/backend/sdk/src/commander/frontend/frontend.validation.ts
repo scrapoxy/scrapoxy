@@ -124,6 +124,8 @@ export const schemaConnectorToActivate = Joi
 export const schemaTaskToCreate = Joi.object({
     type: Joi.string()
         .required(),
+    name: Joi.string()
+        .required(),
     stepMax: Joi.number()
         .required(),
     message: Joi.string()

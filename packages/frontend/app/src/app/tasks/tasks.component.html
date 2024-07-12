@@ -24,7 +24,7 @@
                         <table cTable small>
                             <thead>
                                 <tr>
-                                    <th scope="col">Type</th>
+                                    <th scope="col">Name</th>
 
                                     <th scope="col">Start at</th>
 
@@ -43,7 +43,7 @@
                                             error: isTaskFailed(task),
                                             success: isTaskSucceed(task)
                                         }">
-                                        <td>{{ task.type }}</td>
+                                        <td>{{ task.name }}</td>
                                         <td>
                                             {{ task.startAtTs | date: 'dd/MM/yyyy HH:mm' }}
                                         </td>
