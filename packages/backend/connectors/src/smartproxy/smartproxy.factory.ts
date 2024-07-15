@@ -12,12 +12,16 @@ import {
     CONNECTOR_SMARTPROXY_TYPE,
     ESmartproxyCredentialType,
 } from '@scrapoxy/common';
-import { ConnectorSmartproxyResidentialService } from './smartproxy-residential.service';
+import { ConnectorSmartproxyEndpointsService } from './smartproxy-endpoints.service';
 import { ConnectorSmartproxyServerService } from './smartproxy-server.service';
 import {
     schemaConfig,
     schemaCredential,
 } from './smartproxy.validation';
+import {
+    TRANSPORT_SMARTPROXY_ENDPOINTS_DC_TYPE,
+    TRANSPORT_SMARTPROXY_ENDPOINTS_RESIDENTIAL_TYPE,
+} from './transport';
 import type {
     IConnectorSmartproxyConfig,
     IConnectorSmartproxyCredential,
@@ -50,23 +54,61 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
 
     private readonly agents: Agents = new Agents();
 
-    private readonly endpoints = new Map<string, ISmartproxyEndpoint>();
+    private readonly endpointsDC = new Map<string, ISmartproxyEndpoint>();
+
+    private readonly endpointsResidential = new Map<string, ISmartproxyEndpoint>();
 
     constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
     }
 
     async onModuleInit(): Promise<void> {
-        const endpoints = await this.loadEndpoints(resolvePath(
-            getEnvAssetsPath(),
-            'connectors',
-            'smartproxy',
-            'endpoints.json.gz'
-        ));
+        const [
+            endpointsDC, endpointsResidential,
+        ] = await Promise.all([
+            this.loadEndpoints(resolvePath(
+                getEnvAssetsPath(),
+                'connectors',
+                'smartproxy',
+                'endpoints-dc.json.gz'
+            )),
+            this.loadEndpoints(resolvePath(
+                getEnvAssetsPath(),
+                'connectors',
+                'smartproxy',
+                'endpoints-residential.json.gz'
+            )),
+        ]);
 
-        this.endpoints.clear();
-        for (const endpoint of endpoints) {
-            this.endpoints.set(
+        this.endpointsDC.clear();
+        this.endpointsDC.set(
+            'all',
+            {
+                code: 'all',
+                hostname: 'all.dc.smartproxy.com',
+                portMin: 10001,
+                portMax: 50000,
+            }
+        );
+        for (const endpoint of endpointsDC) {
+            this.endpointsDC.set(
+                endpoint.code.toLowerCase(),
+                endpoint
+            );
+        }
+
+        this.endpointsResidential.clear();
+        this.endpointsResidential.set(
+            'all',
+            {
+                code: 'all',
+                hostname: 'gate.smartproxy.com',
+                portMin: 10001,
+                portMax: 50000,
+            }
+        );
+        for (const endpoint of endpointsResidential) {
+            this.endpointsResidential.set(
                 endpoint.code.toLowerCase(),
                 endpoint
             );
@@ -113,6 +155,15 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
                 );
             }
 
+            case ESmartproxyCredentialType.DC_SHARED: {
+                return new ConnectorSmartproxyEndpointsService(
+                    credentialConfig,
+                    connector.connectorConfig,
+                    TRANSPORT_SMARTPROXY_ENDPOINTS_DC_TYPE,
+                    this.endpointsDC
+                );
+            }
+
             case ESmartproxyCredentialType.ISP_DEDICATED:
             case ESmartproxyCredentialType.ISP_SHARED: {
                 return new ConnectorSmartproxyServerService(
@@ -122,10 +173,11 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
             }
 
             case ESmartproxyCredentialType.RESIDENTIAL: {
-                return new ConnectorSmartproxyResidentialService(
+                return new ConnectorSmartproxyEndpointsService(
                     credentialConfig,
                     connector.connectorConfig,
-                    this.endpoints
+                    TRANSPORT_SMARTPROXY_ENDPOINTS_RESIDENTIAL_TYPE,
+                    this.endpointsResidential
                 );
             }
 

@@ -7,8 +7,8 @@ They provides access to 65M+ global IPs.
 
 
 ::: info
-This connector supports Residential proxies (not Mobile), ISP proxies and Datacenter Pay/IP proxies
-with plans to integrate Mobile and Datacenter Pay/GB proxies in the future.
+This connector supports Residential proxies, ISP proxies and Datacenter proxies
+with plans to integrate Mobile proxies in the future.
 :::
 
 
@@ -48,6 +48,25 @@ You need to create a new credential for each type of product.
 1. On the left menu, select `ISP Proxies` > `Dedicated ISP`;
 2. Remember the username;
 3. Remember the password.
+
+
+### Datacenter Proxies - Pay/GB
+
+::: info
+For Datacenter Pay/GB proxies, you need to reset the password if you can't remember it.
+:::
+
+![Smartproxy Datacenter Pay GB 1](smartproxy_credentials_dc_pay_gb_1.png)
+
+1. On the left menu, select `Datacenter Proxies` > `Datacenter Pay/GB`;
+2. Click on the `Edit` button.
+
+---
+
+![Smartproxy Datacenter Pay GB 1](smartproxy_credentials_dc_pay_gb_2.png)
+
+1. Remember the username;
+2. Change the password, remember and save it.
 
 
 ### Datacenter Proxies - Pay/IP

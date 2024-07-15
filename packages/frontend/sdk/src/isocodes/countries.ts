@@ -250,6 +250,7 @@ const isocodeCountriesAlpha2: { [key: string]: string } = {
     ZW: 'Zimbabwe',
     AX: 'Aland Islands',
     XK: 'Kosovo',
+    EU: 'Europe',
 };
 
 

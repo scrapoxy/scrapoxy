@@ -119,6 +119,19 @@ export class ConnectorSmartproxyComponent implements IConnectorComponent, OnInit
                     break;
                 }
 
+                case ESmartproxyCredentialType.DC_SHARED: {
+                    this.countries = convertCodesToCountries([
+                        'DE',
+                        'EU',
+                        'NL',
+                        'RO',
+                        'US',
+                        'UK',
+                    ]);
+
+                    break;
+                }
+
                 case ESmartproxyCredentialType.ISP_DEDICATED: {
                     this.countries = convertCodesToCountries([
                         'US',

@@ -3,7 +3,6 @@ import {
     CONNECTOR_SMARTPROXY_TYPE,
     EProxyStatus,
 } from '@scrapoxy/common';
-import { TRANSPORT_SMARTPROXY_RESIDENTIAL_TYPE } from './transport';
 import type {
     IConnectorSmartproxyConfig,
     IConnectorSmartproxyCredential,
@@ -19,12 +18,13 @@ import type {
 } from '@scrapoxy/common';
 
 
-export class ConnectorSmartproxyResidentialService implements IConnectorService {
-    private readonly logger = new Logger(ConnectorSmartproxyResidentialService.name);
+export class ConnectorSmartproxyEndpointsService implements IConnectorService {
+    private readonly logger = new Logger(ConnectorSmartproxyEndpointsService.name);
 
     constructor(
         private readonly credentialConfig: IConnectorSmartproxyCredential,
         private readonly connectorConfig: IConnectorSmartproxyConfig,
+        private readonly transportType: string,
         private readonly endpoints: Map<string, ISmartproxyEndpoint>
     ) {}
 
@@ -49,7 +49,7 @@ export class ConnectorSmartproxyResidentialService implements IConnectorService 
                 key,
                 name: key,
                 type: CONNECTOR_SMARTPROXY_TYPE,
-                transportType: TRANSPORT_SMARTPROXY_RESIDENTIAL_TYPE,
+                transportType: this.transportType,
                 status: EProxyStatus.STARTED,
                 config,
             };
@@ -65,9 +65,9 @@ export class ConnectorSmartproxyResidentialService implements IConnectorService 
 
         const endpoint = this.getEndpoint();
         const excludeKeysSet = new Set(excludeKeys);
-        let port = endpoint.portMin;
         const newProxies: IConnectorProxyRefreshed[] = [];
-        while (newProxies.length < count && port <= endpoint.portMax) {
+        while (newProxies.length < count) {
+            const port = Math.floor(Math.random() * (endpoint.portMax - endpoint.portMin + 1)) + endpoint.portMin;
             const key = port.toString(10);
 
             if (!excludeKeysSet.has(key)) {
@@ -83,15 +83,13 @@ export class ConnectorSmartproxyResidentialService implements IConnectorService 
                     key,
                     name: key,
                     type: CONNECTOR_SMARTPROXY_TYPE,
-                    transportType: TRANSPORT_SMARTPROXY_RESIDENTIAL_TYPE,
+                    transportType: this.transportType,
                     status: EProxyStatus.STARTED,
                     config,
                 });
 
                 excludeKeysSet.add(key);
             }
-
-            port++;
         }
 
         return newProxies;
@@ -108,15 +106,6 @@ export class ConnectorSmartproxyResidentialService implements IConnectorService 
     }
 
     private getEndpoint(): ISmartproxyEndpoint {
-        if (this.connectorConfig.country === 'all') {
-            return {
-                code: 'all',
-                hostname: 'gate.smartproxy.com',
-                portMin: 10001,
-                portMax: 49999,
-            };
-        }
-
         const endpointFound = this.endpoints.get(this.connectorConfig.country);
 
         if (endpointFound) {
