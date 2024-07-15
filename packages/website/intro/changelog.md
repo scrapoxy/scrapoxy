@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.11.1
+
+### Features
+
+- **smartproxy**: added support for [Smartproxy](https://smartproxy.pxf.io/Qy5mVo) datacenter pay per GB product
+
+
 ## 4.11.0
 
 ### Features
