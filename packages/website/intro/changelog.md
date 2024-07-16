@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.11.2
+
+### Bug fixes
+
+- **gcp**: upgrade template image to debian-12
+
+
 ## 4.11.1
 
 ### Features
