@@ -130,6 +130,7 @@ export default defineConfig({
                             {text: 'Dynamic IP', link: 'dynamic/guide'},
                         ]
                     },
+                    {text: 'Live Proxies', link: 'liveproxies/guide'},
                     {text: 'NetNut', link: 'netnut/guide'},
                     {text: 'Nimble', link: 'nimbleway/guide'},
                     {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},

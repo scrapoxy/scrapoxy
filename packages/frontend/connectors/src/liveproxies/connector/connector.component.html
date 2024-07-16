@@ -1,0 +1,69 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['packageId']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="packageId">Plan</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="packageId"
+                        formControlName="packageId"
+                        (change)="packageIdChanged()"
+                        [attr.disabled]="processingPlans ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Plan ------</option>
+                        @for (plan of plans; track plan.packageId) {
+                            <option [ngValue]="plan.packageId">{{ plan.productName }}</option>
+                        }
+                    </select>
+
+                    @if (processingPlans) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+
+                    @if (c.dirty || c.touched) {
+                        <c-form-feedback [valid]="c.valid">
+                            @if (c.errors; as errs) {
+                                @if (errs['required']) {
+                                    <div>Plan is required.</div>
+                                }
+                            }
+                        </c-form-feedback>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['country']; as c) {
+        <c-row [ngStyle]="{'display': isEnterprise ? 'flex': 'none'}">
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="country"
+                        formControlName="country">
+                        <option [ngValue]="null" disabled>----- Select Country ------</option>
+                        <option value="all">All</option>
+                        <option value="us">US</option>
+                        <option value="gb">GB</option>
+                        <option value="ca">CA</option>
+                    </select>
+
+                    @if (c.dirty || c.touched) {
+                        <c-form-feedback [valid]="c.valid">
+                            @if (c.errors; as errs) {
+                                @if (errs['required']) {
+                                    <div>Country is required.</div>
+                                }
+                            }
+                        </c-form-feedback>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+</ng-container>
