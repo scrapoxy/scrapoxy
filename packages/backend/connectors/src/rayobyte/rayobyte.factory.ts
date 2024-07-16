@@ -137,7 +137,6 @@ export class ConnectorRayobyteFactory implements IConnectorFactory, OnModuleDest
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-
     }
 
     async listAllProxies(): Promise<IConnectorListProxies> {

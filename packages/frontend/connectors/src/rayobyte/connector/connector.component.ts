@@ -93,7 +93,7 @@ export class ConnectorRayobyteComponent implements IConnectorComponent, OnInit {
             console.error(err);
 
             this.toastsService.error(
-                'Connector AWS',
+                'Connector Rayobyte',
                 err.message
             );
         } finally {
