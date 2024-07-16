@@ -185,7 +185,7 @@ class GcpInstallCommand extends ATaskCommand {
                     machineType: this.data.machineType,
                     networkName: this.data.networkName,
                     startupScript,
-                    sourceImage: 'projects/debian-cloud/global/images/family/debian-10',
+                    sourceImage: 'projects/debian-cloud/global/images/family/debian-12',
                     zone: this.data.zone,
                 });
 
