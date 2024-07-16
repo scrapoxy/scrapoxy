@@ -76,17 +76,25 @@ export class CredentialGcpComponent implements ICredentialComponent, OnInit {
             return;
         }
 
-        const privateKey = privateKeyControl.value;
+        let privateKey = privateKeyControl.value;
 
         if (!privateKey || privateKey.length <= 0) {
             return;
         }
 
-        const privateCleaned = privateKey.replace(
-            /\\n/g,
-            '\n'
+        privateKey = privateKey.replace(
+            /(BEGIN|END) PRIVATE KEY/ig,
+            ''
         );
-        privateKeyControl.setValue(privateCleaned);
+
+        privateKey = privateKey.replace(
+            /[\r\n\s-]+/g,
+            ''
+        );
+
+        privateKey = `-----BEGIN PRIVATE KEY----- \n${privateKey} \n-----END PRIVATE KEY-----`;
+
+        privateKeyControl.setValue(privateKey);
     }
 
     async pasteCredentials() {
