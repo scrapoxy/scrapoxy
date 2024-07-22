@@ -32,6 +32,15 @@ You need to create a new credential for each type of product.
 3. Remember the password.
 
 
+### Mobile Proxies
+
+![Smartproxy Mobile Proxies](smartproxy_credentials_mobile.png)
+
+1. On the left menu, select `Residential Proxies` > `Mobile`;
+2. Remember the username;
+3. Remember the password.
+
+
 ### ISP Proxies - Pay/GB
 
 ![Smartproxy ISP Pay GB](smartproxy_credentials_isp_pay_gb.png)
