@@ -6,14 +6,14 @@
 which provides a high-level API to control Chrome or Chromium over the DevTools Protocol.
 
 
-### Step 1: Install the library
+## Step 1: Install the library
 
 ```shell
 npm install puppeteer
 ```
 
 
-### Step 2: Retrieve project token
+## Step 2: Retrieve project token
 
 ![Token](../../token_sticky.png)
 
@@ -22,7 +22,7 @@ npm install puppeteer
 3. Remember the project token (format is `USERNAME:PASSWORD`).
 
 
-### Step 3: Create and run the script
+## Step 3: Create and run the script
 
 Create a file name `puppeteer.js` with the following content:
 
@@ -72,3 +72,83 @@ Run the script:
 ```shell
 node puppeteer.js
 ```
+
+
+## MacOS issue: Select a certificate
+
+On MacOS, Chrome prompts for a certificate when using MITM:
+
+![Chrome certificate](macos_certificate_error.png)
+
+Unfortunately, you cannot bypass this message using Puppeteer options.
+The only [solution](https://github.com/puppeteer/puppeteer/issues/1319#issuecomment-1834387149) is to intercept the request 
+and use a library like axios to make the request instead.
+
+First, install `axios`:
+
+```shell
+npm install axios
+```
+
+Then, update the script:
+
+```javascript
+import puppeteer from 'puppeteer';
+import axios from "axios";
+
+(async () => {
+    const browser = await puppeteer.launch({
+        headless: 'new',
+        ignoreHTTPSErrors: true,
+    });
+
+    async function newPage() {
+        const page = await browser.newPage();
+        await page.setRequestInterception(true);
+
+        page.on('request', (iReq) => {
+            const options = {
+                url: iReq.url(),
+                method: iReq.method(),
+                headers: iReq.headers(),
+                data: iReq.postData(),
+                proxy: {
+                    protocol: 'http',
+                    host: 'localhost',
+                    port: 8888,
+                    auth: {
+                        username: 'USERNAME',
+                        password: 'PASSWORD',
+                    }
+                }
+            };
+            axios.request(options)
+                .then((res) => {
+                    iReq.respond({
+                        status: res.status,
+                        contentType: res.headers['content-type'],
+                        headers: res.headers,
+                        body: res.data,
+                    });
+                })
+                .catch(() => {
+                    iReq.abort('connectionrefused')
+                });
+        });
+
+        return page;
+    }
+
+    const page = await newPage();
+
+    await page.goto('https://fingerprint.scrapoxy.io');
+
+    const content = await page.content();
+    console.log(content);
+
+    await browser.close();
+})()
+    .catch(console.error);
+```
+
+Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
