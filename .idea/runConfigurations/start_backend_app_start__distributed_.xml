@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="start:backend-app:start (distributed)" type="NodeJSConfigurationType" node-parameters="./node_modules/.bin/nx serve backend-app --args=&quot;start&quot; --args=&quot;-c&quot; --args=&quot;-m&quot; --args=&quot;-r&quot; --args=&quot;--storage&quot; --args=&quot;distributed&quot; --args=&quot;--test&quot;" working-dir="$PROJECT_DIR$">
+    <output_file path="$PROJECT_DIR$/logs/backend-file.log" />
+    <envs>
+      <env name="AUTH_GITHUB_CLIENT_ID" value="ae80f74468708f04abe9" />
+      <env name="AUTH_GITHUB_CLIENT_SECRET" value="9b0c6989009bfeaa9d705f3febec63a5ed7da985" />
+      <env name="AUTH_GOOGLE_CLIENT_ID" value="4393251255-t9vs0siihhjog8vakmtsc03kj6qg18n1.apps.googleusercontent.com" />
+      <env name="AUTH_GOOGLE_CLIENT_SECRET" value="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" />
+      <env name="AUTH_LOCAL_PASSWORD" value="password" />
+      <env name="AUTH_LOCAL_USERNAME" value="admin" />
+      <env name="BACKEND_JWT_SECRET" value="backendsecret" />
+      <env name="COMMANDER_PORT" value="8889" />
+      <env name="FRONTEND_JWT_SECRET" value="frontendsecret" />
+      <env name="STORAGE_DISTRIBUTED_MONGO_DB" value="scrapoxy" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

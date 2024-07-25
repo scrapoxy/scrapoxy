@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="start:backend-app:start (file)" type="NodeJSConfigurationType" node-parameters="./node_modules/.bin/nx serve backend-app --verbose --args=&quot;start&quot; --args=&quot;-c&quot; --args=&quot;-m&quot; --args=&quot;-r&quot; --args=&quot;--storage&quot; --args=&quot;file&quot;" working-dir="$PROJECT_DIR$">
+    <output_file path="$PROJECT_DIR$/logs/backend-file.log" />
+    <envs>
+      <env name="AUTH_LOCAL_PASSWORD" value="password" />
+      <env name="AUTH_LOCAL_USERNAME" value="admin" />
+      <env name="BACKEND_JWT_SECRET" value="backendsecret" />
+      <env name="COMMANDER_PORT" value="8889" />
+      <env name="FRONTEND_JWT_SECRET" value="frontendsecret" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
