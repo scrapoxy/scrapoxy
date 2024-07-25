@@ -49,7 +49,9 @@ body {
     }
 
     .card-footer {
-        text-align: right;
+        display: flex;
+
+        justify-content: end;
     }
 }
 
