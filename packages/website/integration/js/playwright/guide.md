@@ -6,7 +6,7 @@
 which provides a high-level API to control Chromium, Firefox and Webkit over the DevTools Protocol.
 
 
-### Step 1: Install the library
+## Step 1: Install the library
 
 ```shell
 npm install playwright
@@ -19,7 +19,7 @@ npx playwright install
 ```
 
 
-### Step 2: Retrieve project token
+## Step 2: Retrieve project token
 
 ![Token](../../token_sticky.png)
 
@@ -29,7 +29,7 @@ npx playwright install
 4. Click on `Update`.
 
 
-### Step 3: Retrieve and install Scrapoxy Certificate
+## Step 3: Retrieve and install Scrapoxy Certificate
 
 ![Certificate](../../certificate.png)
 
@@ -44,7 +44,7 @@ certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n scrapoxy -i ./scrapoxy-ca.crt
 ````
 
 
-### Step 4: Create and run the script
+## Step 4: Create and run the script
 
 Create a file name `playwright.js` with the following content:
 
