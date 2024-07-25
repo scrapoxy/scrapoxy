@@ -45,7 +45,7 @@ npm install --save-dev @nx/nx-win32-x64-msvc @rollup/rollup-win32-x64-msvc
 For MacOS development, make sure to install the following dependencies **before** proceeding with the Node.js dependencies installation:
 
 ```shell
-npm install --save-dev @nx/nx-darwin-arm64
+npm install --save-dev @nx/nx-darwin-arm64 @rollup/rollup-darwin-arm64
 ```
 
 
