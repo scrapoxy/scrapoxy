@@ -159,3 +159,10 @@ class ExampleSpider(Spider):
 
 In this example, the request will emulate a Chrome 110 browser,
 but you have the flexibility to choose from [many other useragents](https://github.com/jxlil/scrapy-impersonate?tab=readme-ov-file#supported-browsers).
+
+Also, remember to turn **off** `Intercept HTTPS requests with MITM`:
+
+![Project Settings MITM](project_settings_mitm.png)
+
+Otherwise, Scrapoxy will use a **Node.js** TLS fingerprint to connect to the website,
+bypassing the `scrapy-impersonate` TLS fingerprint.
