@@ -31,12 +31,25 @@ cd scrapoxy
 
 ## Install dependencies
 
-For Windows development, ensure the installation of the following dependencies before proceeding:
+### Platform specific: Windows
+
+For Windows development, make sure to install the following dependencies **before** proceeding with the Node.js dependencies installation:
 
 ```shell
 npm install --save-dev @nx/nx-win32-x64-msvc @rollup/rollup-win32-x64-msvc
 ```
 
+
+### Platform specific: MacOS
+
+For MacOS development, make sure to install the following dependencies **before** proceeding with the Node.js dependencies installation:
+
+```shell
+npm install --save-dev @nx/nx-darwin-arm64
+```
+
+
+### Node.js dependencies
 
 Install Node.js dependencies: 
 
