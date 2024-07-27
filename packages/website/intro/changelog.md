@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.12.0
+
+### Features
+
+Possible breaking change:
+
+- **errors**: non-authentication errors now return a 557 HTTP status code.
+
+### Bug fixes
+
+- **website**: add documentation
+- **idea**: add run config for backend and frontend
+- **frontend**: fix card button for Safari browser
+
+
 ## 4.11.2
 
 ### Bug fixes
