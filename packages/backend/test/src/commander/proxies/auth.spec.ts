@@ -465,7 +465,7 @@ describe(
                                     port: masterApp.masterPort,
                                     protocol: 'http',
                                 },
-                                validateStatus: (status) => status === 407,
+                                validateStatus: (status) => status === 557,
                             }
                         );
 

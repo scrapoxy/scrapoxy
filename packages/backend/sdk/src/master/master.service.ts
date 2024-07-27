@@ -334,7 +334,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.endResponseWithError(
                 req,
                 res,
-                407,
+                557,
                 'no_proxy',
                 err.message
             );
@@ -350,7 +350,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 this.endResponseWithError(
                     req,
                     res,
-                    407,
+                    557,
                     'cannot_scaleup',
                     `Cannot change project status: ${err.message}`
                 );
@@ -721,7 +721,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.endSocketWithError(
                 req,
                 socket,
-                407,
+                557,
                 'no_proxy',
                 err.message
             );

@@ -195,7 +195,7 @@ describe(
                 );
 
                 expect(res.status)
-                    .toBe(407);
+                    .toBe(557);
                 expect(res.statusText)
                     .toBe('no_proxy');
                 expect(res.data.id)
