@@ -255,7 +255,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.endResponseWithError(
                 req,
                 res,
-                400,
+                557,
                 'wrong_url',
                 'URL is empty'
             );
@@ -273,7 +273,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 this.endResponseWithError(
                     req,
                     res,
-                    400,
+                    557,
                     'wrong_url',
                     'URL has no hostname'
                 );
@@ -387,7 +387,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.endResponseWithError(
                 req,
                 res,
-                500,
+                557,
                 'build_request',
                 err.message
             );
@@ -431,7 +431,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 this.endResponseWithError(
                     req,
                     res,
-                    500,
+                    557,
                     'request_error',
                     err.message,
                     proxy
@@ -452,7 +452,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                         this.endResponseWithError(
                             req,
                             res,
-                            500,
+                            557,
                             'response_error',
                             err.message,
                             proxy
@@ -765,23 +765,19 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                     if (err) {
                         err = parseError(err);
 
-                        let
-                            message: string,
-                            statusCode: number;
+                        let message: string;
 
                         if (err instanceof HttpTransportError) {
                             const errHttp = err as HttpTransportError;
-                            statusCode = errHttp.statusCode ?? 500;
                             message = errHttp.message;
                         } else {
-                            statusCode = 500;
                             message = err.message;
                         }
 
                         this.endSocketWithError(
                             req,
                             socket,
-                            statusCode,
+                            557,
                             'build_connect',
                             message,
                             proxy
@@ -800,7 +796,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                             this.endSocketWithError(
                                 req,
                                 socket,
-                                500,
+                                557,
                                 'socket_error',
                                 errSocket.message,
                                 proxy
@@ -843,7 +839,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                             this.endSocketWithError(
                                 req,
                                 socket,
-                                500,
+                                557,
                                 'write_error',
                                 errSocket.message,
                                 proxy
@@ -855,7 +851,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.endSocketWithError(
                 req,
                 socket,
-                500,
+                557,
                 'build_connect',
                 err.message,
                 proxy

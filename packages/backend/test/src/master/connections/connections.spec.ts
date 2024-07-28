@@ -216,7 +216,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.statusText)
                             .toBe('request_error');
                         expect(res.data.id)
@@ -253,7 +253,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.statusText)
                             .toBe('request_error');
                         expect(res.data.id)
@@ -316,7 +316,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.statusText)
                             .toBe('request_error');
                         expect(res.data.id)
@@ -412,7 +412,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.data.message)
                             .toContain('Unsupported protocol: file:');
                     }
@@ -441,7 +441,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.statusText)
                             .toBe('request_error');
                         expect(res.data.id)
@@ -478,7 +478,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.statusText)
                             .toBe('request_error');
                         expect(res.data.id)
@@ -542,7 +542,7 @@ describe(
                         );
 
                         expect(res.status)
-                            .toBe(500);
+                            .toBe(557);
                         expect(res.statusText)
                             .toBe('request_error');
                         expect(res.data.id)
@@ -646,7 +646,7 @@ describe(
                             );
 
                             expect(res.status)
-                                .toBe(500);
+                                .toBe(557);
                             expect(res.statusText)
                                 .toBe('request_error');
                             expect(res.data.id)
@@ -692,7 +692,7 @@ describe(
                             );
 
                             expect(res.status)
-                                .toBe(500);
+                                .toBe(557);
                             expect(res.statusText)
                                 .toBe('request_error');
                             expect(res.data.id)
@@ -770,7 +770,7 @@ describe(
                             );
 
                             expect(res.status)
-                                .toBe(500);
+                                .toBe(557);
                             expect(res.statusText)
                                 .toBe('request_error');
                             expect(res.data.id)

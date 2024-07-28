@@ -48,3 +48,69 @@ Authentication is successful, but no proxies are currently online:
 Please ensure you have at least one proxy online (green status) in the `Proxies` tab:
 
 ![Only one proxy online](no_proxy_one.png)
+
+
+### ID: 'wrong_url'
+
+The URL sent to Scrapoxy is incorrect.
+This error occurs when Scrapoxy is requested to collect:
+
+* An empty URL.
+* A URL without a hostname.
+
+
+### ID: 'cannot_scaleup'
+
+This error occurs when attempting to scale the project.
+It is usually due to a connectivity issue between the **commander**, **master**, or **database**.
+
+::: info
+This only happens when `Auto Scale UP` is enabled and the project's status is **CALM**.
+:::
+
+
+### ID: 'build_request' / 'build_connect'
+
+This occurs when the **master** tries to create a request and:
+
+* The connectors do not exist.
+* The request parameters are incompatible with the connector. 
+
+::: info
+`build_request` is for HTTP requests, and `build_connect` is for CONNECT requests.
+:::
+
+
+### ID: 'socket_error'
+
+This occurs during a CONNECT request when there is a problem with the relaying socket.
+
+
+### ID: 'write_error'
+
+This occurs during a CONNECT request when sending HTTP headers on a closed socket.
+
+
+### ID: 'request_error'
+
+
+This occurs when the scraper triggers an error on the outbound stream.
+
+It can be due to many issues such as:
+
+* a connection hangout,
+* flow problem,
+* incorrect values,
+* or continuing to send packets on a closed connection.
+
+
+### ID: 'response_error'
+
+This can originate from 2 network elements in the inbound stream: **the target website** or **the connector** (cloud provider or proxy service). 
+
+It can be due to many issues such as:
+
+* a connection hangout,
+* flow problem,
+* incorrect values,
+* or continuing to send packets on a closed connection.
