@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.13.0
+
+### Features
+
+- **liveproxies**: add Live Proxies support
+
+### Bug fixes
+
+- **errors**: add missing 557 HTTP status code.
+
+
 ## 4.12.0
 
 ### Features
