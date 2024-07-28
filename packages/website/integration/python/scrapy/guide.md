@@ -134,9 +134,7 @@ DOWNLOAD_HANDLERS = {
 }
 ```
 
-In your scraper, include additional metadata with the request,
-specifically setting the `verify` option to `False` within the impersonate_args.
-This will bypass SSL certificate verification.
+Here is an example of how to use `scrapy-impersonate`:
 
 ```python
 class ExampleSpider(Spider):
@@ -149,9 +147,6 @@ class ExampleSpider(Spider):
             dont_filter=True,
             meta={
                 "impersonate": "chrome110",
-                "impersonate_args": {
-                    "verify": False,
-                },
             },
             callback=self.parse
         )
@@ -159,6 +154,11 @@ class ExampleSpider(Spider):
 
 In this example, the request will emulate a Chrome 110 browser,
 but you have the flexibility to choose from [many other useragents](https://github.com/jxlil/scrapy-impersonate?tab=readme-ov-file#supported-browsers).
+
+::: info
+The middleware `scrapoxy.ProxyDownloaderMiddleware` is compatible with `scrapy-impersonate`.
+It will set the `verify` option to `False` and the proxy authentication.
+:::
 
 Also, remember to turn **off** `Intercept HTTPS requests with MITM`:
 
