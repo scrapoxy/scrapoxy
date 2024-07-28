@@ -4,7 +4,7 @@
 
 ### Features
 
-- **liveproxies**: add Live Proxies support
+- **liveproxies**: add [Live Proxies](https://liveproxies.io) support
 
 ### Bug fixes
 
