@@ -546,7 +546,7 @@ export function testConnector(
             );
 
             jest.expect(res.status)
-                .toBe(500);
+                .toBe(557);
             jest.expect(res.data.message)
                 .toContain('Unsupported protocol: file:');
         }
