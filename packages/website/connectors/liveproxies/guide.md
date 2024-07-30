@@ -2,7 +2,7 @@
 
 ![Live Proxies](/assets/images/liveproxies.svg){width=230 nozoom}
 
-[Live Proxies](https://liveproxies.io) provides top notch private residential proxies tailored to businesses and individuals.
+[Live Proxies](https://liveproxies.io/?utm_source=scrapoxy) provides top notch private residential proxies tailored to businesses and individuals.
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active Live Proxies subscription is required.
 
 ## Live Proxies Dashboard
 
-Connect to [Dashboard](https://liveproxies.io/dashboard/overview).
+Connect to [Dashboard](https://liveproxies.io/dashboard/overview/?utm_source=scrapoxy).
 
 
 ### Get the credentials

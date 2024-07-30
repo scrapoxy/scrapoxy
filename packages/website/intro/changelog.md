@@ -4,7 +4,7 @@
 
 ### Features
 
-- **liveproxies**: add [Live Proxies](https://liveproxies.io) support
+- **liveproxies**: add [Live Proxies](https://liveproxies.io/?utm_source=scrapoxy) support
 
 ### Bug fixes
 

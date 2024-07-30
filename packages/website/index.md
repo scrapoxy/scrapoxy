@@ -75,7 +75,7 @@ providers:
           url: 'https://netnut.io?ref=ymzmmmu'
           img: '/assets/images/netnut.svg'
         - name: 'Live Proxies'
-          url: 'https://liveproxies.io'
+          url: 'https://liveproxies.io/?utm_source=scrapoxy'
           img: '/assets/images/liveproxies.svg'
         - name: 'Nimble'
           url: 'https://tracking.nimbleway.com/SH4a'
