@@ -15,7 +15,7 @@ npm install playwright
 If required, install the browser binaries:
 
 ```shell
-npx playwright install
+npx playwright install --with-deps
 ```
 
 

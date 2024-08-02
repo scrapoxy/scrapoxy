@@ -177,6 +177,7 @@ export default defineConfig({
                             {text: 'Scrapy', link: 'scrapy/guide'},
                             {text: 'Splash', link: 'splash/guide'},
                             {text: 'Selenium', link: 'selenium/guide'},
+                            {text: 'ScrapeGraphAI', link: 'scrapegraphai/guide'},
 
                         ]
                     },
