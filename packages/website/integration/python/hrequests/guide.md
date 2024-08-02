@@ -12,13 +12,15 @@ pip install hrequests[all]
 ```
 
 
-## Step 2: Retrieve CA certificate and project token
+## Step 2: Retrieve CA certificate and project credentials
 
 ![Certificate](../../certificate_sticky.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;
-3. Remember the project token.
+3. Click on `Download CA certificate` and save the file `scrapoxy-ca.crt`;
+4. Remember the project's `Username`;
+5. Remember the project's `Password`.
 
 
 ## Step 3: Create and run the script

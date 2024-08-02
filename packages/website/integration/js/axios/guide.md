@@ -17,13 +17,14 @@ npm install axios
 ```
 
 
-## Step 2: Retrieve CA certificate and project token
+## Step 2: Retrieve CA certificate and project credentials
 
 ![Certificate](../../certificate.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Click on `Download CA certificate` and save the file;
-3. Remember the project token (format is `USERNAME:PASSWORD`).
+3. Remember the project's `Username`;
+4. Remember the project's `Password`.
 
 ::: info
 It is assumed that file is saved in `/tmp/scrapoxy-ca.crt`.

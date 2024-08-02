@@ -19,14 +19,15 @@ npx playwright install
 ```
 
 
-## Step 2: Retrieve project token
+## Step 2: Retrieve project credentials
 
-![Token](../../token_sticky.png)
+![Credentials Sticky](../../credentials_sticky.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;
-3. Remember the project token (format is `USERNAME:PASSWORD`).
-4. Click on `Update`.
+3. Remember the project's `Username`;
+4. Remember the project's `Password`;
+5. And click on `Update`.
 
 
 ## Step 3: Retrieve and install Scrapoxy Certificate
@@ -35,7 +36,8 @@ npx playwright install
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Click on `Download CA certificate` and save the file `scrapoxy-ca.crt`;
-3. Remember the project token (format is `USERNAME:PASSWORD`).
+3. Remember the project's `Username`;
+4. Remember the project's `Password`.
 
 Install the certificate with the following command:
 

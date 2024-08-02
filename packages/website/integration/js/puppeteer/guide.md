@@ -13,13 +13,14 @@ npm install puppeteer
 ```
 
 
-## Step 2: Retrieve project token
+## Step 2: Retrieve project credentials
 
-![Token](../../token_sticky.png)
+![Credentials Sticky](../../credentials_sticky.png)
 
 1. Open Scrapoxy User interface, and go to the project `Settings`;
 2. Enable `Keep the same proxy with cookie injection`;
-3. Remember the project token (format is `USERNAME:PASSWORD`).
+3. Remember the project's `Username`;
+4. Remember the project's `Password`.
 
 
 ## Step 3: Create and run the script
