@@ -166,3 +166,59 @@ Also, remember to turn **off** `Intercept HTTPS requests with MITM`:
 
 Otherwise, Scrapoxy will use a **Node.js** TLS fingerprint to connect to the website,
 bypassing the `scrapy-impersonate` TLS fingerprint.
+
+
+## Step 9: Render page with Splash using Scrapy and Scrapoxy
+
+Before using Splash, follow the [Splash integration guide](../splash/guide.md).
+
+Afterward, install the library:
+
+```shell
+pip install scrapy-splash
+```
+
+Then, add the following lines to `settings.py`:
+
+```python
+SPLASH_URL = "http://localhost:8050"
+
+DOWNLOADER_MIDDLEWARES = {
+    "scrapy_splash.SplashCookiesMiddleware": 723,
+    "scrapy_splash.SplashMiddleware": 725,
+    "scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware": 810,
+}
+SPIDER_MIDDLEWARES = {
+    "scrapy_splash.SplashDeduplicateArgsMiddleware": 100,
+}
+
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
+```
+
+Here is an example of spider:
+
+```python
+from scrapy import Spider
+from scrapy_splash import SplashRequest
+
+class SplashSpider(Spider):
+    name = "splash"
+
+    def start_requests(self):
+        yield SplashRequest(
+            "https://example.com",
+            self.parse,
+            args={
+                "wait": 1,
+                "proxy": "http://USERNAME:PASSWORD@HOST_IP:8888",
+            }
+        )
+
+    def parse(self, response):
+        print(response.body)
+```
+
+Replace `USERNAME` and `PASSWORD` with the previously copied credentials,
+and `HOST_IP` with the IP address of the machine running Scrapoxy.

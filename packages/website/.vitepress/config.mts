@@ -175,6 +175,7 @@ export default defineConfig({
                             {text: 'HRequests', link: 'hrequests/guide'},
                             {text: 'Requests', link: 'requests/guide'},
                             {text: 'Scrapy', link: 'scrapy/guide'},
+                            {text: 'Splash', link: 'splash/guide'},
                             {text: 'Selenium', link: 'selenium/guide'},
 
                         ]

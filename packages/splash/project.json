@@ -1,0 +1,13 @@
+{
+    "name": "splash",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "root": "packages/splash",
+    "sourceRoot": "packages/splash/src",
+    "projectType": "application",
+    "targets": {
+        "build-docker": {
+            "command": "docker build --no-cache -f packages/splash/Dockerfile . -t fabienvauchelles/splash"
+        }
+    },
+    "tags": []
+}
