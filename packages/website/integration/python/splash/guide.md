@@ -59,5 +59,5 @@ Since Splash runs inside a Docker container, Scrapoxy is not running within this
 
 ## Step 5: Use Splash with Scrapy
 
-See the guide [here](../scrapy/guide.md#step-9-render-page-with-splash-using-scrapy-and-scrapoxy).
+See the guide [here](../scrapy/guide.md#step-8-render-page-with-splash-using-scrapy-and-scrapoxy-optional).
 

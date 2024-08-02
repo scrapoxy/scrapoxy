@@ -57,7 +57,7 @@ Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 ## Step 5: Remove blacklisted instances (optional)
 
-Scrapy uses Scrapoxy's API to kill blacklisted instance.
+Scrapy uses Scrapoxy's API to kill blacklisted instances.
 
 Edit `myproject/settings.py` and add the following lines:
 
@@ -71,6 +71,8 @@ SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES = [400, 429, 503]
 SCRAPOXY_SLEEP_MIN = 60
 SCRAPOXY_SLEEP_MAX = 180
 ```
+
+This middleware requires **enabling MITM** in Scrapoxy.
 
 ::: tip
 Add the HTTP status codes you want to blacklist in `SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES`.
@@ -111,65 +113,10 @@ SPIDER_MIDDLEWARES = {
 }
 ```
 
-
-## Step 8: Integrate scrapy-impersonate (optional)
-
-The library [scrapy-impersonate](https://github.com/jxlil/scrapy-impersonate) is a Scrapy download handler. 
-This project integrates [curl_cffi](https://github.com/yifeikong/curl_cffi) to perform HTTP requests, 
-so it can impersonate browsers' TLS signatures or JA3 fingerprints.
-
-To use it, first install the package:
-
-```shell
-pip install scrapy-impersonate
-```
-
-And add the following lines to `settings.py`:
-
-```python
-TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-
-DOWNLOAD_HANDLERS = {
-    "http": "scrapy_impersonate.ImpersonateDownloadHandler",
-    "https": "scrapy_impersonate.ImpersonateDownloadHandler",
-}
-```
-
-Here is an example of how to use `scrapy-impersonate`:
-
-```python
-class ExampleSpider(Spider):
-    name = "example"
-    allowed_domains = ["browserleaks.com"]
-
-    def start_requests(self):
-        yield Request(
-            url="https://tls.browserleaks.com/json",
-            dont_filter=True,
-            meta={
-                "impersonate": "chrome110",
-            },
-            callback=self.parse
-        )
-```
-
-In this example, the request will emulate a Chrome 110 browser,
-but you have the flexibility to choose from [many other useragents](https://github.com/jxlil/scrapy-impersonate?tab=readme-ov-file#supported-browsers).
-
-::: info
-The middleware `scrapoxy.ProxyDownloaderMiddleware` is compatible with `scrapy-impersonate`.
-It will set the `verify` option to `False` and the proxy authentication.
-:::
-
-Also, remember to turn **off** `Intercept HTTPS requests with MITM`:
-
-![Project Settings MITM](project_settings_mitm.png)
-
-Otherwise, Scrapoxy will use a **Node.js** TLS fingerprint to connect to the website,
-bypassing the `scrapy-impersonate` TLS fingerprint.
+This middleware requires **enabling MITM** in Scrapoxy.
 
 
-## Step 9: Render page with Splash using Scrapy and Scrapoxy
+## Step 8: Render page with Splash using Scrapy and Scrapoxy (optional)
 
 Before using Splash, follow the [Splash integration guide](../splash/guide.md).
 
@@ -223,3 +170,66 @@ class SplashSpider(Spider):
 
 Replace `USERNAME` and `PASSWORD` with the previously copied credentials,
 and `HOST_IP` with the IP address of the machine running Scrapoxy.
+
+
+## Step 9: Integrate scrapy-impersonate (optional)
+
+The library [scrapy-impersonate](https://github.com/jxlil/scrapy-impersonate) is a Scrapy download handler.
+This project integrates [curl_cffi](https://github.com/yifeikong/curl_cffi) to perform HTTP requests,
+so it can impersonate browsers' TLS signatures or JA3 fingerprints.
+
+::: warning
+Using this library to change the TLS fingerprint disables Scrapoxy's MITM functionality. 
+Also, `BlacklistDownloaderMiddleware` and `StickySpiderMiddleware` do not work with `scrapy-impersonate`.
+:::
+
+To use it, first install the package:
+
+```shell
+pip install scrapy-impersonate
+```
+
+And add the following lines to `settings.py`:
+
+```python
+TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+DOWNLOAD_HANDLERS = {
+    "http": "scrapy_impersonate.ImpersonateDownloadHandler",
+    "https": "scrapy_impersonate.ImpersonateDownloadHandler",
+}
+```
+
+Here is an example of how to use `scrapy-impersonate`:
+
+```python
+class ExampleSpider(Spider):
+    name = "example"
+    allowed_domains = ["browserleaks.com"]
+
+    def start_requests(self):
+        yield Request(
+            url="https://tls.browserleaks.com/json",
+            dont_filter=True,
+            meta={
+                "impersonate": "chrome110",
+            },
+            callback=self.parse
+        )
+```
+
+In this example, the request will emulate a Chrome 110 browser,
+but you have the flexibility to choose from [many other useragents](https://github.com/jxlil/scrapy-impersonate?tab=readme-ov-file#supported-browsers).
+
+::: info
+The middleware `scrapoxy.ProxyDownloaderMiddleware` is compatible with `scrapy-impersonate`.
+It will set the `verify` option to `False` and the proxy authentication.
+:::
+
+Also, remember to turn **off** `Intercept HTTPS requests with MITM`:
+
+![Project Settings MITM](project_settings_mitm.png)
+
+Otherwise, Scrapoxy will use a **Node.js** TLS fingerprint to connect to the website,
+bypassing the `scrapy-impersonate` TLS fingerprint.
+
