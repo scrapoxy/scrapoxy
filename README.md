@@ -122,9 +122,31 @@ I simply ask you to give me **credit** if you redistribute or use it in a projec
 A warm thank-you message is appreciated as well 😃🙏.
 
 
+## Documentation & Contributing
+
+Go to [scrapoxy.io](https://scrapoxy.io).
+
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=fabienvauchelles/scrapoxy)](https://github.com/fabienvauchelles/scrapoxy/graphs/contributors)
+
+
+## Author
+
+|                   | Contact Info                                                                                                                                                                   |
+|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Fabien Vauchelles | [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/fabienvauchelles/) |
+
+
 ## Licence
 
 See [The MIT License (MIT)](https://github.com/fabienvauchelles/scrapoxy/blob/master/LICENCE.md)
+
+
+## Acknowledgements
+
+I would like to thank all the contributors to the project and the open-source community for their support.
 
 
 ## Follow-up
