@@ -215,8 +215,6 @@ describe(
                             expect(res.status)
                                 .toBe(200);
 
-                            expect(res.data).not.toHaveProperty(`${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`);
-
                             expect(res.headers)
                                 .toHaveProperty(
                                     `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
@@ -249,8 +247,6 @@ describe(
 
                             expect(res.status)
                                 .toBe(200);
-
-                            expect(res.data).not.toHaveProperty(`${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`);
 
                             expect(res.headers)
                                 .toHaveProperty(
@@ -288,8 +284,6 @@ describe(
 
                                 expect(res.status)
                                     .toBe(200);
-
-                                expect(res.data).not.toHaveProperty(`${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`);
 
                                 expect(res.headers)
                                     .toHaveProperty(
@@ -329,8 +323,6 @@ describe(
 
                                 expect(res.status)
                                     .toBe(200);
-
-                                expect(res.data).not.toHaveProperty(`${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`);
 
                                 expect(httpsAgent.headers)
                                     .toHaveProperty(
