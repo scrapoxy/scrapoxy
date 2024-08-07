@@ -1,5 +1,8 @@
 import { IncomingMessage } from 'http';
-import type { IUrlOptions } from '../helpers';
+import type {
+    ArrayHttpHeaders,
+    IUrlOptions,
+} from '../helpers';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -24,7 +27,7 @@ export abstract class ATransportService {
     abstract buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets,
@@ -33,7 +36,7 @@ export abstract class ATransportService {
     abstract buildFingerprintRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets,

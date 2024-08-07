@@ -1,57 +1,39 @@
 import { IncomingMessage } from 'http';
 import { Socket } from 'net';
 import { TLSSocket } from 'tls';
-import {
-    SCRAPOXY_COOKIE_PREFIX,
-    SCRAPOXY_HEADER_PREFIX_LC,
-} from '@scrapoxy/common';
+import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
 import { socketWriteAsync } from '@scrapoxy/proxy-sdk';
+import {
+    ArrayHttpHeaders,
+    SCRAPOXY_COOKIE_REGEX,
+} from '../helpers';
 import type { IProjectToConnect } from '@scrapoxy/common';
-import type {
-    IncomingHttpHeaders,
-    OutgoingHttpHeaders,
-} from 'http';
+import type { OutgoingHttpHeaders } from 'http';
 import type { TLSSocketOptions } from 'tls';
 
 
-const SCRAPOXY_COOKIE_REGEX = new RegExp(
-    `${SCRAPOXY_COOKIE_PREFIX}-proxyname=([^;]+);{0,1}\s*`,
-    'i'
-);
-
-
-function getProxynameFromCookieHeaders(headers: IncomingHttpHeaders): string | null {
-    const cookieHeader = headers.cookie;
-
-    if (!cookieHeader || cookieHeader.length <= 0) {
-        return null;
-    }
-
-    const arr = SCRAPOXY_COOKIE_REGEX.exec(cookieHeader);
+function getProxynameFromCookieHeaders(headers: ArrayHttpHeaders): string | null {
+    const arr = headers.getFirstHeaderWithRegexValue(
+        'cookie',
+        SCRAPOXY_COOKIE_REGEX
+    );
 
     if (!arr || arr.length <= 0) {
         return null;
     }
 
-    const proxyname = arr[ 1 ];
-
-    headers.cookie = cookieHeader.replace(
-        SCRAPOXY_COOKIE_REGEX,
-        ''
-    );
-
-    return proxyname;
+    return arr[ 1 ];
 }
 
 
-export function getProxynameFromHeaders(headers: IncomingHttpHeaders): string | null {
-    const proxynameFromHeader = headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname` ] as string;
+export function getProxynameFromHeaders(headers: ArrayHttpHeaders): string | null {
+    const proxynameFromHeader = headers.getFirstHeader(`${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`);
 
-    if (proxynameFromHeader && proxynameFromHeader.length > 0) {
-        return proxynameFromHeader;
+    if (!proxynameFromHeader || proxynameFromHeader.length <= 0) {
+        return getProxynameFromCookieHeaders(headers);
     }
 
-    return getProxynameFromCookieHeaders(headers);
+    return proxynameFromHeader;
 }
 
 

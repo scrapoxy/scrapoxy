@@ -20,7 +20,10 @@ import type {
     IConnectorZyteConfig,
     IConnectorZyteCredential,
 } from '../zyte.interface';
-import type { IUrlOptions } from '@scrapoxy/backend-sdk';
+import type {
+    ArrayHttpHeaders,
+    IUrlOptions,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -59,7 +62,7 @@ export class TransportZyteService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets
@@ -102,7 +105,7 @@ export class TransportZyteService extends ATransportService {
     buildFingerprintRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets
@@ -190,17 +193,26 @@ export class TransportZyteService extends ATransportService {
     private buildRequestArgsHttp(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         proxy: IProxyToConnect,
         config: IProxyToConnectConfigZyte,
         auth: string,
         sockets: ISockets
     ): ClientRequestArgs {
-        headers[ 'Proxy-Authorization' ] = `Basic ${auth}`;
-        headers[ 'X-Crawlera-Session' ] = proxy.key;
+        headers.addHeader(
+            'Proxy-Authorization',
+            `Basic ${auth}`
+        );
+        headers.addHeader(
+            'X-Crawlera-Session',
+            proxy.key
+        );
 
         if (config.region !== 'all') {
-            headers[ 'X-Crawlera-Region' ] = config.region;
+            headers.addHeader(
+                'X-Crawlera-Region',
+                config.region
+            );
         }
 
         return {
@@ -211,7 +223,7 @@ export class TransportZyteService extends ATransportService {
                 urlOpts,
                 true
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout: proxy.timeoutDisconnected,
             createConnection: (
                 opts,
@@ -228,7 +240,7 @@ export class TransportZyteService extends ATransportService {
     private buildRequestArgsHttps(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         config: IProxyToConnectConfigZyte,
@@ -243,7 +255,7 @@ export class TransportZyteService extends ATransportService {
                 urlOpts,
                 false
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout: proxy.timeoutDisconnected,
             createConnection: (
                 args,

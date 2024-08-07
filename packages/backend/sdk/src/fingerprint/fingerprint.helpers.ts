@@ -7,6 +7,7 @@ import {
     Sockets,
 } from '@scrapoxy/proxy-sdk';
 import {
+    ArrayHttpHeaders,
     formatUseragent,
     urlToUrlOptions,
 } from '../helpers';
@@ -157,10 +158,15 @@ function fingerprintImpl(
     const reqArgs = transport.buildFingerprintRequestArgs(
         'GET',
         urlOpts,
-        {
-            Host: urlOpts.hostname,
-            'User-Agent': useragent,
-        },
+        new ArrayHttpHeaders()
+            .addHeader(
+                'Host',
+                urlOpts.hostname as string
+            )
+            .addHeader(
+                'User-Agent',
+                useragent
+            ),
         {
             Host: `${urlOpts.hostname}:${urlOpts.port}`,
         },

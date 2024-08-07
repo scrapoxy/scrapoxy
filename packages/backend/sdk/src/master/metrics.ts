@@ -64,20 +64,9 @@ export class ConnectionMetrics {
 
         if (req.headers) {
             for (const [
-                k, v,
-            ] of Object.entries(req.headers)) {
-                // is number
-                if (typeof v === 'number') {
-                    size += k.length + v.toString().length + 4;
-                } else if (v) {
-                    if (Array.isArray(v)) {
-                        for (const h of v) {
-                            size += k.length + h.length + 4;
-                        }
-                    } else {
-                        size += k.length + v.length + 4;
-                    }
-                }
+                key, value,
+            ] of req.headers as any) {
+                size += key.length + value.length + 4;
             }
         }
 
@@ -90,19 +79,11 @@ export class ConnectionMetrics {
             (res.statusCode ? res.statusCode.toString().length : 0) +
             (res.statusMessage ? res.statusMessage.length : 0);
 
-        for (const [
-            k, v,
-        ] of Object.entries(res.headers)) {
-            if (v) {
-                if (Array.isArray(v)) {
-                    for (const h of v) {
-                        size += k.length + h.length + 4;
-                    }
-                } else {
-                    size += k.length + v.length + 4;
-                }
-            }
+        for (const item of res.rawHeaders) {
+            size += item.length;
         }
+
+        size += 2 * res.rawHeaders.length; // 4 characters every 2 item (4/2=2) for line return
 
         const metrics = this.getMetrics();
         metrics.bytesReceived += size;

@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import {
+    ArrayHttpHeaders,
     DatacenterLocalApp,
     SUBSCRIPTION_LOCAL_DEFAULTS,
 } from '@scrapoxy/backend-sdk';
@@ -225,7 +226,8 @@ describe(
                     expect(res.status)
                         .toBe(200);
 
-                    expect(res.data[ 'user-agent' ])
+                    const resHeaders = new ArrayHttpHeaders(res.data);
+                    expect(resHeaders.getFirstHeader('user-agent'))
                         .toBe('my_user_agent');
                 }
             },
@@ -273,9 +275,9 @@ describe(
                     expect(res.status)
                         .toBe(200);
 
-                    const
-                        proxyname = res.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname` ],
-                        useragentFound = res.data[ 'user-agent' ];
+                    const resHeaders = new ArrayHttpHeaders(res.data);
+                    const useragentFound = resHeaders.getFirstHeader('user-agent');
+                    const proxyname = res.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname` ];
                     const useragentProxy = uaMapping.get(proxyname);
 
                     expect(useragentFound)

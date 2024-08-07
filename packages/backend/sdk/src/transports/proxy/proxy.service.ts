@@ -19,7 +19,10 @@ import {
 import { HttpTransportError } from '../errors';
 import { TransportprovidersService } from '../providers.service';
 import { ATransportService } from '../transport.abstract';
-import type { IUrlOptions } from '../../helpers';
+import type {
+    ArrayHttpHeaders,
+    IUrlOptions,
+} from '../../helpers';
 import type {
     IProxyToConnect,
     IProxyToRefresh,
@@ -39,7 +42,7 @@ export abstract class ATransportProxyService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets
@@ -160,7 +163,7 @@ export abstract class ATransportProxyService extends ATransportService {
     buildFingerprintRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets
@@ -234,14 +237,17 @@ export abstract class ATransportProxyService extends ATransportService {
     private buildRequestArgsHttp(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         config: IProxyTransport,
         sockets: ISockets,
         timeout: number
     ): ClientRequestArgs {
         if (config.auth) {
             const token = btoa(`${config.auth.username}:${config.auth.password}`);
-            headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
+            headers.addHeader(
+                'Proxy-Authorization',
+                `Basic ${token}`
+            );
         }
 
         return {
@@ -252,7 +258,7 @@ export abstract class ATransportProxyService extends ATransportService {
                 urlOpts,
                 true
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout,
             createConnection: (
                 args,
@@ -270,7 +276,7 @@ export abstract class ATransportProxyService extends ATransportService {
     private buildRequestArgsHttps(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         config: IProxyTransport,
         sockets: ISockets,
@@ -284,7 +290,7 @@ export abstract class ATransportProxyService extends ATransportService {
                 urlOpts,
                 false
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout,
             createConnection: (
                 args,
@@ -428,7 +434,7 @@ export abstract class ATransportProxyService extends ATransportService {
     private buildRequestArgsSocks(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         config: IProxyTransport,
         sockets: ISockets,
         timeout: number,
@@ -442,7 +448,7 @@ export abstract class ATransportProxyService extends ATransportService {
                 urlOpts,
                 true
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout,
             createConnection: (
                 args,

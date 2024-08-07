@@ -13,7 +13,10 @@ import {
 import { HttpTransportError } from '../errors';
 import { ATransportService } from '../transport.abstract';
 import type { IProxyToConnectConfigResidential } from './residential.interface';
-import type { IUrlOptions } from '../../helpers';
+import type {
+    ArrayHttpHeaders,
+    IUrlOptions,
+} from '../../helpers';
 import type {
     IProxyToConnect,
     IProxyToRefresh,
@@ -30,7 +33,7 @@ export abstract class ATransportResidentialService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets
@@ -70,7 +73,7 @@ export abstract class ATransportResidentialService extends ATransportService {
     buildFingerprintRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets
@@ -153,13 +156,16 @@ export abstract class ATransportResidentialService extends ATransportService {
     private buildRequestArgsHttp(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         config: IProxyToConnectConfigResidential,
         sockets: ISockets,
         timeout: number
     ): ClientRequestArgs {
         const token = btoa(`${config.username}:${config.password}`);
-        headers[ 'Proxy-Authorization' ] = `Basic ${token}`;
+        headers.addHeader(
+            'Proxy-Authorization',
+            `Basic ${token}`
+        );
 
         return {
             method,
@@ -169,7 +175,7 @@ export abstract class ATransportResidentialService extends ATransportService {
                 urlOpts,
                 true
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout,
             createConnection: (
                 args,
@@ -187,7 +193,7 @@ export abstract class ATransportResidentialService extends ATransportService {
     private buildRequestArgsHttps(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         config: IProxyToConnectConfigResidential,
         sockets: ISockets,
@@ -201,7 +207,7 @@ export abstract class ATransportResidentialService extends ATransportService {
                 urlOpts,
                 false
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout,
             createConnection: (
                 args,

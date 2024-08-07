@@ -16,7 +16,10 @@ import {
 import { HttpTransportError } from '../errors';
 import { ATransportService } from '../transport.abstract';
 import type { IProxyToConnectConfigDatacenter } from './datacenter.interface';
-import type { IUrlOptions } from '../../helpers';
+import type {
+    ArrayHttpHeaders,
+    IUrlOptions,
+} from '../../helpers';
 import type {
     IProxyToConnect,
     IProxyToRefresh,
@@ -34,7 +37,7 @@ export abstract class ATransportDatacenterService extends ATransportService {
     buildRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToConnect,
         sockets: ISockets
@@ -65,7 +68,7 @@ export abstract class ATransportDatacenterService extends ATransportService {
                 urlOpts,
                 false
             ),
-            headers,
+            headers: headers.toArray() as any, // should accept also [string, string][]
             timeout: proxy.timeoutDisconnected,
             createConnection: (
                 args,
@@ -214,7 +217,7 @@ export abstract class ATransportDatacenterService extends ATransportService {
     buildFingerprintRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets

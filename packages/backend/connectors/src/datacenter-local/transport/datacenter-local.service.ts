@@ -6,7 +6,10 @@ import {
 import { TRANSPORT_DATACENTER_LOCAL_TYPE } from './datacenter-local.constants';
 import type { IProxyToConnectConfigDatacenterLocal } from './datacenter-local.interface';
 import type { IConnectorDatacenterLocalConfig } from '../datacenter-local.interface';
-import type { IUrlOptions } from '@scrapoxy/backend-sdk';
+import type {
+    ArrayHttpHeaders,
+    IUrlOptions,
+} from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
@@ -59,7 +62,7 @@ export class TransportDatacenterLocalService extends ATransportDatacenterService
     override buildFingerprintRequestArgs(
         method: string | undefined,
         urlOpts: IUrlOptions,
-        headers: OutgoingHttpHeaders,
+        headers: ArrayHttpHeaders,
         headersConnect: OutgoingHttpHeaders,
         proxy: IProxyToRefresh,
         sockets: ISockets
@@ -76,7 +79,10 @@ export class TransportDatacenterLocalService extends ATransportDatacenterService
             config = proxy.config as IProxyToConnectConfigDatacenterLocal;
 
         if (config.fingerprintForce) {
-            headers[ 'X-Fingerprint' ] = btoa(JSON.stringify(config.fingerprintForce));
+            headers.addHeader(
+                'X-Fingerprint',
+                btoa(JSON.stringify(config.fingerprintForce))
+            );
         }
 
         return args;

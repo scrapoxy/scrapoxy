@@ -10,6 +10,8 @@ export * from './commander-users-client';
 
 export * from './info';
 
+export * from './http-client';
+
 export * from './proxy-reverse';
 
 export * from './storageproviders.helpers';

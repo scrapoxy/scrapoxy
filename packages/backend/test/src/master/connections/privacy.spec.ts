@@ -5,12 +5,14 @@ import {
     TRANSPORT_DATACENTER_LOCAL_TYPE,
 } from '@scrapoxy/backend-connectors';
 import {
+    ArrayHttpHeaders,
     CommanderMasterClientService,
     generateCertificateFromCaTest,
     generateCertificateSelfSignedForTest,
     MasterModule,
     MasterService,
     readCaCert,
+    SCRAPOXY_COOKIE_REGEX,
 } from '@scrapoxy/backend-sdk';
 import {
     AgentProxyHttpsTunnel,
@@ -44,21 +46,20 @@ import type {
 import type { OutgoingHttpHeaders } from 'http';
 
 
-function expectNotToExposeHeaders(headers: { [key: string]: any }) {
-    const headersLc: { [key: string]: any } = {};
-    for (const key in headers) {
-        headersLc[ key.toLowerCase() ] = headers[ key ];
-    }
+function expectNotToExposeHeaders(rawHeaders: string[]) {
+    const headers = new ArrayHttpHeaders(rawHeaders);
 
-    expect(headersLc).not.toHaveProperty('proxy-authorization');
+    expect(headers.getFirstHeader('proxy-authorization'))
+        .toBeUndefined();
 
-    for (const headerKey in headersLc) {
-        expect(headerKey.startsWith(SCRAPOXY_HEADER_PREFIX_LC))
-            .toBe(false);
-    }
+    expect(headers.getFirstHeaderWithPrefix(SCRAPOXY_HEADER_PREFIX_LC))
+        .toBeUndefined();
 
-    expect(headersLc.cookie?.startsWith(`${SCRAPOXY_COOKIE_PREFIX}-proxyname`))
-        .toBeFalsy();
+    expect(headers.getFirstHeaderWithRegexValue(
+        'cookie',
+        SCRAPOXY_COOKIE_REGEX
+    ))
+        .toBeUndefined();
 }
 
 

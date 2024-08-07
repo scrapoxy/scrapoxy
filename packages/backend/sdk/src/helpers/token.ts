@@ -1,3 +1,4 @@
+import { SCRAPOXY_COOKIE_PREFIX } from '@scrapoxy/common';
 import * as cookie from 'cookie';
 import * as jwt from 'jsonwebtoken';
 import type { IUserToken } from '@scrapoxy/common';
@@ -9,6 +10,12 @@ export interface IJwtConfig {
     secret: string;
     expiration: string;
 }
+
+
+export const SCRAPOXY_COOKIE_REGEX = new RegExp(
+    `${SCRAPOXY_COOKIE_PREFIX}-proxyname=([^;]+);{0,1}\s*`,
+    'i'
+);
 
 
 export const AUTH_COOKIE = 'token';

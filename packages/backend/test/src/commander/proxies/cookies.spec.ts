@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import {
+    ArrayHttpHeaders,
     DatacenterLocalApp,
     readCaCert,
     SUBSCRIPTION_LOCAL_DEFAULTS,
@@ -314,11 +315,10 @@ describe(
                             expect(res.status)
                                 .toBe(200);
 
-                            expect(res.data)
-                                .toHaveProperty(
-                                    'cookie',
-                                    `${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxyId}`
-                                );
+                            const resHeaders = new ArrayHttpHeaders(res.data);
+                            const cookie = resHeaders.getFirstHeader('cookie');
+                            expect(cookie)
+                                .toBe(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxyId}`);
                             expect(res.headers).not.toHaveProperty('set-cookie');
                         } finally {
                             httpsAgent.close();
@@ -530,11 +530,10 @@ describe(
                             expect(res.status)
                                 .toBe(200);
 
-                            expect(res.data)
-                                .toHaveProperty(
-                                    'cookie',
-                                    `${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxyId}`
-                                );
+                            const resHeaders = new ArrayHttpHeaders(res.data);
+                            const cookie = resHeaders.getFirstHeader('cookie');
+                            expect(cookie)
+                                .toBe(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxyId}`);
                             expect(res.headers).not.toHaveProperty('set-cookie');
 
                             // Without cookie in request
@@ -548,7 +547,9 @@ describe(
                             expect(res2.status)
                                 .toBe(200);
 
-                            expect(res2.data).not.toHaveProperty('cookie');
+                            const resHeaders2 = new ArrayHttpHeaders(res2.data);
+                            expect(resHeaders2.getFirstHeader('cookie'))
+                                .toBeUndefined();
                             expect(res2.headers).not.toHaveProperty('set-cookie');
                         } finally {
                             httpsAgent.close();

@@ -76,7 +76,7 @@ class WebController {
 
     @Get('mirror/headers')
     mirrorHeaders(@Req() req: Request) {
-        return req.headers;
+        return req.rawHeaders;
     }
 
     @Post('mirror/payload')

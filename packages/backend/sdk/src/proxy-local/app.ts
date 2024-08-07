@@ -3,7 +3,7 @@ import {
     ServerResponse,
 } from 'http';
 import { Socket } from 'net';
-import { removeHeadersWithPrefix } from '../helpers';
+import { ArrayHttpHeaders } from '../helpers';
 import { ProxyHttp } from '../proxy';
 import type { LoggerService } from '@nestjs/common';
 
@@ -53,7 +53,9 @@ export class ProxyLocalApp extends ProxyHttp {
     }
 
     protected override request(
-        req: IncomingMessage, res: ServerResponse
+        req: IncomingMessage,
+        reqHeaders: ArrayHttpHeaders,
+        res: ServerResponse
     ) {
         if (req.url?.startsWith('/api/sessions')) {
             this.requestSession(
@@ -89,13 +91,11 @@ export class ProxyLocalApp extends ProxyHttp {
             return;
         }
 
-        removeHeadersWithPrefix(
-            req.headers,
-            'x-proxy-local-'
-        );
+        reqHeaders.removeHeadersWithPrefix('x-proxy-local-');
 
         super.request(
             req,
+            reqHeaders,
             res
         );
     }
@@ -125,11 +125,6 @@ export class ProxyLocalApp extends ProxyHttp {
 
             return;
         }
-
-        removeHeadersWithPrefix(
-            req.headers,
-            'x-proxy-local-'
-        );
 
         super.connect(
             req,

@@ -41,19 +41,20 @@ import {
     CommanderRefreshClientService,
 } from '../commander-client';
 import {
+    ArrayHttpHeaders,
     parseBasicFromAuthorizationHeader,
     parseDomain,
-    removeHeadersWithPrefix,
-    sanitizeHeaders,
+    SCRAPOXY_COOKIE_REGEX,
     SocketsDebug,
     urlToUrlOptions,
 } from '../helpers';
 import {
+    ATransportService,
     HttpTransportError,
     TransportprovidersService,
 } from '../transports';
 import type { IMasterModuleConfig } from './master.module';
-import type { ATransportService } from '../transports';
+import type { IUrlOptions } from '../helpers';
 import type {
     OnModuleDestroy,
     OnModuleInit,
@@ -263,6 +264,8 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             return;
         }
 
+        // Format request headers
+        const reqHeaders = new ArrayHttpHeaders(req.rawHeaders);
         // Find project
         let project: IProjectToConnect;
 
@@ -290,7 +293,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             }
         } else {
             try {
-                const token = parseBasicFromAuthorizationHeader(req.headers[ 'proxy-authorization' ]);
+                const token = parseBasicFromAuthorizationHeader(reqHeaders.getFirstHeader('proxy-authorization'));
 
                 if (!token) {
                     this.endResponseWithError(
@@ -323,7 +326,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         }
 
         // Find proxy
-        const proxyname = getProxynameFromHeaders(req.headers);
+        const proxyname = getProxynameFromHeaders(reqHeaders);
         let proxy: IProxyToConnect;
         try {
             proxy = await this.commanderConnect.getNextProxyToConnect(
@@ -359,13 +362,30 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             }
         }
 
+        // Clean proxy & scrapoxy headers
+        reqHeaders.removeHeaders('Proxy-Authorization');
+        reqHeaders.removeHeadersWithPrefix(SCRAPOXY_HEADER_PREFIX);
+        reqHeaders.removeHeadersWithRegexValue(
+            'Cookie',
+            SCRAPOXY_COOKIE_REGEX
+        );
+
+        // Set user-agent
+        if (project.useragentOverride) {
+            reqHeaders.setOrUpdateFirstHeader(
+                'User-Agent',
+                proxy.useragent
+            );
+        }
+
         // Build request
         let reqArgs: ClientRequestArgs,
-            transport: ATransportService;
+            transport: ATransportService,
+            urlOpts: IUrlOptions | undefined;
         try {
             transport = this.transportproviders.getTransportByType(proxy.transportType);
 
-            const urlOpts = urlToUrlOptions(req.url as string);
+            urlOpts = urlToUrlOptions(req.url as string);
 
             if (!urlOpts) {
                 throw new Error('Cannot parse req.url');
@@ -374,15 +394,13 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             reqArgs = transport.buildRequestArgs(
                 req.method,
                 urlOpts,
-                req.headers,
+                reqHeaders,
                 {
                     Host: `${urlOpts.hostname}:${urlOpts.port}`,
                 },
                 proxy,
                 sockets
             );
-
-            reqArgs.headers = reqArgs.headers ?? {};
         } catch (err: any) {
             this.endResponseWithError(
                 req,
@@ -403,19 +421,6 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             this.metricsProxies,
             sIn,
             sOut
-        );
-
-        // Set user-agent
-        if (project.useragentOverride) {
-            reqArgs.headers[ 'user-agent' ] = proxy.useragent;
-        }
-
-        // Clean proxy & scrapoxy headers
-        delete reqArgs.headers[ 'proxy-authorization' ];
-
-        removeHeadersWithPrefix(
-            reqArgs.headers,
-            SCRAPOXY_HEADER_PREFIX_LC
         );
 
         // Start request
@@ -480,38 +485,44 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 );
                  */
 
-                const proxyResHeaders = sanitizeHeaders(proxyRes.headers);
+                const proxyResHeaders = new ArrayHttpHeaders(proxyRes.rawHeaders);
 
                 // Add proxy headers and cookies
-                proxyResHeaders[ `${SCRAPOXY_HEADER_PREFIX}-Proxyname` ] = proxy.id;
+                proxyResHeaders.addHeader(
+                    `${SCRAPOXY_HEADER_PREFIX}-Proxyname`,
+                    proxy.id
+                );
 
-                const hostHeader = proxyReq!.getHeader('host') as (string | undefined);
-                const domain = parseDomain(hostHeader);
+                const domain = parseDomain(urlOpts!.hostname);
 
                 if (domain) {
                     if (project.cookieSession) {
-                        proxyResHeaders[ 'set-cookie' ] = proxyResHeaders[ 'set-cookie' ] ?? [];
-
-                        const setCookieHeader = proxyResHeaders[ 'set-cookie' ] as string[];
-
-                        if (req.url?.startsWith('https:')) {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Domain=.${domain}; HttpOnly; Secure; SameSite=None`);
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; HttpOnly; Secure; SameSite=None`);
+                        if (urlOpts!.protocol === 'https:') {
+                            proxyResHeaders.addHeaderArray(
+                                'Set-Cookie',
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Domain=.${domain}; HttpOnly; Secure; SameSite=None`,
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; HttpOnly; Secure; SameSite=None`
+                            );
                         } else {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Domain=.${domain}; HttpOnly`);
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; HttpOnly`);
+                            proxyResHeaders.addHeaderArray(
+                                'Set-Cookie',
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; Domain=.${domain}; HttpOnly`,
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=${proxy.id}; HttpOnly`
+                            );
                         }
                     } else if (proxyname) {
-                        proxyResHeaders[ 'set-cookie' ] = proxyResHeaders[ 'set-cookie' ] ?? [];
-
-                        const setCookieHeader = proxyResHeaders[ 'set-cookie' ] as string[];
-
-                        if (req.url?.startsWith('https:')) {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Domain=.${domain}; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                        if (urlOpts!.protocol === 'https:') {
+                            proxyResHeaders.addHeaderArray(
+                                'Set-Cookie',
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Domain=.${domain}; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=; HttpOnly; Secure; SameSite=None; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+                            );
                         } else {
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Domain=.${domain}; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
-                            setCookieHeader.push(`${SCRAPOXY_COOKIE_PREFIX}-proxyname=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                            proxyResHeaders.addHeaderArray(
+                                'Set-Cookie',
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=; Domain=.${domain}; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+                                `${SCRAPOXY_COOKIE_PREFIX}-proxyname=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+                            );
                         }
                     }
                 }
@@ -519,7 +530,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
                 res.writeHead(
                     proxyRes.statusCode as number,
                     proxyRes.statusMessage,
-                    proxyResHeaders
+                    proxyResHeaders.toArray()
                 );
 
                 proxyRes
@@ -561,10 +572,12 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             'MasterService:connect:socket'
         );
 
+        // Format request headers
+        const reqHeaders = new ArrayHttpHeaders(req.rawHeaders);
         // Find project
         let project: IProjectToConnect;
         try {
-            const token = parseBasicFromAuthorizationHeader(req.headers[ 'proxy-authorization' ]);
+            const token = parseBasicFromAuthorizationHeader(reqHeaders.getFirstHeader('proxy-authorization'));
 
             if (!token) {
                 this.endSocketWithError(
@@ -584,7 +597,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
 
             project = await this.commanderConnect.getProjectToConnect(
                 token,
-                convertToConnectMode(req.headers[ `${SCRAPOXY_HEADER_PREFIX_LC}-mode` ]),
+                convertToConnectMode(reqHeaders.getFirstHeader(`${SCRAPOXY_HEADER_PREFIX_LC}-mode`)),
                 hostname
             );
         } catch (err: any) {
@@ -709,13 +722,15 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             }
         );
 
+        // Format request headers
+        const reqHeaders = new ArrayHttpHeaders(req.rawHeaders);
         // Find proxy
         let proxy: IProxyToConnect;
 
         try {
             proxy = await this.commanderConnect.getNextProxyToConnect(
                 project.id,
-                getProxynameFromHeaders(req.headers)
+                getProxynameFromHeaders(reqHeaders)
             );
         } catch (err: any) {
             this.endSocketWithError(

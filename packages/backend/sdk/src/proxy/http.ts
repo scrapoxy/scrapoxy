@@ -17,6 +17,7 @@ import {
     Sockets,
 } from '@scrapoxy/proxy-sdk';
 import {
+    ArrayHttpHeaders,
     createConnectionAuto,
     generateCertificateSelfSignedForTest,
     urlOptionsToUrl,
@@ -69,8 +70,11 @@ abstract class AProxy {
             (
                 req: IncomingMessage, res: ServerResponse
             ) => {
+                const reqHeaders = new ArrayHttpHeaders(req.rawHeaders);
+
                 this.request(
                     req,
+                    reqHeaders,
                     res
                 );
             }
@@ -152,7 +156,7 @@ abstract class AProxy {
     }
 
     protected request(
-        req: IncomingMessage, res: ServerResponse
+        req: IncomingMessage, reqHeaders: ArrayHttpHeaders, res: ServerResponse
     ) {
         this.logger.debug?.(`[ProxyHttp] request ${req.method} ${req.url}`);
 
@@ -187,7 +191,7 @@ abstract class AProxy {
             hostname: urlOpts.hostname,
             port: urlOpts.port,
             path,
-            headers: req.headers,
+            headers: reqHeaders.toArray() as any, // should accept also [string, string][]
             timeout: this.timeout,
             createConnection: (
                 opts,
@@ -207,7 +211,8 @@ abstract class AProxy {
             (proxyRes: IncomingMessage) => {
                 res.writeHead(
                     proxyRes.statusCode as number,
-                    proxyRes.headers
+                    new ArrayHttpHeaders(proxyRes.rawHeaders)
+                        .toArray() as any // should accept also [string, string][]
                 );
                 proxyRes.pipe(res);
             }
@@ -228,7 +233,9 @@ abstract class AProxy {
 
     protected connect(
         // eslint-disable-next-line unused-imports/no-unused-vars
-        req: IncomingMessage, socket: Socket, head: Buffer
+        req: IncomingMessage,
+        socket: Socket,
+        head: Buffer
     ) {
         this.logger.debug?.(`[ProxyHttp] connect ${req.method} ${req.url}`);
 

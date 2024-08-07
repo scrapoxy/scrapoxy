@@ -6,10 +6,6 @@ import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import type { NestApplicationOptions } from '@nestjs/common';
 import type { CreateAxiosDefaults } from 'axios';
-import type {
-    IncomingHttpHeaders,
-    OutgoingHttpHeaders,
-} from 'http';
 
 
 export class Agents {
@@ -42,24 +38,6 @@ export class Agents {
     close() {
         this.httpInstance.destroy();
         this.httpsInstance.destroy();
-    }
-}
-
-
-export function removeHeadersWithPrefix(
-    headers: IncomingHttpHeaders | OutgoingHttpHeaders | undefined, prefix: string
-) {
-    if (!headers) {
-        return;
-    }
-
-    const prefixLc = prefix.toLowerCase();
-
-    for (const key in headers) {
-        if (key.toLowerCase()
-            .startsWith(prefixLc)) {
-            delete headers[ key ];
-        }
     }
 }
 
