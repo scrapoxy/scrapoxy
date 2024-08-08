@@ -35,7 +35,6 @@ import type {
     IProjectToCreate,
     ISubscriptionDatacenterLocalToCreate,
 } from '@scrapoxy/common';
-import type { RawAxiosRequestHeaders } from 'axios';
 
 
 async function moveToStatus(
@@ -383,13 +382,12 @@ describe(
         it(
             'should make a request and keep the project status CALM (autoScaleUp is OFF)',
             async() => {
-                const headers: RawAxiosRequestHeaders = { // TODO: can be simplify everywhere
-                    'Proxy-Authorization': `Basic ${token}`,
-                };
                 const res = await instance.get(
                     `${servers.urlHttps}/mirror/headers`,
                     {
-                        headers,
+                        headers: {
+                            'Proxy-Authorization': `Basic ${token}`,
+                        },
                         proxy: {
                             host: 'localhost',
                             port: masterApp.masterPort,
@@ -436,13 +434,12 @@ describe(
         it(
             'should make a request and move the project status to HOT (autoScaleUp is ON)',
             async() => {
-                const headers: RawAxiosRequestHeaders = {
-                    'Proxy-Authorization': `Basic ${token}`,
-                };
                 const res = await instance.get(
                     `${servers.urlHttps}/mirror/headers`,
                     {
-                        headers,
+                        headers: {
+                            'Proxy-Authorization': `Basic ${token}`,
+                        },
                         proxy: {
                             host: 'localhost',
                             port: masterApp.masterPort,
