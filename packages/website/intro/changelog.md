@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.14.0
+
+### Features
+
+- **headers**: maintain the order and duplication of HTTP headers for MITM mode
+
+### Bug fixes
+
+- **privacy**: remove all Scrapoxy headers and cookies from responses sent to the target website.
+- **connectors**: prevent unnecessary data sharing with the frontend.
+- **refactor**: clean a lot of code
+
+
 ## 4.13.0
 
 ### Features
