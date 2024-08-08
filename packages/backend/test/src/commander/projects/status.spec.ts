@@ -383,7 +383,7 @@ describe(
         it(
             'should make a request and keep the project status CALM (autoScaleUp is OFF)',
             async() => {
-                const headers: RawAxiosRequestHeaders = {
+                const headers: RawAxiosRequestHeaders = { // TODO: can be simplify everywhere
                     'Proxy-Authorization': `Basic ${token}`,
                 };
                 const res = await instance.get(
