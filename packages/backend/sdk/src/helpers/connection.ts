@@ -79,7 +79,6 @@ export function createConnectionAuto(
         `${namePrefix}:createConnectionAuto:socket`
     );
 
-
     socket.on(
         'timeout',
         () => {
