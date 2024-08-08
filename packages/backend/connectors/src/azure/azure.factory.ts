@@ -308,14 +308,10 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
         );
         const locations = await api.listLocations();
 
-        return locations.map((l)=> {
-            const location: IAzureLocation = {
-                name: l.name as string,
-                description: l.displayName as string,
-            };
-
-            return location;
-        });
+        return locations.map((l)=> ({
+            name: l.name as string,
+            description: l.displayName as string,
+        }));
     }
 
     private async queryVmSizes(
@@ -333,15 +329,11 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
 
         return sizes
             .filter((s) => FILTER_VM_SIZES.includes(s.name as string))
-            .map((s) => {
-                const size: IAzureVmSize = {
-                    id: s.id as string,
-                    name: s.name as string,
-                    numberOfCores: s.numberOfCores as number,
-                    memoryInMB: s.memoryInMB as number,
-                };
-
-                return size;
-            });
+            .map((s) => ({
+                id: s.id as string,
+                name: s.name as string,
+                numberOfCores: s.numberOfCores as number,
+                memoryInMB: s.memoryInMB as number,
+            }));
     }
 }
