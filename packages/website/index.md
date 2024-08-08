@@ -115,6 +115,12 @@ sponsors:
           - name: 'Wiremind'
             url: 'https://wiremind.io'
             img: '/assets/images/wiremind.svg'
+    - tier: "Sponsor the Open Source project"
+      size: 'medium'
+      items:
+          - name: 'BuyMeACoffee'
+            url: 'https://www.buymeacoffee.com/scrapoxy'
+            img: '/assets/images/buymeacoffee.svg'
 
 ---
 <HomeImage message="Your personal proxies aggregator:" icon="🎯" src="/assets/images/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>

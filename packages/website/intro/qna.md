@@ -38,6 +38,20 @@ const proxyChain = require('proxy-chain');
 ```
 
 
+### Can I host the fingerprint server myself?
+
+Unfortunately, self-hosting the fingerprint server is not possible.
+
+Here are the reasons:
+
+1. **Data**: The server provides GEO IP information using a sophisticated algorithm, not just a basic free database. This algorithm is proprietary and will not be released as open source.
+2. **Whitelisting**: Some providers require domain whitelisting. Extensive discussions with their technical and legal teams were necessary to secure this.
+
+To secure this component within the infrastructure,
+it would be greatly appreciated if [a sponsorship could be considered](sponsorships.md) 
+instead of covering the server's hosting costs. 🙏
+
+
 ## Errors
 
 ### I've got an error `no such file or directory, open 'scrapoxy.json'` at startup

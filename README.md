@@ -122,21 +122,34 @@ I simply ask you to give me **credit** if you redistribute or use it in a projec
 A warm thank-you message is appreciated as well 😃🙏.
 
 
-## Documentation & Contributing
+## Documentation
 
-Go to [scrapoxy.io](https://scrapoxy.io).
+More information on [scrapoxy.io](https://scrapoxy.io).
 
 
 ## Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=fabienvauchelles/scrapoxy)](https://github.com/fabienvauchelles/scrapoxy/graphs/contributors)
 
+Want to contribute? Check out the [guide](https://scrapoxy.io/contrib/guidelines)!
 
-## Author
+Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/fabienvauchelles/)
 
-|                   | Contact Info                                                                                                                                                                   |
-|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Fabien Vauchelles | [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/fabienvauchelles/) |
+
+## Sponsorship
+
+Scrapoxy is an open-source project.
+The project is **free** for users, but it does come with **costs for me**.
+
+I invest significant time and resources into maintaining and improving this project,
+covering expenses for hosting, promotion, and more.
+
+If you appreciate the value Scrapoxy provides and wish to support its continued development,
+discuss new features, access the roadmap, or receive professional support, please consider [becoming a sponsor](https://www.buymeacoffee.com/scrapoxy)!
+
+Your support would greatly contribute to the project's sustainability and growth:
+
+[![Sponsor](packages/website/public/assets/images/buymeacoffee.svg){width=230}](https://www.buymeacoffee.com/scrapoxy)
 
 
 ## Licence

@@ -86,6 +86,7 @@ export default defineConfig({
                     {text: 'Q&A', link: 'qna'},
                     {text: 'Changelog', link: 'changelog'},
                     {text: 'Partnerships', link: 'partnerships'},
+                    {text: 'Sponsorships', link: 'sponsorships'},
                     {text: 'Licence', link: 'licence'},
                 ]
             },
