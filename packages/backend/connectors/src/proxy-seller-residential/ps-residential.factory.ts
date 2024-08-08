@@ -15,6 +15,7 @@ import {
     EProxySellerResidentialQueryCredential,
 } from '@scrapoxy/common';
 import { ProxySellerResidentialApi } from './api';
+import { toProxySellerGeoCountryView } from './ps-residential.helpers';
 import { ConnectorProxySellerResidentialService } from './ps-residential.service';
 import {
     schemaConfig,
@@ -164,10 +165,7 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
     }
 
     private async queryCountries(): Promise<IProxySellerGeoCountryView[]> {
-        const countries: IProxySellerGeoCountryView[] = this.geos.map((p) =>({
-            code: p.code,
-            name: p.name,
-        }));
+        const countries: IProxySellerGeoCountryView[] = this.geos.map(toProxySellerGeoCountryView);
 
         return countries;
     }

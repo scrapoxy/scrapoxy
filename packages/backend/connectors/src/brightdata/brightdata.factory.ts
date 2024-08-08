@@ -13,6 +13,7 @@ import {
 import { BrightdataApi } from './api';
 import { ConnectorBrightdataResidentialService } from './brightdata-residential.service';
 import { ConnectorBrightdataServerService } from './brightdata-server.service';
+import { toBrightdataZoneView } from './brightdata.helpers';
 import {
     BRIGHTDATA_PRODUCT_TYPES,
     EBrightdataProductType,
@@ -168,6 +169,6 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
         const zones = await api.getAllActiveZones();
         const zonesFiltered = zones.filter((zone) => BRIGHTDATA_PRODUCT_TYPES.includes(zone.type));
 
-        return zonesFiltered;
+        return zonesFiltered.map(toBrightdataZoneView);
     }
 }

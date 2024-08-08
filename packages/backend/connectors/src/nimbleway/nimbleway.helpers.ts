@@ -1,4 +1,5 @@
 import type { INimblewaySessionOptions } from './nimbleway.interface';
+import type { INimblewayGeoItem } from '@scrapoxy/common';
 
 
 export function formatUsername(
@@ -15,4 +16,14 @@ export function formatUsername(
     lines.push(`session-${options.session}`);
 
     return lines.join('-');
+}
+
+
+export function toNimblewayGeoItem(i: INimblewayGeoItem): INimblewayGeoItem {
+    const item: INimblewayGeoItem = {
+        code: i.code,
+        name: i.name,
+    };
+
+    return item;
 }

@@ -19,11 +19,7 @@ export class NimblewayApi {
 
     async listCountries(): Promise<INimblewayGeoItem[]> {
         const res = await this.instance.get<INimblewayCountry[]>('location/cities');
-        const countries = res.data.map((c) => ({
-            name: c.name,
-            code: c.code,
-        }));
 
-        return countries;
+        return res.data;
     }
 }

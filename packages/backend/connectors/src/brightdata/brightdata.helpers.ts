@@ -1,4 +1,5 @@
 import { EBrightdataProductType } from './brightdata.interface';
+import type { IBrightdataZoneView } from './brightdata.interface';
 
 
 export function getBrightdataPrefix(zoneType: EBrightdataProductType): string {
@@ -19,4 +20,14 @@ export function getBrightdataPrefix(zoneType: EBrightdataProductType): string {
             return 'MOB';
         }
     }
+}
+
+
+export function toBrightdataZoneView(z: IBrightdataZoneView): IBrightdataZoneView {
+    const zone: IBrightdataZoneView = {
+        type: z.type,
+        name: z.name,
+    };
+
+    return zone;
 }

@@ -131,7 +131,6 @@ export class ConnectorLiveproxiesFactory implements IConnectorFactory, OnModuleD
 
         switch (query.type) {
             case ELiveproxiesQueryCredential.Plans: {
-                // TODO: make sure that non essentials information's are filtered before being sent to frontend in other connectors
                 return this.queryPlans(credentialConfig);
             }
 

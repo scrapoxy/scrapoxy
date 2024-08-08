@@ -10,6 +10,7 @@ import {
     ENimblewayQueryCredential,
 } from '@scrapoxy/common';
 import { NimblewayApi } from './api';
+import { toNimblewayGeoItem } from './nimbleway.helpers';
 import { ConnectorNimblewayService } from './nimbleway.service';
 import {
     schemaConfig,
@@ -117,6 +118,6 @@ export class ConnectorNimblewayFactory implements IConnectorFactory, OnModuleDes
         const api = new NimblewayApi(this.agents);
         const countries = await api.listCountries();
 
-        return countries;
+        return countries.map(toNimblewayGeoItem);
     }
 }

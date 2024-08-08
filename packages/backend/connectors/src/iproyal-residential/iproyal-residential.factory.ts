@@ -11,6 +11,7 @@ import {
     EIproyalResidentialQueryCredential,
 } from '@scrapoxy/common';
 import { IproyalResidentialApi } from './api';
+import { toIproyalResidentialCountries } from './iproyal-residential.helpers';
 import { ConnectorIproyalService } from './iproyal-residential.service';
 import {
     schemaConfig,
@@ -136,6 +137,6 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory, On
         );
         const countries = await api.getAllCountries();
 
-        return countries;
+        return toIproyalResidentialCountries(countries);
     }
 }
