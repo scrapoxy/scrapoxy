@@ -73,12 +73,6 @@ The fees are broken down as follows:
 
 A **12-month commitment** is required.
 
-::: info
-If you're skeptical about the time involved in meetings,
-you can't imagine the amount of time I spend on support tasks like opening access,
-getting development subscriptions, and whitelisting domains. 😡
-:::
-
 
 #### Exceptions
 
