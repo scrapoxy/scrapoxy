@@ -149,7 +149,7 @@ discuss new features, access the roadmap, or receive professional support, pleas
 
 Your support would greatly contribute to the project's sustainability and growth:
 
-[![Sponsor](packages/website/public/assets/images/buymeacoffee.svg){width=230}](https://www.buymeacoffee.com/scrapoxy)
+<a href="https://www.buymeacoffee.com/scrapoxy" target="_blank"><img src="https://raw.githubusercontent.com/fabienvauchelles/scrapoxy/master/packages/website/public/assets/images/buymeacoffee.svg" width="230"/></a>
 
 
 ## Licence
