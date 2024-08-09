@@ -257,6 +257,7 @@ export function testConnector(
             mitm: true,
             proxiesMin: 1,
             useragentOverride: false,
+            ciphersShuffle: false,
         });
         await waitFor(async() => {
             token = await commander.getProjectTokenById(project.id);

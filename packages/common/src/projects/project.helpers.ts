@@ -30,6 +30,7 @@ export function toProjectData(p: IProjectData): IProjectData {
         mitm: p.mitm,
         proxiesMin: p.proxiesMin,
         useragentOverride: p.useragentOverride,
+        ciphersShuffle: p.ciphersShuffle,
     };
 
     return data;

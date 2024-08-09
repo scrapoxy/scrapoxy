@@ -170,6 +170,7 @@ class DigitalOceanInstallCommand extends ATaskCommand {
                     config,
                     useragent: generateUseragent(),
                     timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
+                    ciphers: null,
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,

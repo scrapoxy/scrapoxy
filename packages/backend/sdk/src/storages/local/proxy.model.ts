@@ -25,6 +25,7 @@ export function toProxyToConnect(proxy: IProxyModel): IProxyToConnect {
         config: proxy.config,
         useragent: proxy.useragent,
         timeoutDisconnected: proxy.timeoutDisconnected,
+        ciphers: proxy.ciphers,
     };
 
     return connect;
@@ -42,6 +43,7 @@ export function toProxyToRefresh(proxy: IProxyModel): IProxyToRefresh {
         config: proxy.config,
         useragent: proxy.useragent,
         timeoutDisconnected: proxy.timeoutDisconnected,
+        ciphers: proxy.ciphers,
         requests: proxy.requests,
         requestsValid: proxy.requestsValid,
         requestsInvalid: proxy.requestsInvalid,

@@ -100,6 +100,9 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
             useragentOverride: [
                 void 0, Validators.required,
             ],
+            ciphersShuffle: [
+                void 0, Validators.required,
+            ],
         });
     }
 
@@ -155,6 +158,7 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
             cookieSession: this.form.value.cookieSession ?? false,
             mitm: this.form.value.mitm ?? false,
             useragentOverride: this.form.value.useragentOverride ?? false,
+            ciphersShuffle: this.form.value.ciphersShuffle ?? false,
         };
 
         try {

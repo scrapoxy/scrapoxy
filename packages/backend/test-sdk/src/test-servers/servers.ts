@@ -6,6 +6,7 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { generateCertificateSelfSignedForTest } from '@scrapoxy/backend-sdk';
 import * as express from 'express';
+import { trackClientHellos } from 'read-tls-client-hello';
 import { FingerprintServer } from './fingerprint';
 import {
     WebModule,
@@ -72,7 +73,8 @@ export class TestServers {
 
         const certificate = generateCertificateSelfSignedForTest();
         this.httpServer = new WebServer(createServerHttp(server));
-        this.httpsServer = new WebServer(createServerHttps(
+
+        const httpsServer = createServerHttps(
             {
                 requestCert: true,
                 rejectUnauthorized: false,
@@ -97,7 +99,10 @@ export class TestServers {
                 },
             },
             server
-        ));
+        );
+        trackClientHellos(httpsServer);
+
+        this.httpsServer = new WebServer(httpsServer);
         // Fingerprint server
         this.fingerprintServer = new FingerprintServer();
         await this.fingerprintServer.init();

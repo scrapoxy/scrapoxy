@@ -396,6 +396,10 @@ export class TransportProxyLocalService extends ATransportService {
                             options.servername = urlOpts.hostname as string;
                         }
 
+                        if (proxy.ciphers) {
+                            options.ciphers = proxy.ciphers;
+                        }
+
                         const returnedSocket = connect(options);
                         returnedSocket.on(
                             'error',

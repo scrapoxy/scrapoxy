@@ -139,6 +139,7 @@
         "postcss-preset-env": "~9.3.0",
         "postcss-url": "~10.1.0",
         "prettier": "~3.1.0",
+        "read-tls-client-hello": "~1.0.0",
         "stylelint": "~15.11.0",
         "stylelint-config-standard-scss": "~11.1.0",
         "stylelint-order": "~6.0.0",

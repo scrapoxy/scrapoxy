@@ -85,6 +85,12 @@ class WebController {
         return data;
     }
 
+    @Get('mirror/tls')
+    @HttpCode(200)
+    mirrorTls(@Req() req: Request) {
+        return (req.socket as any).tlsClientHello;
+    }
+
     @Get('socketdestroy')
     destroySocket(@Res() res: Response) {
         if (res.socket) {

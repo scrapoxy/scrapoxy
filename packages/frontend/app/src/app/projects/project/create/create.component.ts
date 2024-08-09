@@ -87,6 +87,9 @@ export class ProjectCreateComponent implements IHasModification {
             useragentOverride: [
                 false, Validators.required,
             ],
+            ciphersShuffle: [
+                false, Validators.required,
+            ],
         });
 
         this.onChangeMitm();
@@ -116,6 +119,7 @@ export class ProjectCreateComponent implements IHasModification {
             cookieSession: this.form.value.cookieSession ?? false,
             mitm: this.form.value.mitm ?? false,
             useragentOverride: this.form.value.useragentOverride ?? false,
+            ciphersShuffle: this.form.value.ciphersShuffle ?? false,
         };
 
         try {

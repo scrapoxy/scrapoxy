@@ -22,7 +22,10 @@ import {
     NoFreeproxyToRefreshError,
     NoProxyToRefreshError,
 } from '../../errors';
-import { validate } from '../../helpers';
+import {
+    generateRandomCiphers,
+    validate,
+} from '../../helpers';
 import { StorageprovidersService } from '../../storages';
 import { TasksService } from '../../tasks';
 import { ACommanderService } from '../commander.abstract';
@@ -241,6 +244,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                 removingForce: false,
                 disconnectedTs: nowTime,
                 autoRotateDelayFactor: Math.random(),
+                ciphers: generateRandomCiphers(),
                 requests: 0,
                 requestsValid: 0,
                 requestsInvalid: 0,
@@ -445,6 +449,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                     removingForce: false,
                     disconnectedTs: nowTime,
                     autoRotateDelayFactor: Math.random(),
+                    ciphers: generateRandomCiphers(),
                     requests: 0,
                     requestsValid: 0,
                     requestsInvalid: 0,
@@ -801,6 +806,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                         timeoutUnreachable: localProxy.timeoutUnreachable,
                         disconnectedTs: localProxy.disconnectedTs,
                         autoRotateDelayFactor: localProxy.autoRotateDelayFactor,
+                        ciphers: localProxy.ciphers,
                     };
 
                     localProxiesUpdated.push(proxyUpdated);

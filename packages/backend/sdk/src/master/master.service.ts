@@ -345,6 +345,11 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             return;
         }
 
+        // Remove cipher if shuffle is disabled
+        if (!project.ciphersShuffle) {
+            proxy.ciphers = null;
+        }
+
         // Scale up proxy if auto-scale is enabled
         if (project.autoScaleUp && project.status === EProjectStatus.CALM) {
             try {

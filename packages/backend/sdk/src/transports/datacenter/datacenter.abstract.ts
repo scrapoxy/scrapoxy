@@ -167,6 +167,10 @@ export abstract class ATransportDatacenterService extends ATransportService {
                                 options.servername = urlOpts.hostname as string;
                             }
 
+                            if (proxy.ciphers) {
+                                options.ciphers = proxy.ciphers;
+                            }
+
                             returnedSocket = connect(options);
                             returnedSocket.on(
                                 'error',

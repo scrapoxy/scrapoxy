@@ -33,6 +33,8 @@ export const schemaProjectToCreate = Joi.object({
         .min(1),
     useragentOverride: Joi.boolean()
         .required(),
+    ciphersShuffle: Joi.boolean()
+        .required(),
 });
 
 

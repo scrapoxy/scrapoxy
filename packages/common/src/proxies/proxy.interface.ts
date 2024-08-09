@@ -145,8 +145,10 @@ export const PROXY_DATA_META = [
     'useragent',
     'timeoutDisconnected',
     'timeoutUnreachable',
-    'autoRotateDelayFactor',
     'disconnectedTs',
+    'autoRotateDelayFactor',
+    'ciphers',
+
 ];
 
 
@@ -158,6 +160,7 @@ export interface IProxyData extends IProxyBase {
     timeoutUnreachable: number | null;
     disconnectedTs: number | null;
     autoRotateDelayFactor: number;
+    ciphers: string | null;
 }
 
 
@@ -308,6 +311,7 @@ export interface IProxyToConnect {
     config: any;
     useragent: string;
     timeoutDisconnected: number;
+    ciphers: string | null;
 }
 
 

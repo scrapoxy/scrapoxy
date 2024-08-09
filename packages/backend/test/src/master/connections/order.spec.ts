@@ -111,6 +111,7 @@ describe(
                 config,
                 useragent: generateUseragent(),
                 timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                ciphers: null,
             };
 
             // Start master
@@ -148,6 +149,7 @@ describe(
                         cookieSession: true,
                         status: EProjectStatus.HOT,
                         useragentOverride: false,
+                        ciphersShuffle: false,
                     }),
                     getNextProxyToConnect: async(): Promise<IProxyToConnect> => proxy,
                 })
@@ -168,7 +170,7 @@ describe(
         });
 
         describe(
-            'Direct requests',
+            'Direct connection',
             () => {
                 it(
                     'should have the same headers order and content for HTTP request',

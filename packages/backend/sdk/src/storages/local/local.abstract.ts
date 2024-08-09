@@ -229,6 +229,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 nextRefreshTs: 0,
                 lastConnectionTs: 0,
                 autoRotateDelayFactor: Math.random(),
+                ciphers: null,
             };
 
             this.proxies.set(
@@ -516,6 +517,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
             mitm: create.project.mitm,
             proxiesMin: create.project.proxiesMin,
             useragentOverride: create.project.useragentOverride,
+            ciphersShuffle: create.project.ciphersShuffle,
             requests: 0,
             requestsValid: 0,
             requestsInvalid: 0,
@@ -599,6 +601,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
         projectModel.mitm = project.mitm;
         projectModel.proxiesMin = project.proxiesMin;
         projectModel.useragentOverride = project.useragentOverride;
+        projectModel.ciphersShuffle = project.ciphersShuffle;
         projectModel.status = project.status;
         projectModel.connectorDefaultId = project.connectorDefaultId;
 

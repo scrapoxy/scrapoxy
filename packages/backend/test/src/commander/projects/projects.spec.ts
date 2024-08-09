@@ -57,6 +57,7 @@ describe(
                 mitm: true,
                 proxiesMin: 1,
                 useragentOverride: false,
+                ciphersShuffle: false,
             },
             projectToCreate2: IProjectToCreate = {
                 name: 'new project 1', // Check sort on name
@@ -74,6 +75,7 @@ describe(
                 mitm: true,
                 proxiesMin: 1,
                 useragentOverride: false,
+                ciphersShuffle: false,
             },
             projectToUpdate: IProjectToUpdate = {
                 name: 'new name for project',
@@ -91,6 +93,7 @@ describe(
                 mitm: true,
                 proxiesMin: 1,
                 useragentOverride: false,
+                ciphersShuffle: false,
             },
             servers = new TestServers(),
             subscriptionId = uuid();
@@ -183,6 +186,7 @@ describe(
                     mitm: true,
                     proxiesMin: 1,
                     useragentOverride: false,
+                    ciphersShuffle: false,
                 };
                 const clientRegister = new EventsProjectClient(commanderApp.events);
                 await commanderApp.events.registerAsync({

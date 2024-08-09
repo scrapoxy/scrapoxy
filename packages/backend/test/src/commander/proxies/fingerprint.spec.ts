@@ -176,6 +176,7 @@ describe(
                         mitm: true,
                         proxiesMin: 1,
                         useragentOverride: false,
+                        ciphersShuffle: false,
                     });
 
                     await waitFor(async() => {
@@ -348,6 +349,7 @@ describe(
                         mitm: true,
                         proxiesMin: 1,
                         useragentOverride: false,
+                        ciphersShuffle: false,
                     });
 
                     let token: string;

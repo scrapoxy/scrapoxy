@@ -276,6 +276,21 @@
                                 </c-col>
                             </c-row>
                         }
+                        @if (form.controls['ciphersShuffle']; as c) {
+                            <c-row>
+                                <label cLabel cCol md="4" for="ciphersShuffle">Shuffle TLS Ciphersuite</label>
+
+                                <c-col md="8">
+                                    <c-form-check [switch]="true" sizing="lg">
+                                        <input
+                                            type="checkbox"
+                                            cFormCheckInput
+                                            id="ciphersShuffle"
+                                            formControlName="ciphersShuffle" />
+                                    </c-form-check>
+                                </c-col>
+                            </c-row>
+                        }
                     </c-card-body>
 
                     <c-card-footer>

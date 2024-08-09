@@ -45,6 +45,7 @@ During the initial connection, Scrapoxy will guide you through the creation of a
 10. **Certificate**: Install this CA certificate to avoid security warnings in Browsers or Scrapers;
 11. **Keep the same proxy with cookie injection**: If enabled, Scrapoxy injects a cookie to maintain the same proxy for a browser session (sticky cookie);
 12. **Override User-Agent**: If enabled, Scrapoxy overrides the User-Agent header with the value assigned to a proxy instance. All requests made with this instance will have the same User-Agent header;
+13. **Shuffle TLS Ciphersuite**: If enabled, Scrapoxy assigns a random TLS cipher suite to each proxy instance, helping to prevent [TLS fingerprinting](https://youtu.be/0S5SRT-WIUo?t=497);
 
 After saving these settings, Scrapoxy will prompt you to create the first credential for the project.
 

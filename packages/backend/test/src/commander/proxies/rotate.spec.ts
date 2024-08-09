@@ -52,6 +52,7 @@ describe(
                 mitm: true,
                 proxiesMin: 1,
                 useragentOverride: false,
+                ciphersShuffle: false,
             },
             servers = new TestServers();
         let

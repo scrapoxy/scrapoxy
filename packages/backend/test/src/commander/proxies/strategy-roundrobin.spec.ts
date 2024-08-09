@@ -106,6 +106,7 @@ describe(
                 mitm: true,
                 proxiesMin: 1,
                 useragentOverride: false,
+                ciphersShuffle: false,
             });
 
             // Create credential

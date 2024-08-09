@@ -60,7 +60,8 @@ export abstract class ATransportResidentialService extends ATransportService {
                     headersConnect,
                     config,
                     sockets,
-                    proxy.timeoutDisconnected
+                    proxy.timeoutDisconnected,
+                    proxy.ciphers
                 );
             }
 
@@ -197,7 +198,8 @@ export abstract class ATransportResidentialService extends ATransportService {
         headersConnect: OutgoingHttpHeaders,
         config: IProxyToConnectConfigResidential,
         sockets: ISockets,
-        timeout: number
+        timeout: number,
+        ciphers: string | null
     ): ClientRequestArgs {
         return {
             method,
@@ -300,6 +302,10 @@ export abstract class ATransportResidentialService extends ATransportService {
 
                         if (isUrl(urlOpts.hostname)) {
                             options.servername = urlOpts.hostname as string;
+                        }
+
+                        if (ciphers) {
+                            options.ciphers = ciphers;
                         }
 
                         const returnedSocket = connect(options);

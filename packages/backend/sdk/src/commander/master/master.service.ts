@@ -116,6 +116,7 @@ export class CommanderMasterService implements OnModuleInit {
             cookieSession: project.cookieSession,
             status: project.status,
             useragentOverride: project.useragentOverride,
+            ciphersShuffle: project.ciphersShuffle,
         };
 
         return projectToConnect;

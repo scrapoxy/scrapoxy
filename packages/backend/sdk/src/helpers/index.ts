@@ -14,6 +14,8 @@ export * from './sessions';
 
 export * from './sockets';
 
+export * from './tls';
+
 export * from './token';
 
 export * from './url';

@@ -83,6 +83,7 @@ export class RefreshFreeproxiesService extends ARefresh<IFreeproxiesToRefresh> {
                     key: freeproxy.key,
                     useragent: 'not_used',
                     timeoutDisconnected: freeproxy.timeoutDisconnected,
+                    ciphers: null,
                     bytesReceived: 0,
                     bytesSent: 0,
                     requests: 0,

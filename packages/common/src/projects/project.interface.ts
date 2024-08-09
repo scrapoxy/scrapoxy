@@ -105,6 +105,7 @@ export const PROJECT_DATA_META = [
     'mitm',
     'proxiesMin',
     'useragentOverride',
+    'ciphersShuffle',
 ];
 
 
@@ -116,6 +117,7 @@ export interface IProjectData extends IProjectView {
     mitm: boolean;
     proxiesMin: number;
     useragentOverride: boolean;
+    ciphersShuffle: boolean;
 }
 
 
@@ -153,6 +155,7 @@ export interface IProjectToConnect {
     cookieSession: boolean;
     status: EProjectStatus;
     useragentOverride: boolean;
+    ciphersShuffle: boolean;
 }
 
 
@@ -171,6 +174,7 @@ export interface IProjectToCreate {
     mitm: boolean;
     proxiesMin: number;
     useragentOverride: boolean;
+    ciphersShuffle: boolean;
 }
 
 

@@ -71,7 +71,8 @@ export abstract class ATransportProxyService extends ATransportService {
                             headersConnect,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected
+                            proxy.timeoutDisconnected,
+                            proxy.ciphers
                         );
                     }
 
@@ -102,7 +103,8 @@ export abstract class ATransportProxyService extends ATransportService {
                             headersConnect,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected
+                            proxy.timeoutDisconnected,
+                            proxy.ciphers
                         );
                     }
 
@@ -123,6 +125,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             config,
                             sockets,
                             proxy.timeoutDisconnected,
+                            proxy.ciphers,
                             4
                         );
                     }
@@ -144,6 +147,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             config,
                             sockets,
                             proxy.timeoutDisconnected,
+                            proxy.ciphers,
                             5
                         );
                     }
@@ -280,7 +284,8 @@ export abstract class ATransportProxyService extends ATransportService {
         headersConnect: OutgoingHttpHeaders,
         config: IProxyTransport,
         sockets: ISockets,
-        timeout: number
+        timeout: number,
+        ciphers: string | null
     ): ClientRequestArgs {
         return {
             method,
@@ -387,6 +392,10 @@ export abstract class ATransportProxyService extends ATransportService {
                             options.servername = urlOpts.hostname as string;
                         }
 
+                        if (ciphers) {
+                            options.ciphers = ciphers;
+                        }
+
                         const returnedSocket = connect(options);
                         returnedSocket.on(
                             'error',
@@ -438,6 +447,7 @@ export abstract class ATransportProxyService extends ATransportService {
         config: IProxyTransport,
         sockets: ISockets,
         timeout: number,
+        ciphers: string | null,
         type: SocksProxyType
     ): ClientRequestArgs {
         return {
@@ -496,6 +506,10 @@ export abstract class ATransportProxyService extends ATransportService {
 
                                 if (isUrl(args.hostname)) {
                                     optionsTls.servername = urlOpts.hostname as string;
+                                }
+
+                                if (ciphers) {
+                                    optionsTls.ciphers = ciphers;
                                 }
 
                                 socket = connect(optionsTls);

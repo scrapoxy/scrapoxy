@@ -100,6 +100,7 @@ describe(
                 config,
                 useragent: generateUseragent(),
                 timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                ciphers: null,
             };
 
             // Start master
@@ -137,6 +138,7 @@ describe(
                         cookieSession: true,
                         status: EProjectStatus.HOT,
                         useragentOverride: false,
+                        ciphersShuffle: false,
                     }),
                     getNextProxyToConnect: async(): Promise<IProxyToConnect> => proxy,
                 })
