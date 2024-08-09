@@ -2,6 +2,13 @@
 
 ## General
 
+### How to bypass Anti-Bot systems?
+
+I recommend watching this video on how anti-bot systems work and techniques to bypass them:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0S5SRT-WIUo?si=b5eBtJF6qmlOtrJo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 ### Can I access to the master without username:password (e.g. http://localhost:8888) ?
 
 Scrapoxy typically uses a `username:password` combination to select the appropriate project 
