@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.15.0
+
+### Features
+
+- **tls**: add an option to shuffle the ciphersuite to avoid TLS fingerprint
+
+
 ## 4.14.0
 
 ### Features
