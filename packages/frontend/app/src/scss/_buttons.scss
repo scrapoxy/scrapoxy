@@ -4,14 +4,6 @@
     margin-bottom: $grid-gutter-width;
 }
 
-.btn {
-    display: flex;
-
-    * {
-        vertical-align: middle;
-    }
-
-    .icon:first-child {
-        margin-right: 0.2rem;
-    }
+.btn * {
+    vertical-align: middle;
 }
