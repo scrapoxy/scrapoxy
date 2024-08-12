@@ -14,6 +14,7 @@ describe(
         const agents = new Agents();
         const connectorConfig: IConnectorZyteConfig = {
                 region: 'fr',
+                apiUrl: 'proxy.crawlera.com:8011',
             },
             credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/zyte/credentials.json');
         const credentialConfig = JSON.parse(credentialConfigData.toString());

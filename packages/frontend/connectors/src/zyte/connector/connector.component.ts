@@ -87,6 +87,9 @@ export class ConnectorZyteComponent implements IConnectorComponent, OnInit {
             region: [
                 void 0, Validators.required,
             ],
+            apiUrl: [
+                void 0, Validators.required,
+            ],
         });
     }
 
@@ -105,6 +108,7 @@ export class ConnectorZyteComponent implements IConnectorComponent, OnInit {
         if (this.createMode) {
             this.subForm.patchValue({
                 region: 'US',
+                apiUrl: 'proxy.crawlera.com:8011',
             });
         }
     }

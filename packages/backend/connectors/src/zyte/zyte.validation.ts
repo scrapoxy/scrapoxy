@@ -8,6 +8,8 @@ const schemaCredential = Joi.object({
 const schemaConfig = Joi.object({
     region: Joi.string()
         .required(),
+    apiUrl: Joi.string()
+        .required(),
 });
 
 

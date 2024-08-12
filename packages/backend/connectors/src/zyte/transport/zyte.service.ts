@@ -15,6 +15,7 @@ import {
 } from '@scrapoxy/backend-sdk';
 import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
 import { TRANSPORT_ZYTE_TYPE } from './zyte.constants';
+import { parseApiUrl } from './zyte.helpers';
 import type { IProxyToConnectConfigZyte } from './zyte.interface';
 import type {
     IConnectorZyteConfig,
@@ -57,6 +58,7 @@ export class TransportZyteService extends ATransportService {
 
         const connectorConfig = connector.connectorConfig as IConnectorZyteConfig;
         proxyConfig.region = connectorConfig.region;
+        proxyConfig.apiUrl = connectorConfig.apiUrl;
     }
 
     buildRequestArgs(
@@ -137,10 +139,11 @@ export class TransportZyteService extends ATransportService {
             headers[ 'X-Crawlera-Region' ] = config.region;
         }
 
+        const { hostname, port } = parseApiUrl(config.apiUrl);
         const proxyReq = request({
             method: 'CONNECT',
-            hostname: 'proxy.crawlera.com',
-            port: 8011,
+            hostname,
+            port,
             path: url,
             headers,
             timeout: proxy.timeoutDisconnected,
@@ -215,10 +218,12 @@ export class TransportZyteService extends ATransportService {
             );
         }
 
+        const { hostname, port } = parseApiUrl(config.apiUrl);
+
         return {
             method,
-            hostname: 'proxy.crawlera.com',
-            port: 8011,
+            hostname,
+            port,
             path: urlOptionsToUrl(
                 urlOpts,
                 true
@@ -247,10 +252,12 @@ export class TransportZyteService extends ATransportService {
         auth: string,
         sockets: ISockets
     ): ClientRequestArgs {
+        const { hostname, port } = parseApiUrl(config.apiUrl);
+
         return {
             method,
-            hostname: 'proxy.crawlera.com',
-            port: 8011,
+            hostname,
+            port,
             path: urlOptionsToUrl(
                 urlOpts,
                 false

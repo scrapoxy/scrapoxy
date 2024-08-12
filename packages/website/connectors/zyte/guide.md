@@ -73,7 +73,10 @@ Complete the form with the following information:
 1. **Credential**: The previous credential;
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
-4. **Region**: Select the country to use.
+4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
+5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
+6. **Region**: Select the country to use;
+7. **API URL**: Set the URL of the Zyte Smart Proxy Manager API (default is `proxy.crawlera.com:8011`).
 
 And click on `Create`.
 

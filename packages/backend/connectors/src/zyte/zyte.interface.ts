@@ -5,4 +5,5 @@ export interface IConnectorZyteCredential {
 
 export interface IConnectorZyteConfig {
     region: string;
+    apiUrl: string;
 }

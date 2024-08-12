@@ -24,4 +24,29 @@
             </c-col>
         </c-row>
     }
+    @if (subForm.controls['apiUrl']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="apiUrl">API URL</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="apiUrl"
+                    formControlName="apiUrl"
+                    placeholder="Enter the URL"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>URL is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
 </ng-container>
