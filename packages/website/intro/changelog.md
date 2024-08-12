@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.15.1
+
+### Features
+
+- **zyte**: customize URL of the Zyte Smart Proxy Manager
+
+
+### Bug fixes
+
+- **frontend**: fix button alignment introduces with Safari support
+
+
 ## 4.15.0
 
 ### Features
