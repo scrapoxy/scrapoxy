@@ -165,6 +165,17 @@ The project can have the following statuses:
 | HOT | The project is active. All proxies are started and await connections.                                                                                                          |
 
 
+
+Scrapoxy requires a minimum number of proxies to maintain a stable connection;
+otherwise, all requests will fail.
+This remaining connection is essential for detecting whether Scrapoxy is receiving any activity.
+If traffic is detected and `Auto Scale Up` is enabled, 
+Scrapoxy will change the project's status from `CALM` to `HOT.` 
+
+If you prefer not to keep at least one proxy active, 
+please disable `Auto Scale Up` and use the [API](/integration/api-reference#change-project-s-status) to manually change the project's status.
+
+
 ### Connector details
 
 ![Connector details](connector_details.png)
