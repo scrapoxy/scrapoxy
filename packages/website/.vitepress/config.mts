@@ -47,11 +47,6 @@ export default defineConfig({
           gtag('js', new Date());
           gtag('config', 'G-BWMFWJKLCC');`
         ],
-        [
-            'script',
-            {},
-            readFileSync(join(__dirname, 'fp.js')).toString(),
-        ]
     ],
 
     themeConfig: {
