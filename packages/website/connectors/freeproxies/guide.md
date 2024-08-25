@@ -5,9 +5,13 @@ Users have the flexibility to either utilize their own private proxies or incorp
 
 Scrapoxy supports HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
 
-Check out this [video](https://www.youtube.com/watch?v=Uw_xEvIMleY) from ProxyScrape:
+Check out this [video](https://www.youtube.com/watch?v=Uw_xEvIMleY) from [ProxyScrape](https://proxyscrape.com?ref=odgynzc):
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Uw_xEvIMleY?si=Pwx1QOzc6W4erU1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Or this [video](https://www.youtube.com/watch?v=Dk1c6FETufg) from [Proxy-Sale](https://proxy-sale.com/?partner_link=ZnsKIlMpWo):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Dk1c6FETufg?si=1EO3-S0jruFiUQKK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Additionally, read this [insightful article](https://proxyscrape.com/blog/scrapoxy-the-ultimate-tool-for-unrestricted-web-scraping?ref=odgynzc) from ProxyScrape.
 
