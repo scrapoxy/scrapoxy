@@ -10,6 +10,7 @@ import {
     createConnection,
     Socket,
 } from 'net';
+import { PassThrough } from 'stream';
 import {
     parseConnectUrl,
     parseError,
@@ -35,12 +36,42 @@ export class Proxy implements IProxy {
 
     private connectsCountValue = 0;
 
+    private connectsIgnoreCountValue = 0;
+
+    private bytesReceivedValue = 0;
+
+    private bytesReceivedIgnoreValue = 0;
+
+    private bytesSentValue = 0;
+
+    private bytesSentIgnoreValue = 0;
+
     private listenPromise?: Promise<number>;
 
     private closePromise?: Promise<void>;
 
-    get connectsCount() {
+    get connectsCount(): number {
         return this.connectsCountValue;
+    }
+
+    get connectsIgnoreCount(): number {
+        return this.connectsIgnoreCountValue;
+    }
+
+    get bytesReceived(): number {
+        return this.bytesReceivedValue;
+    }
+
+    get bytesReceivedIgnore(): number {
+        return this.bytesReceivedIgnoreValue;
+    }
+
+    get bytesSent(): number {
+        return this.bytesSentValue;
+    }
+
+    get bytesSentIgnore(): number {
+        return this.bytesSentIgnoreValue;
     }
 
     constructor(
@@ -159,11 +190,15 @@ export class Proxy implements IProxy {
     private connect(
         req: IncomingMessage, socket: Socket, head: Buffer
     ) {
+
         let
             headerWritten = false,
             hostname: string,
             port: number,
             proxySocket: Socket | undefined = void 0;
+        const sIn = new PassThrough();
+        const sOut = new PassThrough();
+
 
         socket.on(
             'error',
@@ -190,7 +225,8 @@ export class Proxy implements IProxy {
                     return;
                 }
 
-                proxySocket.unpipe(socket);
+                sIn.unpipe(socket);
+                proxySocket.unpipe(sIn);
                 proxySocket.end();
             }
         );
@@ -203,8 +239,37 @@ export class Proxy implements IProxy {
         );
         this.sockets.add(socket);
 
-        if (req.headers[ `${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-metrics` ] !== 'ignore') {
+
+        if (req.headers[ `${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-metrics` ] === 'ignore') {
+            ++this.connectsIgnoreCountValue;
+
+            sIn.on(
+                'data',
+                (chunk: Buffer) => {
+                    this.bytesReceivedIgnoreValue += chunk.length;
+                }
+            );
+            sOut.on(
+                'data',
+                (chunk: Buffer) => {
+                    this.bytesSentIgnoreValue += chunk.length;
+                }
+            );
+        } else {
             ++this.connectsCountValue;
+
+            sIn.on(
+                'data',
+                (chunk: Buffer) => {
+                    this.bytesReceivedValue += chunk.length;
+                }
+            );
+            sOut.on(
+                'data',
+                (chunk: Buffer) => {
+                    this.bytesSentValue += chunk.length;
+                }
+            );
         }
 
         if (!(socket as any).authorized) {
@@ -253,7 +318,8 @@ export class Proxy implements IProxy {
                         return;
                     }
 
-                    socket.unpipe(proxySocket!);
+                    sOut.unpipe(proxySocket!);
+                    socket.unpipe(sOut);
                     socket.end();
                 }
             );
@@ -289,7 +355,9 @@ export class Proxy implements IProxy {
                         .then(() => {
                             headerWritten = true;
 
-                            proxySocket!.pipe(socket);
+                            proxySocket!
+                                .pipe(sIn)
+                                .pipe(socket);
                         })
                         .catch((err: any) => {
                             proxySocket!.emit(
@@ -302,7 +370,9 @@ export class Proxy implements IProxy {
 
             //const throttle = this.throttleGroup.throttle();
 
-            socket.pipe(proxySocket);
+            socket
+                .pipe(sOut)
+                .pipe(proxySocket);
         } catch (err: any) {
             this.logger.error(
                 `Error (connect): ${err.message}`,

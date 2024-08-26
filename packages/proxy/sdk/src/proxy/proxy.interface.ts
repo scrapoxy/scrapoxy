@@ -13,6 +13,16 @@ export interface IProxy {
 
     connectsCount: number;
 
+    connectsIgnoreCount: number;
+
+    bytesReceived: number;
+
+    bytesReceivedIgnore: number;
+
+    bytesSent: number;
+
+    bytesSentIgnore: number;
+
     listen: (port: number) => Promise<number>;
 
     close: () => Promise<void>;

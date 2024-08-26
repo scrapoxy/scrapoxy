@@ -143,6 +143,16 @@ interface IStore {
 class FakeProxy implements IProxy {
     readonly connectsCount = 0;
 
+    readonly connectsIgnoreCount = 0;
+
+    readonly bytesReceived = 0;
+
+    readonly bytesReceivedIgnore = 0;
+
+    readonly bytesSent = 0;
+
+    readonly bytesSentIgnore = 0;
+
     private portValue: number | null = null;
 
     get port(): number | null {

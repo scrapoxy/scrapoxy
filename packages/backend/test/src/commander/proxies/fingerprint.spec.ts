@@ -15,6 +15,7 @@ import {
     CONNECTOR_DATACENTER_LOCAL_TYPE,
     countProxiesOnlineViews,
     EDatacenterLocalQueryCredential,
+    IFingerprint,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
     PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
@@ -30,7 +31,6 @@ import type {
     IConnectorView,
     ICredentialView,
     IDatacenterLocalQueryRegionSizes,
-    IFingerprint,
     IProjectData,
     IRegionDatacenterLocal,
     IRegionSizeDatacenterLocal,
@@ -439,6 +439,152 @@ describe(
                         await waitFor(() => {
                             expect(masterApp.proxiesSocketsSize)
                                 .toBe(0);
+                        });
+                    }
+                );
+            }
+        );
+
+        describe(
+            'Size',
+            () => {
+                let
+                    commanderApp: CommanderApp,
+                    connector: IConnectorView,
+                    credential: ICredentialView,
+                    masterApp: MasterApp,
+                    project: IProjectData,
+                    regions: IRegionDatacenterLocal[],
+                    token: string;
+
+                beforeAll(async() => {
+                    // Start app
+                    commanderApp = CommanderApp.defaults({
+                        datacenterLocalAppUrl: datacenterLocalApp.url,
+                        fingerprintUrl: servers.urlFingerprint,
+                        logger,
+                    });
+                    await commanderApp.start();
+
+                    masterApp = MasterApp.defaults({
+                        datacenterLocalAppUrl: datacenterLocalApp.url,
+                        commanderApp,
+                        fingerprintUrl: servers.urlFingerprint,
+                        logger,
+                    });
+                    await masterApp.start();
+
+                    // Create project
+                    project = await commanderApp.frontendClient.createProject({
+                        name: 'myproject',
+                        autoRotate: {
+                            enabled: true,
+                            min: ONE_MINUTE_IN_MS * 30,
+                            max: ONE_MINUTE_IN_MS * 30,
+                        },
+                        autoScaleUp: true,
+                        autoScaleDown: {
+                            enabled: true,
+                            value: ONE_MINUTE_IN_MS,
+                        },
+                        cookieSession: true,
+                        mitm: true,
+                        proxiesMin: 1,
+                        useragentOverride: false,
+                        ciphersShuffle: false,
+                    });
+
+                    await waitFor(async() => {
+                        token = await commanderApp.frontendClient.getProjectTokenById(project.id);
+                        expect(token.length)
+                            .toBeGreaterThan(0);
+                    });
+
+                    // Create credential
+                    const credentialConfigConfig: IConnectorDatacenterLocalCredential = {
+                        subscriptionId,
+                    };
+                    credential = await commanderApp.frontendClient.createCredential(
+                        project.id,
+                        {
+                            name: 'mycredential',
+                            type: CONNECTOR_DATACENTER_LOCAL_TYPE,
+                            config: credentialConfigConfig,
+                        }
+                    );
+
+                    await waitFor(async() => {
+                        await commanderApp.frontendClient.getCredentialById(
+                            project.id,
+                            credential.id
+                        );
+                    });
+
+                    regions = await commanderApp.frontendClient.queryCredential(
+                        project.id,
+                        credential.id,
+                        {
+                            type: EDatacenterLocalQueryCredential.Regions,
+                        }
+                    );
+                });
+
+                afterAll(async() => {
+                    // Stop app
+                    await commanderApp.stop();
+
+                    await masterApp.stop();
+                });
+
+                it(
+                    'should install and start a connector',
+                    async() => {
+                        // Create, install and activate connector
+                        connector = await installConnector(
+                            project.id,
+                            credential.id,
+                            commanderApp,
+                            regions[ 0 ].id
+                        );
+
+                        await waitFor(async() => {
+                            const views = await commanderApp.frontendClient.getAllProjectConnectorsAndProxiesById(project.id);
+                            expect(countProxiesOnlineViews(views))
+                                .toBe(connector.proxiesMax);
+                        });
+                    }
+                );
+
+                it(
+                    'should have small requests on fingerprint',
+                    async() => {
+                        // Create, install and activate connector
+                        await waitFor(async() => {
+                            const proxies = datacenterLocalApp.getAllInstancesProxies(
+                                subscriptionId,
+                                regions[ 0 ].id
+                            );
+
+                            for (const proxy of proxies) {
+                                expect(proxy.connectsCount)
+                                    .toBe(0);
+                                expect(proxy.connectsIgnoreCount)
+                                    .toBe(1);
+
+                                expect(proxy.bytesReceived)
+                                    .toBe(0);
+                                expect(proxy.bytesSentIgnore)
+                                    .toBeGreaterThan(0);
+                                expect(proxy.bytesReceivedIgnore)
+                                    .toBeLessThan(1000);
+
+                                expect(proxy.bytesSent)
+                                    .toBe(0);
+                                expect(proxy.bytesSentIgnore)
+                                    .toBeGreaterThan(0);
+                                expect(proxy.bytesSentIgnore)
+                                    .toBeLessThan(1000);
+                            }
                         });
                     }
                 );

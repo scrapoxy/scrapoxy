@@ -45,6 +45,8 @@ const proxyChain = require('proxy-chain');
 ```
 
 
+## Fingerprint
+
 ### Can I host the fingerprint server myself?
 
 Unfortunately, self-hosting the fingerprint server is not possible.
@@ -57,6 +59,24 @@ Here are the reasons:
 To secure this component within the infrastructure,
 it would be greatly appreciated if [a sponsorship could be considered](sponsorships.md) 
 instead of covering the server's hosting costs. 🙏
+
+
+### How much bandwith does the fingerprint use?
+
+Scrapoxy periodically sends requests to the fingerprint server to verify connectivity and collect GEO information. 
+If a request fails, Scrapoxy will avoid using that particular proxy.
+
+Each request is compressed and consumes approximately **600 bytes** in received bandwidth.
+
+_Example:_ 
+
+With a proxy timeout set to 20 seconds, Scrapoxy will send 3 requests per minute, totaling 180 requests per hour and 4,320 requests per day.
+
+The bandwidth consumption per day can be calculated using the following formula:
+
+```
+Bandwidth in Mb Per Day = (# proxies / Proxy Timeout) * 49.44
+```
 
 
 ## Errors
