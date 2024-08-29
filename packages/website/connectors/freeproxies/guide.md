@@ -26,10 +26,12 @@ For instance, public proxies can be obtained from:
 - [ProxyDB.net](https://proxydb.net)
 - ...
 
-::: info
 Feel free to reach out to me on [Discord](https://discord.gg/ktNGGwZnUD) if you'd like to contribute and add your proxy list.
-:::
 
+::: warning
+Please note that using this connector with Pay-Per-GB subscriptions
+without proper configuration can lead to substantial costs.
+:::
 
 ## Scrapoxy
 
