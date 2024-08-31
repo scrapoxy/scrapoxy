@@ -68,6 +68,7 @@ DOWNLOADER_MIDDLEWARES = {
 }
 
 SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES = [400, 429, 503]
+SCRAPOXY_BLACKLIST_FORCE = True
 SCRAPOXY_SLEEP_MIN = 60
 SCRAPOXY_SLEEP_MAX = 180
 ```
@@ -80,6 +81,9 @@ Add the HTTP status codes you want to blacklist in `SCRAPOXY_BLACKLIST_HTTP_STAT
 
 Scrapy will pause for a duration ranging between `SCRAPOXY_SLEEP_MIN` and `SCRAPOXY_SLEEP_MAX` seconds
 when no proxy instance is available.
+
+If `SCRAPOXY_BLACKLIST_FORCE` is set to `True`, the middleware will automatically enforce instance removal.
+This feature is only available for certain connector types, indicated by the presence of a `Trash` icon in the Scrapoxy UI.
 
 
 ## Step 6: Auto-scale the scraping session (optional)

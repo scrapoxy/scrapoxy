@@ -36,6 +36,7 @@ class BlacklistDownloaderMiddleware(object):
         self._api = ScrapoxyApi(api, username, password)
 
         self._http_status_codes = crawler.settings.get("SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES", [429, 503])
+        self._force = crawler.settings.get("SCRAPOXY_BLACKLIST_FORCE", True)
         self._sleep_min = crawler.settings.get("SCRAPOXY_SLEEP_MIN", 60)
         self._sleep_max = crawler.settings.get("SCRAPOXY_SLEEP_MAX", 180)
 
@@ -59,7 +60,7 @@ class BlacklistDownloaderMiddleware(object):
         self._api.ask_proxies_to_remove([
             {
                 "id": id,
-                "force": True
+                "force": self._force
             }
         ])
 
