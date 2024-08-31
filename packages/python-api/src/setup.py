@@ -8,7 +8,7 @@ setup(
     name='scrapoxy',
     packages=find_packages(),
     install_requires=[],
-    version='2.0.3',
+    version='2.0.4',
     description='Python API for Scrapoxy',
     author='Fabien Vauchelles',
     author_email='fabien@vauchelles.com',
