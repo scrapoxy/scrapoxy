@@ -12,13 +12,18 @@ class ScaleSpiderMiddleware(object):
         return cls(crawler)
 
     def __init__(self, crawler):
-        self._api = ScrapoxyApi(
-            crawler.settings.get("SCRAPOXY_API"),
-            crawler.settings.get("SCRAPOXY_USERNAME"),
-            crawler.settings.get("SCRAPOXY_PASSWORD")
-        )
+        api = crawler.settings.get("SCRAPOXY_API")
+        assert api, "SCRAPOXY_API is required"
 
-        self._delay = crawler.settings.get("SCRAPOXY_WAIT_FOR_SCALE") or 120
+        username = crawler.settings.get("SCRAPOXY_USERNAME")
+        assert username, "SCRAPOXY_USERNAME is required"
+
+        password = crawler.settings.get("SCRAPOXY_PASSWORD")
+        assert password, "SCRAPOXY_PASSWORD is required"
+
+        self._api = ScrapoxyApi(api, username, password)
+
+        self._delay = crawler.settings.get("SCRAPOXY_WAIT_FOR_SCALE", 120)
 
         crawler.signals.connect(self.spider_opened, signals.spider_opened)
         crawler.signals.connect(self.spider_closed, signals.spider_closed)

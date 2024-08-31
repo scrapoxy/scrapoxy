@@ -26,15 +26,20 @@ class BlacklistDownloaderMiddleware(object):
     def __init__(self, crawler):
         """Access the settings of the crawler to connect to Scrapoxy.
         """
+        api = crawler.settings.get("SCRAPOXY_API")
+        assert api, "SCRAPOXY_API is required"
+
+        username = crawler.settings.get("SCRAPOXY_USERNAME")
+        assert username, "SCRAPOXY_USERNAME is required"
+
+        password = crawler.settings.get("SCRAPOXY_PASSWORD")
+        assert password, "SCRAPOXY_PASSWORD is required"
+
+        self._api = ScrapoxyApi(api, username, password)
+
         self._http_status_codes = crawler.settings.get("SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES", [429, 503])
         self._sleep_min = crawler.settings.get("SCRAPOXY_SLEEP_MIN", 60)
         self._sleep_max = crawler.settings.get("SCRAPOXY_SLEEP_MAX", 180)
-
-        self._api = ScrapoxyApi(
-                crawler.settings.get("SCRAPOXY_API"),
-                crawler.settings.get("SCRAPOXY_USERNAME"),
-                crawler.settings.get("SCRAPOXY_PASSWORD")
-            )
 
     def process_response(self, request, response, spider):
         if response.status not in self._http_status_codes:
