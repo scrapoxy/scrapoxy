@@ -46,7 +46,11 @@ class BlacklistDownloaderMiddleware(object):
 
         spider.logger.info("Ignoring Blacklisted response %s: HTTP status %d" % (response.url, response.status))
 
-        id = response.headers["x-scrapoxy-proxyname"].decode("utf-8")
+        id_raw = response.headers.get("x-scrapoxy-proxyname")
+        if not id_raw:
+            raise BlacklistError(response, "No header 'X-Scrapoxy-Proxyname' name in response headers. MITM must be enabled")
+
+        id = id_raw.decode("utf-8")
 
         alive_count = 0
         views = self._api.get_all_project_connectors_and_proxies()
