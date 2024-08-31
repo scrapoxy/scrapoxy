@@ -7,9 +7,9 @@ import json
 
 def is_proxy_online(proxy):
     return (
-            proxy['status'] == 'STARTED' and
-            proxy['fingerprint'] and
-            not proxy['removing']
+        proxy['status'] == 'STARTED' and
+        proxy['fingerprint'] and
+        not proxy['removing']
     )
 
 
