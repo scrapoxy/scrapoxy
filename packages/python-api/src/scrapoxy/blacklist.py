@@ -3,8 +3,6 @@ from scrapy.exceptions import IgnoreRequest
 from scrapoxy.api import ScrapoxyApi, is_proxy_online
 from time import sleep
 
-import logging
-
 
 class BlacklistError(Exception):
     def __init__(self, response, message, *args, **kwargs):
@@ -45,7 +43,7 @@ class BlacklistDownloaderMiddleware(object):
         if response.status not in self._http_status_codes:
             return response
 
-        spider.log(f"Ignoring Blacklisted response {response.url}: HTTP status {response.status}", level=logging.DEBUG)
+        spider.logger.info("Ignoring Blacklisted response %s: HTTP status %d" % (response.url, response.status))
 
         id = response.headers["x-scrapoxy-proxyname"].decode("utf-8")
 
@@ -56,7 +54,8 @@ class BlacklistDownloaderMiddleware(object):
                 if (proxy["id"] != id and is_proxy_online(proxy)):
                     alive_count += 1
 
-        spider.log(f"Remove instance {id} (remaining {alive_count} instances).", level=logging.ERROR)
+        spider.logger.error("Remove instance %s (remaining %d instances)." % (response.url, response.status))
+
         self._api.ask_proxies_to_remove([
             {
                 "id": id,
@@ -66,7 +65,7 @@ class BlacklistDownloaderMiddleware(object):
 
         if alive_count <= 0:
             delay = randrange(self._sleep_min, self._sleep_max)
-            spider.log(f"No instance remaining. Sleep for {delay} seconds...", level=logging.INFO)
+            spider.logger.warn("No instance remaining. Sleep for %d seconds..." % delay)
             sleep(delay)
 
         raise IgnoreRequest()
