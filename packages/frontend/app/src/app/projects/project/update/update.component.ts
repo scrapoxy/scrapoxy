@@ -253,12 +253,16 @@ export class ProjectUpdateComponent implements OnInit, IHasModification {
         if (this.form.value.mitm) {
             this.form.controls.cookieSession.enable();
             this.form.controls.useragentOverride.enable();
+            this.form.controls.ciphersShuffle.enable();
         } else {
             this.form.controls.cookieSession.setValue(false);
             this.form.controls.cookieSession.disable();
 
             this.form.controls.useragentOverride.setValue(false);
             this.form.controls.useragentOverride.disable();
+
+            this.form.controls.ciphersShuffle.setValue(false);
+            this.form.controls.ciphersShuffle.disable();
         }
     }
 
