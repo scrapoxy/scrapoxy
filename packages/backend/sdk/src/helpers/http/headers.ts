@@ -119,7 +119,7 @@ export class ArrayHttpHeaders {
         return this;
     }
 
-    removeHeadersWithPrefix(prefix: string) {
+    removeHeadersWithPrefix(prefix: string): ArrayHttpHeaders {
         const prefixLc = prefix.toLowerCase();
 
         for (let i = this.headers.length - 1; i >= 0; --i) {
@@ -131,20 +131,32 @@ export class ArrayHttpHeaders {
                 );
             }
         }
+
+        return this;
     }
 
-    removeHeadersWithRegexValue(
-        key: string, regex: RegExp
-    ): ArrayHttpHeaders {
-        const prefixLc = key.toLowerCase();
-
+    removeCookieWithRegexValue(regex: RegExp): ArrayHttpHeaders {
         for (let i = this.headers.length - 1; i >= 0; --i) {
-            if (this.headers[ i ][ 0 ].toLowerCase() === prefixLc &&
-                regex.test(this.headers[ i ][ 1 ])) {
-                this.headers.splice(
-                    i,
-                    1
-                );
+            if (this.headers[ i ][ 0 ].toLowerCase() === 'cookie') {
+                const cookies = this.headers[ i ][ 1 ].split(';');
+
+                for (let j = cookies.length - 1; j >= 0; --j) {
+                    if (regex.test(cookies[ j ])) {
+                        cookies.splice(
+                            j,
+                            1
+                        );
+                    }
+                }
+
+                if (cookies.length <= 0) {
+                    this.headers.splice(
+                        i,
+                        1
+                    );
+                } else {
+                    this.headers[ i ][ 1 ] = cookies.join(';');
+                }
             }
         }
 

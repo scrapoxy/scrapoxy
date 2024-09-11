@@ -370,10 +370,7 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
         // Clean proxy & scrapoxy headers
         reqHeaders.removeHeaders('Proxy-Authorization');
         reqHeaders.removeHeadersWithPrefix(SCRAPOXY_HEADER_PREFIX);
-        reqHeaders.removeHeadersWithRegexValue(
-            'Cookie',
-            SCRAPOXY_COOKIE_REGEX
-        );
+        reqHeaders.removeCookieWithRegexValue(SCRAPOXY_COOKIE_REGEX);
 
         // Set user-agent
         if (project.useragentOverride) {
