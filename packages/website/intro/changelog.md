@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.15.2
+
+### Bug fixes
+
+- **master**: keep non-scrapoxy request cookies with MITM 
+
+
 ## 4.15.1
 
 ### Features
