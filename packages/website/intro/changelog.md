@@ -43,7 +43,7 @@
 
 ### Features
 
-- **liveproxies**: add [Live Proxies](https://liveproxies.io/?utm_source=scrapoxy) support
+- **liveproxies**: add [Live Proxies](https://liveproxies.io/aff/pv5i8f8) support
 
 ### Bug fixes
 

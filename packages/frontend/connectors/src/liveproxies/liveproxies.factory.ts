@@ -28,7 +28,7 @@ export class ConnectorLiveproxiesFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'Live Proxies Credential',
        defaultConnectorName: 'Live Proxies Connector',
-       url: 'https://liveproxies.io/?utm_source=scrapoxy',
+       url: 'https://liveproxies.io/aff/pv5i8f8',
        type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,
