@@ -1,4 +1,4 @@
-FROM scrapinghub/splash
+FROM scrapinghub/splash:3.5.0
 
 COPY packages/splash/src/splash/network_manager.py /app/splash/network_manager.py
 
