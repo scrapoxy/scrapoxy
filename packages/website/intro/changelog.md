@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.16.0
+
+### Features
+
+- **zyte**: add support of the Zyte API in Proxy Mode
+
+
 ## 4.15.2
 
 ### Bug fixes
