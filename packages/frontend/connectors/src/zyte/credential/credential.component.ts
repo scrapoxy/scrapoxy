@@ -7,7 +7,10 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { CONNECTOR_ZYTE_TYPE } from '@scrapoxy/common';
+import {
+    CONNECTOR_ZYTE_TYPE,
+    EZyteCredentialType,
+} from '@scrapoxy/common';
 import type { OnInit } from '@angular/core';
 import type { ICredentialComponent } from '@scrapoxy/frontend-sdk';
 
@@ -30,12 +33,17 @@ export class CredentialZyteComponent implements ICredentialComponent, OnInit {
     @Input()
         createMode: boolean;
 
+    readonly ECredentialType = EZyteCredentialType;
+
     readonly subForm: FormGroup;
 
     tokenType = 'password';
 
     constructor(fb: FormBuilder) {
         this.subForm = fb.group({
+            credentialType: [
+                void 0, Validators.required,
+            ],
             token: [
                 void 0, Validators.required,
             ],
@@ -53,6 +61,12 @@ export class CredentialZyteComponent implements ICredentialComponent, OnInit {
             'config',
             this.subForm
         );
+
+        if (this.createMode) {
+            this.subForm.patchValue({
+                credentialType: EZyteCredentialType.ZYTE_API,
+            });
+        }
     }
 
     toggleTokenType() {

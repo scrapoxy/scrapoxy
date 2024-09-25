@@ -5,9 +5,16 @@ import {
     CredentialInvalidError,
     validate,
 } from '@scrapoxy/backend-sdk';
-import { CONNECTOR_ZYTE_TYPE } from '@scrapoxy/common';
-import { ZyteApi } from './api';
-import { ConnectorZyteService } from './zyte.service';
+import {
+    CONNECTOR_ZYTE_TYPE,
+    EZyteCredentialType,
+} from '@scrapoxy/common';
+import {
+    ZyteApi,
+    ZyteSmartProxyManagerApi,
+} from './api';
+import { ConnectorZyteApiService } from './zyte-api.service';
+import { ConnectorZyteSmartProxyManagerService } from './zyte-spm.service';
 import {
     schemaConfig,
     schemaCredential,
@@ -55,12 +62,37 @@ export class ConnectorZyteFactory implements IConnectorFactory, OnModuleDestroy 
         );
 
         try {
-            const api = new ZyteApi(
-                config.token,
-                this.agents
-            );
+            switch (config.credentialType) {
+                case EZyteCredentialType.ZYTE_API: {
+                    const api = new ZyteApi(
+                        config.token,
+                        this.agents
+                    );
+                    const valid = await api.testToken();
 
-            await api.getAllSessions();
+                    if (!valid) {
+                        throw new CredentialInvalidError('Invalid token');
+                    }
+
+                    break;
+                }
+
+                case EZyteCredentialType.SMART_PROXY_MANAGER: {
+                    const api = new ZyteSmartProxyManagerApi(
+                        config.token,
+                        this.agents
+                    );
+
+                    await api.getAllSessions();
+
+                    break;
+                }
+
+                default: {
+                    throw new CredentialInvalidError('Unknown Zyte credential type');
+                }
+            }
+
         } catch (err: any) {
             throw new CredentialInvalidError(err.message);
         }
@@ -85,12 +117,24 @@ export class ConnectorZyteFactory implements IConnectorFactory, OnModuleDestroy 
     }
 
     async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
-        const service = new ConnectorZyteService(
-            connector.credentialConfig,
-            this.agents
-        );
+        const credentialConfig = connector.credentialConfig as IConnectorZyteCredential;
 
-        return service;
+        switch (credentialConfig.credentialType) {
+            case EZyteCredentialType.ZYTE_API: {
+                return new ConnectorZyteApiService();
+            }
+
+            case EZyteCredentialType.SMART_PROXY_MANAGER: {
+                return new ConnectorZyteSmartProxyManagerService(
+                    credentialConfig,
+                    this.agents
+                );
+            }
+
+            default: {
+                throw new Error('Unknown Zyte credential type');
+            }
+        }
     }
 
     async buildInstallCommand(): Promise<ITaskToCreate> {

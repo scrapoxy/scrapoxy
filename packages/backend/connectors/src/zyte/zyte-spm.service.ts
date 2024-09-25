@@ -4,8 +4,8 @@ import {
     CONNECTOR_ZYTE_TYPE,
     EProxyStatus,
 } from '@scrapoxy/common';
-import { ZyteApi } from './api';
-import { TRANSPORT_ZYTE_TYPE } from './transport/zyte.constants';
+import { ZyteSmartProxyManagerApi } from './api';
+import { TRANSPORT_ZYTE_SPM_TYPE } from './transport/zyte.constants';
 import type { IConnectorZyteCredential } from './zyte.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
@@ -17,7 +17,7 @@ import type {
 function convertToProxy(session: string): IConnectorProxyRefreshed {
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_ZYTE_TYPE,
-        transportType: TRANSPORT_ZYTE_TYPE,
+        transportType: TRANSPORT_ZYTE_SPM_TYPE,
         key: session,
         name: session,
         status: EProxyStatus.STARTED,
@@ -28,16 +28,16 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
 }
 
 
-export class ConnectorZyteService implements IConnectorService {
-    private readonly logger = new Logger(ConnectorZyteService.name);
+export class ConnectorZyteSmartProxyManagerService implements IConnectorService {
+    private readonly logger = new Logger(ConnectorZyteSmartProxyManagerService.name);
 
-    private readonly api: ZyteApi;
+    private readonly api: ZyteSmartProxyManagerApi;
 
     constructor(
         credentialConfig: IConnectorZyteCredential,
         agents: Agents
     ) {
-        this.api = new ZyteApi(
+        this.api = new ZyteSmartProxyManagerApi(
             credentialConfig.token,
             agents
         );

@@ -8,6 +8,7 @@ import { migration as migration0007 } from './0007-brightdata-v2';
 import { migration as migration0008 } from './0008-azure-spot-instances';
 import { migration as migration0009 } from './0009-ciphers-shuffle';
 import { migration as migration0010 } from './0010-zyte-url';
+import { migration as migration0011 } from './0011-zyte-credential-type';
 
 
 export default [
@@ -21,4 +22,5 @@ export default [
     migration0008,
     migration0009,
     migration0010,
+    migration0011,
 ];

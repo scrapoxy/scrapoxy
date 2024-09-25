@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
 
-export class ZyteApi {
+export class ZyteSmartProxyManagerApi {
     private readonly instance: AxiosInstance;
 
     constructor(
@@ -40,5 +40,37 @@ export class ZyteApi {
 
     async removeSession(sessionId: string): Promise<void> {
         await this.instance.delete(`/sessions/${sessionId}`);
+    }
+}
+
+
+export class ZyteApi {
+    private readonly instance: AxiosInstance;
+
+    constructor(
+        token: string,
+        agents: Agents
+    ) {
+        this.instance = axios.create({
+            ...agents.axiosDefaults,
+            baseURL: 'https://api.zyte.com/v1',
+            auth: {
+                username: token,
+                password: '',
+            },
+        });
+    }
+
+    async testToken(): Promise<boolean> {
+        try {
+            await this.instance.post(
+                'extract',
+                {}
+            );
+
+            return true;
+        } catch (err: any) {
+            return err.response?.status === 400;
+        }
     }
 }

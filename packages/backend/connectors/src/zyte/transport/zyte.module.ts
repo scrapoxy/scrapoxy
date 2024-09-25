@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TransportprovidersModule } from '@scrapoxy/backend-sdk';
-import { TransportZyteService } from './zyte.service';
+import { TransportZyteApiService } from './zyte-api.service';
+import { TransportZyteSmartProxyManagerService } from './zyte-spm.service';
 
 
 @Module({
@@ -8,7 +9,7 @@ import { TransportZyteService } from './zyte.service';
         TransportprovidersModule,
     ],
     providers: [
-        TransportZyteService,
+        TransportZyteApiService, TransportZyteSmartProxyManagerService,
     ],
 })
 export class TransportZyteModule {}

@@ -14,7 +14,7 @@ import {
     urlOptionsToUrl,
 } from '@scrapoxy/backend-sdk';
 import { SCRAPOXY_HEADER_PREFIX_LC } from '@scrapoxy/common';
-import { TRANSPORT_ZYTE_TYPE } from './zyte.constants';
+import { TRANSPORT_ZYTE_SPM_TYPE } from './zyte.constants';
 import { parseApiUrl } from './zyte.helpers';
 import type { IProxyToConnectConfigZyte } from './zyte.interface';
 import type {
@@ -40,8 +40,8 @@ import type { ConnectionOptions } from 'tls';
 
 
 @Injectable()
-export class TransportZyteService extends ATransportService {
-    readonly type = TRANSPORT_ZYTE_TYPE;
+export class TransportZyteSmartProxyManagerService extends ATransportService {
+    readonly type = TRANSPORT_ZYTE_SPM_TYPE;
 
     constructor(transportproviders: TransportprovidersService) {
         super();
