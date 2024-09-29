@@ -1,9 +1,10 @@
-import {onMounted, watch, nextTick} from 'vue';
+import {h, onMounted, watch, nextTick} from 'vue';
 import {useRoute} from 'vitepress';
 import DefaultTheme from 'vitepress/theme'
 import mediumZoom from 'medium-zoom';
 import type {Theme} from 'vitepress'
 import HomeButton from './components/HomeButton.vue';
+import ModalGithub from './components/ModalGithub.vue';
 import './custom.scss'
 
 
@@ -27,6 +28,11 @@ export default {
             () => nextTick(() => initZoom())
         );
     },
+    Layout() {
+        return h(DefaultTheme.Layout, null, {
+            'layout-bottom': () => h(ModalGithub)
+        })
+    }
 
 } satisfies Theme
 
