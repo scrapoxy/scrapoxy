@@ -109,13 +109,7 @@ providers:
           img: '/assets/images/zyte.svg'
 
 sponsors:
-    - tier: "Platinum"
-      size: 'medium'
-      items:
-          - name: 'Wiremind'
-            url: 'https://wiremind.io'
-            img: '/assets/images/wiremind.svg'
-    - tier: "Sponsor the Open Source project"
+    - tier: ""
       size: 'medium'
       items:
           - name: 'BuyMeACoffee'
@@ -126,7 +120,7 @@ sponsors:
 <HomeImage message="Your personal proxies aggregator:" icon="🎯" src="/assets/images/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>
 <HomeGetStarted message="Get started in a few seconds:" icon="🚀" />
 <HomeProviders message="Scrapoxy has connectors for:" icon="📎" :data="$frontmatter.providers" />
-<HomeProviders message="Sponsored by" icon="❤️" :data="$frontmatter.sponsors" />
+<HomeProviders message="Sponsor the Open Source project:" icon="❤️" :data="$frontmatter.sponsors" />
 
 <script setup>
   import HomeImage from './components/HomeImage.vue';
