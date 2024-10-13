@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.16.1
+
+### Bug fixes
+
+- **iproyal**: update connector to follow the new API
+
+
 ## 4.16.0
 
 ### Features
