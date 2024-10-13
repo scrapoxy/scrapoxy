@@ -22,45 +22,26 @@ import type {
 } from '@scrapoxy/common';
 
 
-function convertToProxy(session: IIproyalServerProxy): IConnectorProxyRefreshed | undefined {
-    if (!session) {
-        return;
-    }
-
-    const arr = session.credentials.split(':');
-
-    if (arr.length !== 4) {
-        return;
-    }
-
-    const [
-        hostname,
-        portRaw,
-        username,
-        password,
-    ] = arr;
-    let port: number;
-    try {
-        port = parseInt(
-            portRaw,
-            10
-        );
-    } catch (err: any) {
+function convertToProxy(proxy: IIproyalServerProxy): IConnectorProxyRefreshed | undefined {
+    if (!proxy?.ip_address || proxy.ip_address.length <= 0 ||
+        !proxy.port || proxy.port <= 0 ||
+        !proxy.username || proxy.username.length <= 0 ||
+        !proxy.password || proxy.password.length <= 0) {
         return;
     }
 
     const config: IProxyTransport = {
         type: EProxyType.HTTP,
         address: {
-            hostname,
-            port,
+            hostname: proxy.ip_address,
+            port: proxy.port,
         },
         auth: {
-            username,
-            password,
+            username: proxy.username,
+            password: proxy.password,
         },
     };
-    const key = session.id.toString();
+    const key = proxy.id.toString();
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_IPROYAL_SERVER_TYPE,
         transportType: TRANSPORT_PROXY_TYPE,

@@ -47,9 +47,10 @@ export class IproyalServerApi {
                     }
                 }
 
-                const credentials = await this.getOrderProxiesById(order.id);
-
-                proxies.push(...credentials);
+                const orderProxies = await this.getOrderProxiesById(order.id);
+                for (const data of orderProxies.data) {
+                    proxies.push(...data.proxies);
+                }
             })();
 
             promises.push(promise);
@@ -119,9 +120,9 @@ export class IproyalServerApi {
         return res.data;
     }
 
-    private async getOrderProxiesById(id: number): Promise<IIproyalServerProxy[]> {
+    private async getOrderProxiesById(id: number): Promise<IIproyalServerProxiesResponse> {
         const res = await this.instance.get<IIproyalServerProxiesResponse>(`${id}/credentials`);
 
-        return res.data.data;
+        return res.data;
     }
 }

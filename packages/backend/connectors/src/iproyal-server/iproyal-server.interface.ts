@@ -26,10 +26,16 @@ export interface IIproyalServerOrderDetail {
 
 export interface IIproyalServerProxy {
     id: number;
-    credentials: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ip_address: string;
+    port: number;
+    username: string;
+    password: string;
 }
 
 
 export interface IIproyalServerProxiesResponse {
-    data: IIproyalServerProxy[];
+    data: [{
+        proxies: IIproyalServerProxy[];
+    }];
 }
