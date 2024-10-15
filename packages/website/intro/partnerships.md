@@ -60,8 +60,8 @@ Therefore, I charge the following fees 💲:
 
 | Company size | # of customers | First Year Fee | Next Year Fee |
 |--------------|----------------|---------------|-------------|
-| Large        | 10000+         | $17000        | $12000      |   
 | Small        | 1-10000        | $3400         | $2200       | 
+| Large        | 10000+         | $17000        | $12000      |   
 
 The fee structure is based on the number of customers you have.
 
