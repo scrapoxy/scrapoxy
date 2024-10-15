@@ -58,11 +58,10 @@ Even though I'm passionate about this project and work on it full-time 💯,
 it typically takes me around **2 weeks** to fully integrate a partner.
 Therefore, I charge the following fees 💲:
 
-| Company size | # of customers        | Development Fee | Maintenance Fee |
-|--------------|-----------------------|-----------------|-----------------|
-| Large                | >10000 | $5000 | $1000 |   
-| Medium               | 1000-10000 | $1000 | $200 | 
-| Small                | <1000 | $1000 | $100            |     
+| Company size | # of customers | First Year Fee | Next Year Fee |
+|--------------|----------------|---------------|-------------|
+| Large        | 10000+         | $17000        | $12000      |   
+| Small        | 1-10000        | $3400         | $2200       | 
 
 The fee structure is based on the number of customers you have.
 
