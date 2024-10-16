@@ -1,5 +1,5 @@
+import { BRIGHTDATA_PRODUCT_TYPES } from '@scrapoxy/common';
 import * as Joi from 'joi';
-import { BRIGHTDATA_PRODUCT_TYPES } from './brightdata.interface';
 
 
 const schemaCredential = Joi.object({

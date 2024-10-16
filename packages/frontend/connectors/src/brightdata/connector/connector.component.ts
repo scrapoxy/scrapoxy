@@ -18,8 +18,10 @@ import {
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
-import type { IBrightdataZoneView } from '@scrapoxy/backend-connectors';
-import type { ICommanderFrontendClient } from '@scrapoxy/common';
+import type {
+    IBrightdataZoneView,
+    ICommanderFrontendClient,
+} from '@scrapoxy/common';
 import type {
     IConnectorComponent,
     IIsocodeCountry,

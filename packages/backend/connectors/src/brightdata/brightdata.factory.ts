@@ -7,24 +7,21 @@ import {
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
+    BRIGHTDATA_PRODUCT_TYPES,
     CONNECTOR_BRIGHTDATA_TYPE,
+    EBrightdataProductType,
     EBrightdataQueryCredential,
 } from '@scrapoxy/common';
 import { BrightdataApi } from './api';
 import { ConnectorBrightdataResidentialService } from './brightdata-residential.service';
 import { ConnectorBrightdataServerService } from './brightdata-server.service';
 import { toBrightdataZoneView } from './brightdata.helpers';
-import {
-    BRIGHTDATA_PRODUCT_TYPES,
-    EBrightdataProductType,
-    EBrightdataStatus,
-} from './brightdata.interface';
+import { EBrightdataStatus } from './brightdata.interface';
 import {
     schemaConfig,
     schemaCredential,
 } from './brightdata.validation';
 import type {
-    IBrightdataZoneView,
     IConnectorBrightdataConfig,
     IConnectorBrightdataCredential,
 } from './brightdata.interface';
@@ -35,6 +32,7 @@ import type {
     IConnectorService,
 } from '@scrapoxy/backend-sdk';
 import type {
+    IBrightdataZoneView,
     IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,

@@ -4,8 +4,8 @@ import axios from 'axios';
 import type {
     IBrightdataStatus,
     IBrightdataZoneData,
-    IBrightdataZoneView,
 } from './brightdata.interface';
+import type { IBrightdataZoneView } from '@scrapoxy/common';
 import type { AxiosInstance } from 'axios';
 
 
