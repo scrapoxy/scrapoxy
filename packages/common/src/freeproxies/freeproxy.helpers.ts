@@ -146,17 +146,16 @@ export function parseFreeproxy(raw: string | undefined | null): IFreeproxyBase |
         return;
     }
 
-    let key: string;
+    let hash: number;
 
     if (auth) {
-        const hash = hashCode(`${auth.username}:${auth.password}`);
-        key = `${hostname}:${port}:${hash}`;
+        hash = hashCode(`${port}:${auth.username}:${auth.password}`);
     } else {
-        key = `${hostname}:${port}`;
+        hash = port;
     }
 
     return {
-        key,
+        key: `${hostname}#${hash}`,
         type,
         address: {
             hostname,
