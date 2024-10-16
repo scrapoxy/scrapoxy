@@ -142,7 +142,6 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-
     }
 
     async listAllProxies(): Promise<IConnectorListProxies> {
