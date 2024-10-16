@@ -116,6 +116,7 @@ export default defineConfig({
                     {text: 'Bright Data', link: 'brightdata/guide'},
                     {text: 'Digital Ocean', link: 'digitalocean/guide'},
                     {text: 'GCP', link: 'gcp/guide'},
+                    {text: 'Geonode', link: 'geonode/guide'},
                     {text: 'HypeProxy', link: 'hypeproxy/guide'},
                     {
                         text: 'IP Royal',

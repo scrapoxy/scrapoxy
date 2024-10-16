@@ -12,6 +12,8 @@ export * from './freeproxies';
 
 export * from './gcp';
 
+export * from './geonode';
+
 export * from './hypeproxy';
 
 export * from './iproyal-residential';
