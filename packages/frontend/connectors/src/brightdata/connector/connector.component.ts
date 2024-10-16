@@ -21,11 +21,9 @@ import type { OnInit } from '@angular/core';
 import type {
     IBrightdataZoneView,
     ICommanderFrontendClient,
-} from '@scrapoxy/common';
-import type {
-    IConnectorComponent,
     IIsocodeCountry,
-} from '@scrapoxy/frontend-sdk';
+} from '@scrapoxy/common';
+import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
 
 @Component({

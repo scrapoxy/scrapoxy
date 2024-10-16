@@ -20,12 +20,10 @@ import {
 import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,
+    IIsocodeCountry,
     IProxyrackQueryByCountry,
 } from '@scrapoxy/common';
-import type {
-    IConnectorComponent,
-    IIsocodeCountry,
-} from '@scrapoxy/frontend-sdk';
+import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
 
 @Component({

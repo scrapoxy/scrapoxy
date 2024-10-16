@@ -18,11 +18,11 @@ import {
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
-import type { ICommanderFrontendClient } from '@scrapoxy/common';
 import type {
-    IConnectorComponent,
+    ICommanderFrontendClient,
     IIsocodeCountry,
-} from '@scrapoxy/frontend-sdk';
+} from '@scrapoxy/common';
+import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
 
 @Component({

@@ -1,3 +1,6 @@
+import type { IIsocodeCountry } from '@scrapoxy/common';
+
+
 const isocodeCountriesAlpha2: { [key: string]: string } = {
     AF: 'Afghanistan',
     AL: 'Albania',
@@ -252,12 +255,6 @@ const isocodeCountriesAlpha2: { [key: string]: string } = {
     XK: 'Kosovo',
     EU: 'Europe',
 };
-
-
-export interface IIsocodeCountry {
-    code: string;
-    name: string;
-}
 
 
 export function getCountryName(code: string): string | undefined {

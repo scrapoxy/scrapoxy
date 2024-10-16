@@ -4,6 +4,8 @@ export * from './certificate';
 
 export * from './connectors';
 
+export * from './countries';
+
 export * from './commander-client';
 
 export * from './credentials';

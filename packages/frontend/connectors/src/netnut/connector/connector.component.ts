@@ -10,10 +10,8 @@ import {
 import { CONNECTOR_NETNUT_TYPE } from '@scrapoxy/common';
 import { convertCodesToCountries } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
-import type {
-    IConnectorComponent,
-    IIsocodeCountry,
-} from '@scrapoxy/frontend-sdk';
+import type { IIsocodeCountry } from '@scrapoxy/common';
+import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
 
 
