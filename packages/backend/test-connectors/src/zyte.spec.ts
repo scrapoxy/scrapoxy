@@ -12,7 +12,10 @@ describe(
     'Connector Provider - Zyte',
     () => {
         const agents = new Agents();
-        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/zyte/credentials.json');
+        const
+            credentialConfigApiData = fs.readFileSync('packages/backend/test-connectors/src/assets/zyte/credentials-api.json'),
+            credentialConfigSpmData = fs.readFileSync('packages/backend/test-connectors/src/assets/zyte/credentials-spm.json');
+
 
         afterAll(() => {
             agents.close();
@@ -29,11 +32,24 @@ describe(
             CONNECTOR_ZYTE_TYPE,
             [
                 {
-                    name: 'Unique Credential',
-                    config: JSON.parse(credentialConfigData.toString()),
+                    name: 'Zyte API Credential',
+                    config: JSON.parse(credentialConfigApiData.toString()),
                     connectors: [
                         {
-                            name: 'Test Smart Proxy Manager',
+                            name: 'Test Zyte API (USA)',
+                            config: {
+                                region: 'us',
+                                apiUrl: 'api.zyte.com:8011',
+                            } satisfies IConnectorZyteConfig,
+                        },
+                    ],
+                },
+                {
+                    name: 'Smart Proxy Manager Credential',
+                    config: JSON.parse(credentialConfigSpmData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test Smart Proxy Manager (France)',
                             config: {
                                 region: 'fr',
                                 apiUrl: 'proxy.crawlera.com:8011',
@@ -41,6 +57,7 @@ describe(
                         },
                     ],
                 },
+
             ]
         );
     }
