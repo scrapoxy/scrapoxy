@@ -5,7 +5,10 @@ import {
     IConnectorDigitalOceanConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import {
+    ITestCredential,
+    testConnectors,
+} from '@scrapoxy/backend-test-sdk';
 import {
     CONNECTOR_DIGITALOCEAN_TYPE,
     DIGITALOCEAN_DEFAULT_REGION,
@@ -18,21 +21,31 @@ describe(
     () => {
         const
             agents = new Agents(),
-            connectorConfig: IConnectorDigitalOceanConfig = {
-                region: DIGITALOCEAN_DEFAULT_REGION,
-                port: 3128,
-                size: DIGITALOCEAN_DEFAULT_SIZE,
-                snapshotId: '',
-                tag: 'spxtest',
-            },
             credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/digitalocean/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialsConfig: ITestCredential[] = [
+            {
+                name: 'Unique Credential',
+                config: JSON.parse(credentialConfigData.toString()),
+                connectors: [
+                    {
+                        name: `Test on region ${DIGITALOCEAN_DEFAULT_REGION} with droplet size ${DIGITALOCEAN_DEFAULT_SIZE}`,
+                        config: {
+                            region: DIGITALOCEAN_DEFAULT_REGION,
+                            port: 3128,
+                            size: DIGITALOCEAN_DEFAULT_SIZE,
+                            snapshotId: '',
+                            tag: 'spxtest',
+                        } satisfies IConnectorDigitalOceanConfig,
+                    },
+                ],
+            },
+        ];
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -41,22 +54,25 @@ describe(
                 ConnectorDigitaloceanModule,
             ],
             CONNECTOR_DIGITALOCEAN_TYPE,
-            credentialConfig,
-            connectorConfig,
-            {}
+            credentialsConfig
         );
 
         it(
             'should validate the uninstallation',
             async() => {
-                const api = new DigitalOceanApi(
-                    credentialConfig.token,
-                    agents
-                );
-                const snapshotId = parseInt(connectorConfig.snapshotId);
-                await expect(api.getSnapshot(snapshotId))
-                    .rejects
-                    .toThrow(/could not be found/);
+                for (const credentialTest of credentialsConfig) {
+                    const api = new DigitalOceanApi(
+                        credentialTest.config.token,
+                        agents
+                    );
+
+                    for (const connectorTest of credentialTest.connectors) {
+                        const snapshotId = parseInt(connectorTest.config.snapshotId);
+                        await expect(api.getSnapshot(snapshotId))
+                            .rejects
+                            .toThrow(/could not be found/);
+                    }
+                }
             }
         );
     }

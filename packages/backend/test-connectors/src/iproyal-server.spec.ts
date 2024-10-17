@@ -4,7 +4,7 @@ import {
     IConnectorIproyalServerConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import { testConnectors } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_IPROYAL_SERVER_TYPE } from '@scrapoxy/common';
 
 
@@ -12,18 +12,13 @@ describe(
     'Connector Provider - Iproyal Server',
     () => {
         const agents = new Agents();
-        const connectorConfig: IConnectorIproyalServerConfig = {
-                product: 'all',
-                country: 'all',
-            },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/iproyal-server/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/iproyal-server/credentials.json');
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -32,8 +27,21 @@ describe(
                 ConnectorIproyalServerModule,
             ],
             CONNECTOR_IPROYAL_SERVER_TYPE,
-            credentialConfig,
-            connectorConfig
+            [
+                {
+                    name: 'Unique Credential',
+                    config: JSON.parse(credentialConfigData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test on Static IP',
+                            config: {
+                                product: 'all',
+                                country: 'all',
+                            } satisfies IConnectorIproyalServerConfig,
+                        },
+                    ],
+                },
+            ]
         );
     }
 );

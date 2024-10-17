@@ -5,7 +5,10 @@ import {
     IConnectorAwsConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import {
+    ITestCredential,
+    testConnectors,
+} from '@scrapoxy/backend-test-sdk';
 import {
     AWS_DEFAULT_INSTANCE_TYPE,
     AWS_DEFAULT_REGION,
@@ -21,24 +24,32 @@ describe(
             agents = new Agents(),
             suffix = Math.floor(Math.random() * 1000000000)
                 .toString(10);
-        const
-            connectorConfig: IConnectorAwsConfig = {
-                region: AWS_DEFAULT_REGION,
-                port: 3128,
-                instanceType: AWS_DEFAULT_INSTANCE_TYPE,
-                imageId: '',
-                securityGroupName: `${SCRAPOXY_DATACENTER_PREFIX}-test-${suffix}`,
-                tag: 'spxtest',
-
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/aws/credentials.json');
+        const credentialsConfig: ITestCredential[] = [
+            {
+                name: 'Unique Credential',
+                config: JSON.parse(credentialConfigData.toString()),
+                connectors: [
+                    {
+                        name: `Test on region ${AWS_DEFAULT_REGION} with instance type ${AWS_DEFAULT_INSTANCE_TYPE}`,
+                        config: {
+                            region: AWS_DEFAULT_REGION,
+                            port: 3128,
+                            instanceType: AWS_DEFAULT_INSTANCE_TYPE,
+                            imageId: '',
+                            securityGroupName: `${SCRAPOXY_DATACENTER_PREFIX}-test-${suffix}`,
+                            tag: 'spxtest',
+                        } satisfies IConnectorAwsConfig,
+                    },
+                ],
             },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/aws/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        ];
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -47,27 +58,29 @@ describe(
                 ConnectorAwsModule,
             ],
             CONNECTOR_AWS_TYPE,
-            credentialConfig,
-            connectorConfig,
-            {}
+            credentialsConfig
         );
 
         it(
-            'should validate the uninstallation',
+            'should validate the uninstallations',
             async() => {
-                const api = new AwsApi(
-                    credentialConfig.accessKeyId,
-                    credentialConfig.secretAccessKey,
-                    connectorConfig.region,
-                    agents
-                );
-                const securityGroupExists = await api.hasSecurityGroup(connectorConfig.securityGroupName);
-                expect(securityGroupExists)
-                    .toBeFalsy();
+                for (const credentialTest of credentialsConfig) {
+                    for (const connectorTest of credentialTest.connectors) {
+                        const api = new AwsApi(
+                            credentialTest.config.accessKeyId,
+                            credentialTest.config.secretAccessKey,
+                            connectorTest.config.region,
+                            agents
+                        );
+                        const securityGroupExists = await api.hasSecurityGroup(connectorTest.config.securityGroupName);
+                        expect(securityGroupExists)
+                            .toBeFalsy();
 
-                const image = await api.describeImage(connectorConfig.imageId);
-                expect(image)
-                    .toBeUndefined();
+                        const image = await api.describeImage(connectorTest.config.imageId);
+                        expect(image)
+                            .toBeUndefined();
+                    }
+                }
             }
         );
     }

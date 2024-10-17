@@ -4,7 +4,7 @@ import {
     IConnectorProxySellerServerConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import { testConnectors } from '@scrapoxy/backend-test-sdk';
 import {
     CONNECTOR_PROXY_SELLER_SERVER_TYPE,
     EProxySellerNetworkType,
@@ -15,18 +15,13 @@ describe(
     'Connector Provider - Proxy-Seller Server',
     () => {
         const agents = new Agents();
-        const connectorConfig: IConnectorProxySellerServerConfig = {
-                networkType: EProxySellerNetworkType.ALL,
-                country: 'all',
-            },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxy-seller-server/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxy-seller-server/credentials.json');
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -35,8 +30,21 @@ describe(
                 ConnectorProxySellerServerModule,
             ],
             CONNECTOR_PROXY_SELLER_SERVER_TYPE,
-            credentialConfig,
-            connectorConfig
+            [
+                {
+                    name: 'Unique Credential',
+                    config: JSON.parse(credentialConfigData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test on static',
+                            config: {
+                                networkType: EProxySellerNetworkType.ALL,
+                                country: 'all',
+                            } satisfies IConnectorProxySellerServerConfig,
+                        },
+                    ],
+                },
+            ]
         );
     }
 );

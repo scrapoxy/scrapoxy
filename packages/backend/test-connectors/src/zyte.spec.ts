@@ -4,7 +4,7 @@ import {
     IConnectorZyteConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import { testConnectors } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_ZYTE_TYPE } from '@scrapoxy/common';
 
 
@@ -12,18 +12,13 @@ describe(
     'Connector Provider - Zyte',
     () => {
         const agents = new Agents();
-        const connectorConfig: IConnectorZyteConfig = {
-                region: 'fr',
-                apiUrl: 'proxy.crawlera.com:8011',
-            },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/zyte/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/zyte/credentials.json');
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -32,8 +27,21 @@ describe(
                 ConnectorZyteModule,
             ],
             CONNECTOR_ZYTE_TYPE,
-            credentialConfig,
-            connectorConfig
+            [
+                {
+                    name: 'Unique Credential',
+                    config: JSON.parse(credentialConfigData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test Smart Proxy Manager',
+                            config: {
+                                region: 'fr',
+                                apiUrl: 'proxy.crawlera.com:8011',
+                            } satisfies IConnectorZyteConfig,
+                        },
+                    ],
+                },
+            ]
         );
     }
 );

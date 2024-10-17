@@ -5,7 +5,7 @@ import {
     IConnectorProxyCheapServerConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import { testConnectors } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_PROXY_CHEAP_SERVER_TYPE } from '@scrapoxy/common';
 
 
@@ -13,17 +13,13 @@ describe(
     'Connector Provider - Proxy-Cheap Server',
     () => {
         const agents = new Agents();
-        const connectorConfig: IConnectorProxyCheapServerConfig = {
-                networkType: EProxyCheapNetworkType.ALL,
-            },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxy-cheap-server/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxy-cheap-server/credentials.json');
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -32,8 +28,20 @@ describe(
                 ConnectorProxyCheapServerModule,
             ],
             CONNECTOR_PROXY_CHEAP_SERVER_TYPE,
-            credentialConfig,
-            connectorConfig
+            [
+                {
+                    name: 'Unique Credential',
+                    config: JSON.parse(credentialConfigData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test on static',
+                            config: {
+                                networkType: EProxyCheapNetworkType.ALL,
+                            } satisfies IConnectorProxyCheapServerConfig,
+                        },
+                    ],
+                },
+            ]
         );
     }
 );

@@ -25,8 +25,15 @@ import {
 import {
     countProxiesOnlineViews,
     countProxiesViews,
+    ICommanderFrontendClient,
+    IConnectorToCreate,
+    IConnectorToInstall,
+    IConnectorView,
+    ICredentialToCreate,
+    IProjectData,
     isTaskFailed,
     isTaskSucceed,
+    ITaskView,
     ONE_HOUR_IN_MS,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
@@ -49,15 +56,7 @@ import type {
     INestApplication,
     LoggerService,
 } from '@nestjs/common';
-import type {
-    ICommanderFrontendClient,
-    IConnectorToCreate,
-    IConnectorToInstall,
-    IConnectorView,
-    ICredentialToCreate,
-    IProjectData,
-    ITaskView,
-} from '@scrapoxy/common';
+import type { ICredentialView } from '@scrapoxy/common';
 import type { OutgoingHttpHeaders } from 'http';
 import type { AddressInfo } from 'net';
 
@@ -180,14 +179,25 @@ async function createMasterApp(
 }
 
 
-export function testConnector(
+export interface ITestConnector {
+    name: string;
+    config?: any;
+    install?: any;
+}
+
+export interface ITestCredential {
+    name: string;
+    config: any;
+    connectors: ITestConnector[];
+}
+
+
+export function testConnectors(
     jest: { beforeAll: any; afterAll: any; it: any; expect: any },
     agents: Agents,
     connectorModules: any[],
     credentialType: string,
-    credentialConfig: any,
-    connectorConfig: any,
-    installConfig?: any
+    credentialsTest: ITestCredential[]
 ) {
     const
         instance = axios.create({
@@ -199,7 +209,6 @@ export function testConnector(
         ca: string,
         commander: ICommanderFrontendClient,
         commanderApp: INestApplication,
-        connector: IConnectorView,
         masterApp: INestApplication,
         port: number,
         project: IProjectData,
@@ -262,40 +271,6 @@ export function testConnector(
         await waitFor(async() => {
             token = await commander.getProjectTokenById(project.id);
         });
-
-        // Create credential
-        const credentialToCreate: ICredentialToCreate = {
-            name: 'mycredential',
-            type: credentialType,
-            config: credentialConfig,
-        };
-        const credential = await commander.createCredential(
-            project.id,
-            credentialToCreate
-        );
-        // Create connector
-        const connectorToCreate: IConnectorToCreate = {
-            name: 'myconnector',
-            credentialId: credential.id,
-            proxiesMax: 1,
-            proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
-            proxiesTimeoutUnreachable: {
-                enabled: true,
-                value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
-            },
-            config: connectorConfig,
-            certificateDurationInMs: ONE_HOUR_IN_MS,
-        };
-        connector = await commander.createConnector(
-            project.id,
-            connectorToCreate
-        );
-        await waitFor(async() => {
-            await commander.getConnectorById(
-                project.id,
-                connector.id
-            );
-        });
     });
 
     jest.afterAll(async() => {
@@ -304,293 +279,376 @@ export function testConnector(
         ]);
     });
 
-    if (installConfig) {
-        jest.it(
-            'should install the connector',
-            async() => {
-                const connectorToInstall: IConnectorToInstall = {
-                    config: installConfig,
-                };
-                const task = await commander.installConnector(
-                    project.id,
-                    connector.id,
-                    connectorToInstall
-                );
-                await waitForTask(
-                    logger,
-                    commander,
-                    project,
-                    task
-                );
-            },
-            1000 * 60 * 20 // 20 minutes max
-        );
+    for (const credentialTest of credentialsTest) {
+        let credential: ICredentialView;
 
-        jest.it(
-            'should validate the installation',
-            async() => {
-                await commander.validateConnector(
-                    project.id,
-                    connector.id
-                );
-
-                // Copy updated configuration
-                const connectorFound = await commander.getConnectorById(
-                    project.id,
-                    connector.id
-                );
-
-                Object.assign(
-                    connectorConfig,
-                    connectorFound.config
-                );
-            }
-        );
-    }
-
-    jest.it(
-        'should activate the connector',
-        async() => {
-            await commander.activateConnector(
-                project.id,
-                connector.id,
-                true
-            );
-
-            // Wait for proxies
-            await waitFor(
-                async() => {
-                    const views = await commander.getAllProjectConnectorsAndProxiesById(project.id);
-                    jest.expect(countProxiesOnlineViews(views))
-                        .toBe(connector.proxiesMax);
-                },
-                60 * 5 // 5 minutes max
-            );
-        },
-        1000 * 60 * 5 // 5 minutes max
-    );
-
-    let myIp: string;
-    jest.it(
-        'should get a response without proxy',
-        async() => {
-            const res = await instance.get('https://fingerprint.scrapoxy.io/api/text');
-
-            jest.expect(res.status)
-                .toBe(200);
-
-            jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
-
-            myIp = res.data;
-            jest.expect(myIp.length)
-                .toBeGreaterThan(0);
-
-        }
-    );
-
-    jest.it(
-        'should get different IPs with HTTP over HTTP',
-        async() => {
-            const res = await instance.get(
-                'http://fingerprint.scrapoxy.io/api/text',
-                {
-                    headers: {
-                        'Proxy-Authorization': `Basic ${token}`,
-                    },
-                    proxy: {
-                        host: 'localhost',
-                        port,
-                        protocol: 'http',
-                    },
-                }
-            );
-
-            jest.expect(res.status)
-                .toBe(200);
-
-            jest.expect(res.headers)
-                .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
-
-            const ip = res.data;
-
-            jest.expect(ip.length)
-                .toBeGreaterThan(0);
-
-            jest.expect(myIp).not.toEqual(ip);
-        }
-    );
-
-    jest.it(
-        'should get different IPs with HTTPS over HTTP',
-        async() => {
-            const res = await instance.get(
-                'https://fingerprint.scrapoxy.io/api/text',
-                {
-                    headers: {
-                        'Proxy-Authorization': `Basic ${token}`,
-                    },
-                    proxy: {
-                        host: 'localhost',
-                        port,
-                        protocol: 'http',
-                    },
-                }
-            );
-
-            jest.expect(res.status)
-                .toBe(200);
-
-            jest.expect(res.headers)
-                .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
-
-            const ip = res.data;
-
-            jest.expect(ip.length)
-                .toBeGreaterThan(0);
-
-            jest.expect(myIp).not.toEqual(ip);
-        }
-    );
-
-    jest.it(
-        'should get different IPs with HTTPS over HTTP tunnel (MITM mode)',
-        async() => {
-            const httpsAgent = new AgentProxyHttpsTunnel({
-                hostname: 'localhost',
-                port,
-                ca,
-                headers: {
-                    'Proxy-Authorization': `Basic ${token}`,
-                },
-            });
-
-            try {
-                const res = await instance.get(
-                    'https://fingerprint.scrapoxy.io/api/text',
-                    {
-                        httpsAgent,
+        describe(
+            credentialTest.name,
+            // eslint-disable-next-line @typescript-eslint/no-loop-func
+            () => {
+                jest.it(
+                    'should create the credential',
+                    async() => {
+                        const credentialToCreate: ICredentialToCreate = {
+                            name: 'mycredential',
+                            type: credentialType,
+                            config: credentialTest.config,
+                        };
+                        credential = await commander.createCredential(
+                            project.id,
+                            credentialToCreate
+                        );
                     }
                 );
 
-                jest.expect(res.status)
-                    .toBe(200);
+                for (const connectorTest of credentialTest.connectors) {
+                    let connector: IConnectorView;
 
-                jest.expect(res.headers)
-                    .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
+                    describe(
+                        connectorTest.name,
+                        // eslint-disable-next-line @typescript-eslint/no-loop-func
+                        () => {
+                            jest.it(
+                                'should create the connector',
+                                async() => {
+                                    const connectorToCreate: IConnectorToCreate = {
+                                        name: 'myconnector',
+                                        credentialId: credential.id,
+                                        proxiesMax: 1,
+                                        proxiesTimeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
+                                        proxiesTimeoutUnreachable: {
+                                            enabled: true,
+                                            value: PROXY_TIMEOUT_UNREACHABLE_DEFAULT,
+                                        },
+                                        config: connectorTest.config ?? {},
+                                        certificateDurationInMs: ONE_HOUR_IN_MS,
+                                    };
+                                    connector = await commander.createConnector(
+                                        project.id,
+                                        connectorToCreate
+                                    );
+                                    await waitFor(async() => {
+                                        await commander.getConnectorById(
+                                            project.id,
+                                            connector.id
+                                        );
+                                    });
+                                }
+                            );
 
-                const ip = res.data;
+                            if (connectorTest.install) {
+                                jest.it(
+                                    'should install the connector',
+                                    async() => {
+                                        const connectorToInstall: IConnectorToInstall = {
+                                            config: connectorTest.install,
+                                        };
+                                        const task = await commander.installConnector(
+                                            project.id,
+                                            connector.id,
+                                            connectorToInstall
+                                        );
+                                        await waitForTask(
+                                            logger,
+                                            commander,
+                                            project,
+                                            task
+                                        );
+                                    },
+                                    1000 * 60 * 20 // 20 minutes max
+                                );
 
-                jest.expect(ip.length)
-                    .toBeGreaterThan(0);
+                                jest.it(
+                                    'should validate the installation',
+                                    async() => {
+                                        await commander.validateConnector(
+                                            project.id,
+                                            connector.id
+                                        );
 
-                jest.expect(myIp).not.toEqual(ip);
-            } finally {
-                httpsAgent.close();
-            }
-        }
-    );
+                                        // Copy updated configuration
+                                        const connectorFound = await commander.getConnectorById(
+                                            project.id,
+                                            connector.id
+                                        );
 
-    jest.it(
-        'should get different IPs with HTTPS over HTTP tunnel (tunnel mode)',
-        async() => {
-            const headersConnect: OutgoingHttpHeaders = {
-                'Proxy-Authorization': `Basic ${token}`,
-            };
-            headersConnect[ `${SCRAPOXY_HEADER_PREFIX}-Mode` ] = 'tunnel';
+                                        Object.assign(
+                                            connectorTest.config,
+                                            connectorFound.config
+                                        );
+                                    }
+                                );
+                            }
 
-            const httpsAgent = new AgentProxyHttpsTunnel({
-                hostname: 'localhost',
-                port,
-                headers: headersConnect,
-            });
+                            jest.it(
+                                'should activate the connector',
+                                async() => {
+                                    await commander.activateConnector(
+                                        project.id,
+                                        connector.id,
+                                        true
+                                    );
 
-            try {
-                const res = await instance.get(
-                    'https://fingerprint.scrapoxy.io/api/text',
-                    {
-                        httpsAgent,
+                                    // Wait for proxies
+                                    await waitFor(
+                                        async() => {
+                                            const views = await commander.getAllProjectConnectorsAndProxiesById(project.id);
+                                            jest.expect(countProxiesOnlineViews(views))
+                                                .toBe(connector.proxiesMax);
+                                        },
+                                        60 * 5 // 5 minutes max
+                                    );
+                                },
+                                1000 * 60 * 5 // 5 minutes max
+                            );
+
+                            let myIp: string;
+                            jest.it(
+                                'should get a response without proxy',
+                                async() => {
+                                    const res = await instance.get('https://fingerprint.scrapoxy.io/api/text');
+
+                                    jest.expect(res.status)
+                                        .toBe(200);
+
+                                    jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
+
+                                    myIp = res.data;
+                                    jest.expect(myIp.length)
+                                        .toBeGreaterThan(0);
+
+                                }
+                            );
+
+                            jest.it(
+                                'should get different IPs with HTTP over HTTP',
+                                async() => {
+                                    const res = await instance.get(
+                                        'http://fingerprint.scrapoxy.io/api/text',
+                                        {
+                                            headers: {
+                                                'Proxy-Authorization': `Basic ${token}`,
+                                            },
+                                            proxy: {
+                                                host: 'localhost',
+                                                port,
+                                                protocol: 'http',
+                                            },
+                                        }
+                                    );
+
+                                    jest.expect(res.status)
+                                        .toBe(200);
+
+                                    jest.expect(res.headers)
+                                        .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
+
+                                    const ip = res.data;
+
+                                    jest.expect(ip.length)
+                                        .toBeGreaterThan(0);
+
+                                    jest.expect(myIp).not.toEqual(ip);
+                                }
+                            );
+
+                            jest.it(
+                                'should get different IPs with HTTPS over HTTP',
+                                async() => {
+                                    const res = await instance.get(
+                                        'https://fingerprint.scrapoxy.io/api/text',
+                                        {
+                                            headers: {
+                                                'Proxy-Authorization': `Basic ${token}`,
+                                            },
+                                            proxy: {
+                                                host: 'localhost',
+                                                port,
+                                                protocol: 'http',
+                                            },
+                                        }
+                                    );
+
+                                    jest.expect(res.status)
+                                        .toBe(200);
+
+                                    jest.expect(res.headers)
+                                        .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
+
+                                    const ip = res.data;
+
+                                    jest.expect(ip.length)
+                                        .toBeGreaterThan(0);
+
+                                    jest.expect(myIp).not.toEqual(ip);
+                                }
+                            );
+
+                            jest.it(
+                                'should get different IPs with HTTPS over HTTP tunnel (MITM mode)',
+                                async() => {
+                                    const httpsAgent = new AgentProxyHttpsTunnel({
+                                        hostname: 'localhost',
+                                        port,
+                                        ca,
+                                        headers: {
+                                            'Proxy-Authorization': `Basic ${token}`,
+                                        },
+                                    });
+
+                                    try {
+                                        const res = await instance.get(
+                                            'https://fingerprint.scrapoxy.io/api/text',
+                                            {
+                                                httpsAgent,
+                                            }
+                                        );
+
+                                        jest.expect(res.status)
+                                            .toBe(200);
+
+                                        jest.expect(res.headers)
+                                            .toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
+
+                                        const ip = res.data;
+
+                                        jest.expect(ip.length)
+                                            .toBeGreaterThan(0);
+
+                                        jest.expect(myIp).not.toEqual(ip);
+                                    } finally {
+                                        httpsAgent.close();
+                                    }
+                                }
+                            );
+
+                            jest.it(
+                                'should get different IPs with HTTPS over HTTP tunnel (tunnel mode)',
+                                async() => {
+                                    const headersConnect: OutgoingHttpHeaders = {
+                                        'Proxy-Authorization': `Basic ${token}`,
+                                    };
+                                    headersConnect[ `${SCRAPOXY_HEADER_PREFIX}-Mode` ] = 'tunnel';
+
+                                    const httpsAgent = new AgentProxyHttpsTunnel({
+                                        hostname: 'localhost',
+                                        port,
+                                        headers: headersConnect,
+                                    });
+
+                                    try {
+                                        const res = await instance.get(
+                                            'https://fingerprint.scrapoxy.io/api/text',
+                                            {
+                                                httpsAgent,
+                                            }
+                                        );
+
+                                        jest.expect(res.status)
+                                            .toBe(200);
+
+                                        jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
+
+                                        const ip = res.data;
+
+                                        jest.expect(ip.length)
+                                            .toBeGreaterThan(0);
+
+                                        jest.expect(myIp).not.toEqual(ip);
+                                    } finally {
+                                        httpsAgent.close();
+                                    }
+                                }
+                            );
+
+                            jest.it(
+                                'should not make a unknown protocol request',
+                                async() => {
+                                    const res = await instance.get(
+                                        'file://c:/windows/win.ini',
+                                        {
+                                            headers: {
+                                                'Proxy-Authorization': `Basic ${token}`,
+                                            },
+                                            proxy: {
+                                                host: 'localhost',
+                                                port,
+                                                protocol: 'http',
+                                            },
+                                        }
+                                    );
+
+                                    jest.expect(res.status)
+                                        .toBe(557);
+                                    jest.expect(res.data.message)
+                                        .toContain('Unsupported protocol: file:');
+                                }
+                            );
+
+                            jest.it(
+                                'should deactivate the connector',
+                                async() => {
+                                    await commander.activateConnector(
+                                        project.id,
+                                        connector.id,
+                                        false
+                                    );
+
+                                    // Wait for proxies
+                                    await waitFor(
+                                        async() => {
+                                            const views = await commander.getAllProjectConnectorsAndProxiesById(project.id);
+                                            jest.expect(countProxiesViews(views))
+                                                .toBe(0);
+                                        },
+                                        60 * 5 // 5 minutes max
+                                    );
+                                },
+                                5 * ONE_MINUTE_IN_MS
+                            );
+
+                            if (connectorTest.install) {
+                                jest.it(
+                                    'should uninstall the connector',
+                                    async() => {
+                                        const task = await commander.uninstallConnector(
+                                            project.id,
+                                            connector.id
+                                        );
+                                        await waitForTask(
+                                            logger,
+                                            commander,
+                                            project,
+                                            task
+                                        );
+                                    },
+                                    20 * ONE_MINUTE_IN_MS
+                                );
+                            }
+
+                            jest.it(
+                                'should remove the connector',
+                                async() => {
+                                    await commander.removeConnector(
+                                        project.id,
+                                        connector.id
+                                    );
+                                }
+                            );
+                        }
+                    );
+                }
+
+                jest.it(
+                    'should remove the credential',
+                    async() => {
+                        await commander.removeCredential(
+                            project.id,
+                            credential.id
+                        );
                     }
                 );
-
-                jest.expect(res.status)
-                    .toBe(200);
-
-                jest.expect(res.headers).not.toHaveProperty(`${SCRAPOXY_PROXY_HEADER_PREFIX_LC}-proxyname`);
-
-                const ip = res.data;
-
-                jest.expect(ip.length)
-                    .toBeGreaterThan(0);
-
-                jest.expect(myIp).not.toEqual(ip);
-            } finally {
-                httpsAgent.close();
             }
-        }
-    );
-
-    jest.it(
-        'should not make a unknown protocol request',
-        async() => {
-            const res = await instance.get(
-                'file://c:/windows/win.ini',
-                {
-                    headers: {
-                        'Proxy-Authorization': `Basic ${token}`,
-                    },
-                    proxy: {
-                        host: 'localhost',
-                        port,
-                        protocol: 'http',
-                    },
-                }
-            );
-
-            jest.expect(res.status)
-                .toBe(557);
-            jest.expect(res.data.message)
-                .toContain('Unsupported protocol: file:');
-        }
-    );
-
-    jest.it(
-        'should deactivate the connector',
-        async() => {
-            await commander.activateConnector(
-                project.id,
-                connector.id,
-                false
-            );
-
-            // Wait for proxies
-            await waitFor(
-                async() => {
-                    const views = await commander.getAllProjectConnectorsAndProxiesById(project.id);
-                    jest.expect(countProxiesViews(views))
-                        .toBe(0);
-                },
-                60 * 5 // 5 minutes max
-            );
-        },
-        5 * ONE_MINUTE_IN_MS
-    );
-
-    if (installConfig) {
-        jest.it(
-            'should uninstall the connector',
-            async() => {
-                const task = await commander.uninstallConnector(
-                    project.id,
-                    connector.id
-                );
-                await waitForTask(
-                    logger,
-                    commander,
-                    project,
-                    task
-                );
-            },
-            20 * ONE_MINUTE_IN_MS
         );
     }
 }

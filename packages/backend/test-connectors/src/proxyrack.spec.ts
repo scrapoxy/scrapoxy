@@ -5,7 +5,7 @@ import {
     IConnectorProxyrackConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import { testConnectors } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_PROXYRACK_TYPE } from '@scrapoxy/common';
 
 
@@ -13,20 +13,13 @@ describe(
     'Connector Provider - Proxyrack',
     () => {
         const agents = new Agents();
-        const connectorConfig: IConnectorProxyrackConfig = {
-                country: 'all',
-                city: 'all',
-                isp: 'all',
-                osName: EProxyrackOs.All,
-            },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxyrack/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxyrack/credentials.json');
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -35,8 +28,23 @@ describe(
                 ConnectorProxyrackModule,
             ],
             CONNECTOR_PROXYRACK_TYPE,
-            credentialConfig,
-            connectorConfig
+            [
+                {
+                    name: 'Unique Credential',
+                    config: JSON.parse(credentialConfigData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test on Unmetered Residential',
+                            config: {
+                                country: 'all',
+                                city: 'all',
+                                isp: 'all',
+                                osName: EProxyrackOs.All,
+                            } satisfies IConnectorProxyrackConfig,
+                        },
+                    ],
+                },
+            ]
         );
     }
 );

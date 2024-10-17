@@ -4,7 +4,7 @@ import {
     IConnectorProxyCheapResidentialConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { testConnector } from '@scrapoxy/backend-test-sdk';
+import { testConnectors } from '@scrapoxy/backend-test-sdk';
 import { CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE } from '@scrapoxy/common';
 
 
@@ -12,17 +12,13 @@ describe(
     'Connector Provider - Proxy-Cheap Residential',
     () => {
         const agents = new Agents();
-        const connectorConfig: IConnectorProxyCheapResidentialConfig = {
-                country: 'All',
-            },
-            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxy-cheap-residential/credentials.json');
-        const credentialConfig = JSON.parse(credentialConfigData.toString());
+        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/proxy-cheap-residential/credentials.json');
 
         afterAll(() => {
             agents.close();
         });
 
-        testConnector(
+        testConnectors(
             {
                 beforeAll, afterAll, it, expect,
             },
@@ -31,8 +27,20 @@ describe(
                 ConnectorProxyCheapResidentialModule,
             ],
             CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE,
-            credentialConfig,
-            connectorConfig
+            [
+                {
+                    name: 'Unique Credential',
+                    config: JSON.parse(credentialConfigData.toString()),
+                    connectors: [
+                        {
+                            name: 'Test on Residential',
+                            config: {
+                                country: 'All',
+                            } satisfies IConnectorProxyCheapResidentialConfig,
+                        },
+                    ],
+                },
+            ]
         );
     }
 );
