@@ -1,7 +1,5 @@
 import {defineConfig} from 'vitepress'
 import {fileURLToPath, URL} from 'url'
-import {readFileSync} from 'fs';
-import {join} from 'path';
 
 const
     title = 'Scrapoxy',
