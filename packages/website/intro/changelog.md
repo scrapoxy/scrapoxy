@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.17.0
+
+### Features
+
+- **geonode**: add [Geonode](https://geonode.pxf.io/c/5392682/2020638/25070?trafsrc=impact) proxies support
+
+### Bug fixes
+
+- **freeproxies**: change the way of generating ID hash
+- **misc**: minor fixes
+
+
 ## 4.16.1
 
 ### Bug fixes
