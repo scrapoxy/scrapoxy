@@ -89,11 +89,11 @@ export abstract class ATransportDatacenterService extends ATransportService {
                         oncreate2,
                         sockets,
                         'ATransportDatacenter:buildRequestArgs',
-                        {
+                        config.certificate ? {
                             ca: config.certificate.cert,
                             cert: config.certificate.cert,
                             key: config.certificate.key,
-                        }
+                        } : void 0
                     ),
                 };
                 const proxyReq = request(proxyReqArgs);
@@ -261,11 +261,11 @@ export abstract class ATransportDatacenterService extends ATransportService {
                 oncreate,
                 sockets,
                 'ATransportDatacenter:connect',
-                {
+                config.certificate ? {
                     ca: config.certificate.cert,
                     cert: config.certificate.cert,
                     key: config.certificate.key,
-                }
+                } : void 0
             ),
         });
 

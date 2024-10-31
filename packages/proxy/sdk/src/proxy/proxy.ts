@@ -1,11 +1,10 @@
 import {
+    createServer as createServerHttp,
     IncomingMessage,
+    Server,
     ServerResponse,
 } from 'http';
-import {
-    createServer,
-    Server,
-} from 'https';
+import { createServer as createServerHttps } from 'https';
 import {
     createConnection,
     Socket,
@@ -77,17 +76,20 @@ export class Proxy implements IProxy {
     constructor(
         private readonly logger: IProxyLogger,
         private readonly timeout: number,
-        cert: string,
-        key: string
+        cert?: string,
+        key?: string
     ) {
-
-        this.server = createServer({
-            requestCert: true,
-            rejectUnauthorized: false,
-            ca: cert,
-            cert: cert,
-            key: key,
-        });
+        if (cert && key) {
+            this.server = createServerHttps({
+                requestCert: true,
+                rejectUnauthorized: false,
+                ca: cert,
+                cert: cert,
+                key: key,
+            });
+        } else {
+            this.server = createServerHttp();
+        }
         this.server.on(
             'connect',
             (
@@ -231,6 +233,7 @@ export class Proxy implements IProxy {
             }
         );
 
+        // Do not close which can be reused
         socket.on(
             'close',
             () => {

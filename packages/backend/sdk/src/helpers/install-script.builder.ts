@@ -7,7 +7,7 @@ import type { ICertificate } from '@scrapoxy/common';
 export class InstallScriptBuilder {
     private readonly rootPath: string;
 
-    constructor(private readonly certificate: ICertificate) {
+    constructor(private readonly certificate: ICertificate | null) {
         this.rootPath = resolve(
             getEnvAssetsPath(),
             'proxy'
@@ -16,14 +16,20 @@ export class InstallScriptBuilder {
 
     async build(): Promise<string> {
         const
-            certificateKey = this.writeFileFromString(
+            certificateKey: string[] = [],
+            certificatePem: string[] = [];
+
+        if (this.certificate) {
+            certificateKey.push(...this.writeFileFromString(
                 this.certificate.key,
                 '/root/certificate.key'
-            ),
-            certificatePem = this.writeFileFromString(
+            ));
+            certificatePem.push(...this.writeFileFromString(
                 this.certificate.cert,
                 '/root/certificate.pem'
-            );
+            ));
+        } 
+
         const [
             mainJs, packageJson, proxyupSh,
         ] = await Promise.all([

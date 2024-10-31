@@ -46,7 +46,7 @@ export interface IDigitalOceanInstallCommandData {
     region: string;
     hostname: string | undefined;
     port: number;
-    certificate: ICertificate;
+    certificate: ICertificate | null;
     dropletId: number | undefined;
     powerOffActionId: number | undefined;
     snapshotActionId: number | undefined;
@@ -65,6 +65,7 @@ const schemaData = Joi.object({
     port: Joi.number()
         .required(),
     certificate: Joi.object()
+        .allow(null)
         .required(),
     dropletId: Joi.number()
         .optional()

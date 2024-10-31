@@ -39,7 +39,7 @@ export interface IGcpInstallCommandData extends IConnectorGcpCredential{
     zone: string;
     hostname: string | undefined;
     port: number;
-    certificate: ICertificate;
+    certificate: ICertificate | null;
     machineType: string;
     templateName: string;
     networkName: string;
@@ -65,6 +65,7 @@ const schemaData = schemaCredential.keys({
     port: Joi.number()
         .required(),
     certificate: Joi.object()
+        .allow(null)
         .required(),
     machineType: Joi.string()
         .required(),

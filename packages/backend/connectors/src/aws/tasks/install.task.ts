@@ -41,7 +41,7 @@ export interface IAwsInstallCommandData {
     region: string;
     hostname: string | undefined;
     port: number;
-    certificate: ICertificate;
+    certificate: ICertificate | null;
     securityGroupName: string;
     instanceId: string | undefined;
     instanceType: string;
@@ -63,6 +63,7 @@ const schemaData = Joi.object({
     port: Joi.number()
         .required(),
     certificate: Joi.object()
+        .allow(null)
         .required(),
     securityGroupName: Joi.string()
         .required(),

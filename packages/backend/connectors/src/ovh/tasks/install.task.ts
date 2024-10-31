@@ -51,7 +51,7 @@ export interface IOvhInstallCommandData extends IConnectorOvhCredential {
     flavorId: string;
     hostname: string | undefined;
     port: number;
-    certificate: ICertificate;
+    certificate: ICertificate | null;
     installInstanceId: string | undefined;
     snapshotName: string | undefined;
     snapshotId: string | undefined;
@@ -72,6 +72,7 @@ const schemaData = schemaCredential.keys({
     port: Joi.number()
         .required(),
     certificate: Joi.object()
+        .allow(null)
         .required(),
     installInstanceId: Joi.string()
         .optional(),

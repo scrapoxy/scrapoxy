@@ -11,5 +11,5 @@ export interface ITransportProxyRefreshedConfigDatacenter {
 
 export interface IProxyToConnectConfigDatacenter {
     address: IAddress;
-    certificate: ICertificate;
+    certificate: ICertificate | null;
 }
