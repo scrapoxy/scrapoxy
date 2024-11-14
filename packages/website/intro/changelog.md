@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.17.1
+
+### Features
+
+- **connection**: respect keep-alive timeout for MITM connections
+
+### Bug fixes
+
+- **iproyal**: remove API dependency for residential connection
+
+
 ## 4.17.0
 
 ### Features
