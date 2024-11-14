@@ -39,6 +39,7 @@ export abstract class ATransportResidentialService extends ATransportService {
         sockets: ISockets
     ): ClientRequestArgs {
         const config = proxy.config as IProxyToConnectConfigResidential;
+        const timeout = headers.parseKeepAliveTimeout(proxy.timeoutDisconnected);
 
         switch (urlOpts.protocol) {
             case 'http:': {
@@ -48,7 +49,7 @@ export abstract class ATransportResidentialService extends ATransportService {
                     headers,
                     config,
                     sockets,
-                    proxy.timeoutDisconnected
+                    timeout
                 );
             }
 
@@ -60,7 +61,7 @@ export abstract class ATransportResidentialService extends ATransportService {
                     headersConnect,
                     config,
                     sockets,
-                    proxy.timeoutDisconnected,
+                    timeout,
                     proxy.ciphers
                 );
             }

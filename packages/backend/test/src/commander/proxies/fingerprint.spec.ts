@@ -319,7 +319,7 @@ describe(
                     // Start app
                     commanderApp = CommanderApp.defaults({
                         datacenterLocalAppUrl: datacenterLocalApp.url,
-                        fingerprintUrl: `${servers.urlHttp}/timeout`,
+                        fingerprintUrl: `${servers.urlHttp}/delay/${ONE_MINUTE_IN_MS}`,
                         logger,
                     });
                     await commanderApp.start();
@@ -327,7 +327,7 @@ describe(
                     masterApp = MasterApp.defaults({
                         datacenterLocalAppUrl: datacenterLocalApp.url,
                         commanderApp,
-                        fingerprintUrl: `${servers.urlHttp}/timeout`,
+                        fingerprintUrl: `${servers.urlHttp}/delay/${ONE_MINUTE_IN_MS}`,
                         logger,
                     });
                     await masterApp.start();

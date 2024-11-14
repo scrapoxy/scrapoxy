@@ -7,6 +7,7 @@ import {
     HttpCode,
     Injectable,
     Module,
+    Param,
     ParseIntPipe,
     Post,
     Query,
@@ -15,10 +16,7 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { validate } from '@scrapoxy/backend-sdk';
-import {
-    ONE_SECOND_IN_MS,
-    sleep,
-} from '@scrapoxy/common';
+import { sleep } from '@scrapoxy/common';
 import * as Joi from 'joi';
 import { Observable } from 'rxjs';
 import {
@@ -98,14 +96,24 @@ class WebController {
         }
     }
 
-    @Get('timeout')
-    async timeoutGet(): Promise<string> {
-        return this.timeoutImpl();
+    @Get('delay/:delay')
+    async delayGet(@Param(
+        'delay',
+        ParseIntPipe
+    ) delay: number): Promise<string> {
+        await sleep(delay);
+
+        return 'OK';
     }
 
-    @Post('timeout')
-    async timeoutPost(): Promise<string> {
-        return this.timeoutImpl();
+    @Post('delay/:delay')
+    async timeoutPost(@Param(
+        'delay',
+        ParseIntPipe
+    ) delay: number): Promise<string> {
+        await sleep(delay);
+
+        return 'OK';
     }
 
     @Get('file/big')
@@ -208,12 +216,6 @@ class WebController {
         } catch (err: any) {
             throw new BadRequestException(err.message);
         }
-    }
-
-    private async timeoutImpl(): Promise<string> {
-        await sleep(ONE_SECOND_IN_MS);
-
-        return 'never_sent';
     }
 }
 

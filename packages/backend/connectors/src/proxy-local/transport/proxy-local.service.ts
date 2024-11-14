@@ -261,6 +261,7 @@ export class TransportProxyLocalService extends ATransportService {
             config.region
         );
 
+
         return {
             method,
             hostname: proxyUrlOpts.hostname,
@@ -270,7 +271,7 @@ export class TransportProxyLocalService extends ATransportService {
                 true
             ),
             headers: headers.toArray() as any, // should accept also [string, string][]
-            timeout: proxy.timeoutDisconnected,
+            timeout: headers.parseKeepAliveTimeout(proxy.timeoutDisconnected),
             createConnection: (
                 opts,
                 oncreate
@@ -302,7 +303,7 @@ export class TransportProxyLocalService extends ATransportService {
                 false
             ),
             headers: headers.toArray() as any, // should accept also [string, string][]
-            timeout: proxy.timeoutDisconnected,
+            timeout: headers.parseKeepAliveTimeout(proxy.timeoutDisconnected),
             createConnection: (
                 args,
                 oncreate

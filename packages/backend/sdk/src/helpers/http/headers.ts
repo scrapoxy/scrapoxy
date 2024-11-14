@@ -1,3 +1,6 @@
+import { ONE_SECOND_IN_MS } from '@scrapoxy/common';
+
+
 export class ArrayHttpHeaders {
     private readonly headers: [string, string][] = [];
 
@@ -161,6 +164,25 @@ export class ArrayHttpHeaders {
         }
 
         return this;
+    }
+
+    parseKeepAliveTimeout(defaultTimeout: number): number {
+        const keepAliveRaw = this.getFirstHeader('keep-alive');
+
+        if (!keepAliveRaw) {
+            return defaultTimeout;
+        }
+
+        const timeout = /timeout=(\d+)/.exec(keepAliveRaw);
+
+        if (!timeout) {
+            return defaultTimeout;
+        }
+
+        return parseInt(
+            timeout[ 1 ],
+            10
+        ) * ONE_SECOND_IN_MS;
     }
 
     toArray(): [string, string][] {

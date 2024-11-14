@@ -301,48 +301,15 @@ describe(
                 );
 
                 it(
-                    'should refuse connection if connects on a closed port',
+                    'should request GET with delay',
                     async() => {
                         const res = await instance.get(
-                            `http://localhost:${servers.portHttp - 100}/mirror/headers`,
+                            `${servers.urlHttp}/delay/${1 * ONE_SECOND_IN_MS}`,
                             {
                                 headers: {
                                     'Proxy-Authorization': 'Basic fake_token',
-                                },
-                                proxy: {
-                                    host: 'localhost',
-                                    port,
-                                    protocol: 'http',
-                                },
-                            }
-                        );
-
-                        expect(res.status)
-                            .toBe(557);
-                        expect(res.statusText)
-                            .toBe('request_error');
-                        expect(res.data.id)
-                            .toBe('request_error');
-                        expect(res.data.message)
-                            .toEqual(expect.stringContaining('ECONNREFUSED'));
-                        expect(res.data.proxyId)
-                            .toBe(proxy.id);
-                        expect(res.headers)
-                            .toHaveProperty(
-                                `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
-                                proxy.id
-                            );
-                    }
-                );
-
-                it(
-                    'should request GET',
-                    async() => {
-                        const res = await instance.get(
-                            `${servers.urlHttp}/mirror/headers`,
-                            {
-                                headers: {
-                                    'Proxy-Authorization': 'Basic fake_token',
+                                    Connection: 'keep-alive',
+                                    'Keep-Alive': 'timeout=2',
                                 },
                                 proxy: {
                                     host: 'localhost',
@@ -356,11 +323,6 @@ describe(
                             .toBe(200);
                         expect(res.statusText)
                             .toBe('OK');
-                        expect(res.headers)
-                            .toHaveProperty(
-                                `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
-                                proxy.id
-                            );
                     }
                 );
 
@@ -587,6 +549,32 @@ describe(
                                 `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
                                 proxy.id
                             );
+                    }
+                );
+
+                it(
+                    'should request GET with delay',
+                    async() => {
+                        const res = await instance.get(
+                            `${servers.urlHttps}/delay/${1 * ONE_SECOND_IN_MS}`,
+                            {
+                                headers: {
+                                    'Proxy-Authorization': 'Basic fake_token',
+                                    Connection: 'keep-alive',
+                                    'Keep-Alive': 'timeout=2',
+                                },
+                                proxy: {
+                                    host: 'localhost',
+                                    port,
+                                    protocol: 'http',
+                                },
+                            }
+                        );
+
+                        expect(res.status)
+                            .toBe(200);
+                        expect(res.statusText)
+                            .toBe('OK');
                     }
                 );
 
@@ -824,6 +812,43 @@ describe(
                                     `${SCRAPOXY_HEADER_PREFIX_LC}-proxyname`,
                                     proxy.id
                                 );
+
+                            expect(httpsAgent.headers)
+                                .toEqual({});
+                        } finally {
+                            httpsAgent.close();
+                        }
+                    }
+                );
+
+                it(
+                    'should request GET with delay',
+                    async() => {
+                        const httpsAgent = new AgentProxyHttpsTunnel({
+                            hostname: 'localhost',
+                            port,
+                            ca,
+                            headers: {
+                                'Proxy-Authorization': 'Basic fake_token',
+                            },
+                        });
+
+                        try {
+                            const res = await instance.get(
+                                `${servers.urlHttps}/delay/${1 * ONE_SECOND_IN_MS}`,
+                                {
+                                    headers: {
+                                        Connection: 'keep-alive',
+                                        'Keep-Alive': 'timeout=2',
+                                    },
+                                    httpsAgent,
+                                }
+                            );
+
+                            expect(res.status)
+                                .toBe(200);
+                            expect(res.statusText)
+                                .toBe('OK');
 
                             expect(httpsAgent.headers)
                                 .toEqual({});

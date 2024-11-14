@@ -48,6 +48,7 @@ export abstract class ATransportProxyService extends ATransportService {
         sockets: ISockets
     ): ClientRequestArgs {
         const config = proxy.config as IProxyTransport;
+        const timeout = headers.parseKeepAliveTimeout(proxy.timeoutDisconnected);
 
         switch (config.type) {
             case EProxyType.HTTP: {
@@ -59,7 +60,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected
+                            timeout
                         );
                     }
 
@@ -71,7 +72,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             headersConnect,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected,
+                            timeout,
                             proxy.ciphers
                         );
                     }
@@ -91,7 +92,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected
+                            timeout
                         );
                     }
 
@@ -103,7 +104,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             headersConnect,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected,
+                            timeout,
                             proxy.ciphers
                         );
                     }
@@ -124,7 +125,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected,
+                            timeout,
                             proxy.ciphers,
                             4
                         );
@@ -146,7 +147,7 @@ export abstract class ATransportProxyService extends ATransportService {
                             headers,
                             config,
                             sockets,
-                            proxy.timeoutDisconnected,
+                            timeout,
                             proxy.ciphers,
                             5
                         );

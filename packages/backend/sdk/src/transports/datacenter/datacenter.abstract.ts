@@ -60,6 +60,8 @@ export abstract class ATransportDatacenterService extends ATransportService {
             }
         }
 
+        const timeout = headers.parseKeepAliveTimeout(proxy.timeoutDisconnected);
+
         return {
             method,
             hostname: config.address.hostname,
@@ -69,7 +71,7 @@ export abstract class ATransportDatacenterService extends ATransportService {
                 false
             ),
             headers: headers.toArray() as any, // should accept also [string, string][]
-            timeout: proxy.timeoutDisconnected,
+            timeout,
             createConnection: (
                 args,
                 oncreate
@@ -80,7 +82,7 @@ export abstract class ATransportDatacenterService extends ATransportService {
                     port: args.port,
                     path: headersConnect.Host as string,
                     headers: headersConnect,
-                    timeout: proxy.timeoutDisconnected,
+                    timeout,
                     createConnection: (
                         args2,
                         oncreate2

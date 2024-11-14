@@ -275,7 +275,7 @@ export class TransportZyteApiService extends ATransportService {
                 false
             ),
             headers: headers.toArray() as any, // should accept also [string, string][]
-            timeout: proxy.timeoutDisconnected,
+            timeout: headers.parseKeepAliveTimeout(proxy.timeoutDisconnected),
             createConnection: (
                 args,
                 oncreate
