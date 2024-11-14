@@ -26,14 +26,6 @@ function formatPassword(
 
     if (options.country !== 'all') {
         lines.push(`country-${options.country.toUpperCase()}`);
-
-        if (options.state !== 'all') {
-            lines.push(`state-${options.city}`);
-        }
-
-        if (options.city !== 'all') {
-            lines.push(`city-${options.city}`);
-        }
     }
 
     if (options.highEndPool) {

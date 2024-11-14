@@ -1,6 +1,5 @@
 import {
     Component,
-    Inject,
     Input,
 } from '@angular/core';
 import {
@@ -8,22 +7,211 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import {
-    CONNECTOR_IPROYAL_RESIDENTIAL_TYPE,
-    EIproyalResidentialQueryCredential,
-} from '@scrapoxy/common';
-import {
-    CommanderFrontendClientService,
-    ToastsService,
-} from '@scrapoxy/frontend-sdk';
+import { CONNECTOR_IPROYAL_RESIDENTIAL_TYPE } from '@scrapoxy/common';
+import { convertCodesToCountries } from '@scrapoxy/frontend-sdk';
 import { ValidatorLifetime } from './input-lifetime/input-lifetime.component';
 import type { OnInit } from '@angular/core';
-import type {
-    ICommanderFrontendClient,
-    IIproyalResidentialCountries,
-    IIproyalResidentialItem,
-} from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
+
+
+const IPROYAL_RESIDENTIAL_REGIONS = [
+    'ad',
+    'ae',
+    'af',
+    'ag',
+    'ai',
+    'al',
+    'am',
+    'ao',
+    'ar',
+    'at',
+    'au',
+    'aw',
+    'az',
+    'ba',
+    'bb',
+    'bd',
+    'be',
+    'bf',
+    'bg',
+    'bh',
+    'bi',
+    'bj',
+    'bm',
+    'bn',
+    'bo',
+    'br',
+    'bs',
+    'bt',
+    'bw',
+    'by',
+    'bz',
+    'ca',
+    'cd',
+    'cg',
+    'ch',
+    'ci',
+    'cl',
+    'cm',
+    'cn',
+    'co',
+    'courir',
+    'cr',
+    'cu',
+    'cv',
+    'cw',
+    'cy',
+    'cz',
+    'de',
+    'dk',
+    'dm',
+    'do',
+    'dz',
+    'ec',
+    'ee',
+    'eg',
+    'es',
+    'et',
+    'fi',
+    'fj',
+    'fr',
+    'ga',
+    'gb',
+    'gd',
+    'ge',
+    'gf',
+    'gg',
+    'gh',
+    'gi',
+    'gm',
+    'gp',
+    'gr',
+    'gt',
+    'gu',
+    'gy',
+    'hk',
+    'hn',
+    'hr',
+    'ht',
+    'hu',
+    'id',
+    'ie',
+    'il',
+    'im',
+    'in',
+    'iq',
+    'ir',
+    'is',
+    'it',
+    'je',
+    'jm',
+    'jo',
+    'jp',
+    'ke',
+    'kg',
+    'kh',
+    'kn',
+    'kr',
+    'kw',
+    'ky',
+    'kz',
+    'la',
+    'lb',
+    'lc',
+    'lk',
+    'lr',
+    'ls',
+    'lt',
+    'lu',
+    'lv',
+    'ly',
+    'ma',
+    'mc',
+    'md',
+    'me',
+    'mf',
+    'mg',
+    'mk',
+    'ml',
+    'mm',
+    'mn',
+    'mo',
+    'mq',
+    'mr',
+    'mt',
+    'mu',
+    'mv',
+    'mw',
+    'mx',
+    'my',
+    'mz',
+    'na',
+    'nc',
+    'ng',
+    'ni',
+    'nl',
+    'no',
+    'np',
+    'nz',
+    'om',
+    'pa',
+    'pe',
+    'pg',
+    'ph',
+    'pk',
+    'pl',
+    'pr',
+    'ps',
+    'pt',
+    'py',
+    'qa',
+    're',
+    'ro',
+    'rs',
+    'ru',
+    'rw',
+    'sa',
+    'sc',
+    'sd',
+    'se',
+    'sg',
+    'si',
+    'sk',
+    'sl',
+    'sm',
+    'sn',
+    'so',
+    'sr',
+    'ss',
+    'sv',
+    'sx',
+    'sy',
+    'sz',
+    'tc',
+    'tg',
+    'th',
+    'tj',
+    'tm',
+    'tn',
+    'tr',
+    'tt',
+    'tw',
+    'tz',
+    'ua',
+    'ug',
+    'us',
+    'uy',
+    'uz',
+    'vc',
+    've',
+    'vg',
+    'vi',
+    'vn',
+    'ye',
+    'za',
+    'zm',
+    'zw',
+];
 
 
 @Component({
@@ -32,38 +220,25 @@ import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 })
 export class ConnectorIproyalResidentialComponent implements IConnectorComponent, OnInit {
     @Input()
-        form: FormGroup;
+    form: FormGroup;
 
     @Input()
-        projectId: string;
+    projectId: string;
 
     @Input()
-        credentialId: string;
+    credentialId: string;
 
     @Input()
     connectorId: string | undefined;
 
     @Input()
-        createMode: boolean;
+    createMode: boolean;
 
-    readonly countries: IIproyalResidentialItem[] = [];
-
-    readonly states: IIproyalResidentialItem[] = [];
-
-    readonly cities: IIproyalResidentialItem[] = [];
+    readonly countries = convertCodesToCountries(IPROYAL_RESIDENTIAL_REGIONS);
 
     readonly subForm: FormGroup;
 
-    processingCountries = false;
-
-    private data: IIproyalResidentialCountries | undefined = void 0;
-
-    constructor(
-        @Inject(CommanderFrontendClientService)
-        private readonly commander: ICommanderFrontendClient,
-        fb: FormBuilder,
-        private readonly toastsService: ToastsService
-    ) {
+    constructor(fb: FormBuilder) {
         this.subForm = fb.group({
             lifetime: [
                 void 0,
@@ -72,12 +247,6 @@ export class ConnectorIproyalResidentialComponent implements IConnectorComponent
                 ],
             ],
             country: [
-                void 0, Validators.required,
-            ],
-            state: [
-                void 0, Validators.required,
-            ],
-            city: [
                 void 0, Validators.required,
             ],
             highEndPool: [
@@ -102,97 +271,7 @@ export class ConnectorIproyalResidentialComponent implements IConnectorComponent
             this.subForm.patchValue({
                 lifetime: '24h',
                 country: 'all',
-                state: 'all',
-                city: 'all',
                 highEndPool: false,
-            });
-        }
-
-        // Countries
-        this.processingCountries = true;
-        this.commander.queryCredential(
-            this.projectId,
-            this.credentialId,
-            {
-                type: EIproyalResidentialQueryCredential.Countries,
-            }
-        )
-            .then((countries: IIproyalResidentialCountries) => {
-                this.data = countries;
-
-                this.countries.length = 0;
-                for (const country of this.data.countries) {
-                    this.countries.push({
-                        code: country.code,
-                        name: country.name,
-                    });
-                }
-
-                this.selectCountry();
-            })
-            .catch((err: any) => {
-                console.error(err);
-
-                this.toastsService.error(
-                    'Connector Iproyal Residential',
-                    err.message
-                );
-            })
-            .finally(() => {
-                this.processingCountries = false;
-            });
-    }
-
-    selectCountry() {
-        this.states.length = 0;
-        this.cities.length = 0;
-
-        const countryCode = this.subForm.value.country;
-
-        if (!this.data ||
-            !countryCode ||
-            countryCode === 'all') {
-            this.subForm.patchValue({
-                state: 'all',
-                city: 'all',
-            });
-
-            return;
-        }
-
-        const country = this.data.countries.find((c: IIproyalResidentialItem) => c.code === countryCode);
-
-        if (!country) {
-            return;
-        }
-
-        for (const state of country.states.options) {
-            this.states.push({
-                code: state.code,
-                name: state.name,
-            });
-        }
-
-        for (const city of country.cities.options) {
-            this.cities.push({
-                code: city.code,
-                name: city.name,
-            });
-        }
-    }
-
-    selectState() {
-        if (this.subForm.value.state !== 'all') {
-            this.subForm.patchValue({
-                city: 'all',
-            });
-        }
-    }
-
-    selectCity() {
-        if (this.subForm.value.city !== 'all') {
-            this.subForm.patchValue({
-                state: 'all',
             });
         }
     }

@@ -1,17 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import {
-    Agents,
     ConnectorprovidersService,
-    CredentialInvalidError,
-    CredentialQueryNotFoundError,
     validate,
 } from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_IPROYAL_RESIDENTIAL_TYPE,
-    EIproyalResidentialQueryCredential,
-} from '@scrapoxy/common';
-import { IproyalResidentialApi } from './api';
-import { toIproyalResidentialCountries } from './iproyal-residential.helpers';
+import { CONNECTOR_IPROYAL_RESIDENTIAL_TYPE } from '@scrapoxy/common';
 import { ConnectorIproyalService } from './iproyal-residential.service';
 import {
     schemaConfig,
@@ -21,7 +13,6 @@ import type {
     IConnectorIproyalResidentialConfig,
     IConnectorIproyalResidentialCredential,
 } from './iproyal-residential.interface';
-import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
     IConnectorFactory,
@@ -29,15 +20,12 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorListProxies,
-    ICredentialData,
-    ICredentialQuery,
-    IIproyalResidentialCountries,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
 
 @Injectable()
-export class ConnectorIproyalResidentialFactory implements IConnectorFactory, OnModuleDestroy {
+export class ConnectorIproyalResidentialFactory implements IConnectorFactory {
     readonly type = CONNECTOR_IPROYAL_RESIDENTIAL_TYPE;
 
     readonly config: IConnectorConfig = {
@@ -45,14 +33,8 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory, On
         useCertificate: false,
     };
 
-    private readonly agents: Agents = new Agents();
-
     constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
-    }
-
-    onModuleDestroy() {
-        this.agents.close();
     }
 
     async validateCredentialConfig(config: IConnectorIproyalResidentialCredential): Promise<void> {
@@ -60,20 +42,6 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory, On
             schemaCredential,
             config
         );
-
-        try {
-            const api = new IproyalResidentialApi(
-                config.token,
-                this.agents
-            );
-
-            await api.generateProxyList(
-                config.username,
-                config.password
-            );
-        } catch (err: any) {
-            throw new CredentialInvalidError(err.message);
-        }
     }
 
     async validateCredentialCallback(): Promise<any> {
@@ -110,33 +78,11 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory, On
         // Nothing to install
     }
 
-    async queryCredential(
-        credential: ICredentialData, query: ICredentialQuery
-    ): Promise<any> {
-        const credentialConfig = credential.config as IConnectorIproyalResidentialCredential;
-
-        switch (query.type) {
-            case EIproyalResidentialQueryCredential.Countries: {
-                return this.queryCountries(credentialConfig);
-            }
-
-            default: {
-                throw new CredentialQueryNotFoundError(query.type);
-            }
-        }
+    async queryCredential(): Promise<any> {
+        throw new Error('Not implemented');
     }
 
     async listAllProxies(): Promise<IConnectorListProxies> {
         throw new Error('Not implemented');
-    }
-
-    private async queryCountries(credentialConfig: IConnectorIproyalResidentialCredential): Promise<IIproyalResidentialCountries> {
-        const api = new IproyalResidentialApi(
-            credentialConfig.token,
-            this.agents
-        );
-        const countries = await api.getAllCountries();
-
-        return toIproyalResidentialCountries(countries);
     }
 }

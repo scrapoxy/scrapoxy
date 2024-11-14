@@ -32,15 +32,10 @@ export class CredentialIproyalResidentialComponent implements ICredentialCompone
 
     readonly subForm: FormGroup;
 
-    tokenType = 'password';
-
     passwordType = 'password';
 
     constructor(fb: FormBuilder) {
         this.subForm = fb.group({
-            token: [
-                void 0, Validators.required,
-            ],
             username: [
                 void 0, Validators.required,
             ],
@@ -61,14 +56,6 @@ export class CredentialIproyalResidentialComponent implements ICredentialCompone
             'config',
             this.subForm
         );
-    }
-
-    toggleToken() {
-        if (this.tokenType === 'password') {
-            this.tokenType = 'text';
-        } else {
-            this.tokenType = 'password';
-        }
     }
 
     togglePassword() {

@@ -37,8 +37,6 @@ describe(
                             config: {
                                 lifetime: '24h',
                                 country: 'all',
-                                state: 'all',
-                                city: 'all',
                                 highEndPool: false,
                             } satisfies IConnectorIproyalResidentialConfig,
                         },

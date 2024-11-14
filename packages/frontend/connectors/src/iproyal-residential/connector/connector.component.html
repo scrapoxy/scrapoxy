@@ -4,82 +4,13 @@
             <label cLabel cCol md="2" for="country">Country</label>
 
             <c-col md="10">
-                <c-input-group>
-                    <select
-                        cSelect
-                        id="country"
-                        formControlName="country"
-                        [attr.disabled]="processingCountries ? true : null"
-                        (change)="selectCountry()">
-                        <option [ngValue]="null" disabled>----- Select Country ------</option>
-                        <option value="all">All</option>
-                        @for (country of countries; track country.code) {
-                            <option value="{{ country.code }}">{{ country.name }}</option>
-                        }
-                    </select>
-
-                    @if (processingCountries) {
-                        <span cInputGroupText>
-                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
-                        </span>
+                <select cSelect id="country" formControlName="country">
+                    <option [ngValue]="null" disabled>----- Select Country ------</option>
+                    <option value="all">All</option>
+                    @for (country of countries; track country.code) {
+                        <option value="{{ country.code }}">{{ country.name }}</option>
                     }
-                </c-input-group>
-            </c-col>
-        </c-row>
-    }
-    @if (subForm.controls['state']; as c) {
-        <c-row>
-            <label cLabel cCol md="2" for="state">State</label>
-
-            <c-col md="10">
-                <c-input-group>
-                    <select
-                        cSelect
-                        id="state"
-                        formControlName="state"
-                        [attr.disabled]="processingCountries ? true : null"
-                        (change)="selectState()">
-                        <option [ngValue]="null" disabled>----- Select State ------</option>
-                        <option value="all">All</option>
-                        @for (state of states; track state.code) {
-                            <option value="{{ state.code }}">{{ state.name }}</option>
-                        }
-                    </select>
-
-                    @if (processingCountries) {
-                        <span cInputGroupText>
-                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
-                        </span>
-                    }
-                </c-input-group>
-            </c-col>
-        </c-row>
-    }
-    @if (subForm.controls['city']; as c) {
-        <c-row>
-            <label cLabel cCol md="2" for="city">City</label>
-
-            <c-col md="10">
-                <c-input-group>
-                    <select
-                        cSelect
-                        id="city"
-                        formControlName="city"
-                        [attr.disabled]="processingCountries ? true : null"
-                        (change)="selectCity()">
-                        <option [ngValue]="null" disabled>----- Select City ------</option>
-                        <option value="all">All</option>
-                        @for (city of cities; track city.code) {
-                            <option value="{{ city.code }}">{{ city.name }}</option>
-                        }
-                    </select>
-
-                    @if (processingCountries) {
-                        <span cInputGroupText>
-                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
-                        </span>
-                    }
-                </c-input-group>
+                </select>
             </c-col>
         </c-row>
     }
@@ -93,7 +24,7 @@
                         cFormControl
                         id="lifetime"
                         formControlName="lifetime"
-                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
+                        [valid]="c.dirty || c.touched ? c.valid : undefined"/>
 
                     @if (c.dirty || c.touched) {
                         <c-form-feedback [valid]="c.valid">
@@ -111,13 +42,13 @@
             </c-col>
         </c-row>
     }
-    @if (subForm.controls['city']; as c) {
+    @if (subForm.controls['highEndPool']; as c) {
         <c-row>
             <label cLabel cCol md="2" for="highEndPool">High-end Pool</label>
 
             <c-col md="10">
                 <c-form-check [switch]="true" sizing="lg">
-                    <input type="checkbox" cFormCheckInput id="highEndPool" formControlName="highEndPool" />
+                    <input type="checkbox" cFormCheckInput id="highEndPool" formControlName="highEndPool"/>
                 </c-form-check>
             </c-col>
         </c-row>
