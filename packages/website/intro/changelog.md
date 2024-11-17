@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.17.2
+
+### Bug fixes
+
+- **iproyal**: add migration for file storage
+- **website**: documentation adjustments
+
+
 ## 4.17.1
 
 ### Features
