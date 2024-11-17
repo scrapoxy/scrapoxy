@@ -21,20 +21,6 @@ An active IPRoyal subscription is required on Royal Residential Proxies.
 Connect to [Dashboard](https://dashboard.iproyal.com?r=432273).
 
 
-### Get the account credentials
-
-![IPRoyal Settings Select](../iproyal_settings_select.png)
-
-1. On the top right menu, click on your username;
-2. Click on `Settings`.
-
----
-
-![IPRoyal Token](../iproyal_token.png)
-
-Remember `API Token`.
-
-
 ## Get the proxy credentials
 
 ![IPRoyal Settings](iproyal_settings.png)
@@ -64,8 +50,9 @@ Select `IPRoyal` with type `Dynamic IP` to create a new credential (use search i
 ![Credential Form](spx_credential_create.png)
 
 Complete the form with the following information:
-1. **Name**: The name of the credential;
-2. **Token**: The token of the API.
+
+1. **Username**: The username of the Proxy;
+2. **Password**: The password of the Proxy.
 
 And click on `Create`.
 
@@ -80,17 +67,13 @@ Complete the form with the following information:
 1. **Credential**: The previous credential;
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
-4. **Country**: Select the country to use, or `All` to use all countries;
-5. **State**: Choose the state in the selected country, or `All` to use all states;
-6. **City**: Choose the city in the selected, or `All` to use all cities;
+4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
+5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
+6. **Country**: Select the country to use, or `All` to use all countries;
 7. **TTL**: Select the duration of the sticky session;
 8. **High-end Pool**: If enabled, choose only fast and stable proxies from the IP Royal pool.
 
 And click on `Create`.
-
-::: info
-Please note that State and City are mutually exclusive options and cannot be used together in the form
-:::
 
 
 ### Step 3: Start the connector
