@@ -9,6 +9,7 @@ import { migration as migration0008 } from './0008-azure-spot-instances';
 import { migration as migration0009 } from './0009-ciphers-shuffle';
 import { migration as migration0010 } from './0010-zyte-url';
 import { migration as migration0011 } from './0011-zyte-credential-type';
+import { migration as migration0012 } from './0012-iproyal-residential';
 
 
 export default [
@@ -23,4 +24,5 @@ export default [
     migration0009,
     migration0010,
     migration0011,
+    migration0012,
 ];
