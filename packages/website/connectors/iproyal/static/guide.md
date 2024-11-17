@@ -71,8 +71,10 @@ Complete the form with the following information:
 1. **Credential**: The previous credential;
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
-4. **Product**: Select the product to use, or `All` to use all products;
-5. **Country**: Select the country to use, or `All` to use all countries.
+4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
+5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
+6. **Product**: Select the product to use, or `All` to use all products;
+7. **Country**: Select the country to use, or `All` to use all countries.
 
 And click on `Create`.
 
