@@ -7,6 +7,11 @@ This deployment consists of 3 instances:
 
 For additional details, refer to the [Architecture](/architecture/overview) section.
 
+::: warning
+Use a separate instance for running Scrapoxy at scale.
+Don’t run **VPNs** or **complicated network setups** on the same machine, 
+as this can cause connection problems, especially when scaling up.
+:::
 
 ## Docker Compose
 
