@@ -12,25 +12,39 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Install Helm
-        uses: azure/setup-helm@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Build Helm charts
-        run: |
-          rm -Rf dist/charts
-          mkdir -p dist/charts
-          helm package packages/charts/src/scrapoxy -d dist/charts
-          helm package packages/charts/src/scrapoxy-simple-cluster -d dist/charts
-          helm repo index dist/charts --url https://charts.scrapoxy.io
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Copy file via SSH
-        uses: appleboy/scp-action@master
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          host: ${{ secrets.SCRAPOXY_SSH_HOST }}
-          username: ${{ secrets.SCRAPOXY_SSH_USERNAME }}
-          port: ${{ secrets.SCRAPOXY_SSH_PORT }}
-          key: ${{ secrets.SCRAPOXY_SSH_KEY }}
-          rm: true
-          strip_components: 2
-          source: dist/charts
-          target: ${{ secrets.CHARTS_PATH }}
+          images: ${{ vars.REGISTRY_URL }}/scrapoxy/scrapoxy-charts
+
+      - name: Login to Scrapoxy Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: packages/charts/docker/Dockerfile
+          tags: ${{ vars.REGISTRY_URL }}/scrapoxy/scrapoxy-charts:latest
+          push: true
+
+      - name: Setup Kubernetes
+        uses: azure/k8s-set-context@v4
+        with:
+          method: service-account
+          k8s-url: ${{ vars.KUBE_URL }}
+          k8s-secret: "${{ secrets.KUBE_SECRET }}"
+
+      - name: Rollout restart
+        run: kubectl rollout restart deployment "${{ vars.KUBE_NAME }}-charts" --namespace="${{ vars.KUBE_NAMESPACE }}"
