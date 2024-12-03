@@ -167,13 +167,14 @@ Complete the form with the following information:
 
 And click on `Create`.
 
-::: tip
-You can retain most of the default values if they are suitable for your use case.
-:::
+Most default values can be retained if suitable for the use case.
 
 ::: warning
-If you change the VM size or use Spot Instance, please uninstall and install connector.
+When setting up the connector in multiple locations, assign a unique **Resource Group Name**, **Image Resource Group Name** and distinct **Prefix** for each location.
+Without this, connectors may interfere with each other, shutting down instances from the same provider.
 :::
+
+If you change the VM size or use Spot Instance, please uninstall and install connector.
 
 
 ### Step 3: Install the connector
@@ -182,11 +183,6 @@ If you change the VM size or use Spot Instance, please uninstall and install con
 
 On the connector list, click on `Install`.
 
-::: warning
-Do not reuse an installation from a prior setup:
-Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
-:::
-
 ---
 
 ![Connector Install](spx_connector_install.png)
@@ -194,6 +190,11 @@ Scrapoxy embeds a unique TLS certificate within the instance image to secure com
 Click on `Install`.
 
 Scrapoxy will start, install and stop the VM to create a custom image.
+
+::: warning
+Do not reuse an installation from a prior setup:
+Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
+:::
 
 ---
 
@@ -207,11 +208,6 @@ When the installation is finished, click on `Connectors`.
 
 1. Start the project;
 2. Start the connector.
-
-::: tip
-Installation creates a custom image for **this** region.
-If you have multiple regions across multiple connectors, you must perform the installation step for each region.
-:::
 
 
 ### Other: Uninstall the connector

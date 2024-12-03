@@ -181,17 +181,15 @@ Complete the form with the following information:
 
 And click on `Create`.
 
-::: tip
-You can retain most of the default values if they are suitable for your use case.
+Most default values can be retained if suitable for the use case.
+
+::: warning
+When setting up the connector in multiple regions, assign a unique **Image ID** and distinct **Tag** for each region. 
+Without this, connectors may interfere with each other, shutting down instances from the same provider.
 :::
 
 
 ### Step 3: Install the connector
-
-::: warning
-Do not reuse an installation from a prior setup: 
-Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
-:::
 
 ![Connector Install Select](spx_connector_install_select.png)
 
@@ -205,6 +203,11 @@ Click on `Install`.
 
 Scrapoxy will start, install and stop the VM to create a custom image.
 
+::: warning
+Do not reuse an installation from a prior setup:
+Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
+:::
+
 ---
 
 ![Connector Installed](spx_connector_installed.png)
@@ -217,11 +220,6 @@ When the installation is finished, click on `Connectors`.
 
 1. Start the project;
 2. Start the connector.
-
-::: tip
-Installation creates a custom image for **this** region.
-If you have multiple regions across multiple connectors, you must perform the installation step for each region.
-:::
 
 
 ### Other: Uninstall the connector
