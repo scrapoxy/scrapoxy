@@ -61,3 +61,70 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Install dependencies for announcements
+        run: npm install handlebars
+
+      - name: Generate and publish changelog
+        uses: actions/github-script@v7
+        env:
+          RELEASE_DISCORD_WEBHOOK: ${{ secrets.RELEASE_DISCORD_WEBHOOK }}
+        with:
+          script: |
+            const
+              handlebars = require('handlebars'),
+              {promises: fs} = require('fs');
+
+            const template = handlebars.compile(`
+            Scrapoxy's version **{{ version }}** is out.
+
+            {{#if description}}
+            {{ description }}
+
+            {{/if}}
+            {{#if breaking}}
+            BREAKING CHANGES: {{ breaking }}
+
+            {{/if}}
+            Here is the [changelog](<https://scrapoxy.io/intro/changelog#_{{ versionLink }}>):
+
+            {{#each commitGroups}}
+            __{{this.title}}__
+
+              {{#each this.commits}}
+            - {{ this }}
+              {{/each}}
+
+            {{/each}}
+            `.trim());
+
+            const dataRaw = await fs.readFile('./packages/website/intro/changelog.json');
+            const dataJson = JSON.parse(dataRaw.toString());
+
+            const version = process.env.GITHUB_REF.replace('refs/tags/', '');
+            const release = dataJson.releases.find(release => release.version === version);
+            if (!release) {
+              throw new Error(`Version ${version} not found in changelog`);
+            }
+
+            const content = template({
+              ...release,
+              versionLink: version.replace(/\./g, '-'),
+            });
+
+            const webhook = process.env.RELEASE_DISCORD_WEBHOOK;
+            if (!webhook) {
+              throw new Error('Missing Discord webhook');
+            }
+
+            const response = await fetch(webhook, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({content}),
+            });
+
+            if (!response.ok) {
+              throw new Error(`Failed to send message to Discord: ${response.statusText}`);
+            }

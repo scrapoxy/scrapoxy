@@ -1,0 +1,1168 @@
+{
+    "releases": [
+        {
+            "version": "4.17.3",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**gcp**: add smaller machine types (thanks [runa](https://github.com/runa)!)"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.17.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**iproyal**: add migration for file storage",
+                        "**website**: documentation adjustments"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.17.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**connection**: respect keep-alive timeout for MITM connections"
+                    ]
+                },
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**iproyal**: remove API dependency for residential connection"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.17.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**geonode**: add [Geonode](https://geonode.pxf.io/c/5392682/2020638/25070?trafsrc=impact) proxies support"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**freeproxies**: change the way of generating ID hash",
+                        "**misc**: minor fixes"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.16.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**iproyal**: update connector to follow the new API"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.16.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**zyte**: add support of the Zyte API in Proxy Mode"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.15.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**master**: keep non-scrapoxy request cookies with MITM"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.15.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**zyte**: customize URL of the Zyte Smart Proxy Manager"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**frontend**: fix button alignment introduces with Safari support"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.15.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**tls**: add an option to shuffle the ciphersuite to avoid TLS fingerprint"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.14.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**headers**: maintain the order and duplication of HTTP headers for MITM mode"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**privacy**: remove all Scrapoxy headers and cookies from responses sent to the target website.",
+                        "**connectors**: prevent unnecessary data sharing with the frontend.",
+                        "**refactor**: clean a lot of code"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.13.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**liveproxies**: add [Live Proxies](https://liveproxies.io/aff/pv5i8f8) support"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**errors**: add missing 557 HTTP status code."
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.12.0",
+            "breaking": "Possible breaking change on HTTP status code (see below)",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "Possible breaking change:",
+                        "**errors**: non-authentication errors now return a 557 HTTP status code."
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**website**: add documentation",
+                        "**idea**: add run config for backend and frontend",
+                        "**frontend**: fix card button for Safari browser"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.11.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**gcp**: upgrade template image to debian-12"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.11.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**smartproxy**: added support for [Smartproxy](https://smartproxy.pxf.io/Qy5mVo) datacenter pay per GB product"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.11.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**smartproxy**: added support for [Smartproxy](https://smartproxy.pxf.io/Qy5mVo)",
+                        "**task**: enabled naming tasks for better identification"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**test**: fixed issues with fingerprints in tests.",
+                        "**misc**: updated and corrected some documentation and naming conventions"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.10.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**transport**: fix usage of username & password for SOCKS proxy"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.10.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**azure**: add support for Spot Instance (thanks to [Julien Maitrehenry](https://github.com/jmaitrehenry))",
+                        "**fingerprint**: use GET instead of POST method to access fingerprint server (to bypass firewall restrictions)"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**azure**: handle running deployment to avoid duplicate instances creation"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.10.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**brightdata**: add support for Residential and Mobile proxies for [BrightData](https://get.brightdata.com/khkl3keb25ld)",
+                        "**fingerprint**: use GET instead of POST method to access fingerprint server (to bypass firewall restrictions)"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**website**: misc fixes"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.9.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**netnut**: add [NetNut](https://netnut.io?ref=ymzmmmu) connector"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**sticky**: correct cookie injection for sticky sessions"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.8.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**ninjasproxy**: update the API url"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.8.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**success rate**: add success rate metrics to proxies and project"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**gcp**: fix copy/paste with GCP private key"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.7.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**freeproxy**: include auth info in key generation"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.7.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**frontend**: correct proxy URL parsing",
+                        "**frontend**: show proxies error message",
+                        "**transport**: set transport type to proxy level"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.7.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**brightdata**: add BrightData connector for ISP and DC proxies",
+                        "**backend**: add Swagger endpoint for scraper API",
+                        "**frontend**: show coupon in marketplace"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**misc**: many small corrections"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.6.2",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**frontend**: add coupon field in marketplace",
+                        "**proxy-seller**: add proxy-seller coupon"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.6.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**master**: add HTTPS support to master"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.6.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**proxy-seller**: add [Proxy-Seller connector](https://proxy-seller.com/?partner=GR930FP5IOO78P)"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**metrics**: include request and response headers size in metrics",
+                        "**website**: add stickies session documentation"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.5.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**aws**: use the correct architecture to install and create instances",
+                        "**log**: don't throw error if there is no configuration file at startup"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.5.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**frontend**: auto-generate a free name at credential and connector creation",
+                        "**website**: add scrapy-impersonate documentation to scrapy"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**aws**: add new instance type like t4g.nano",
+                        "**freeproxy**: allow bracket in URLs",
+                        "**transport**: add missing timeout on connections",
+                        "**log**: add more log at startup",
+                        "**website**: reorganize the documentation tree"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.5.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**freeproxies**: collect freeproxies from an URL at specified interval",
+                        "**proxies**: make timeout configurable to detect online/offline status of proxies",
+                        "**proxies**: make timeout configurable for removing offline proxies",
+                        "**freeproxies**: add a configurable timeout to detect online/offine status of freeproxies",
+                        "**freeproxies**: add a configurable timeout for removing offline freeproxies",
+                        "**api**: add an API endpoint to manage freeproxies and sources"
+                    ]
+                },
+                {
+                    "title": "Refactor",
+                    "commits": [
+                        "**connectors**: merge all connectors into 3 fixed directory (common, frontend, backend)",
+                        "**storage**: merge all storages into 2 fixed directory (common, backend)",
+                        "**auth**: merge all authentications into 2 fixed directory (common, backend)",
+                        "**website**: reorganize website and documentation structure for connectors",
+                        "**website**: manage plural text in toasts"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**linter**: fix linter for HTML and CSS",
+                        "**frontend**: correct pagination component",
+                        "**socks**: allow socks in connect tunnel mode"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.4.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**proxy-cheap**: fix website url"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.4.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**github**: add script to build and publish docker image and npm package"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.4.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**proxy-cheap**: add Proxy-Cheap connectors",
+                        "**hypeproxy**: add HypeProxy connector"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.3.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**nimble**: add Nimble connector with Nimble IP"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**refactor**: rename cloud to datacenter",
+                        "**frontend**: fix clipboard issue with old browser",
+                        "**misc**: correct some naming, documentation",
+                        "**storage**: allow empty file for file storage"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.2.3",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**commander**: log commander http error on console",
+                        "**frontend**: more stable clipboard copy"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.2.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**standalone**: force standalone mode when no option is selected"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.2.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**fingerprint**: add useragent for all http calls (fingerprint and api)",
+                        "**frontend**: split token in username and password in project settings"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**package.json**: add missing socks package"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.2.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**freeproxies**: support HTTPS proxies",
+                        "**freeproxies**: support SOCKS4/SOCKS5 proxies"
+                    ]
+                },{
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**protocol**: Accept only HTTP and HTTPS requests from master"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.6",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**frontend**: correct pagination component",
+                        "**doc**: replace local search with algolia",
+                        "**doc**: misc documentation fixes"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.5",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**auth**: `secure` flag for the authentication cookie is now optional",
+                        "**doc**: usage of username:password is better explained"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.4",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**fingerprint**: better fingerprint"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.3",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**doc**: correct link to picture",
+                        "**backend-app**: add version to package-lock.json in build"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**doc**: add warning for xproxy installation",
+                        "**doc**: improve documentation and website",
+                        "**eslint**: merge scrapoxy-linter repository into scrapoxy repository"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**iproyal**: add migration layer for file storage"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.1.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**iproyal**: add support for Royal Residential proxies",
+                        "**marketplace**: add marketplace menu with static proxies, dynamic proxies, hardware, datacenter providers and other"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**transport**: factorize code for residential proxies"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.0.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**master**: handle writeHead error after aborted connection"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "4.0.0",
+            "description": "Scrapoxy 4 represents a complete rewrite, now developed in Typescript. It harnesses the capabilities of [NestJS](https://nestjs.com) and [Angular](https://angular.io) modules to enhance its functionality and efficiency.",
+            "breaking": "Scrapoxy 4 is not compatible with previous versions.",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**datacenter providers**: it supports main datacenter providers like AWS, Azure, GCP and more;",
+                        "**proxy services**: it is compatible with proxy provider like Zyte, IPRoyal, Rayobyte and more;",
+                        "**hardware materials**: it orchestrates 4G proxy farms hardware types, like Proxidize or XProxy.io;",
+                        "**free proxy lists**: it handles manual lists of HTTP/HTTPS proxies;",
+                        "**auto-scale**: it autoscale up and down proxies to optimize costs;",
+                        "**auto-rotate**: it rotates proxies to avoid bans;",
+                        "**sticky sessions**: it supports sticky sessions to keep the same IP address for a scraping session or a browser",
+                        "**traffic interception**: it intercepts HTTP and HTTPS traffic to inject consistent headers or cookies;",
+                        "**monitoring**: it monitors proxies and provides many statistics."
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "3.1.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**master**: use correctly writeEnd in socket and request (thanks to Ben Lavalley)"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "3.1.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**mitm**: decrypt & encrypt SSL requests to add headers (like **x-cache-proxyname**). Compatible with HTTPS requests in PhantomJS.",
+                        "**domains**: manage whitelist or blacklist for urls (idea from Jonathan Wiklund)",
+                        "**docs**: add **ami-485fbba5** with type t2.micro"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**logs**: correct export path of logs",
+                        "**docs**: correct documentation",
+                        "**ssl**: add servername in the TLS connect (bug with HELLO)",
+                        "**pinger**: use reject instead of throw error (crash program). Thanks to Anis Gandoura."
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "3.0.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**digitalocean**: support Digital Ocean tags on Droplets. Thanks to Ben Lavalley."
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**digitalocean**: use new image size (s-1vcpu-1gb instead of 512mb)"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "3.0.0",
+            "breaking": "The configuration of providers changes.",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**providers**: uses multiple providers at a time",
+                        "**awsec2**: provider removes instances in batch every second (and no longer makes thousands of queries)",
+                        "**ovhcloud**: provider creates instances in batch (new API route used)"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**maxRunningInstances**: remove blocking parameters maxRunningInstances"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.4.3",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**node**: change minimum version of Node.js to 8",
+                        "**dependencies**: upgrade dependencies to latest version"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.4.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**useragent**: set useragent at instance creation, not at startup",
+                        "**instance**: force crashed instance to be removed"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.4.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**instance**: correctly remove instance when instance is removed. Thanks to Étienne Corbillé."
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.4.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**provider**: add VScale.io provider. Thanks to Hotrush."
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**proxy**: use a valid startup script for init.d. Thanks to Hotrush.",
+                        "**useragent**: change useragents with a fresh list for 2017"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.10",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**docs**: add **ami-06220275** with type t2.nano"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**instance**: remove listeners on instance alive status on instance removal. Thanks to Étienne Corbillé."
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.9",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**digitalocean**: update Digital Ocean documentation",
+                        "**digitalocean**: view only instances from selected region",
+                        "**instances**: remove random instances instead of the last ones",
+                        "**pm2**: add kill_timeout option for PM2 (thanks to cp2587)"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**digitalocean**: limit the number of created instances at each API request",
+                        "**digitalocean**: don't remove locked instances"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.8",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**docker**: create the Docker image fabienvauchelles/scrapoxy"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**template**: limit max instances to 2"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.7",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**connect**: scrapoxy accepts now full HTTPS CONNECT method. It is useful for browser like PhantomJS. Thanks to Anis Gandoura"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.6",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**template**: replace old AWS AMI by **ami-c74d0db4**"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.5",
+            "breaking": "Please rebuild instance image.",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**instance**: change Node.js version to 6.x",
+                        "**ping**: use an HTTP ping instead a TCP ping."
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.4",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**stats**: monitor stop count history",
+                        "**stats**: add 3 more scales: 5m, 10m and 1h",
+                        "**logs**: normalize logs and add more informations",
+                        "**scaling**: pop a message when maximum number of instances is reached in a provider",
+                        "**scaling**: add quick scaling buttons",
+                        "**docs**: explain why Scrapoxy doesn't accept CONNECT mode",
+                        "**docs**: explain how User Agent is overwritten"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**dependencies**: upgrade dependencies",
+                        "**ovh**: monitor **DELETED** status",
+                        "**docs**: add example to test scrapoxy with credentials",
+                        "**commander**: manage twice instance remove"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.3",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**master**: sanitize bad request headers",
+                        "**proxy**: catch all socket errors in the proxy instance"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**docs**: fallback to markdown for README (because npmjs doesn't like retext)"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**docs**: add tutorials for Scrapy and Node.js"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**digitalocean**: convert Droplet id to string"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.3.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**digitalocean**: add support for DigitalOcean provider"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.2.1",
+            "commitGroups": [
+                {
+                    "title": "Misc",
+                    "commits": [
+                        "**config**: rename `my-config.json` to `conf.json`",
+                        "**doc**: migrate documentation to ReadTheDocs",
+                        "**doc**: link to the new website Scrapoxy.io"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.2.0",
+            "breaking": "node minimum version is now **4.2.1**, to support JS class",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**all**: migrate core and gui to **ES6**, with all best practices",
+                        "**api**: replace Express by Koa"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**test**: correct core e2e test"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.1.2",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**gui**: correct token encoding for GUI"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.1.1",
+            "commitGroups": [
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**main**: add message when all instances are stopped (at end)",
+                        "**doc**: correct misc stuff in doc"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.1.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**ovh**: add OVH provider with documentation",
+                        "**security**: add basic auth to Scrapoxy (RFC2617)",
+                        "**stats**: add flow stats",
+                        "**stats**: add scale for stats (1m/1h/1d)",
+                        "**stats**: store stats on server",
+                        "**stats**: add globals stats",
+                        "**doc**: split of the documentation in 3 parts: quick start, standard usage and advanced usage",
+                        "**doc**: add tutorials for AWS / EC2",
+                        "**gui**: add a scaling popup instead of direct edit (with integrity check)",
+                        "**gui**: add update popup when the status of an instance changes.",
+                        "**gui**: add error popup when GUI cannot retrieve data",
+                        "**logs**: write logs to disk",
+                        "**instance**: add cloud name",
+                        "**instance**: show instance IP",
+                        "**instance**: always terminate an instance when stopping (prefer terminate instead of stop/start)",
+                        "**test**: allow more than 8 requests (max 1000)",
+                        "**ec2**: force to terminate/recreate instance instead of stop/restart"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**gui**: emit event when scaling is changed by engine (before, event was triggered by GUI)",
+                        "**stability**: correct a lot of behavior to prevent instance cycling",
+                        "**ec2**: use status name instead of status code"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.0.1",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**test**: specify the count of requests with the test command",
+                        "**test**: count the requests by IP in the test command",
+                        "**doc**: add GUI documentation",
+                        "**doc**: add API documentation",
+                        "**doc**: explain awake/asleep mode in user manual",
+                        "**log**: add human readable message at startup"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "2.0.0",
+            "breaking": "API routes are prefixed with `/api`",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**gui**: add GUI to control Scrapoxy",
+                        "**gui**: add statistics to the GUI (count of requests / minute, average delay of requests / minute)",
+                        "**doc**: add doc about HTTP headers"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "1.1.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**commander**: stopping an instance returns the new count of instances",
+                        "**commander**: password is hashed with base64",
+                        "**commander**: read/write config with command (and live update of the scaling)"
+                    ]
+                },
+                {
+                    "title": "Misc",
+                    "commits": [
+                        "**chore**: force global install with NPM"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "1.0.2",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**doc**: add 2 AWS / EC2 tutorials"
+                    ]
+                },
+                {
+                    "title": "Bug fixes",
+                    "commits": [
+                        "**template**: correct template mechanism",
+                        "**config**: correct absolute path for configuration"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "1.0.1",
+            "commitGroups": [
+                {
+                    "title": "Misc",
+                    "commits": [
+                        "**doc**: change author and misc informations"
+                    ]
+                }
+            ]
+        },
+        {
+            "version": "1.0.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**init**: start of the project"
+                    ]
+                }
+            ]
+        }
+    ]
+}
