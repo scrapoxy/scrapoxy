@@ -55,7 +55,11 @@ import type {
 
 
 const FILTER_MACHINE_TYPES = [
-    'n1-standard-1', 'n1-standard-2', 'n2-standard-2',
+    'n1-standard-1',
+    'n1-standard-2',
+    'n2-standard-2',
+    'g1-small',
+    'f1-micro',
 ];
 
 
