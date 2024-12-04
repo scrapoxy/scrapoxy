@@ -2,19 +2,31 @@
 
 ![Kameleo](kameleo.svg){width=230 nozoom}
 
-This tutorial uses [Kameleo](https://kameleo.io/web-scraping?utm_source=scrapoxy&utm_medium=github&utm_campaign=scrapoxy_integration_guide), an anti-detect browser designed for web-scraping.
+This tutorial uses [Kameleo](https://kameleo.io/web-scraping?utm_source=scrapoxy&utm_medium=github&utm_campaign=scrapoxy_integration_guide), 
+an anti-detect browser designed for web-scraping.
 
-Kameleo provides a powerful antidetect browser for better data collection on websites with anti-bot detection systems such as Cloudflare, DataDome, and PerimeterX. It combines headless browsers, proxies, and top-tier automation framework support for smooth web scraping. Change fingerprint parameters to ensure your activities blend seamlessly into regular web traffic, minimizing bot detection risks.
+Kameleo provides a powerful antidetect browser for better data collection on websites with anti-bot detection systems such as Cloudflare, DataDome, and PerimeterX.
+It combines headless browsers, proxies, and top-tier automation framework support for smooth web scraping. 
+Change fingerprint parameters to ensure your activities blend seamlessly into regular web traffic, **minimizing bot detection risks**.
+
+::: warning
+Kameleo **cannot use the MITM mode of Scrapoxy**,
+as it would disrupt the TLS fingerprint and compromise anti-detection functionality.
+:::
+
+However, Kameleo supports **session management via HTTP/2**, 
+allowing a single browser session to work with a dedicated IP, 
+as recommended in its documentation.
 
 
-## Step 1: Install the framework
+## Step 1: Install the Python framework
 
 ```shell
-pip install kameleo.local-api-client scrapoxy
+pip install kameleo.local-api-client
 ```
 
 
-### Step 2: Retrieve project credentials
+### Step 2: Retrieve Scrapoxy credentials
 
 ![Credentials](../../credentials.png)
 
@@ -22,41 +34,55 @@ pip install kameleo.local-api-client scrapoxy
 2. Remember the project's `Username`;
 3. Remember the project's `Password`.
 
-<sub>When integrating Scrapoxy with Kameleo, you can't use MITM mode. Otherwise the TLS fingperint would break and anti-detection mode would be damaged. Without the MITM mode sticky session is not possible. However our recommendation is to use one browser session with one IP address.</sub>
 
 ## Step 3: Download and install Kameleo.CLI
 
-**[Download and install Kameleo](https://kameleo.io/downloads?utm_source=scrapoxy&utm_medium=github&utm_campaign=scrapoxy_integration_guide)** .
+Kameleo can be found
+[here](https://kameleo.io/downloads?utm_source=scrapoxy&utm_medium=github&utm_campaign=scrapoxy_integration_guide).
 
 
 ## Step 4: Start Kameleo.CLI
 
-**Windows:**
+### On Windows
+
+Open the command prompt and run the following command:
 
 ```shell
-cd C:\Users\<YOUR_USERNAME>\AppData\Local\Programs\Kameleo
-Kameleo.CLI.exe email=<YOUR_EMAIL> password=<YOUR_PASSWORD>
+C:\Users\<YOUR_USERNAME>\AppData\Local\Programs\Kameleo\Kameleo.CLI.exe email=YOUR_EMAIL password=YOUR_PASSWORD
 ```
+
+Replace `YOUR_EMAIL` and `YOUR_PASSWORD` with Kameleo credentials.
+
 
 **MacOS:**
 
+Open the command prompt and run the following command:
+
 ```shell
-cd /Applications/Kameleo.app/Contents/Resources/CLI/
-./Kameleo.CLI email=<YOUR_EMAIL> password=<YOUR_PASSWORD>
+/Applications/Kameleo.app/Contents/Resources/CLI/./Kameleo.CLI email=YOUR_EMAIL password=YOUR_PASSWORD
 ```
 
-<sub>Kameleo consists of multiple components running on your computer and in the cloud. The core logic is implemented in the Kameleo CLI component, located on your device. This component is responsible for every action you do in the application. For example, it starts the preconfigured browsers and saves their actual state into virtual browser profile files. Once you start this component, a REST API is available on the local interface (by default, it is on http://localhost:5050). You can check the available endpoints and models on [SwaggerHub](https://app.swaggerhub.com/apis/kameleo-team/kameleo-local-api/) or by opening the [http://localhost:5050/swagger](http://localhost:5050/swagger) URL.</sub>
+Replace `YOUR_EMAIL` and `YOUR_PASSWORD` with Kameleo credentials.
 
 
-## Step 5: Connect to Kameleo.CLI
+## Step 5: Connect to Kameleo.CLI in Python
 
+Kameleo consists of multiple components running both locally and in the cloud.
+
+The core logic resides in the Kameleo CLI component on the local device, which handles all application actions.
+For instance, it launches preconfigured browsers and saves their current states into virtual browser profile files.
+
+When this component is started, a REST API becomes available on the local interface (by default at http://localhost:5050).
+
+The available endpoints and models can be reviewed on SwaggerHub or by visiting http://localhost:5050/swagger.
+
+Connect to the Kameleo CLI:
 
 ```python
 from kameleo.local_api_client import KameleoLocalApiClient
-from kameleo.local_api_client.builder_for_create_profile import BuilderForCreateProfile
-from kameleo.local_api_client.models import WebglMetaSpoofingOptions
 
 kameleo_port = 5050
+
 client = KameleoLocalApiClient(
   endpoint=f'http://localhost:{kameleo_port}',
   retry_total=0
@@ -66,8 +92,16 @@ client = KameleoLocalApiClient(
 
 ## Step 6: Search fresh & real fingerprints
 
+Base profiles are **real-world browser fingerprint** configurations used to create virtual browser profiles.
+This ensures that the browser profile maintains a consistent footprint after the spoofing mechanism is applied,
+as most data is derived from an actual browser.
 
-<sub>Base profiles are real-world browser fingerprint configurations that are used for instantiating virtual browser profiles. This way the browser profile will have a consistent footprint after the spoofing mechanism is applied as most data are derived from a real browser. The rest of the data are generated automatically upon creation. You can filter in hundreds of thousands of base profiles to have profiles with the required language, operating system, and browser.</sub>
+The remaining data is generated automatically during profile creation.
+
+Filters can be applied to hundreds of thousands of base profiles to select those with the desired language,
+operating system, and browser.
+
+Get all the profiles:
 
 ```python
 base_profiles = client.search_base_profiles(
@@ -81,28 +115,37 @@ base_profiles = client.search_base_profiles(
 
 ## Step 7: Configure browser fingerprint & Set Up Scrapoxy
 
+Set up a profile compatible with Scrapoxy:
 
 ```python
+from kameleo.local_api_client.builder_for_create_profile import BuilderForCreateProfile
+from kameleo.local_api_client.models import Server
+
 create_profile_request = BuilderForCreateProfile \
   .for_base_profile(base_profiles[0].id) \
   .set_name('kameleo scrapoxy integration') \
   .set_recommended_defaults() \
-  .set_proxy('socks5', Server(host='localhost', port=8888, id='USERNAME', secret='PASSWORD')) \
+  .set_proxy('http', Server(host='localhost', port=8888, id='USERNAME', secret='PASSWORD')) \
   .set_start_page("https://kameleo.io") \
   .build()
 
 profile = client.create_profile(body=create_profile_request)
 ```
 
+The recommended default settings are designed to work with most anti-bot systems.
 
-<sub>Recommended default settings should work on most anti-bot systems. If you prefer, you can test different browsers, [canvas](https://help.kameleo.io/hc/en-us/articles/7021925786397-Intelligent-Canvas-Spoofing-Our-research-on-canvas-fingerprinting), webgl, audio spoofing, etc. 
+It is possible to experiment with different browsers, as well as settings for [canvas](https://help.kameleo.io/hc/en-us/articles/7021925786397-Intelligent-Canvas-Spoofing-Our-research-on-canvas-fingerprinting),
+WebGL, audio spoofing, and more.
 
 
 ## Step 8: Start browser profile
 
+Kameleo includes 2 custom-built browsers designed to bypass anti-bot systems during web scraping:
 
-<sub>Kameleo is shipped with 2 different custom-built browsers to ensure you can bypass anti-bot systems during web scraping. Chrome, Edge and Safari are emulated by [Chroma](https://help.kameleo.io/hc/en-us/articles/13301851271836-Chroma). Firefox is emulated on [Junglefox](https://help.kameleo.io/hc/en-us/articles/13301908333852-Junglefox).</sub>
+* Chrome, Edge, and Safari are emulated by [Chroma](https://help.kameleo.io/hc/en-us/articles/13301851271836-Chroma);
+* Firefox is emulated by [Junglefox](https://help.kameleo.io/hc/en-us/articles/13301908333852-Junglefox).
 
+Start the browser profile:
 
 ```python
 client.start_profile(profile.id)
@@ -111,16 +154,23 @@ client.start_profile(profile.id)
 
 ## Step 9: Automate the browser
 
+Kameleo supports the most popular automation frameworks, such as
+[Selenium](https://www.selenium.dev/),
+[Puppeteer](https://pptr.dev/), and
+[Playwright](https://playwright.dev/).
 
-<sub>You can choose 3 popular automation frameworks ([Selenium](https://www.selenium.dev/), [Puppeteer](https://pptr.dev/), or [Playwright](https://playwright.dev/)) to automate the browser. Thanks to Kameleo anti-bot systems won't recognise the presence of an automation framework.
+Thanks to Kameleo **anti-bot systems won't recognise the presence** of an automation framework.
 
 
 ### Selenium
 
+Install the Selenium package:
 
 ```shell
 pip install selenium
 ```
+
+And open Kameleo's browser on Cloudflare:
 
 ```python
 from selenium import webdriver
@@ -132,37 +182,46 @@ driver = webdriver.Remote(
   options=options
 )
 
-await webdriver.get('https://cloudflare.com');
+driver.get('https://cloudflare.com')
 ```
 
 
 ### Puppeteer
 
+Install the Puppeteer and Asyncio packages:
 
 ```shell
-pip install pyppeteer
+pip install pyppeteer asyncio
 ```
+
+And open Kameleo's browser on Cloudflare:
 
 ```python
 import pyppeteer
+import asyncio
 
-browser_ws_endpoint = f'ws://localhost:{kameleo_port}/puppeteer/{profile.id}'
-browser = await pyppeteer.launcher.connect(
-  browserWSEndpoint=browser_ws_endpoint,
-  defaultViewport=False)
-page = await browser.newPage()
+async def main():
+    browser_ws_endpoint = f'ws://localhost:{kameleo_port}/puppeteer/{profile.id}'
+    browser = await pyppeteer.launcher.connect(
+      browserWSEndpoint=browser_ws_endpoint,
+      defaultViewport=False)
+    page = await browser.newPage()
+    
+    await page.goto('https://cloudflare.com')
 
-
-await page.goto('https://cloudflare.com')
+asyncio.run(main())
 ```
 
 
 ### Playwright
 
+Install the Playwright package:
 
 ```shell
 pip install playwright
 ```
+
+And open Kameleo's browser on Cloudflare:
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -176,79 +235,10 @@ with sync_playwright() as playwright:
 ```
 
 
-## Step 10: Stop, save and delete the profile
+## More Documentation
 
+For more information about Kameleo, check out the following resources:
 
-<sub>Make sure to stop the browser. The virtual browser profile is then stored in you local workspace. Optionally you can export it to a .kameleo file, so you can load it later on another server as well. Or simply you can delete the profile from Kameleo's workspace once you don't need it anymore. This way, you can keep your resource usage low.</sub>
-
-```python
-client.stop_profile(profile.id)
-path = f'{os.path.dirname(os.path.realpath(__file__))}\\test.kameleo'
-result = client.export_profile(profile.id, body=SaveProfileRequest(path=path)) # optional
-client.delete_profile(profile.id); # optional
-```
-
-
-## Optional Settings 1: Headless browser support
-
-
-<sub>To save computer resources it is possible to run browsers in headless mode while you do browser automation. To launch in the headless mode you will need to pass additional settings when you start the virtual browser profile. You can do it by calling the `POST /profiles/{guid}/start` endpoint or simply call the [StartProfileWithOptions](https://app.swaggerhub.com/apis/kameleo-team/kameleo-local-api/#/Profile/StartProfileWithOptions) method in our packages.</sub>
-
-```python
-from kameleo.local_api_client.models.web_driver_settings_py3 import WebDriverSettings
-
-client.start_profile_with_options(profile.id, WebDriverSettings(
-    arguments=["--headless"]
-))
-```
-
-
-## Optional Settings 2: Emulate mobile user agents
-
-
-```python
-base_profile_list = client.search_base_profiles(
-  device_type='mobile',
-  os_family='ios',
-  browser_product='safari',
-  language='en-us'
-)
-
-create_profile_request = BuilderForCreateProfile \
-  .for_base_profile(base_profile_list[0].id) \
-  .set_recommended_defaults() \
-  .set_launcher('chromium') \
-  .build()
-profile = client.create_profile(body=create_profile_request)
-
-client.start_profile_with_options(profile.id, body={
-  'additionalOptions': [
-    {
-      'key': 'disableTouchEmulation',
-      'value': True,
-    },
-  ],
-})
-```
-
-
-## Optional Settings 3: Manage cookies
-
-
-```python
-cookie_list = client.list_cookies(profile.id)
-
-cookie = cookie_list[0]
-new_cookie = CookieRequest(domain=cookie.domain, name=cookie.name, path=cookie.path, value=cookie.value,
-    host_only=cookie.host_only, http_only=cookie.http_only, secure=cookie.secure,
-    same_site=cookie.same_site, expiration_date=cookie.expiration_date)
-cookie_array = [new_cookie]
-client.add_cookies(profile.id, body=cookie_array)
-
-client.delete_cookies(profile.id)
-```
-
-## Full documentation
-- [Terminology](https://help.kameleo.io/hc/en-us/articles/4420420859793-Terminology)
-- [Getting Started guide](https://help.kameleo.io/hc/en-us/articles/4418166326417-Getting-started-with-Kameleo-Automation)
-- [Examples on Kameleo's GitHub](https://github.com/kameleo-io/local-api-examples)
+* [Terminology](https://help.kameleo.io/hc/en-us/articles/4420420859793-Terminology)
+* [Getting Started guide](https://help.kameleo.io/hc/en-us/articles/4418166326417-Getting-started-with-Kameleo-Automation)
+* [Examples on Kameleo's GitHub](https://github.com/kameleo-io/local-api-examples)
