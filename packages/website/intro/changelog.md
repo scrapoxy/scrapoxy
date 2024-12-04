@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.17.3
+
+### Features
+
+- **gcp**: add smaller machine types (thanks [runa](https://github.com/runa)!)
+
+
 ## 4.17.2
 
 ### Bug fixes
