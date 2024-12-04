@@ -168,12 +168,12 @@ export default defineConfig({
                         base: '/integration/python/',
                         items: [
                             {text: 'HRequests', link: 'hrequests/guide'},
+                            {text: 'Kameleo', link: 'kameleo/guide'},
                             {text: 'Requests', link: 'requests/guide'},
-                            {text: 'Scrapy', link: 'scrapy/guide'},
-                            {text: 'Splash', link: 'splash/guide'},
-                            {text: 'Selenium', link: 'selenium/guide'},
                             {text: 'ScrapeGraphAI', link: 'scrapegraphai/guide'},
-
+                            {text: 'Scrapy', link: 'scrapy/guide'},
+                            {text: 'Selenium', link: 'selenium/guide'},
+                            {text: 'Splash', link: 'splash/guide'},
                         ]
                     },
                     {
