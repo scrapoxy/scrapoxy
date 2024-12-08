@@ -133,7 +133,7 @@ More information on [scrapoxy.io](https://scrapoxy.io).
 
 Want to contribute? Check out the [guide](https://scrapoxy.io/contrib/guidelines)!
 
-Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/scrapoxy/)
+Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/fabienvauchelles)
 
 
 ## Sponsorship
