@@ -12,10 +12,10 @@ The official image has the following issues:
 * Proxy Issue with HTTPS: Splash has a [known issue](https://github.com/scrapinghub/splash/pull/1194) when using proxies on HTTPS URLs.
 * Page Cache: By default, Splash caches pages. If you request the same page twice, the second request will return the cached version rather than making a new request via Scrapoxy.
 
-Use the image `fabienvauchelles/splash` to solve these issues.
+Use the image `scrapoxy/splash` to solve these issues.
 
 ::: info
-If you're interested in the underlying code, you can find it [here](https://github.com/fabienvauchelles/scrapoxy/tree/master/packages/splash/src).
+If you're interested in the underlying code, you can find it [here](https://github.com/scrapoxy/scrapoxy/tree/master/packages/splash/src).
 :::
 
 
@@ -24,7 +24,7 @@ If you're interested in the underlying code, you can find it [here](https://gith
 Run the following command to start Splash:
 
 ```shell
-docker run -p 8050:8050 --rm fabienvauchelles/splash
+docker run -p 8050:8050 --rm scrapoxy/splash
 ```
 
 ### Step 3: Retrieve project credentials

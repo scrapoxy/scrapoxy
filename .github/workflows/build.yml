@@ -41,7 +41,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: fabienvauchelles/scrapoxy
+          images: scrapoxy/scrapoxy
           tags: |
             type=pep440,pattern={{major}}.{{minor}}
             type=pep440,pattern={{major}}.{{minor}}.{{patch}}

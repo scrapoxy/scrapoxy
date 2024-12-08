@@ -9,7 +9,7 @@ It also smartly handles **traffic routing 🔀** to minimize bans and increase *
 
 <br/>
 
-![Scrapoxy](https://raw.githubusercontent.com/fabienvauchelles/scrapoxy/master/packages/website/public/assets/images/scrapoxy.gif)
+![Scrapoxy](https://raw.githubusercontent.com/scrapoxy/scrapoxy/master/packages/website/public/assets/images/scrapoxy.gif)
 
 **🚀🚀 [GO TO SCRAPOXY.IO FOR MORE INFORMATION!](https://scrapoxy.io) 🚀🚀**
 
@@ -129,11 +129,11 @@ More information on [scrapoxy.io](https://scrapoxy.io).
 
 ## Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=fabienvauchelles/scrapoxy)](https://github.com/fabienvauchelles/scrapoxy/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=scrapoxy/scrapoxy)](https://github.com/scrapoxy/scrapoxy/graphs/contributors)
 
 Want to contribute? Check out the [guide](https://scrapoxy.io/contrib/guidelines)!
 
-Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/fabienvauchelles/)
+Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/scrapoxy/)
 
 
 ## Sponsorship
@@ -149,12 +149,12 @@ discuss new features, access the roadmap, or receive professional support, pleas
 
 Your support would greatly contribute to the project's sustainability and growth:
 
-<a href="https://www.buymeacoffee.com/scrapoxy" target="_blank"><img src="https://raw.githubusercontent.com/fabienvauchelles/scrapoxy/master/packages/website/public/assets/images/buymeacoffee.svg" width="230"/></a>
+<a href="https://www.buymeacoffee.com/scrapoxy" target="_blank"><img src="https://raw.githubusercontent.com/scrapoxy/scrapoxy/master/packages/website/public/assets/images/buymeacoffee.svg" width="230"/></a>
 
 
 ## Licence
 
-See [The MIT License (MIT)](https://github.com/fabienvauchelles/scrapoxy/blob/master/LICENCE.md)
+See [The MIT License (MIT)](https://github.com/scrapoxy/scrapoxy/blob/master/LICENCE.md)
 
 
 ## Acknowledgements
@@ -165,7 +165,7 @@ I would like to thank all the contributors to the project and the open-source co
 ## Follow-up
 
 [![Discord](https://img.shields.io/discord/1095676356496461934?logo=discord&label=Discord&color=7289da&style=flat-square)](https://discord.gg/ktNGGwZnUD)
-[![Docker](https://img.shields.io/docker/v/fabienvauchelles/scrapoxy?logo=docker&label=Docker&style=flat-square)](https://hub.docker.com/r/fabienvauchelles/scrapoxy)
+[![Docker](https://img.shields.io/docker/v/scrapoxy/scrapoxy?logo=docker&label=Docker&style=flat-square)](https://hub.docker.com/r/scrapoxy/scrapoxy)
 [![NPM](https://img.shields.io/npm/v/scrapoxy?label=NPM&color=bc3433&style=flat-square)](https://www.npmjs.com/package/scrapoxy)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=fabienvauchelles/scrapoxy&type=Timeline)](https://star-history.com/#fabienvauchelles/scrapoxy&Timeline)
+[![Star History Chart](https://api.star-history.com/svg?repos=scrapoxy/scrapoxy&type=Timeline)](https://star-history.com/#scrapoxy/scrapoxy&Timeline)

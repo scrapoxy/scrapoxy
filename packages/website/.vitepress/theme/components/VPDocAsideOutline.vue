@@ -37,9 +37,9 @@ useActiveAnchor(container, marker)
         role="navigation"
     >
         <div class="content">
-            <a class="outline-image" href="https://github.com/fabienvauchelles/scrapoxy" target="_blank">
+            <a class="outline-image" href="https://github.com/scrapoxy/scrapoxy" target="_blank">
                 <img
-                    src="https://img.shields.io/github/stars/fabienvauchelles/scrapoxy?logo=github&logoColor=000000&labelColor=ededed&label=Give us a star!&color=ededed&style=for-the-badge"
+                    src="https://img.shields.io/github/stars/scrapoxy/scrapoxy?logo=github&logoColor=000000&labelColor=ededed&label=Give us a star!&color=ededed&style=for-the-badge"
                     alt="Github">
             </a>
 

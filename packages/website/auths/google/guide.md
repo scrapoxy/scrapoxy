@@ -133,7 +133,7 @@ Google only accepts HTTPS URLS.
 Open the **terminal** and run the following command:
 
 ```shell
-docker run -d -p 8888:8888 -p 8890:8890 -e FRONTEND_URL=http://localhost:8890 -e AUTH_GOOGLE_CLIENT_ID=my_client_id -e AUTH_GOOGLE_CLIENT_SECRET=my_client_secret -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 fabienvauchelles/scrapoxy
+docker run -d -p 8888:8888 -p 8890:8890 -e FRONTEND_URL=http://localhost:8890 -e AUTH_GOOGLE_CLIENT_ID=my_client_id -e AUTH_GOOGLE_CLIENT_SECRET=my_client_secret -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 scrapoxy/scrapoxy
 ```
 
 Replace:

@@ -1,5 +1,5 @@
 image:
-    repository: fabienvauchelles/scrapoxy
+    repository: scrapoxy/scrapoxy
     tag: latest
     pullPolicy: Always
     pullSecrets: []

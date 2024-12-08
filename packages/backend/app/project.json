@@ -61,7 +61,7 @@
             }
         },
         "build-docker": {
-            "command": "docker build --no-cache -f packages/backend/app/Dockerfile . -t fabienvauchelles/scrapoxy"
+            "command": "docker build --no-cache -f packages/backend/app/Dockerfile . -t scrapoxy/scrapoxy"
         },
         "serve": {
             "executor": "@nx/js:node",

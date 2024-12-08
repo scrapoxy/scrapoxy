@@ -12,7 +12,7 @@ setup(
     description='Python API for Scrapoxy',
     author='Fabien Vauchelles',
     author_email='fabien@vauchelles.com',
-    url='https://github.com/fabienvauchelles/scrapoxy',
+    url='https://github.com/scrapoxy/scrapoxy',
     keywords=['crawler', 'crawling', 'scrapoxy', 'scrapy', 'scraper', 'scraping', 'webscraping', 'proxy'],
     classifiers=[],
 )

@@ -862,7 +862,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**docker**: create the Docker image fabienvauchelles/scrapoxy"
+                        "**docker**: create the Docker image scrapoxy/scrapoxy"
                     ]
                 },
                 {

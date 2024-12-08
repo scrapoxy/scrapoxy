@@ -7,7 +7,7 @@ const
     iconUrl = '/assets/images/scrapoxy.svg',
     url = 'https://scrapoxy.io',
     discordUrl = 'https://discord.gg/ktNGGwZnUD',
-    githubUrl = 'https://github.com/fabienvauchelles/scrapoxy';
+    githubUrl = 'https://github.com/scrapoxy/scrapoxy';
 
 export default defineConfig({
     lang: 'en-US',
@@ -291,7 +291,7 @@ export default defineConfig({
                 nav: [
                     {text: '🏠 Home', link: '/'},
                     {text: '📄 Documentation', link: '/fr/docs'},
-                    {text: '✉️ Contact', link: 'https://github.com/fabienvauchelles/scrapoxy/issues'},
+                    {text: '✉️ Contact', link: 'https://github.com/scrapoxy/scrapoxy/issues'},
                     {
                         text: '📙 Resources',
                         items: [
@@ -300,7 +300,7 @@ export default defineConfig({
                             {text: 'Discord', link: 'https://discord.com/invite/TOCHANGE'},
                             {
                                 text: 'Changelog',
-                                link: 'https://github.com/fabienvauchelles/scrapoxy/blob/master/CHANGELOG.md'
+                                link: 'https://github.com/scrapoxy/scrapoxy/blob/master/CHANGELOG.md'
                             },
                         ]
                     }

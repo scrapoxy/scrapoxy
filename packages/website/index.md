@@ -14,15 +14,15 @@ hero:
     - theme: brand
       text: Get Started
       link: /intro/scrapoxy
-      img: https://img.shields.io/docker/v/fabienvauchelles/scrapoxy?logo=docker&logoColor=000000&label=docker&color=fafafa&style=social
+      img: https://img.shields.io/docker/v/scrapoxy/scrapoxy?logo=docker&logoColor=000000&label=docker&color=fafafa&style=social
     - theme: alt
       text: Join
       link: https://discord.gg/ktNGGwZnUD
       img: https://img.shields.io/discord/1095676356496461934?logo=discord&logoColor=000000&label=Discord&style=social
     - theme: alt
       text: View on Github|Add a Star
-      link: https://github.com/fabienvauchelles/scrapoxy
-      img: https://img.shields.io/github/stars/fabienvauchelles/scrapoxy?logo=github&logoColor=000000&label=Star&color=fafafa&style=social
+      link: https://github.com/scrapoxy/scrapoxy
+      img: https://img.shields.io/github/stars/scrapoxy/scrapoxy?logo=github&logoColor=000000&label=Star&color=fafafa&style=social
       shiny: confetti
       typewritter: true
 

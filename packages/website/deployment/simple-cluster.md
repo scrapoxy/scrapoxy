@@ -20,7 +20,7 @@ Edit `docker-compose.yml` with the following content:
 ```yaml
 services:
     commander:
-        image: fabienvauchelles/scrapoxy
+        image: scrapoxy/scrapoxy
         command: "node scrapoxy.js start -f -c --storage file"
         ports:
             - 8890:8890
@@ -35,7 +35,7 @@ services:
             - ./scrapoxy:/etc/scrapoxy
 
     master:
-        image: fabienvauchelles/scrapoxy
+        image: scrapoxy/scrapoxy
         command: "node scrapoxy.js start -m"
         ports:
             - 8888:8888
@@ -47,7 +47,7 @@ services:
             - commander
 
     refresh:
-        image: fabienvauchelles/scrapoxy
+        image: scrapoxy/scrapoxy
         command: "node scrapoxy.js start -r"
         environment:
             - NODE_ENV=production

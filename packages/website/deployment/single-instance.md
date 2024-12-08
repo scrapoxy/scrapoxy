@@ -5,7 +5,7 @@ This deployment runs a single container that encapsulates all components, includ
 
 ## Docker
 
-Scrapoxy is hosted on Docker hub: [fabienvauchelles/scrapoxy](https://hub.docker.com/r/fabienvauchelles/scrapoxy/).
+Scrapoxy is hosted on Docker hub: [scrapoxy/scrapoxy](https://hub.docker.com/r/scrapoxy/scrapoxy/).
 
 
 ### Volume
@@ -18,7 +18,7 @@ docker run -d -p 8888:8888 -p 8890:8890 \
   -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 \
   -e STORAGE_FILE_FILENAME=/etc/scrapoxy/config.json \
   -v ./scrapoxy:/etc/scrapoxy \
-  fabienvauchelles/scrapoxy
+  scrapoxy/scrapoxy
 ```
 
 :::info
@@ -35,7 +35,7 @@ docker run -d -p 8888:8888 -p 8890:8890 \
   -e AUTH_LOCAL_USERNAME=admin -e AUTH_LOCAL_PASSWORD=password \
   -e BACKEND_JWT_SECRET=secret1 -e FRONTEND_JWT_SECRET=secret2 \
   -e NODE_ENV=production \
-  fabienvauchelles/scrapoxy
+  scrapoxy/scrapoxy
 ```
 
 
@@ -48,7 +48,7 @@ version: '3'
 
 services:
   scrapoxy:
-    image: fabienvauchelles/scrapoxy
+    image: scrapoxy/scrapoxy
     ports:
       - 8888:8888
       - 8890:8890

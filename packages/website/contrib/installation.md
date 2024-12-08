@@ -23,7 +23,7 @@ Scrapoxy requires:
 Clone the repository:
 
 ```shell
-git clone git@github.com:fabienvauchelles/scrapoxy.git
+git clone git@github.com:scrapoxy/scrapoxy.git
 
 cd scrapoxy
 ```
