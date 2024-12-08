@@ -1,6 +1,20 @@
 {
     "releases": [
         {
+            "version": "4.17.4",
+            "description": "This release doesn't include any code changes. Simply update the repository!",
+            "breaking": "Please update your Docker image from **fabienvauchelles/scrapoxy** to **scrapoxy/scrapoxy**",
+            "commitGroups": [
+                {
+                    "title": "Repositories",
+                    "commits": [
+                        "**github**: change repository from fabienvauchelles/scrapoxy to scrapoxy/scrapoxy",
+                        "**dockerhub**: change repository from fabienvauchelles/scrapoxy to scrapoxy/scrapoxy"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.17.3",
             "commitGroups": [
                 {
