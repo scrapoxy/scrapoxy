@@ -6,7 +6,7 @@ title: 'Home'
 hero:
   name: Scrapoxy
   text: Never be blocked. Again.
-  tagline: Aggregate all your proxies in one place and create a consistent webscraping strategy.
+  tagline: Manage all your proxies in one place and <br/>smartly routes traffic to avoid bans.
   image:
     src: /assets/images/scrapoxy-warrior.png
     alt: Scrapoxy
@@ -27,24 +27,24 @@ hero:
       typewritter: true
 
 features:
-  - icon: 🕸️
+  - icon: 🤫
+    title: Private Proxies Pool
+    details: Use your own cloud subscription to create a <b>private pool</b> of Datacenter proxies.
+  - icon: 🏠
     title: All-in-One Providers
-    details: Support datacenter providers, proxies services, hardware providers and free proxies list.
+    details: Support a wide range of vendors for Residential, Mobile, and Hardware proxies.
   - icon: ✋
     title: Anti-Ban
-    details: Smart traffic routing with stickies sessions, geo-targeting, and os-targeting.
+    details: Smart traffic routing with <b>stickies sessions</b> for Headless Browsers
   - icon: 💰
     title: Cost Optimization
-    details: Autoscale proxies to optimize costs, traffic monitoring, and bandwidth limitation.
-  - icon: 🌎
-    title: Distributed
-    details: CQRS architecture on Kubernetes with RabbitMQ and MongoDB.
+    details: Scale your proxy pool exclusively during scraping sessions to <b>cut costs by 80%</b>.
   - icon: 🛡️
-    title: Security
-    details: Modern authentication (Google and Github), internal TLS traffic encryption.
+    title: Secure
+    details: All data is encrypted within your infrastructure, certify <b>zero data leakage</b>.
   - icon: 🤩
-    title: Open Source
-    details: MIT Licensed, with the source code available on Github.
+    title: Free & Open Source
+    details: Completely free under the MIT License, with source code openly available on GitHub.
 
 providers:
     - tier: ""
