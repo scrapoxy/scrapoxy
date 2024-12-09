@@ -2,14 +2,14 @@
 
 ## What is Scrapoxy?
 
-Scrapoxy is a **super proxy aggregator** (or proxy waterfall), allowing you to manage all proxies in **one place 🎯**,
-rather than spreading it across multiple scrapers 🕸️.
+Scrapoxy is a **super proxies manager** that orchestrates all your proxies into **one place 🎯**, 
+rather than spreading management across multiple scrapers 🕸️.
 
-Installed on your own infrastructure, Scrapoxy functions as a unique proxy endpoint for all your scrapers.
+Deployed on your own infrastructure, Scrapoxy serves as a **single proxy endpoint** for your scrapers.
 
-It creates a pool of private proxies from your datacenter subscription 🔒, 
-integrates them with proxy services 🔌, smartly routes traffic, 
-and manages proxy rotation to **avoid bans** 🚫.
+It builds a pool of private proxies from your datacenter subscription 🔒, 
+integrates them with proxy vendors 🔌, manages IP rotation and fingerprinting,
+and smartly routes traffic to **avoid bans** 🚫.
 
 <br/>
 
@@ -19,6 +19,7 @@ and manages proxy rotation to **avoid bans** 🚫.
 ## What is not Scrapoxy?
 
 Scrapoxy is not:
+- a proxies list manager like [ProxyBroker2](https://github.com/bluet/proxybroker2);
 - a webscraper like [Scrapy](https://scrapy.org), [Crawlee](https://crawlee.dev) or [Octoparse](https://www.octoparse.com);
 - a cloud provider like [AWS](https://aws.amazon.com), [GCP](https://cloud.google.com) or [Azure](https://azure.microsoft.com);
 - a browser farm like [Puppeteer](https://pptr.dev), [Selenium](https://www.selenium.dev) or [Playwright](https://playwright.dev);
@@ -27,7 +28,7 @@ Scrapoxy is not:
 
 ## Why Scrapoxy?
 
-I started developing the Scrapoxy project in 2016. 
+I started developing the Scrapoxy project in 2015. 
 
 At that time, I was working with [Scrapy](https://scrapy.org) and encountering issues with my scrapers getting banned 😟. 
 There were also few low-cost solutions for obtaining IP addresses. 

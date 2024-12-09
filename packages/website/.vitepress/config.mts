@@ -3,7 +3,7 @@ import {fileURLToPath, URL} from 'url'
 
 const
     title = 'Scrapoxy',
-    description = 'The super proxies aggregator',
+    description = 'Scrapoxy is a super proxies manager that orchestrates all your proxies into one place, rather than spreading management across multiple scrapers. Deployed on your own infrastructure, Scrapoxy serves as a single proxy endpoint for your scrapers. It builds a pool of private proxies from your datacenter subscription, integrates them with proxy vendors, manages IP rotation and fingerprinting, and smartly routes traffic to avoid bans.',
     iconUrl = '/assets/images/scrapoxy.svg',
     url = 'https://scrapoxy.io',
     discordUrl = 'https://discord.gg/ktNGGwZnUD',

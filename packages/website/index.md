@@ -120,7 +120,7 @@ sponsors:
             img: '/assets/images/buymeacoffee.svg'
 
 ---
-<HomeImage message="Your personal proxies aggregator:" icon="🎯" src="/assets/images/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>
+<HomeImage message="Your personal proxies manager:" icon="🎯" src="/assets/images/scrapoxy.gif" alt="Scrapoxy" max-width="850px"/>
 <HomeGetStarted message="Get started in a few seconds:" icon="🚀" />
 <HomeProviders message="Scrapoxy has connectors for:" icon="📎" :data="$frontmatter.providers" />
 <HomeProviders message="Sponsor the Open Source project:" icon="❤️" :data="$frontmatter.sponsors" />

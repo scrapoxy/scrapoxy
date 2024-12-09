@@ -14,11 +14,12 @@ If you still have any questions, I'd be happy to help. 😊
 
 ## Partnerships
 
-Before considering a partnership with Scrapoxy, it's important to understand how Scrapoxy works.
+Before considering a partnership, it's important to understand how Scrapoxy works.
 
-Scrapoxy isn't a typical proxy provider; it's a **super proxy aggregator** installed on the user infrastructure.
-It creates a pool of private proxies from their **datacenter** subscription, integrates them with **proxy services**,
-routes traffic intelligently, and manages proxy rotation to avoid bans.
+Scrapoxy isn't a typical proxy provider; it's a **super proxies manager** installed on the user infrastructure.
+It creates a pool of private proxies from their **datacenter** subscription 🔒,
+integrates them with proxy vendors 🔌, handles IP rotation and fingerprinting,
+and smartly routes traffic to **avoid bans** 🚫.
 
 Partnering with Scrapoxy involves a **technical integration** 🔧 that requires me to write a custom connector. 
 It's a bit more involved than just a link exchange. 😅

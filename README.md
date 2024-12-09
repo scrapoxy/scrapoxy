@@ -2,10 +2,14 @@
 
 ## What is Scrapoxy?
 
-Scrapoxy is a **super proxy aggregator**, allowing you to manage all proxies in **one place 🎯**,
-rather than spreading it across multiple scrapers 🕸️.
+Scrapoxy is a **super proxies manager** that orchestrates all your proxies into **one place 🎯**,
+rather than spreading management across multiple scrapers 🕸️.
 
-It also smartly handles **traffic routing 🔀** to minimize bans and increase **success rates 🚀**.
+Deployed on your own infrastructure, Scrapoxy serves as a **single proxy endpoint** for your scrapers.
+
+It creates a pool of private proxies from your datacenter subscription 🔒,
+integrates them with proxy vendors 🔌, handles IP rotation and fingerprinting,
+and smartly routes traffic to **avoid bans** 🚫.
 
 <br/>
 
