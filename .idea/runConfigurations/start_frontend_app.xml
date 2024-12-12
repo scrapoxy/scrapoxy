@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="start:frontend-app" type="NodeJSConfigurationType" node-parameters="./node_modules/.bin/nx serve frontend-app --verbose" working-dir="$PROJECT_DIR$">
+  <configuration default="false" name="start:frontend-app" type="NodeJSConfigurationType" node-parameters="./node_modules/.bin/nx serve frontend-app" working-dir="$PROJECT_DIR$">
     <output_file path="$PROJECT_DIR$/logs/backend-file.log" />
     <method v="2" />
   </configuration>
