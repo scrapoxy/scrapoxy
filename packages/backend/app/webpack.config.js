@@ -1,6 +1,7 @@
 const {promises: fs} = require('fs');
 const {composePlugins, withNx} = require('@nx/webpack');
 const {BannerPlugin} = require('webpack');
+const {relative} = require('path')
 
 
 module.exports = composePlugins(withNx(), (config) => {
@@ -31,6 +32,11 @@ module.exports = composePlugins(withNx(), (config) => {
             });
         }
     });
+
+    config.output.devtoolModuleFilenameTemplate = (info) => {
+        const rel = relative(process.cwd(), info.absoluteResourcePath);
+        return `webpack:///./${rel}`
+    }
 
     return config;
 });

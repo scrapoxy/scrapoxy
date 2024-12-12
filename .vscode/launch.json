@@ -1,0 +1,143 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "start:backend-app (file)",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nx",
+            "runtimeArgs": [
+                "serve",
+                "backend-app",
+                "--args=\"start\"",
+                "--args=\"-c\"",
+                "--args=\"-m\"",
+                "--args=\"-r\"",
+                "--args=\"--storage\"",
+                "--args=\"file\""
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "AUTH_LOCAL_PASSWORD": "password",
+                "AUTH_LOCAL_USERNAME": "admin",
+                "BACKEND_JWT_SECRET": "backendsecret",
+                "COMMANDER_PORT": "8889",
+                "FRONTEND_JWT_SECRET": "frontendsecret"
+            }
+        },
+        {
+            "name": "start:backend-app (distributed)",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nx",
+            "runtimeArgs": [
+                "serve",
+                "backend-app",
+                "--args=\"start\"",
+                "--args=\"-c\"",
+                "--args=\"-m\"",
+                "--args=\"-r\"",
+                "--args=\"--storage\"",
+                "--args=\"distributed\""
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "AUTH_LOCAL_PASSWORD": "password",
+                "AUTH_LOCAL_USERNAME": "admin",
+                "BACKEND_JWT_SECRET": "backendsecret",
+                "COMMANDER_PORT": "8889",
+                "FRONTEND_JWT_SECRET": "frontendsecret",
+                "STORAGE_DISTRIBUTED_MONGO_DB": "scrapoxy"
+            }
+        },
+        {
+            "name": "start:frontend-app",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nx",
+            "runtimeArgs": [
+                "serve",
+                "frontend-app"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NPM build",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "build"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NPM build:docker",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "build:docker"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NPM build:production",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "build:production"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NPM lint",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "lint"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "NPM test",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "test"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "DOTENV_FILE": "packages/backend/test/src/assets/storage-file.env"
+            }
+        },
+        {
+            "name": "NPM website",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "website"
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}
