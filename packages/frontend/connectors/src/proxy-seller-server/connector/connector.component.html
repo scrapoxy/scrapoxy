@@ -5,11 +5,7 @@
 
             <c-col md="10">
                 <c-input-group>
-                    <select
-                        cSelect
-                        id="networkType"
-                        formControlName="networkType"
-                        (change)="networkTypeChanged()">
+                    <select cSelect id="networkType" formControlName="networkType" (change)="networkTypeChanged()">
                         <option [ngValue]="null" disabled>----- Select Type ------</option>
                         <option [ngValue]="EProxySellerNetworkType.ALL">All</option>
                         <option [ngValue]="EProxySellerNetworkType.IPV4">IPv4</option>
@@ -26,7 +22,11 @@
 
             <c-col md="10">
                 <c-input-group>
-                    <select cSelect id="country" formControlName="country" [attr.disabled]="processingCountries ? true : null">
+                    <select
+                        cSelect
+                        id="country"
+                        formControlName="country"
+                        [attr.disabled]="processingCountries ? true : null">
                         <option [ngValue]="null" disabled>----- Select Country ------</option>
                         <option ngValue="all">All</option>
                         @for (country of countries; track countries) {

@@ -89,11 +89,7 @@
 
             <c-col md="10">
                 <c-input-group>
-                    <select
-                        cSelect
-                        id="isp"
-                        formControlName="isp"
-                        [attr.disabled]="processingIsps ? true : null">
+                    <select cSelect id="isp" formControlName="isp" [attr.disabled]="processingIsps ? true : null">
                         <option [ngValue]="null" disabled>----- Select ISP ------</option>
                         <option value="all">All</option>
                         @for (isp of isps; track isp) {

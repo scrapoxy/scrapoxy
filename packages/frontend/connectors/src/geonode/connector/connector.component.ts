@@ -70,6 +70,7 @@ export class ConnectorGeonodeComponent implements IConnectorComponent, OnInit {
             lifetime: [
                 void 0,
                 [
+                    // eslint-disable-next-line array-element-newline
                     Validators.required, Validators.min(3), // 3 mins
                     Validators.max(1440), // 24 hours
                 ],

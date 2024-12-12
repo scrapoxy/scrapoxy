@@ -5,11 +5,7 @@
 
             <c-col md="10">
                 <c-input-group>
-                    <select
-                        cSelect
-                        id="productType"
-                        formControlName="productType"
-                        (change)="productTypeChanged()">
+                    <select cSelect id="productType" formControlName="productType" (change)="productTypeChanged()">
                         <option [ngValue]="null" disabled>----- Select Product ------</option>
                         <option [ngValue]="EGeonodeProductType.RESIDENTIAL_PREMIUM">Residential Premium</option>
                         <option [ngValue]="EGeonodeProductType.SHARED_DATACENTER">Datacenter Shared</option>
@@ -32,7 +28,7 @@
                         <option [ngValue]="null" disabled>----- Select Country ------</option>
                         <option value="all">All</option>
                         @for (country of countries; track country.code) {
-                            <option [value]="country.code">{{country.name}}</option>
+                            <option [value]="country.code">{{ country.name }}</option>
                         }
                     </select>
 

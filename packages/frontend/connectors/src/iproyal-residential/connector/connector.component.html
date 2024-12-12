@@ -24,7 +24,7 @@
                         cFormControl
                         id="lifetime"
                         formControlName="lifetime"
-                        [valid]="c.dirty || c.touched ? c.valid : undefined"/>
+                        [valid]="c.dirty || c.touched ? c.valid : undefined" />
 
                     @if (c.dirty || c.touched) {
                         <c-form-feedback [valid]="c.valid">
@@ -48,7 +48,7 @@
 
             <c-col md="10">
                 <c-form-check [switch]="true" sizing="lg">
-                    <input type="checkbox" cFormCheckInput id="highEndPool" formControlName="highEndPool"/>
+                    <input type="checkbox" cFormCheckInput id="highEndPool" formControlName="highEndPool" />
                 </c-form-check>
             </c-col>
         </c-row>

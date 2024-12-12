@@ -9,7 +9,7 @@
                         <option [ngValue]="null" disabled>----- Select Country ------</option>
                         <option value="all">All</option>
                         @for (country of countries; track country.code) {
-                            <option [value]="country.code">{{country.name}}</option>
+                            <option [value]="country.code">{{ country.name }}</option>
                         }
                     </select>
                 </c-input-group>
@@ -17,7 +17,7 @@
         </c-row>
     }
     @if (subForm.controls['sessionDuration']; as c) {
-        <c-row [ngStyle]="{'display': hasSessionDuration ? 'flex': 'none'}">
+        <c-row [ngStyle]="{display: hasSessionDuration ? 'flex' : 'none'}">
             <label cLabel cCol md="2" for="sessionDuration">Session Duration (min)</label>
 
             <c-col md="10">

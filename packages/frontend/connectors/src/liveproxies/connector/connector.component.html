@@ -37,15 +37,12 @@
         </c-row>
     }
     @if (subForm.controls['country']; as c) {
-        <c-row [ngStyle]="{'display': isEnterprise ? 'flex': 'none'}">
+        <c-row [ngStyle]="{display: isEnterprise ? 'flex' : 'none'}">
             <label cLabel cCol md="2" for="country">Country</label>
 
             <c-col md="10">
                 <c-input-group>
-                    <select
-                        cSelect
-                        id="country"
-                        formControlName="country">
+                    <select cSelect id="country" formControlName="country">
                         <option [ngValue]="null" disabled>----- Select Country ------</option>
                         <option value="all">All</option>
                         <option value="us">US</option>
