@@ -17,11 +17,11 @@ import type {
     ITaskContext,
     ITaskData,
     ITaskFactory,
-    ITaskToUpdate,
+    ITaskToUpdate
 } from '@scrapoxy/common';
 import {
     ATaskCommand,
-    CONNECTOR_OVH_TYPE,
+    CONNECTOR_SCALEWAY_TYPE,
     EFingerprintMode,
     formatProxyId,
     generateUseragent,
@@ -31,41 +31,37 @@ import {
 import { Sockets } from '@scrapoxy/proxy-sdk';
 import * as Joi from 'joi';
 import { v4 as uuid } from 'uuid';
-import { OvhApi } from '../api';
-import { getOvhExternalIp } from '../ovh.helpers';
-import type {
-    IConnectorOvhConfig,
-    IConnectorOvhCredential,
-} from '../ovh.interface';
-import {
-    EOvhInstanceStatus,
-    EOvhSnapshotStatus,
-    EOvhVisibility,
-} from '../ovh.interface';
-import { schemaCredential } from '../ovh.validation';
+import { ScalewayApi } from '../api';
+import { EScalewayImageState, EScalewayInstanceState, EScalewaySnapshotState, type IConnectorScalewayConfig } from '../scaleway.interface';
 
 
-export interface IOvhInstallCommandData extends IConnectorOvhCredential {
-    projectId: string;
+export interface IScalewayInstallCommandData {
+    secretAccessKey: string;
     region: string;
-    flavorId: string;
+    projectId: string,
     hostname: string | undefined;
     port: number;
     certificate: ICertificate;
-    installInstanceId: string | undefined;
-    snapshotName: string | undefined;
+    instanceId: string | undefined;
+    instanceType: string;
     snapshotId: string | undefined;
+    imageId: string | undefined;
     fingerprintOptions: IFingerprintOptions;
     installId: string;
+    tag: string | undefined;
+
+
+    securityGroupId: string | undefined;
+    securityGroupName: string | undefined;
 }
 
 
-const schemaData = schemaCredential.keys({
-    projectId: Joi.string()
+const schemaData = Joi.object({
+    secretAccessKey: Joi.string()
         .required(),
     region: Joi.string()
         .required(),
-    flavorId: Joi.string()
+    projectId: Joi.string()
         .required(),
     hostname: Joi.string()
         .optional(),
@@ -73,21 +69,31 @@ const schemaData = schemaCredential.keys({
         .required(),
     certificate: Joi.object()
         .required(),
-    installInstanceId: Joi.string()
+    instanceId: Joi.string()
         .optional(),
-    snapshotName: Joi.string()
-        .optional(),
+    instanceType: Joi.string()
+        .required(),
     snapshotId: Joi.string()
+        .optional(),
+    imageId: Joi.string()
         .optional(),
     fingerprintOptions: Joi.object()
         .required(),
     installId: Joi.string()
         .required(),
+    tag: Joi.string()
+        .optional(),
+
+    
+    securityGroupId: Joi.string()
+        .optional(),
+    securityGroupName: Joi.string()
+        .optional(),
 });
 
 
-class OvhInstallCommand extends ATaskCommand {
-    private readonly data: IOvhInstallCommandData;
+class ScalewayInstallCommand extends ATaskCommand {
+    private readonly data: IScalewayInstallCommandData;
 
     private readonly transport = new TransportDatacenterServiceImpl();
 
@@ -97,47 +103,42 @@ class OvhInstallCommand extends ATaskCommand {
     ) {
         super(task);
 
-        this.data = this.task.data as IOvhInstallCommandData;
+        this.data = this.task.data as IScalewayInstallCommandData;
     }
 
     async execute(context: ITaskContext): Promise<ITaskToUpdate> {
-        const api = new OvhApi(
-            this.data.appKey,
-            this.data.appSecret,
-            this.data.consumerKey,
+        const api = new ScalewayApi(
+            this.data.secretAccessKey,
+            this.data.region,
+            this.data.projectId,
             this.agents
         );
+
         switch (this.task.stepCurrent) {
             case 0: {
-                // Create install instance
+                const instance = await api.createInstance({
+                    name: randomName(),
+                    project: this.data.projectId,
+                    commercial_type: this.data.instanceType,
+                    image: "ubuntu_noble",
+                    tags: [this.data.tag as string],
+                })
+
+                this.data.instanceId = instance.id;
+
+                await api.attachIP(instance.id)
+
                 const userData = await new InstallScriptBuilder(this.data.certificate)
                     .build();
-                // Find image
-                const images = await api.getAllImages(
-                    this.data.projectId,
-                    this.data.region
-                );
-                const image = images.find((i) => i.name === 'Ubuntu 22.04');
+                
+                await api.setUserData(instance.id, userData)
 
-                if (!image) {
-                    throw new Error('Cannot find Ubuntu 22.04 image');
-                }
-
-                const instances = await api.createInstances({
-                    projectId: this.data.projectId,
-                    region: this.data.region,
-                    name: randomName(),
-                    flavorId: this.data.flavorId,
-                    imageId: image.id,
-                    userData,
-                    count: 1,
-                });
-                this.data.installInstanceId = instances[ 0 ].id;
+                await api.startInstance(instance.id)
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
                     stepCurrent: this.task.stepCurrent + 1,
-                    message: `Creating instance ${instances[ 0 ].name}...`,
+                    message: `Creating instance ${this.data.instanceId}...`,
                     nextRetryTs: Date.now() + 4000,
                     data: this.data,
                 };
@@ -146,30 +147,23 @@ class OvhInstallCommand extends ATaskCommand {
             }
 
             case 1: {
-                // Wait instance to be created
-                const instance = await api.getInstance(
-                    this.data.projectId,
-                    this.data.installInstanceId as string
-                );
-
-                if (instance.status === EOvhInstanceStatus.BUILD) {
+                // start the instance
+                const instance = await api.getInstance(this.data.instanceId as string)
+                
+                if (instance.state !==  EScalewayInstanceState.RUNNING ||
+                    !instance.public_ips ||
+                    instance.public_ips.length <= 0 ||
+                    !instance.public_ips[ 0 ].address) {
+                    
                     return this.waitTask();
                 }
-
-                if (instance.status !== EOvhInstanceStatus.ACTIVE) {
-                    throw new Error(`Instance ${instance.name} cannot be started`);
-                }
-
-                this.data.hostname = getOvhExternalIp(instance);
-
-                if (!this.data.hostname) {
-                    return this.waitTask();
-                }
+                
+                this.data.hostname = instance.public_ips[ 0 ].address;
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
                     stepCurrent: this.task.stepCurrent + 1,
-                    message: `Fingerprinting instance ${instance.name}...`,
+                    message: `Fingerprinting instance ${this.data.instanceId}...`,
                     nextRetryTs: Date.now() + 4000,
                     data: this.data,
                 };
@@ -192,7 +186,7 @@ class OvhInstallCommand extends ATaskCommand {
                         this.task.connectorId,
                         key
                     ),
-                    type: CONNECTOR_OVH_TYPE,
+                    type: CONNECTOR_SCALEWAY_TYPE,
                     transportType: TRANSPORT_DATACENTER_TYPE,
                     connectorId: this.task.connectorId,
                     projectId: this.task.projectId,
@@ -229,11 +223,16 @@ class OvhInstallCommand extends ATaskCommand {
                     sockets.closeAll();
                 }
 
+                // Stop the instance
+                await api.stopInstance(
+                    this.data.instanceId as string,
+                );
+
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
                     stepCurrent: this.task.stepCurrent + 1,
-                    message: 'Creating snapshot...',
-                    nextRetryTs: Date.now() + 10000, // Wait 10 seconds
+                    message: `Stopping instance ${this.data.instanceId}...`,
+                    nextRetryTs: Date.now() + 4000,
                     data: this.data,
                 };
 
@@ -241,19 +240,28 @@ class OvhInstallCommand extends ATaskCommand {
             }
 
             case 3: {
-                // Create snapshot
-                this.data.snapshotName = randomName();
-
-                await api.snapshotInstance(
-                    this.data.projectId,
-                    this.data.installInstanceId as string,
-                    this.data.snapshotName
+                // Wait stop instance finish
+                const instance = await api.getInstance(
+                    this.data.instanceId as string,
                 );
+
+                if (instance.state !==  EScalewayInstanceState.STOPPED) {
+                    return this.waitTask();
+                }
+
+                // Create an snapshot
+                const snapshotName = randomName();
+                const snapshot = await api.createSnapshot(
+                    instance.volumes[ 0 ].id,
+                    snapshotName
+                );
+
+                this.data.snapshotId = snapshot.id
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
                     stepCurrent: this.task.stepCurrent + 1,
-                    message: `Waiting snapshot ${this.data.snapshotName}...`,
+                    message: `Creating snapshot ${snapshotName}...`,
                     nextRetryTs: Date.now() + 4000,
                     data: this.data,
                 };
@@ -262,23 +270,29 @@ class OvhInstallCommand extends ATaskCommand {
             }
 
             case 4: {
-                // Wait snapshot to be created
-                const snapshots = await api.getAllSnapshots(
-                    this.data.projectId,
-                    this.data.region
+                // Wait create snapshot to finish
+                const snapshot = await api.getSnapshot(
+                        this.data.snapshotId as string,
                 );
-                const snapshot = snapshots.find((s) => s.name === this.data.snapshotName);
 
-                if (!snapshot) {
+                if (snapshot.state !== EScalewaySnapshotState.AVAILABLE) {
                     return this.waitTask();
                 }
 
-                this.data.snapshotId = snapshot.id;
+                const instance = await api.getInstance(this.data.instanceId as string)
+
+                // Create an image
+                const imageName = randomName();
+                const image = await api.createImage(imageName, snapshot.id, instance.image.arch)
+                this.data.imageId = image.id
+                if (image.state !== EScalewayImageState.AVAILABLE) {
+                    return this.waitTask();
+                }
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
                     stepCurrent: this.task.stepCurrent + 1,
-                    message: `Saving snapshot ${this.data.snapshotName}...`,
+                    message: `Creating image ${imageName}...`,
                     nextRetryTs: Date.now() + 4000,
                     data: this.data,
                 };
@@ -287,19 +301,18 @@ class OvhInstallCommand extends ATaskCommand {
             }
 
             case 5: {
-                // Wait snapshot to be saved
-                const snapshot = await api.getSnapshot(
-                    this.data.projectId,
-                    this.data.snapshotId as string
-                );
+                const image = await api.getImage(this.data.imageId as string)
 
-                if (snapshot.visibility !== EOvhVisibility.private) {
-                    throw new Error(`Snapshot ${snapshot.name} is not private`);
-                }
-
-                if (snapshot.status !== EOvhSnapshotStatus.active) {
+                if (!image || image.state !== EScalewayImageState.AVAILABLE) {
                     return this.waitTask();
                 }
+
+                // Remove instance
+                await api.deleteInstance(
+                    this.data.instanceId as string,
+                );
+
+                // TODO : DELETE VOLUME + IP
 
                 // Update connector configuration
                 const commander = new CommanderFrontendClient(
@@ -312,8 +325,9 @@ class OvhInstallCommand extends ATaskCommand {
                     this.task.projectId,
                     this.task.connectorId
                 );
-                const connectorConfig = connector.config as IConnectorOvhConfig;
-                connectorConfig.snapshotId = snapshot.id;
+                const connectorConfig = connector.config as IConnectorScalewayConfig;
+                connectorConfig.snapshotId = this.data.snapshotId as string;
+                connectorConfig.imageId = image.id as string;
 
                 await commander.updateConnector(
                     this.task.projectId,
@@ -327,38 +341,6 @@ class OvhInstallCommand extends ATaskCommand {
                         proxiesTimeoutUnreachable: connector.proxiesTimeoutUnreachable,
                     }
                 );
-
-                // Remove instance
-                await api.removeInstance(
-                    this.data.projectId,
-                    this.data.installInstanceId as string
-                );
-
-                const taskToUpdate: ITaskToUpdate = {
-                    running: this.task.running,
-                    stepCurrent: this.task.stepCurrent + 1,
-                    message: 'Removing instance...',
-                    nextRetryTs: Date.now() + 4000,
-                    data: this.data,
-                };
-
-                return taskToUpdate;
-            }
-
-            case 6: {
-                // Wait instance to be deleted
-                try {
-                    await api.getInstance(
-                        this.data.projectId,
-                        this.data.installInstanceId as string
-                    );
-
-                    return this.waitTask();
-                } catch (err: any) {
-                    if (err.errorClass !== 'Client::NotFound') {
-                        throw err;
-                    }
-                }
 
                 // No next step
                 const taskToUpdate: ITaskToUpdate = {
@@ -382,39 +364,45 @@ class OvhInstallCommand extends ATaskCommand {
     }
 
     async cancel(): Promise<void> {
-        const api = new OvhApi(
-            this.data.appKey,
-            this.data.appSecret,
-            this.data.consumerKey,
+        const api = new ScalewayApi(
+            this.data.secretAccessKey,
+            this.data.region,
+            this.data.projectId,
             this.agents
         );
 
-        // Remove instance
-        if (this.data.installInstanceId) {
-            await api.removeInstance(
-                this.data.projectId,
-                this.data.installInstanceId as string
+        if (this.data.instanceId) {
+            const instance = await api.getInstance(
+                    this.data.instanceId as string,
             );
+
+            if (instance) {
+                // if (instance.instanceState[ 0 ].code[ 0 ] !== '48') {
+                    await api.deleteInstance(
+                        this.data.instanceId as string,
+                    );
+                // }
+            }
         }
     }
 }
 
 
-export class OvhInstallFactory implements ITaskFactory {
-    static readonly type = `imagecreate::${CONNECTOR_OVH_TYPE}`;
+export class ScalewayInstallFactory implements ITaskFactory {
+    static readonly type = `imagecreate::${CONNECTOR_SCALEWAY_TYPE}`;
 
-    static readonly stepMax = 7;
+    static readonly stepMax = 6;
 
     constructor(private readonly agents: Agents) {}
 
     build(task: ITaskData): ATaskCommand {
-        return new OvhInstallCommand(
+        return new ScalewayInstallCommand(
             task,
             this.agents
         );
     }
 
-    async validate(data: IOvhInstallCommandData): Promise<void> {
+    async validate(data: IScalewayInstallCommandData): Promise<void> {
         await validate(
             schemaData,
             data

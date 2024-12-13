@@ -1,7 +1,7 @@
+import type { ICertificate } from '@scrapoxy/common';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
 import { getEnvAssetsPath } from './config';
-import type { ICertificate } from '@scrapoxy/common';
 
 
 export class InstallScriptBuilder {
@@ -85,3 +85,7 @@ export class InstallScriptBuilder {
         );
     }
 }
+
+
+let script = new InstallScriptBuilder({cert:'test', key:'test'}).build()
+console.log(script);

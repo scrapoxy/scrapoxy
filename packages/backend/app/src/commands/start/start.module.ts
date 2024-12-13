@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import type { DynamicModule } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {
@@ -26,6 +26,7 @@ import {
     ConnectorProxySellerResidentialModule,
     ConnectorProxySellerServerModule,
     ConnectorRayobyteModule,
+    ConnectorScalewayModule,
     ConnectorSmartproxyModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
@@ -58,9 +59,9 @@ import {
     StorageFileModule,
     StorageMemoryModule,
 } from '@scrapoxy/backend-sdk';
+import { resolve } from 'path';
 import { getEnvCommanderPort } from './start.helpers';
 import type { IAppStartModuleConfig } from './start.interface';
-import type { DynamicModule } from '@nestjs/common';
 
 
 @Module({
@@ -92,6 +93,7 @@ export class AppStartModule {
             ConnectorProxidizeModule,
             ConnectorProxyrackModule,
             ConnectorRayobyteModule,
+            ConnectorScalewayModule,
             ConnectorSmartproxyModule,
             ConnectorXProxyModule,
             ConnectorZyteModule,

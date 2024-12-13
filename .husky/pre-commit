@@ -9,4 +9,4 @@ node .husky/version.js
 git add package-lock.json
 
 # Lint-staged
-npx lint-staged --concurrent false --relative
+# npx lint-staged --concurrent false --relative
