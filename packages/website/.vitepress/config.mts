@@ -214,10 +214,10 @@ export default defineConfig({
                 base: '/contrib/',
                 items: [
                     {text: 'Guidelines', link: 'guidelines'},
+                    {text: 'Agreement', link: 'agreement'},
                     {text: 'Installation', link: 'installation'},
                     {text: 'Structure', link: 'structure'},
                     {text: 'New Connector', link: 'connector'},
-                    {text: 'Licence', link: 'licence'},
                 ]
             },
         ],
@@ -228,8 +228,7 @@ export default defineConfig({
         ],
 
         footer: {
-            message: 'Released under the MIT License.',
-            copyright: 'Copyright © 2016-present Fabien Vauchelles'
+            message: 'Released under the AGPLv3 License.',
         },
 
         search: {
@@ -275,53 +274,4 @@ export default defineConfig({
         // ignore all localhost links
         /^https?:\/\/localhost/,
     ],
-
-    /*
-    locales: {
-        root: {
-            label: 'English',
-            lang: 'en'
-        },
-        fr: {
-            label: 'French',
-            lang: 'fr',
-            link: '/fr',
-
-            themeConfig: {
-                nav: [
-                    {text: '🏠 Home', link: '/'},
-                    {text: '📄 Documentation', link: '/fr/docs'},
-                    {text: '✉️ Contact', link: 'https://github.com/scrapoxy/scrapoxy/issues'},
-                    {
-                        text: '📙 Resources',
-                        items: [
-                            {text: 'Versions', link: '/fr/releases'},
-                            {text: 'Roadmap', link: '/fr/roadmap'},
-                            {text: 'Discord', link: 'https://discord.com/invite/TOCHANGE'},
-                            {
-                                text: 'Changelog',
-                                link: 'https://github.com/scrapoxy/scrapoxy/blob/master/CHANGELOG.md'
-                            },
-                        ]
-                    }
-                ],
-
-                sidebar: [
-                    {
-                        text: 'Exemples',
-                        items: [
-                            {text: 'Exemples', link: '/fr/markdown-examples'},
-                            {text: 'Exemples d\'API d\'exécution', link: '/fr/api-examples'}
-                        ]
-                    }
-                ],
-
-                footer: {
-                    message: 'Publié sous la licence MIT.',
-                    copyright: 'Copyright © 2016-présent Fabien Vauchelles'
-                }
-            },
-        },
-    },
-     */
 })

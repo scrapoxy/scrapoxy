@@ -119,11 +119,9 @@ It can be started in seconds using Docker, or be deployed in a complex, distribu
 
 ### 🔓 Free and Open Source 🔓
 
-And of course, Scrapoxy remains free and open source, under the MIT license.
+Scrapoxy is free and open source, under the AGPLv3 license.
 
-I simply ask you to give me **credit** if you redistribute or use it in a project 🙌.
-
-A warm thank-you message is appreciated as well 😃🙏.
+All contributions must remain under this license.
 
 
 ## Documentation
@@ -158,7 +156,7 @@ Your support would greatly contribute to the project's sustainability and growth
 
 ## Licence
 
-See [The MIT License (MIT)](https://github.com/scrapoxy/scrapoxy/blob/master/LICENCE.md)
+See [The AGPLv3 License](https://github.com/scrapoxy/scrapoxy/blob/master/LICENCE.md).
 
 
 ## Acknowledgements

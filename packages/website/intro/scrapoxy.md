@@ -26,6 +26,20 @@ Scrapoxy is not:
 - a proxy service like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IP Royal](https://iproyal.com/?r=432273) or [Zyte](https://www.zyte.com).
 
 
+## What you can do with Scrapoxy?
+
+* Integrate it into your web scraping stack to manage proxies, whether as an **individual or a company**;
+* Contribute to the project by submitting issues or pull requests;
+* Distribute the code **under the AGPLv3 license**, ensuring the owner’s name remains intact.
+
+
+## What you cannot do with Scrapoxy?
+
+* Use it for any activities that are **illegal** under your jurisdiction;
+* **Modify or redistribute** the source code under a license other than AGPLv3;
+* Sell Scrapoxy, whether as a standalone service or **incorporated into** another product.
+
+
 ## Why Scrapoxy?
 
 I started developing the Scrapoxy project in 2015. 
@@ -46,7 +60,7 @@ This allowed it to autonomously distribute traffic and handle proxy rotation
 when a ban was detected 🚨.
 
 My goal was to make **proxy management accessible to everyone**, 
-so I open-sourced the project under the [MIT license](licence). 
+so I open-sourced the project under the [AGPLv3 license](licence). 
 Several users requested the addition of new providers, 
 and the project grew 🌱. 
 
@@ -159,8 +173,6 @@ It can be started in seconds using Docker, or be deployed in a complex, distribu
 
 ### 🔓 Free and Open Source 🔓
 
-And of course, Scrapoxy remains free and open source, under the MIT license. 
+Scrapoxy is free and open source, under the AGPLv3 license.
 
-I simply ask you to give me **credit** if you redistribute or use it in a project 🙌. 
-
-A warm thank-you message is appreciated as well 😃🙏.
+All contributions must remain under this license.

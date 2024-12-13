@@ -16,7 +16,7 @@ Please ensure your pull request includes the following details:
 
 ## Contribution Agreement
 
-- [ ] I agree with the [contribution guidelines](https://www.scrapoxy.io/contrib/guidelines) and [contributor license](https://www.scrapoxy.io/contrib/licence).
+- [ ] I agree with the [contribution guidelines](https://www.scrapoxy.io/contrib/guidelines) and [contributor license agreement](https://www.scrapoxy.io/contrib/agreement).
 
 
 ## Type of Change

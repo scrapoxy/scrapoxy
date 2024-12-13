@@ -13,7 +13,7 @@ You can report **bugs 🐞** or **request features 🤲** by [opening an issue](
 All pull requests are welcome! 👋👋👋
 
 The following rules should be followed:
-- **Licence**: You must agree to the [Contributor License Agreement](licence.md);
+- **Agreement**: You must agree to the [Contributor License Agreement](agreement.md);
 - **One pull request per feature**: If you want to do more than one thing, send multiple pull requests;
 - **Create feature branches**: Don't ask us to pull from your master branch;
 - **Commit messages**: Use [AngularJS's commit message convention](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit);

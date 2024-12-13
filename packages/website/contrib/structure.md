@@ -23,7 +23,7 @@ scrapoxy
 |-- commitlint.config.js         | Linting for commit messages    
 |-- jest.config.ts               | Jest root configuration
 |-- jest.preset.js               | Jest preset configuration
-|-- LICENCE.md                   | MIT licence
+|-- LICENCE.md                   | AGPLv3 Licence
 |-- nx.json                      | NX configuration
 |-- package.json                 | NPM configuration
 |-- scrapoxy.iml                 | IntelliJ project IDEA configuration

@@ -44,7 +44,7 @@ features:
     details: All data is encrypted within your infrastructure, certify <b>zero data leakage</b>.
   - icon: 🤩
     title: Free & Open Source
-    details: Completely free under the MIT License, with source code openly available on GitHub.
+    details: Completely free under the AGPLv3 License, with source code openly available on GitHub.
 
 providers:
     - tier: ""
