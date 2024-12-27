@@ -2,6 +2,8 @@
 
 ## With Docker
 
+### Initial Setup
+
 Ensure that [Docker](https://www.docker.com) is installed on your computer.
 
 Open the **terminal** and run the following command:
@@ -14,9 +16,23 @@ Replace `admin`, `password`, `secret1` and `secret2` with your own values.
 
 User interface is now running on http://localhost:8890 with `admin` as username and `password` as password.
 
-:::tip
-To upgrade Scrapoxy, pull the latest image with `docker pull scrapoxy/scrapoxy`.
-:::
+
+### Upgrading Scrapoxy
+
+To upgrade Scrapoxy, pull the latest image with:
+
+```shell
+docker pull scrapoxy/scrapoxy
+```
+
+
+### Running Scrapoxy in the Cloud
+
+Scrapoxy cannot be deployed directly on cloud container services 
+(e.g., AWS ECS, GCP Cloud Run, or Azure Container Instances, ...) 
+because their built-in HTTP reverse proxies do not correctly forward the proxy protocol.
+
+Instead, provision a virtual machine, install Docker, and then run the Scrapoxy container on that instance.
 
 
 ## With NPM
