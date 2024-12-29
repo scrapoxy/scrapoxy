@@ -44,39 +44,48 @@ const proxyChain = require('proxy-chain');
 })();
 ```
 
+## Licence
 
-## Fingerprint
+### Can I modify or use part (or all) the source code?
 
-### Can I host the fingerprint server myself?
+**Yes but...** 
 
-Unfortunately, self-hosting the fingerprint server is not possible.
+Scrapoxy is licenced under the [AGPL-3.0 Licence](licence), 
+which is quite restrictive. You are free to modify the code, but you must follow these conditions:
 
-Here are the reasons:
+- **Same License**: All modifications must remain under the AGPL-3.0 license. If you include any portion of Scrapoxy’s code into your own project, the entire project must also adopt the AGPL-3.0 license.
+- **Link Back**: A link to the original Scrapoxy repository must be provided.
+- **Credit the Author**: The original authors must be acknowledged in your modified version.
+- **Public Release**: Your modified source code must be made publicly available.
 
-1. **Data**: The server provides GEO IP information using a sophisticated algorithm, not just a basic free database. This algorithm is proprietary and will not be released as open source.
-2. **Whitelisting**: Some providers require domain whitelisting. Extensive discussions with their technical and legal teams were necessary to secure this.
+In other words, you cannot simply copy/paste, translate in another language, 
+or pick parts of Scrapoxy’s code without releasing your work under the AGPL-3.0 license and meeting the terms above.
 
-To secure this component within the infrastructure,
-it would be greatly appreciated if [a sponsorship could be considered](sponsorships.md) 
-instead of covering the server's hosting costs. 🙏
+If you want to contribute to Scrapoxy, check out the [Guidelines](../contrib/guidelines).
 
 
-### How much bandwith does the fingerprint use?
+### Can I use Scrapoxy in my commercial infrastructure ?
 
-Scrapoxy periodically sends requests to the fingerprint server to verify connectivity and collect GEO information. 
-If a request fails, Scrapoxy will avoid using that particular proxy.
+**Yes!** 
 
-Each request is compressed and consumes approximately **600 bytes** in received bandwidth.
+You can deploy Scrapoxy in a commercial environment to perform website scraping without having to reference the author or source code, 
+as you’re simply using it "as-is."
 
-_Example:_ 
+Nevertheless, a friendly "Hi" or "Thank you" on the Discord channel is always appreciated 😉.
 
-With a proxy timeout set to 20 seconds, Scrapoxy will send 3 requests per minute, totaling 180 requests per hour and 4,320 requests per day.
 
-The bandwidth consumption per day can be calculated using the following formula:
+### Can I distribute Scrapoxy along with my software ?
 
-```
-Bandwidth in Mb Per Day = (# proxies / Proxy Timeout) * 49.44
-```
+**No, you can't.** 
+
+Doing so would be treated as modifying or extracting parts of Scrapoxy’s source code without releasing your work under the AGPL-3.0 license and meeting all required terms.
+
+If you’re interested in bundling Scrapoxy with your own software, please get in touch via Discord. A commercial license is available for this purpose.
+
+
+## Fingerprint Server
+
+Please check the [Fingerprint Server](../architecture/fingerprint) section for more information.
 
 
 ## Errors

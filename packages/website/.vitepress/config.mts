@@ -206,6 +206,7 @@ export default defineConfig({
                 base: '/architecture/',
                 items: [
                     {text: 'Overview', link: 'overview'},
+                    {text: 'Fingerprint', link: 'fingerprint'},
                 ]
             },
             {
