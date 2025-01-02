@@ -126,6 +126,7 @@ export default defineConfig({
                         ]
                     },
                     {text: 'Live Proxies', link: 'liveproxies/guide'},
+                    {text: 'Massive', link: 'massive/guide'},
                     {text: 'NetNut', link: 'netnut/guide'},
                     {text: 'Nimble', link: 'nimbleway/guide'},
                     {text: 'Ninjas Proxy', link: 'ninjasproxy/guide'},

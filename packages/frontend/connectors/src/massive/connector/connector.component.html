@@ -1,0 +1,17 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['country']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="country">Country</label>
+
+            <c-col md="10">
+                <select cSelect id="country" formControlName="country">
+                    <option [ngValue]="null" disabled>----- Select Country ------</option>
+                    <option value="all">All</option>
+                    @for (country of countries; track country.code) {
+                        <option value="{{ country.code }}">{{ country.name }} ({{ country.code | uppercase }})</option>
+                    }
+                </select>
+            </c-col>
+        </c-row>
+    }
+</ng-container>

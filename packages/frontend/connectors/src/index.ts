@@ -22,6 +22,8 @@ export * from './iproyal-server';
 
 export * from './liveproxies';
 
+export * from './massive';
+
 export * from './netnut';
 
 export * from './nimbleway';
