@@ -124,7 +124,7 @@ async function makeRequestOnScrapoxyHttp(
         console.log(`> SCRAPOXY [${post ? 'POST' : 'GET'}] ${proxy.protocol} -> ${https ? 'https' : 'http'}: IP is ${res.data.ip} from ${res.data.cityName}/${res.data.countryName} in ${formatHrTime(end)}`);
     } catch (err: any) {
         if (retry > 0) {
-            console.log(`> SCRAPOXY [${post ? 'POST' : 'GET'}] ${proxy.protocol} -> ${https ? 'https' : 'http'}: retrying...`);
+            console.error(`> SCRAPOXY [${post ? 'POST' : 'GET'}] ${proxy.protocol} -> ${https ? 'https' : 'http'}: retrying...`);
             await makeRequestOnScrapoxyHttp(
                 proxyUrl,
                 https,
@@ -168,7 +168,7 @@ async function makeRequestOnScrapoxyHttpConnect(
         console.log(`> SCRAPOXY [${post ? 'POST' : 'GET'}] connect -> https: IP is ${res.data.ip} from ${res.data.cityName}/${res.data.countryName} in ${formatHrTime(end)}`);
     } catch (err: any) {
         if (retry > 0) {
-            console.log(`> SCRAPOXY [${post ? 'POST' : 'GET'}] connect -> https: retrying...`);
+            console.error(`> SCRAPOXY [${post ? 'POST' : 'GET'}] connect -> https: retrying...`);
             await makeRequestOnScrapoxyHttpConnect(
                 proxyUrl,
                 post,
@@ -201,7 +201,7 @@ async function makeRequestOnIpInfoHttp(
         console.log(`> IPINFO [GET] ${https ? 'https' : 'http'} -> https: IP is ${res.data.ip} from ${res.data.city}/${res.data.country} in ${formatHrTime(end)}`);
     } catch (err: any) {
         if (retry > 0) {
-            console.log(`> IPINFO [GET] ${https ? 'https' : 'http'} -> https: retrying...`);
+            console.error(`> IPINFO [GET] ${https ? 'https' : 'http'} -> https: retrying...`);
             await makeRequestOnIpInfoHttp(
                 proxyUrl,
                 https,
@@ -230,7 +230,7 @@ async function makeRequestOnIpInfoHttpConnect(
         console.log(`> IPINFO [GET] connect -> https: IP is ${res.data.ip} from ${res.data.city}/${res.data.country} in ${formatHrTime(end)}`);
     } catch (err: any) {
         if (retry > 0) {
-            console.log('> IPINFO [GET] connect -> https: retrying...');
+            console.error('> IPINFO [GET] connect -> https: retrying...');
             await makeRequestOnIpInfoHttpConnect(
                 proxyUrl,
                 retry - 1
