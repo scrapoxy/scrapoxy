@@ -49,10 +49,6 @@ export interface IScalewayInstallCommandData {
     fingerprintOptions: IFingerprintOptions;
     installId: string;
     tag: string | undefined;
-
-
-    securityGroupId: string | undefined;
-    securityGroupName: string | undefined;
 }
 
 
@@ -82,12 +78,6 @@ const schemaData = Joi.object({
     installId: Joi.string()
         .required(),
     tag: Joi.string()
-        .optional(),
-
-    
-    securityGroupId: Joi.string()
-        .optional(),
-    securityGroupName: Joi.string()
         .optional(),
 });
 
@@ -307,12 +297,16 @@ class ScalewayInstallCommand extends ATaskCommand {
                     return this.waitTask();
                 }
 
-                // Remove instance
-                await api.deleteInstance(
-                    this.data.instanceId as string,
-                );
+                const instance = await api.getInstance(this.data.instanceId as string)
 
-                // TODO : DELETE VOLUME + IP
+                // Remove instance
+                await api.deleteInstance(instance.id);
+
+                await api.deleteVolume(instance.volumes[ 0 ].id)
+
+                if (instance.public_ips) {
+                    await api.deleteIP(instance.public_ips[ 0 ].id as string)
+                }
 
                 // Update connector configuration
                 const commander = new CommanderFrontendClient(
@@ -377,11 +371,9 @@ class ScalewayInstallCommand extends ATaskCommand {
             );
 
             if (instance) {
-                // if (instance.instanceState[ 0 ].code[ 0 ] !== '48') {
-                    await api.deleteInstance(
-                        this.data.instanceId as string,
-                    );
-                // }
+                await api.deleteInstance(
+                    this.data.instanceId as string,
+                );
             }
         }
     }

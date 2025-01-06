@@ -170,11 +170,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
             imageId: void 0,
             snapshotId: void 0,
             fingerprintOptions,
-
-            securityGroupId: void 0,
-            securityGroupName: void 0,
-            
-
             installId,
             tag: void 0
         };

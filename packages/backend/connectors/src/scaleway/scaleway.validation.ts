@@ -20,8 +20,6 @@ const schemaConfig = Joi.object({
     imageId: Joi.string()
         .allow('')
         .optional(),
-    securityGroupName: Joi.string()
-        .required(),
     tag: Joi.string()
         .required(),
 });

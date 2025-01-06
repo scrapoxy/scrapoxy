@@ -17,8 +17,7 @@ import {
     CONNECTOR_SCALEWAY_TYPE,
     EScalewayQueryCredential,
     SCALEWAY_DEFAULT_INSTANCE_TYPE,
-    SCALEWAY_DEFAULT_REGION,
-    SCRAPOXY_DATACENTER_PREFIX,
+    SCALEWAY_DEFAULT_REGION
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 import {
@@ -82,9 +81,6 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
             imageId: [
                 void 0,
             ],
-            securityGroupName: [
-                void 0, Validators.required,
-            ],
             tag: [
                 void 0, Validators.required,
             ],
@@ -110,7 +106,6 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
                 instanceType: SCALEWAY_DEFAULT_INSTANCE_TYPE,
                 snapshotId: '',
                 imageId: '',
-                securityGroupName: SCRAPOXY_DATACENTER_PREFIX,
                 tag: 'spx',
             });
         }

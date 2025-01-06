@@ -55,7 +55,7 @@ export class ConnectorScalewayService implements IConnectorService {
         );
     }
 
-    async getProxies(): Promise<IConnectorProxyRefreshed[]> {
+    public async getProxies(): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug('getProxies()');
 
         const instances = await this.api.listInstances(
@@ -85,42 +85,54 @@ export class ConnectorScalewayService implements IConnectorService {
         });
     }
 
-    async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
+    public async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
+        
         const proxies = new Array(count).fill('');
-
-        //Ajouter hard limit (Send 10 par 10)
-        const instances = await Promise.all(proxies.map(() => this.createProxy()));
-
-        return instances.map((i) => {
-            const config: ITransportProxyRefreshedConfigDatacenter = {
+        const batchSize = 10;
+        const allInstances: IConnectorProxyRefreshed[] = [];
+        // Create proxies 10 by 10
+        for (let i = 0; i < proxies.length; i += batchSize) {
+            const chunk = proxies.slice(i, i + batchSize);
+        
+            const instances = await Promise.all(chunk.map(() => this.createProxy()));
+        
+            const refreshedProxies = instances.map((instance) => {
+                const config: ITransportProxyRefreshedConfigDatacenter = {
                 address:
-                    i.public_ips && i.public_ips.length > 0
-                        ? {
-                              hostname: i.public_ips[0].address,
-                              port: this.connectorConfig.port,
-                          }
-                        : void 0,
-            };
-            const proxy: IConnectorProxyRefreshed = {
-                type: CONNECTOR_SCALEWAY_TYPE,
-                transportType: TRANSPORT_DATACENTER_TYPE,
-                key: i.id,
-                name: i.id,
-                config,
-                status: convertStatus(i.state),
-            };
-            return proxy;
-        });
-    }
+                    instance.public_ips && instance.public_ips.length > 0
+                    ? {
+                        hostname: instance.public_ips[0].address,
+                        port: this.connectorConfig.port,
+                        }
+                    : undefined,
+                };
+      
+                const proxy: IConnectorProxyRefreshed = {
+                    type: CONNECTOR_SCALEWAY_TYPE,
+                    transportType: TRANSPORT_DATACENTER_TYPE,
+                    key: instance.id,
+                    name: instance.id,
+                    config,
+                    status: convertStatus(instance.state),
+                };
+                return proxy;
+            });
 
-    async startProxies(keys: string[]): Promise<void> {
+            allInstances.push(...refreshedProxies);
+        }
+      
+        return allInstances;
+      }
+      
+
+    public async startProxies(keys: string[]): Promise<void> {
         this.logger.debug(`startProxies(): keys.length=${keys.length}`);
 
         await Promise.all(keys.map(key => this.api.startInstance(key)));
     }
 
-    async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
+    public async removeProxies(keys: IProxyKeyToRemove[]): Promise<string[]> {
         this.logger.debug(`removeProxies(): keys.length=${keys.length}`);
 
         const proxiesKeys = keys.map((p) => p.key);

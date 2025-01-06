@@ -76,9 +76,6 @@ export interface IScalewayInstance extends IScalewayInstanceBase {
 
 export interface IScalewayCreateInstancesRequest extends IScalewayInstanceBase{
     image: string,
-    // dynamic_ip_required: boolean,
-    // enable_ipv6: boolean,
-    // security_group?: string,
     volumes?: IScalewayVolumes<IScalewayVolume>
 }
 

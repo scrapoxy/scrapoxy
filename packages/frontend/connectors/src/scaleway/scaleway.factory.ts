@@ -25,7 +25,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory {
 
     readonly config: IConnectorConfig = {
         name: 'Scaleway',
-        description: 'Scaleway.',
+        description: 'Scaleway is a French cloud computing provider that offers on-demand infrastructure solutions. In 2023, Scaleway operates 7 data centers in 3 regions across Europe.',
         coupon: null,
         defaultCredentialName: 'SCALEWAY Credential',
         defaultConnectorName: 'SCALEWAY Connector',

@@ -60,34 +60,6 @@ class ScalewayUninstallCommand extends ATaskCommand {
         );
 
         switch (this.task.stepCurrent) {
-            // case 0: {
-            //     const securityGroupExists = await api.getSecurityGroup(this.data.securityGroupId);
-
-            //     if (!securityGroupExists) {
-            //         const taskToUpdate: ITaskToUpdate = {
-            //             running: this.task.running,
-            //             stepCurrent: this.task.stepCurrent + 1,
-            //             message: `Skip removal of security group ${this.data.securityGroupId}...`,
-            //             nextRetryTs: Date.now(),
-            //             data: this.data,
-            //         };
-
-            //         return taskToUpdate;
-            //     }
-
-            //     await api.deleteSecurityGroup(this.data.securityGroupId);
-
-            //     const taskToUpdate: ITaskToUpdate = {
-            //         running: this.task.running,
-            //         stepCurrent: this.task.stepCurrent + 1,
-            //         message: `Removing security group ${this.data.securityGroupId}...`,
-            //         nextRetryTs: Date.now() + 4000,
-            //         data: this.data,
-            //     };
-
-            //     return taskToUpdate;
-            // }
-
             case 0: {
                 const image = await api.getImage(this.data.imageId);
 
@@ -135,9 +107,9 @@ class ScalewayUninstallCommand extends ATaskCommand {
                         nextRetryTs: Date.now(),
                         data: this.data,
                     };
-
                     return taskToUpdate;
                 }
+
                 api.deleteSnapshot(this.data.snapshotId);
 
                 const taskToUpdate: ITaskToUpdate = {
