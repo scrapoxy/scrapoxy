@@ -1,6 +1,17 @@
 {
     "releases": [
         {
+            "version": "4.17.5",
+            "commitGroups": [
+                {
+                    "title": "Fix",
+                    "commits": [
+                        "**chore**: update github actions"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.17.4",
             "description": "This release doesn't include any code changes. Simply update the repository!",
             "breaking": "Please update your Docker image from **fabienvauchelles/scrapoxy** to **scrapoxy/scrapoxy**",
