@@ -1,6 +1,11 @@
 {
     "releases": [
         {
+            "version": "4.17.6",
+            "description": "Empty version for testing deployment purpose",
+            "commitGroups": []
+        },
+        {
             "version": "4.17.5",
             "commitGroups": [
                 {
