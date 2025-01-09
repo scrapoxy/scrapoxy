@@ -1,4 +1,3 @@
-import type { OnInit } from '@angular/core';
 import {
     Component,
     Input,
@@ -9,6 +8,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { CONNECTOR_SCALEWAY_TYPE } from '@scrapoxy/common';
+import type { OnInit } from '@angular/core';
 import type { ICredentialComponent } from '@scrapoxy/frontend-sdk';
 
 

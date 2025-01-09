@@ -1,4 +1,3 @@
-import type { OnInit } from '@angular/core';
 import {
     Component,
     Input,
@@ -8,6 +7,7 @@ import {
     FormGroup,
 } from '@angular/forms';
 import { CONNECTOR_SCALEWAY_TYPE } from '@scrapoxy/common';
+import type { OnInit } from '@angular/core';
 import type { IInstallComponent } from '@scrapoxy/frontend-sdk';
 
 

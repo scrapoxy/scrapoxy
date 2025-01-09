@@ -1,4 +1,3 @@
-import type { OnInit } from '@angular/core';
 import {
     Component,
     Inject,
@@ -9,21 +8,22 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import type {
-    ICommanderFrontendClient,
-    IScalewayQueryInstanceType,
-} from '@scrapoxy/common';
 import {
     CONNECTOR_SCALEWAY_TYPE,
     EScalewayQueryCredential,
     SCALEWAY_DEFAULT_INSTANCE_TYPE,
-    SCALEWAY_DEFAULT_REGION
+    SCALEWAY_DEFAULT_REGION,
 } from '@scrapoxy/common';
-import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 import {
     CommanderFrontendClientService,
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
+import type { OnInit } from '@angular/core';
+import type {
+    ICommanderFrontendClient,
+    IScalewayQueryInstanceType,
+} from '@scrapoxy/common';
+import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
 
 @Component({

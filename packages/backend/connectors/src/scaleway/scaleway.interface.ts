@@ -21,7 +21,7 @@ export enum EScalewayRegions {
     AMS3 = 'nl-ams-3',
     WAW1 = 'pl-waw-1',
     WAW2 = 'pl-waw-2',
-    WAW3 = 'pl-waw-3'
+    WAW3 = 'pl-waw-3',
 }
 
 export interface IScalewayError {
@@ -30,17 +30,18 @@ export interface IScalewayError {
 }
 
 export interface IScalewayVolume {
-    size: number,
-    volume_type: string
+    size: number;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    volume_type: string;
 }
 
 export type IScalewayExtraVolume = IScalewayVolume & {
-    id: string,
-    state: string
-}
+    id: string;
+    state: string;
+};
 
 export interface IScalewayVolumes<T extends IScalewayVolume> {
-    [index:string]:T
+    [index: string]: T;
 }
 
 export enum EScalewayInstanceState {
@@ -49,40 +50,37 @@ export enum EScalewayInstanceState {
     STOPPING = 'stopping',
     STOPPED = 'stopped',
     LOCKED = 'locked',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     STOPPED_IN_PLACE = 'stopped in place',
 
 }
 
 export interface IScalewayIP {
-    id: string,
-    address: string
+    id: string;
+    address: string;
 }
 
 export interface IScalewayInstanceBase {
-    name: string,
-    project: string,
-    commercial_type: string,
-    public_ips?: IScalewayIP[]
-    tags: string[]
+    name: string;
+    project: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    commercial_type: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    public_ips?: IScalewayIP[];
+    tags: string[];
 }
 
 export interface IScalewayInstance extends IScalewayInstanceBase {
-    id: string,
-    volumes: IScalewayVolumes<IScalewayExtraVolume>,
-    state: EScalewayInstanceState,
-    image: IScalewayImage,
-    arch: string
+    id: string;
+    volumes: IScalewayVolumes<IScalewayExtraVolume>;
+    state: EScalewayInstanceState;
+    image: IScalewayImage;
+    arch: string;
 }
 
 export interface IScalewayCreateInstancesRequest extends IScalewayInstanceBase{
-    image: string,
-    volumes?: IScalewayVolumes<IScalewayVolume>
-}
-
-export interface IScalewayInfo {
-    secret_key: string,
-    region: string,
-    project_id: string
+    image: string;
+    volumes?: IScalewayVolumes<IScalewayVolume>;
 }
 
 export enum EScalewaySnapshotState {
@@ -91,16 +89,19 @@ export enum EScalewaySnapshotState {
     ERROR = 'error',
     INVALID = 'invalid_data',
     IMPORTING = 'importing',
-    EXPORTING = 'exporting'
+    EXPORTING = 'exporting',
 }
 
 export interface IScalewaySnapshot {
     id: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     base_volume: {
-        volume_id: string,
-        volume_name: string
-    },
-    state: EScalewaySnapshotState
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        volume_id: string;
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        volume_name: string;
+    };
+    state: EScalewaySnapshotState;
 }
 
 export enum EScalewayImageState {
@@ -110,24 +111,27 @@ export enum EScalewayImageState {
 }
 
 export interface IScalewayImage {
-    id: string,
-    arch: string,
-    state: EScalewayImageState
+    id: string;
+    arch: string;
+    state: EScalewayImageState;
 }
 
 export interface IScalewaySecurityRuleRequest {
-    protocol: "unknown_protocol" | "TCP" | "UDP" | "ICMP" | "ANY",
-    direction: "unknown_direction" | "inbound" | "outbound",
-    action: "unknown_action" | "accept" | "drop",
-    ip_range: string,
-    position: number,
-    editable: boolean,
-    dest_port_from?: number,
-    dest_port_to?: number,
-    project: string
+    protocol: 'unknown_protocol' | 'TCP' | 'UDP' | 'ICMP' | 'ANY';
+    direction: 'unknown_direction' | 'inbound' | 'outbound';
+    action: 'unknown_action' | 'accept' | 'drop';
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ip_range: string;
+    position: number;
+    editable: boolean;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    dest_port_from?: number;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    dest_port_to?: number;
+    project: string;
 }
 
 export interface IScalewaySecurityRule extends IScalewaySecurityRuleRequest {
-    id: string,
-    zone: string
+    id: string;
+    zone: string;
 }

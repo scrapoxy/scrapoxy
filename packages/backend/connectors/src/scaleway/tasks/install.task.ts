@@ -1,4 +1,3 @@
-import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import {
     Agents,
     CommanderFrontendClient,
@@ -9,16 +8,6 @@ import {
     TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
-import type {
-    ICertificate,
-    IFingerprintOptions,
-    IFingerprintRequest,
-    IProxyToRefresh,
-    ITaskContext,
-    ITaskData,
-    ITaskFactory,
-    ITaskToUpdate
-} from '@scrapoxy/common';
 import {
     ATaskCommand,
     CONNECTOR_SCALEWAY_TYPE,
@@ -32,13 +21,29 @@ import { Sockets } from '@scrapoxy/proxy-sdk';
 import * as Joi from 'joi';
 import { v4 as uuid } from 'uuid';
 import { ScalewayApi } from '../api';
-import { EScalewayImageState, EScalewayInstanceState, EScalewaySnapshotState, type IConnectorScalewayConfig } from '../scaleway.interface';
+import {
+    EScalewayImageState,
+    EScalewayInstanceState,
+    EScalewaySnapshotState, 
+} from '../scaleway.interface';
+import type { IConnectorScalewayConfig } from '../scaleway.interface';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
+import type {
+    ICertificate,
+    IFingerprintOptions,
+    IFingerprintRequest,
+    IProxyToRefresh,
+    ITaskContext,
+    ITaskData,
+    ITaskFactory,
+    ITaskToUpdate,
+} from '@scrapoxy/common';
 
 
 export interface IScalewayInstallCommandData {
     secretAccessKey: string;
     region: string;
-    projectId: string,
+    projectId: string;
     hostname: string | undefined;
     port: number;
     certificate: ICertificate;
@@ -110,20 +115,25 @@ class ScalewayInstallCommand extends ATaskCommand {
                     name: randomName(),
                     project: this.data.projectId,
                     commercial_type: this.data.instanceType,
-                    image: "ubuntu_noble",
-                    tags: [this.data.tag as string],
-                })
+                    image: 'ubuntu_noble',
+                    tags: [
+                        this.data.tag as string,
+                    ],
+                });
 
                 this.data.instanceId = instance.id;
 
-                await api.attachIP(instance.id)
+                await api.attachIP(instance.id);
 
                 const userData = await new InstallScriptBuilder(this.data.certificate)
                     .build();
                 
-                await api.setUserData(instance.id, userData)
+                await api.setUserData(
+                    instance.id,
+                    userData
+                );
 
-                await api.startInstance(instance.id)
+                await api.startInstance(instance.id);
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
@@ -138,9 +148,9 @@ class ScalewayInstallCommand extends ATaskCommand {
 
             case 1: {
                 // start the instance
-                const instance = await api.getInstance(this.data.instanceId as string)
+                const instance = await api.getInstance(this.data.instanceId as string);
                 
-                if (instance.state !==  EScalewayInstanceState.RUNNING ||
+                if (instance.state !== EScalewayInstanceState.RUNNING ||
                     !instance.public_ips ||
                     instance.public_ips.length <= 0 ||
                     !instance.public_ips[ 0 ].address) {
@@ -214,9 +224,7 @@ class ScalewayInstallCommand extends ATaskCommand {
                 }
 
                 // Stop the instance
-                await api.stopInstance(
-                    this.data.instanceId as string,
-                );
+                await api.stopInstance(this.data.instanceId as string);
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
@@ -231,11 +239,9 @@ class ScalewayInstallCommand extends ATaskCommand {
 
             case 3: {
                 // Wait stop instance finish
-                const instance = await api.getInstance(
-                    this.data.instanceId as string,
-                );
+                const instance = await api.getInstance(this.data.instanceId as string);
 
-                if (instance.state !==  EScalewayInstanceState.STOPPED) {
+                if (instance.state !== EScalewayInstanceState.STOPPED) {
                     return this.waitTask();
                 }
 
@@ -246,7 +252,7 @@ class ScalewayInstallCommand extends ATaskCommand {
                     snapshotName
                 );
 
-                this.data.snapshotId = snapshot.id
+                this.data.snapshotId = snapshot.id;
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
@@ -261,20 +267,22 @@ class ScalewayInstallCommand extends ATaskCommand {
 
             case 4: {
                 // Wait create snapshot to finish
-                const snapshot = await api.getSnapshot(
-                        this.data.snapshotId as string,
-                );
+                const snapshot = await api.getSnapshot(this.data.snapshotId as string);
 
                 if (snapshot.state !== EScalewaySnapshotState.AVAILABLE) {
                     return this.waitTask();
                 }
 
-                const instance = await api.getInstance(this.data.instanceId as string)
-
+                const instance = await api.getInstance(this.data.instanceId as string);
                 // Create an image
                 const imageName = randomName();
-                const image = await api.createImage(imageName, snapshot.id, instance.image.arch)
-                this.data.imageId = image.id
+                const image = await api.createImage(
+                    imageName,
+                    snapshot.id,
+                    instance.image.arch
+                );
+                this.data.imageId = image.id;
+
                 if (image.state !== EScalewayImageState.AVAILABLE) {
                     return this.waitTask();
                 }
@@ -291,21 +299,21 @@ class ScalewayInstallCommand extends ATaskCommand {
             }
 
             case 5: {
-                const image = await api.getImage(this.data.imageId as string)
+                const image = await api.getImage(this.data.imageId as string);
 
                 if (!image || image.state !== EScalewayImageState.AVAILABLE) {
                     return this.waitTask();
                 }
 
-                const instance = await api.getInstance(this.data.instanceId as string)
+                const instance = await api.getInstance(this.data.instanceId as string);
 
                 // Remove instance
                 await api.deleteInstance(instance.id);
 
-                await api.deleteVolume(instance.volumes[ 0 ].id)
+                await api.deleteVolume(instance.volumes[ 0 ].id);
 
                 if (instance.public_ips) {
-                    await api.deleteIP(instance.public_ips[ 0 ].id as string)
+                    await api.deleteIP(instance.public_ips[ 0 ].id as string);
                 }
 
                 // Update connector configuration
@@ -366,14 +374,10 @@ class ScalewayInstallCommand extends ATaskCommand {
         );
 
         if (this.data.instanceId) {
-            const instance = await api.getInstance(
-                    this.data.instanceId as string,
-            );
+            const instance = await api.getInstance(this.data.instanceId as string);
 
             if (instance) {
-                await api.deleteInstance(
-                    this.data.instanceId as string,
-                );
+                await api.deleteInstance(this.data.instanceId as string);
             }
         }
     }

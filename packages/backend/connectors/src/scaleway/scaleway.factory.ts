@@ -1,10 +1,4 @@
-import type { OnModuleDestroy } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import type {
-    IConnectorConfig,
-    IConnectorFactory,
-    IConnectorService,
-} from '@scrapoxy/backend-sdk';
 import {
     Agents,
     ConnectorCertificateNotFoundError,
@@ -14,6 +8,36 @@ import {
     CredentialQueryNotFoundError,
     TasksService,
     validate,
+} from '@scrapoxy/backend-sdk';
+import {
+    CONNECTOR_SCALEWAY_TYPE,
+    EScalewayQueryCredential,
+    SCALEWAY_DEFAULT_REGION,
+} from '@scrapoxy/common';
+import { ScalewayApi } from './api';
+import { EScalewayRegions } from './scaleway.interface';
+import { ConnectorScalewayService } from './scaleway.service';
+import {
+    schemaConfig,
+    schemaCredential,
+} from './scaleway.validation';
+import {
+    ScalewayInstallFactory,
+    ScalewayUninstallFactory,
+} from './tasks';
+import type {
+    IConnectorScalewayConfig,
+    IConnectorScalewayCredential, 
+} from './scaleway.interface';
+import type {
+    IScalewayInstallCommandData,
+    IScalewayUninstallCommandData,
+} from './tasks';
+import type { OnModuleDestroy } from '@nestjs/common';
+import type {
+    IConnectorConfig,
+    IConnectorFactory,
+    IConnectorService,
 } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
@@ -27,30 +51,6 @@ import type {
     IScalewayQueryInstanceType,
     ITaskToCreate,
 } from '@scrapoxy/common';
-import {
-    CONNECTOR_SCALEWAY_TYPE,
-    EScalewayQueryCredential,
-    SCALEWAY_DEFAULT_REGION,
-} from '@scrapoxy/common';
-import { ScalewayApi } from './api';
-import {
-    EScalewayRegions,
-    type IConnectorScalewayConfig,
-    type IConnectorScalewayCredential,
-} from './scaleway.interface';
-import { ConnectorScalewayService } from './scaleway.service';
-import {
-    schemaConfig,
-    schemaCredential,
-} from './scaleway.validation';
-import type {
-    IScalewayInstallCommandData,
-    IScalewayUninstallCommandData,
-} from './tasks';
-import {
-    ScalewayInstallFactory,
-    ScalewayUninstallFactory,
-} from './tasks';
 
 
 const FILTER_INSTANCE_TYPES = [
@@ -58,7 +58,7 @@ const FILTER_INSTANCE_TYPES = [
     'DEV1-S',
     'DEV1-M',
     'PLAY2-NANO',
-    'PLAY2-MICRO'
+    'PLAY2-MICRO',
 ];
 
 @Injectable()
@@ -171,7 +171,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
             snapshotId: void 0,
             fingerprintOptions,
             installId,
-            tag: void 0
+            tag: void 0,
         };
         const taskToCreate: ITaskToCreate = {
             type: ScalewayInstallFactory.type,
@@ -196,7 +196,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
             region: connectorConfig.region,
             snapshotId: connectorConfig.snapshotId,
             imageId: connectorConfig.imageId,
-            projectId: credentialConfig.projectId
+            projectId: credentialConfig.projectId,
         };
         const taskToCreate: ITaskToCreate = {
             type: ScalewayUninstallFactory.type,
@@ -226,7 +226,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
             credentialConfig.projectId,
             this.agents
         );
-
         const image = await api.getImage(connectorConfig.imageId);
 
         if (!image) {
@@ -265,14 +264,14 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         //         credentialConfig.projectId,
         //         this.agents
         //     ),
-            const response: IConnectorListProxies = {
-                proxies: [],
-                errors: [],
-            };
+        const response: IConnectorListProxies = {
+            proxies: [],
+            errors: [],
+        };
 
         try {
             const
-                promises: Promise<void>[] = []
+                promises: Promise<void>[] = [];
             for (const region in EScalewayRegions) {
                 const promise = (async() => {
                     const apiRegion = new ScalewayApi(
@@ -304,7 +303,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
     }
 
     private async queryRegions(credentialConfig: IConnectorScalewayCredential): Promise<string[]> {
-        return Object.values(EScalewayRegions);;
+        return Object.values(EScalewayRegions);
     }
 
     private async queryInstanceTypes(

@@ -3,17 +3,17 @@ import {
     TaskStepError,
     validate,
 } from '@scrapoxy/backend-sdk';
+import {
+    ATaskCommand,
+    CONNECTOR_SCALEWAY_TYPE,
+} from '@scrapoxy/common';
+import * as Joi from 'joi';
+import { ScalewayApi } from '../api';
 import type {
     ITaskData,
     ITaskFactory,
     ITaskToUpdate,
 } from '@scrapoxy/common';
-import {
-    ATaskCommand,
-    CONNECTOR_SCALEWAY_TYPE
-} from '@scrapoxy/common';
-import * as Joi from 'joi';
-import { ScalewayApi } from '../api';
 
 
 export interface IScalewayUninstallCommandData {
@@ -92,9 +92,10 @@ class ScalewayUninstallCommand extends ATaskCommand {
                 // Wait image to be deregistered (only if doesn't exist)
                 try {
                     await api.getImage(this.data.imageId);
+
                     return this.waitTask();
-                } catch (err:any) {
-                    if ( !err.message || !err.message.includes('not found')) { 
+                } catch (err: any) {
+                    if (!err.message?.includes('not found')) { 
                         throw err;
                     }
                 }
@@ -107,10 +108,11 @@ class ScalewayUninstallCommand extends ATaskCommand {
                         nextRetryTs: Date.now(),
                         data: this.data,
                     };
+
                     return taskToUpdate;
                 }
 
-                api.deleteSnapshot(this.data.snapshotId);
+                await api.deleteSnapshot(this.data.snapshotId);
 
                 const taskToUpdate: ITaskToUpdate = {
                     running: this.task.running,
@@ -127,9 +129,10 @@ class ScalewayUninstallCommand extends ATaskCommand {
                 // Wait for an active instance with IP
                 try {
                     await api.getSnapshot(this.data.snapshotId);
+
                     return this.waitTask();
-                } catch (err:any) {
-                    if ( !err.message || !err.message.includes('not found')) { 
+                } catch (err: any) {
+                    if (!err.message?.includes('not found')) { 
                         throw err;
                     }
                 }

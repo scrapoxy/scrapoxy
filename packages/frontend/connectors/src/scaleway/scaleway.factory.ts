@@ -3,13 +3,6 @@ import {
     Type,
 } from '@angular/core';
 import { CONNECTOR_SCALEWAY_TYPE } from '@scrapoxy/common';
-import type {
-    IConnectorComponent,
-    IConnectorConfig,
-    IConnectorFactory,
-    ICredentialComponent,
-    IInstallComponent,
-} from '@scrapoxy/frontend-sdk';
 import {
     ConnectorprovidersService,
     EConnectorType,
@@ -17,6 +10,13 @@ import {
 import { ConnectorScalewayComponent } from './connector/connector.component';
 import { CredentialScalewayComponent } from './credential/credential.component';
 import { InstallScalewayComponent } from './install/install.component';
+import type {
+    IConnectorComponent,
+    IConnectorConfig,
+    IConnectorFactory,
+    ICredentialComponent,
+    IInstallComponent,
+} from '@scrapoxy/frontend-sdk';
 
 
 @Injectable()

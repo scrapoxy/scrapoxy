@@ -26,4 +26,3 @@ const schemaConfig = Joi.object({
 
 
 export { schemaConfig, schemaCredential };
-
