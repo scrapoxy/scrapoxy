@@ -2,6 +2,10 @@
 
 This deployment runs a single container that encapsulates all components, including the storage, within a single file.
 
+It is designed to handle fewer than 100 concurrent requests.
+
+For greater scalability, consider configuring a [simple cluster](./simple-cluster).
+
 
 ## Docker
 
@@ -41,7 +45,7 @@ docker run -d -p 8888:8888 -p 8890:8890 \
 
 ## Docker Compose
 
-Edit `docker-compose.yml` with the following content:
+Create a `docker-compose.yml` file with the following content:
 
 ```yaml
 version: '3'

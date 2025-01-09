@@ -1,8 +1,8 @@
 # Cluster with file storage Deployment
 
-This deployment consists of 3 instances:
+This deployment consists of 4 instances:
 - 1 Commander instance with file storage;
-- 1 Master instance;
+- 2 Master instances;
 - 1 Refresh instance.
 
 For additional details, refer to the [Architecture](/architecture/overview) section.
@@ -15,7 +15,27 @@ as this can cause connection problems, especially when scaling up.
 
 ## Docker Compose
 
-Edit `docker-compose.yml` with the following content:
+Create a `haproxy.cfg` file with the following content:
+
+```cfg
+resolvers default
+    parse-resolv-conf
+
+frontend master
+    mode tcp
+    bind :8888
+    default_backend all
+
+backend all
+    mode tcp
+    server-template master 2 master:8888 check init-addr last,none resolvers default
+```
+
+Adjust the `server-template` directive to align the required number of Master instances based on the [desired sizing](#sizing).
+
+---
+
+In the same directory, create a `docker-compose.yml` file with the following content:
 
 ```yaml
 services:
@@ -34,11 +54,20 @@ services:
         volumes:
             - ./scrapoxy:/etc/scrapoxy
 
+    haproxy:
+        image: haproxy
+        ports:
+            - 8888:8888
+        volumes:
+            - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+
     master:
         image: scrapoxy/scrapoxy
         command: "node scrapoxy.js start -m"
-        ports:
-            - 8888:8888
+        deploy:
+            mode: replicated
+            replicas: 2
+            endpoint_mode: dnsrr
         environment:
             - NODE_ENV=production
             - COMMANDER_URL=http://commander:8890/api
@@ -56,6 +85,10 @@ services:
         links:
             - commander
 ```
+
+Make sure to update the `replicas` field un `master` service to match the number of Master instances required.
+
+---
 
 Run the following command:
 
@@ -112,3 +145,17 @@ Install the chart:
 ```shell
 helm install scrapoxy ./myscrapoxy
 ```
+
+
+## Sizing
+
+The master instance handles all requests, so it's the one to scale the most.
+
+Here’s a reference table:
+
+| Max concurrent requests | Number of Masters | Number of vCPU |
+|-------------------------|-------------------|----------------|
+| 100                     | 1                 | 2              |
+| 200                     | 2                 | 3              |
+| 500                     | 3                 | 4              |
+| 1000                    | 4                 | 5              |
