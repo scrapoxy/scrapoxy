@@ -240,7 +240,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
 
         switch (query.type) {
             case EScalewayQueryCredential.Regions: {
-                return this.queryRegions(credentialConfig);
+                return this.queryRegions();
             }
 
             case EScalewayQueryCredential.InstanceTypes: {
@@ -257,13 +257,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
     }
 
     async listAllProxies(credentialConfig: IConnectorScalewayCredential): Promise<IConnectorListProxies> {
-        // const
-        //     api = new ScalewayApi(
-        //         credentialConfig.secretAccessKey,
-        //         SCALEWAY_DEFAULT_REGION,
-        //         credentialConfig.projectId,
-        //         this.agents
-        //     ),
         const response: IConnectorListProxies = {
             proxies: [],
             errors: [],
@@ -302,7 +295,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         return response;
     }
 
-    private async queryRegions(credentialConfig: IConnectorScalewayCredential): Promise<string[]> {
+    private async queryRegions(): Promise<string[]> {
         return Object.values(EScalewayRegions);
     }
 
