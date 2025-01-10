@@ -147,7 +147,7 @@ class ScalewayInstallCommand extends ATaskCommand {
             }
 
             case 1: {
-                // start the instance
+                // Start the instance
                 const instance = await api.getInstance(this.data.instanceId as string);
 
                 if (instance.state !== EScalewayInstanceState.RUNNING ||
