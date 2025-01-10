@@ -20,6 +20,13 @@ export interface IScalewayError {
 }
 
 
+//////////// PROJECTS ////////////
+export interface IScalewayProject {
+    id: string;
+    name: string;
+}
+
+
 //////////// REGIONS ////////////
 export enum EScalewayRegions {
     PAR1 = 'fr-par-1',
