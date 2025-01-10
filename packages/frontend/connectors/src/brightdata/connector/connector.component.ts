@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import {
     CONNECTOR_BRIGHTDATA_TYPE,
+    EBrightdataProductType,
     EBrightdataQueryCredential,
 } from '@scrapoxy/common';
 import {
@@ -181,6 +182,12 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
         }
     }
 
+    get countryEnabled(): boolean {
+        return [
+            EBrightdataProductType.MOBILE, EBrightdataProductType.RESIDENTIAL,
+        ].includes(this.subForm.value.zoneType);
+    }
+
     async ngOnInit(): Promise<void> {
         await Promise.resolve();
 
@@ -238,5 +245,11 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
         this.subForm.patchValue({
             zoneType,
         });
+
+        if (!this.countryEnabled) {
+            this.subForm.patchValue({
+                country: 'all',
+            });
+        }
     }
 }

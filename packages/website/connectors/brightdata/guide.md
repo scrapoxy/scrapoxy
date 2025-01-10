@@ -69,10 +69,20 @@ Click on `Add token`.
 
 Choose between Residential, ISP, Datacenter or Mobiles proxies.
 
-For ISP or Datacenter proxies, select the number of required instances.
 
-::: warning
-Do not add a Geolocation targeting filter, as Scrapoxy will manage this parameter.
+### Add proxies count and country (for Datacenter or ISP proxies only)
+
+Geolocation for Datacenter or ISP proxies cannot be managed directly in Scrapoxy, as BrightData assigns the country during zone creation.
+
+![Brightdata Country Select](brightdata_new_zone_country.png)
+
+In the `Basic settings`:
+
+1. Specify the required number of proxies;
+2. Add a country.
+
+::: info
+It is recommended to assign only one country per zone. For multiple countries, create separate zones for each.
 :::
 
 
@@ -111,7 +121,7 @@ Complete the form with the following information:
 4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
 5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
 6. **Zone**: The zone to use;
-7. **Country**: Select the country to use, or `All` to use all countries.
+7. **Country**: Select the country to use, or `All` to use all countries (only available for Residential and Mobile proxies).
 
 And click on `Create`.
 
