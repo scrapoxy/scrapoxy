@@ -1,4 +1,3 @@
-import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import {
     Agents,
     CommanderFrontendClient,
@@ -9,16 +8,6 @@ import {
     TransportDatacenterServiceImpl,
     validate,
 } from '@scrapoxy/backend-sdk';
-import type {
-    ICertificate,
-    IFingerprintOptions,
-    IFingerprintRequest,
-    IProxyToRefresh,
-    ITaskContext,
-    ITaskData,
-    ITaskFactory,
-    ITaskToUpdate,
-} from '@scrapoxy/common';
 import {
     ATaskCommand,
     CONNECTOR_OVH_TYPE,
@@ -33,16 +22,27 @@ import * as Joi from 'joi';
 import { v4 as uuid } from 'uuid';
 import { OvhApi } from '../api';
 import { getOvhExternalIp } from '../ovh.helpers';
-import type {
-    IConnectorOvhConfig,
-    IConnectorOvhCredential,
-} from '../ovh.interface';
 import {
     EOvhInstanceStatus,
     EOvhSnapshotStatus,
     EOvhVisibility,
 } from '../ovh.interface';
 import { schemaCredential } from '../ovh.validation';
+import type {
+    IConnectorOvhConfig,
+    IConnectorOvhCredential,
+} from '../ovh.interface';
+import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
+import type {
+    ICertificate,
+    IFingerprintOptions,
+    IFingerprintRequest,
+    IProxyToRefresh,
+    ITaskContext,
+    ITaskData,
+    ITaskFactory,
+    ITaskToUpdate,
+} from '@scrapoxy/common';
 
 
 export interface IOvhInstallCommandData extends IConnectorOvhCredential {
