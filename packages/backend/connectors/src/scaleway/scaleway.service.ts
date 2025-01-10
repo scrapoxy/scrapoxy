@@ -68,12 +68,12 @@ export class ConnectorScalewayService implements IConnectorService {
 
         const instances = await this.api.listInstances(this.connectorConfig.tag);
 
-        return instances.map((i) => {
+        return instances.map((instance) => {
             const config: ITransportProxyRefreshedConfigDatacenter = {
                 address:
-                    i.public_ips && i.public_ips.length > 0
+                    instance.public_ips && instance.public_ips.length > 0
                         ? {
-                            hostname: i.public_ips[ 0 ].address,
+                            hostname: instance.public_ips[ 0 ].address,
                             port: this.connectorConfig.port,
                         }
                         : void 0,
@@ -81,10 +81,10 @@ export class ConnectorScalewayService implements IConnectorService {
             const proxy: IConnectorProxyRefreshed = {
                 type: CONNECTOR_SCALEWAY_TYPE,
                 transportType: TRANSPORT_DATACENTER_TYPE,
-                key: i.id,
-                name: i.id,
+                key: instance.id,
+                name: instance.id,
                 config,
-                status: convertStatus(i.state),
+                status: convertStatus(instance.state),
             };
 
             return proxy;
