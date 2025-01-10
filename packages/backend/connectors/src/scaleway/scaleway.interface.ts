@@ -3,6 +3,7 @@ export interface IConnectorScalewayCredential {
     projectId: string;
 }
 
+
 export interface IConnectorScalewayConfig {
     region: string;
     port: number;
@@ -38,7 +39,8 @@ export interface IScalewayVolume {
 export type IScalewayExtraVolume = IScalewayVolume & {
     id: string;
     state: string;
-};
+}
+
 
 export interface IScalewayVolumes<T extends IScalewayVolume> {
     [index: string]: T;
@@ -70,6 +72,7 @@ export interface IScalewayInstanceBase {
     tags: string[];
 }
 
+
 export interface IScalewayInstance extends IScalewayInstanceBase {
     id: string;
     volumes: IScalewayVolumes<IScalewayExtraVolume>;
@@ -78,7 +81,8 @@ export interface IScalewayInstance extends IScalewayInstanceBase {
     arch: string;
 }
 
-export interface IScalewayCreateInstancesRequest extends IScalewayInstanceBase{
+
+export interface IScalewayCreateInstancesRequest extends IScalewayInstanceBase {
     image: string;
     volumes?: IScalewayVolumes<IScalewayVolume>;
 }
@@ -91,6 +95,7 @@ export enum EScalewaySnapshotState {
     IMPORTING = 'importing',
     EXPORTING = 'exporting',
 }
+
 
 export interface IScalewaySnapshot {
     id: string;
@@ -109,6 +114,7 @@ export enum EScalewayImageState {
     CREATING = 'creating',
     ERROR = 'error',
 }
+
 
 export interface IScalewayImage {
     id: string;

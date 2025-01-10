@@ -24,7 +24,7 @@ import { ScalewayApi } from '../api';
 import {
     EScalewayImageState,
     EScalewayInstanceState,
-    EScalewaySnapshotState, 
+    EScalewaySnapshotState,
 } from '../scaleway.interface';
 import type { IConnectorScalewayConfig } from '../scaleway.interface';
 import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
@@ -127,7 +127,7 @@ class ScalewayInstallCommand extends ATaskCommand {
 
                 const userData = await new InstallScriptBuilder(this.data.certificate)
                     .build();
-                
+
                 await api.setUserData(
                     instance.id,
                     userData
@@ -149,15 +149,15 @@ class ScalewayInstallCommand extends ATaskCommand {
             case 1: {
                 // start the instance
                 const instance = await api.getInstance(this.data.instanceId as string);
-                
+
                 if (instance.state !== EScalewayInstanceState.RUNNING ||
                     !instance.public_ips ||
                     instance.public_ips.length <= 0 ||
                     !instance.public_ips[ 0 ].address) {
-                    
+
                     return this.waitTask();
                 }
-                
+
                 this.data.hostname = instance.public_ips[ 0 ].address;
 
                 const taskToUpdate: ITaskToUpdate = {

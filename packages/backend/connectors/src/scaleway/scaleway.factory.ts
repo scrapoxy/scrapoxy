@@ -27,7 +27,7 @@ import {
 } from './tasks';
 import type {
     IConnectorScalewayConfig,
-    IConnectorScalewayCredential, 
+    IConnectorScalewayCredential,
 } from './scaleway.interface';
 import type {
     IScalewayInstallCommandData,
@@ -60,6 +60,7 @@ const FILTER_INSTANCE_TYPES = [
     'PLAY2-NANO',
     'PLAY2-MICRO',
 ];
+
 
 @Injectable()
 export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDestroy {

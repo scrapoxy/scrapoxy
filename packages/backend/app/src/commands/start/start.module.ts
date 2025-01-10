@@ -1,4 +1,4 @@
-import type { DynamicModule } from '@nestjs/common';
+import { resolve } from 'path';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {
@@ -59,9 +59,9 @@ import {
     StorageFileModule,
     StorageMemoryModule,
 } from '@scrapoxy/backend-sdk';
-import { resolve } from 'path';
 import { getEnvCommanderPort } from './start.helpers';
 import type { IAppStartModuleConfig } from './start.interface';
+import type { DynamicModule } from '@nestjs/common';
 
 
 @Module({

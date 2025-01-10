@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    TRANSPORT_DATACENTER_TYPE, 
+    TRANSPORT_DATACENTER_TYPE,
 } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_SCALEWAY_TYPE,
@@ -13,7 +13,7 @@ import { EScalewayInstanceState } from './scaleway.interface';
 import type {
     IConnectorScalewayConfig,
     IConnectorScalewayCredential,
-    IScalewayInstance, 
+    IScalewayInstance,
 } from './scaleway.interface';
 import type {
     IConnectorService,
@@ -40,6 +40,7 @@ function convertStatus(code: EScalewayInstanceState): EProxyStatus {
             return EProxyStatus.ERROR;
     }
 }
+
 
 export class ConnectorScalewayService implements IConnectorService {
     private readonly logger = new Logger(ConnectorScalewayService.name);
@@ -128,7 +129,6 @@ export class ConnectorScalewayService implements IConnectorService {
       
         return allInstances;
     }
-      
 
     public async startProxies(keys: string[]): Promise<void> {
         this.logger.debug(`startProxies(): keys.length=${keys.length}`);
@@ -153,10 +153,10 @@ export class ConnectorScalewayService implements IConnectorService {
             commercial_type: this.connectorConfig.instanceType,
             project: this.credentialConfig.projectId,
             tags: [
-                this.connectorConfig.tag, 
+                this.connectorConfig.tag,
             ],
         });
-            
+
         await this.api.attachIP(instance.id);
 
         await this.api.startInstance(instance.id);
@@ -170,6 +170,7 @@ export class ConnectorScalewayService implements IConnectorService {
         if (instance.public_ips?.[ 0 ]) {
             await this.api.deleteIP(instance.public_ips[ 0 ].id);
         }
+
         await this.api.terminateInstance(instance.id);
     }
 }

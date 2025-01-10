@@ -1,4 +1,3 @@
-// import { Agents } from '@scrapoxy/backend-sdk';
 import { Agents } from '@scrapoxy/backend-sdk';
 import axios, { AxiosError } from 'axios';
 import type {
@@ -6,7 +5,7 @@ import type {
     IScalewayError,
     IScalewayImage,
     IScalewayInstance,
-    IScalewaySnapshot, 
+    IScalewaySnapshot,
 } from './scaleway.interface';
 import type {
     AxiosInstance,
@@ -22,6 +21,7 @@ export class ScalewayError extends Error {
         super(message);
     }
 }
+
 
 export class ScalewayApi {
     private readonly instance: AxiosInstance;
@@ -95,13 +95,13 @@ export class ScalewayApi {
         request.volumes = {
             0: {
                 size: 10000000000,
-                volume_type: 'b_ssd', 
+                volume_type: 'b_ssd',
             },
         };
 
         if (!request.tags[ 0 ])
             request.tags = [
-                'scrpx', 
+                'scrpx',
             ];
 
         const instance = await this.instance.post<{ server: IScalewayInstance }>(
@@ -199,13 +199,13 @@ export class ScalewayApi {
                     }>;
                 };
             }) => {
-            
+
                 const volume = res.data.servers[ type ];
 
                 if (!volume) throw new Error('Volume type invalid');
                 console.log(volume);
-        
-                return volume.per_volumes_constraint.min_size;  
+
+                return volume.per_volumes_constraint.min_size;
             });
     }
 
@@ -272,6 +272,4 @@ export class ScalewayApi {
     public async deleteImage(imageId: string): Promise<void> {
         await this.instance.delete(`/images/${imageId}`);
     }
-
-    
 }
