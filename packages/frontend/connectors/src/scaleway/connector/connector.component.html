@@ -1,0 +1,151 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['region']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="region">Region</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="region"
+                        formControlName="region"
+                        (change)="regionChanged()"
+                        [attr.disabled]="processingRegions ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Region ------</option>
+                        @for (region of regions; track region) {
+                            <option [ngValue]="region">
+                                {{ region }}
+                            </option>
+                        }
+                    </select>
+
+                    @if (processingRegions) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                    @if (c.dirty || c.touched) {
+                        <c-form-feedback [valid]="c.valid">
+                            @if (c.errors; as errs) {
+                                @if (errs['required']) {
+                                    Region is required.
+                                }
+                            }
+                        </c-form-feedback>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['port']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="port">Port</label>
+
+            <c-col md="10">
+                <input
+                    type="number"
+                    cFormControl
+                    id="port"
+                    formControlName="port"
+                    placeholder="Enter the Port"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Port is required.</div>
+                            }
+                            @if (errs['min'] || errs['max']) {
+                                <div>Port should be between 1024 and 65535.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['instanceType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="instanceType">Instance Type</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="instanceType"
+                        formControlName="instanceType"
+                        [attr.disabled]="processingInstanceTypes ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Instance Type ------</option>
+                        @for (instanceType of instanceTypes; track instanceType) {
+                            <option [ngValue]="instanceType">
+                                {{ instanceType }}
+                            </option>
+                        }
+                    </select>
+
+                    @if (processingInstanceTypes) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['snapshotId']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="snapshotId">Snapshot ID</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="snapshotId"
+                    formControlName="snapshotId"
+                    placeholder="Enter the snapshot ID"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['imageId']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="imageId">Image ID</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="imageId"
+                    formControlName="imageId"
+                    placeholder="Enter the image ID"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['tag']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="tag">Tag</label>
+
+            <c-col md="10">
+                <input
+                    type="text"
+                    cFormControl
+                    id="tag"
+                    formControlName="tag"
+                    placeholder="Enter the tag"
+                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['required']) {
+                                <div>Tag is required.</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
+            </c-col>
+        </c-row>
+    }
+</ng-container>

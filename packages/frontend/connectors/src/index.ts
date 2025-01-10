@@ -46,6 +46,8 @@ export * from './proxyrack';
 
 export * from './rayobyte';
 
+export * from './scaleway';
+
 export * from './smartproxy';
 
 export * from './xproxy';

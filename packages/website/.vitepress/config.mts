@@ -151,6 +151,7 @@ export default defineConfig({
                         ]
                     },
                     {text: 'Rayobyte', link: 'rayobyte/guide'},
+                    {text: 'Scaleway', link: 'scaleway/guide'},
                     {text: 'Smartproxy', link: 'smartproxy/guide'},
                     {text: 'XProxy', link: 'xproxy/guide'},
                     {text: 'Zyte', link: 'zyte/guide'},
