@@ -82,7 +82,7 @@ export class ConnectorScalewayService implements IConnectorService {
                 type: CONNECTOR_SCALEWAY_TYPE,
                 transportType: TRANSPORT_DATACENTER_TYPE,
                 key: instance.id,
-                name: instance.id,
+                name: instance.name,
                 config,
                 status: convertStatus(instance.state),
             };
@@ -125,7 +125,7 @@ export class ConnectorScalewayService implements IConnectorService {
                 type: CONNECTOR_SCALEWAY_TYPE,
                 transportType: TRANSPORT_DATACENTER_TYPE,
                 key: instance.id,
-                name: instance.id,
+                name: instance.name,
                 config,
                 status: EProxyStatus.STARTING, // Override the status to avoid stopped instance at the beginning
             };
