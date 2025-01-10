@@ -1,6 +1,24 @@
 {
     "releases": [
         {
+            "version": "4.18.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**connector**: add the Scaleway connector (thanks to [Rémy Fontaine](https://github.com/remyft) from [Sahar](https://sahar.fr))"
+                    ]
+                },
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**connector/brightdata**: update UI and documentation to clarify country selection for ISP and DC",
+                        "**website**: doc update and minor fixes"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.17.6",
             "description": "Empty version for testing deployment purpose",
             "commitGroups": []
