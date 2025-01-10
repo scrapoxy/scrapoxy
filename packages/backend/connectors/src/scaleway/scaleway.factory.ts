@@ -178,7 +178,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
             snapshotId: void 0,
             fingerprintOptions,
             installId,
-            tag: void 0,
         };
         const taskToCreate: ITaskToCreate = {
             type: ScalewayInstallFactory.type,
