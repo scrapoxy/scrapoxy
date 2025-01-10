@@ -25,6 +25,9 @@ import type {
 } from '@scrapoxy/common';
 
 
+const CREATE_BATCH_SIZE = 10;
+
+
 function convertStatus(code: EScalewayInstanceState): EProxyStatus {
     switch (code) {
         case EScalewayInstanceState.STARTING:
@@ -90,44 +93,47 @@ export class ConnectorScalewayService implements IConnectorService {
 
     public async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
-        
-        const proxies = new Array(count)
-            .fill('');
-        const batchSize = 10;
-        const allInstances: IConnectorProxyRefreshed[] = [];
-        // Create proxies 10 by 10
-        for (let i = 0; i < proxies.length; i += batchSize) {
-            const chunk = proxies.slice(
-                i,
-                i + batchSize
-            );
-            const instances = await Promise.all(chunk.map(() => this.createProxy()));
-            const refreshedProxies = instances.map((instance) => {
-                const config: ITransportProxyRefreshedConfigDatacenter = {
-                    address:
-                    instance.public_ips && instance.public_ips.length > 0
-                        ? {
-                            hostname: instance.public_ips[ 0 ].address,
-                            port: this.connectorConfig.port,
-                        }
-                        : undefined,
-                };
-                const proxy: IConnectorProxyRefreshed = {
-                    type: CONNECTOR_SCALEWAY_TYPE,
-                    transportType: TRANSPORT_DATACENTER_TYPE,
-                    key: instance.id,
-                    name: instance.id,
-                    config,
-                    status: convertStatus(instance.state),
-                };
 
-                return proxy;
-            });
+        const allInstances: IScalewayInstance[] = [];
+        // Create proxies in batch
+        let countToCreate = count;
+        while (countToCreate > 0) {
+            const instancesPromises: Promise<IScalewayInstance>[] = [];
+            for (let i = 0; i < Math.min(
+                CREATE_BATCH_SIZE,
+                countToCreate
+            ); i++) {
+                instancesPromises.push(this.createProxy());
+            }
 
-            allInstances.push(...refreshedProxies);
+            const instances = await Promise.all(instancesPromises);
+            allInstances.push(...instances);
+            countToCreate -= CREATE_BATCH_SIZE;
         }
-      
-        return allInstances;
+
+        const proxiesRefreshed = allInstances.map((instance) => {
+            const config: ITransportProxyRefreshedConfigDatacenter = {
+                address:
+                instance.public_ips && instance.public_ips.length > 0
+                    ? {
+                        hostname: instance.public_ips[ 0 ].address,
+                        port: this.connectorConfig.port,
+                    }
+                    : undefined,
+            };
+            const proxy: IConnectorProxyRefreshed = {
+                type: CONNECTOR_SCALEWAY_TYPE,
+                transportType: TRANSPORT_DATACENTER_TYPE,
+                key: instance.id,
+                name: instance.id,
+                config,
+                status: EProxyStatus.STARTING, // Override the status to avoid stopped instance at the beginning
+            };
+
+            return proxy;
+        });
+
+        return proxiesRefreshed;
     }
 
     public async startProxies(keys: string[]): Promise<void> {
