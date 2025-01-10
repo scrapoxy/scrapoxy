@@ -53,7 +53,6 @@ export interface IScalewayInstallCommandData {
     imageId: string | undefined;
     fingerprintOptions: IFingerprintOptions;
     installId: string;
-    tag: string | undefined;
 }
 
 
@@ -82,8 +81,6 @@ const schemaData = Joi.object({
         .required(),
     installId: Joi.string()
         .required(),
-    tag: Joi.string()
-        .optional(),
 });
 
 
@@ -116,9 +113,7 @@ class ScalewayInstallCommand extends ATaskCommand {
                     project: this.data.projectId,
                     commercial_type: this.data.instanceType,
                     image: 'ubuntu_noble',
-                    tags: [
-                        this.data.tag as string,
-                    ],
+                    tags: [],
                 });
 
                 this.data.instanceId = instance.id;
