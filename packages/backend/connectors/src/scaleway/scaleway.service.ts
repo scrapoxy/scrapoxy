@@ -152,9 +152,8 @@ export class ConnectorScalewayService implements IConnectorService {
     }
 
     private async createProxy(): Promise<IScalewayInstance> {
-        const instanceName = randomName();
         const instance = await this.api.createInstance({
-            name: instanceName,
+            name: randomName(),
             image: this.connectorConfig.imageId,
             commercial_type: this.connectorConfig.instanceType,
             project: this.credentialConfig.projectId,
