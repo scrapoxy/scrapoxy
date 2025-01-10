@@ -118,8 +118,6 @@ class ScalewayInstallCommand extends ATaskCommand {
 
                 this.data.instanceId = instance.id;
 
-                await api.attachIP(instance.id);
-
                 const userData = await new InstallScriptBuilder(this.data.certificate)
                     .build();
 
@@ -306,10 +304,6 @@ class ScalewayInstallCommand extends ATaskCommand {
                 await api.deleteInstance(instance.id);
 
                 await api.deleteVolume(instance.volumes[ 0 ].id);
-
-                if (instance.public_ips) {
-                    await api.deleteIP(instance.public_ips[ 0 ].id as string);
-                }
 
                 // Update connector configuration
                 const commander = new CommanderFrontendClient(

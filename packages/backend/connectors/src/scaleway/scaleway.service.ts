@@ -162,8 +162,6 @@ export class ConnectorScalewayService implements IConnectorService {
             ],
         });
 
-        await this.api.attachIP(instance.id);
-
         await this.api.startInstance(instance.id);
 
         return instance;
@@ -172,10 +170,12 @@ export class ConnectorScalewayService implements IConnectorService {
     private async removeProxy(proxyId: string) {
         const instance = await this.api.getInstance(proxyId);
 
-        if (instance.public_ips?.[ 0 ]) {
-            await this.api.deleteIP(instance.public_ips[ 0 ].id);
+        try {
+            await this.api.terminateInstance(instance.id);
+        } catch (err: any) {
+            if (!err.message.includes('should be running')) {
+                throw err;
+            }
         }
-
-        await this.api.terminateInstance(instance.id);
     }
 }

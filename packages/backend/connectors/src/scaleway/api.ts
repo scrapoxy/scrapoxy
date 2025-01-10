@@ -3,12 +3,15 @@ import axios, { AxiosError } from 'axios';
 import type {
     IScalewayCreateInstancesRequest,
     IScalewayError,
+    IScalewayExtraVolume,
     IScalewayImage,
     IScalewayInstance,
+    IScalewayProject,
     IScalewaySnapshot,
 } from './scaleway.interface';
 import type {
     AxiosInstance,
+    AxiosRequestConfig,
     AxiosResponse,
 } from 'axios';
 
@@ -26,21 +29,17 @@ export class ScalewayError extends Error {
 export class ScalewayApi {
     private readonly instance: AxiosInstance;
 
-    private readonly projectId: string;
-
     constructor(
         secretAccessKey: string,
         region: string,
-        projectId: string,
+        private readonly projectId: string,
         agents: Agents
     ) {
-        this.projectId = projectId;
         this.instance = axios.create({
             ...agents.axiosDefaults,
             baseURL: `https://api.scaleway.com/instance/v1/zones/${region}`,
             headers: {
                 'X-Auth-Token': secretAccessKey,
-                'Content-Type': 'application/json',
             },
         });
 
@@ -67,31 +66,64 @@ export class ScalewayApi {
         );
     }
 
-    //////////// INSTANCES ////////////
-    public async getInstance(instanceId: string): Promise<IScalewayInstance> {
-        const instance = await this.instance.get<{ server: IScalewayInstance }>(`/servers/${instanceId}`)
-            .then((r) => r.data.server);
-
-        return instance;
+    //////////// PROJECTS ////////////
+    public async getCurrentProject(): Promise<IScalewayProject> {
+        return await this.instance.get(
+            `projects/${this.projectId}`,
+            {
+                baseURL: 'https://api.scaleway.com/account/v3',
+            }
+        )
+            .then((r) => r.data);
     }
 
-    public async listInstances(tags?: string): Promise<IScalewayInstance[]> { // TODO
-        const params = new URLSearchParams();
+    //////////// INSTANCE TYPES ////////////
+    public async listInstanceTypes(types?: string[]): Promise<string[]> {
+        const instanceTypes = await this.instance.get('products/servers')
+            .then((r) => Object.keys(r.data.servers));
+        let instanceTypesFiltered: string[];
 
-        if (tags) {
-            params.set(
-                'tags',
-                tags
-            );
+        if (types) {
+            instanceTypesFiltered = instanceTypes
+                .filter((key: string) => types.includes(key));
+        } else {
+            instanceTypesFiltered = instanceTypes;
         }
 
-        const instances = await this.instance.get(`/servers/?${params.toString()}`)
+        return instanceTypesFiltered;
+    }
+
+    //////////// INSTANCES ////////////
+    public async listInstances(tags?: string): Promise<IScalewayInstance[]> {
+        const config: AxiosRequestConfig = {
+            params: {
+                project: this.projectId,
+            },
+        };
+
+        if (tags) {
+            config.params.tags = tags;
+        }
+
+        const instances = await this.instance.get(
+            'servers',
+            config
+        )
             .then((r) => r.data.servers);
 
         return instances;
     }
 
+    public async getInstance(instanceId: string): Promise<IScalewayInstance> {
+        const instance = await this.instance.get<{ server: IScalewayInstance }>(`servers/${instanceId}`)
+            .then((r) => r.data.server);
+
+        return instance;
+    }
+
     public async createInstance(request: IScalewayCreateInstancesRequest): Promise<IScalewayInstance> {
+        request.project = this.projectId;
+
         request.volumes = {
             0: {
                 size: 10000000000,
@@ -99,13 +131,8 @@ export class ScalewayApi {
             },
         };
 
-        if (!request.tags[ 0 ])
-            request.tags = [
-                'scrpx',
-            ];
-
         const instance = await this.instance.post<{ server: IScalewayInstance }>(
-            '/servers',
+            'servers',
             request
         )
             .then((r) => r.data.server);
@@ -113,13 +140,9 @@ export class ScalewayApi {
         return instance;
     }
 
-    public async deleteInstance(instanceId: string): Promise<void> {
-        await this.instance.delete(`/servers/${instanceId}`);
-    }
-
     public async startInstance(instanceId: string): Promise<void> {
         await this.instance.post(
-            `/servers/${instanceId}/action`,
+            `servers/${instanceId}/action`,
             {
                 action: 'poweron',
             }
@@ -128,7 +151,7 @@ export class ScalewayApi {
 
     public async stopInstance(instanceId: string): Promise<void> {
         await this.instance.post(
-            `/servers/${instanceId}/action`,
+            `servers/${instanceId}/action`,
             {
                 action: 'poweroff',
             }
@@ -137,84 +160,75 @@ export class ScalewayApi {
 
     public async terminateInstance(instanceId: string): Promise<void> {
         await this.instance.post(
-            `/servers/${instanceId}/action`,
+            `servers/${instanceId}/action`,
             {
                 action: 'terminate',
             }
         );
     }
 
-    public async listInstanceTypes(types?: string[]): Promise<string[]> {
-        return await this.instance.get('/products/servers')
-            .then((r) => Object.keys(r.data.servers)
-                .filter((key: string) => types ? types.includes(key) : true));
+    public async deleteInstance(instanceId: string): Promise<void> {
+        await this.instance.delete(`servers/${instanceId}`);
     }
 
     public async setUserData(
         instanceId: string, userData: string
     ) {
-        this.instance.defaults.headers[ 'Content-Type' ] = 'text/plain';
-        try {
-            await this.instance.patch(
-                `/servers/${instanceId}/user_data/cloud-init`,
-                userData
-            );
-        } catch (error) {}
-        this.instance.defaults.headers[ 'Content-Type' ] = 'application/json';
-    }
-
-    //////////// IPS ////////////
-    public async attachIP(instanceId: string): Promise<void> {
-        await this.instance.post(
-            '/ips',
+        await this.instance.patch(
+            `servers/${instanceId}/user_data/cloud-init`,
+            userData,
             {
-                server: instanceId,
-                type: 'routed_ipv4',
-                project: this.projectId,
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
             }
         );
     }
 
-    public async deleteIP(ipId: string): Promise<void> {
-        await this.instance.delete(`/ips/${ipId}`);
-    }
-
     //////////// VOLUMES ////////////
-    public async deleteVolume(volumeId: string): Promise<void> {
-        await this.instance.delete(`/volumes/${volumeId}`);
+    public async listVolumes(): Promise<IScalewayExtraVolume[]> {
+        return await this.instance.get(
+            'volumes',
+            {
+                params: {
+                    project: this.projectId,
+                },
+            }
+        )
+            .then((res) => res.data.volumes);
     }
 
-    public async getVolumeSize(type: string): Promise<number> {
-        return await this.instance.get('/products/servers')
-            .then((res: {
-                data: {
-                    servers: Record<string, {
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        display_name: string;
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        per_volumes_constraint: {
-                            // eslint-disable-next-line @typescript-eslint/naming-convention
-                            min_size: number;
-                        };
-                    }>;
-                };
-            }) => {
-
-                const volume = res.data.servers[ type ];
-
-                if (!volume) throw new Error('Volume type invalid');
-                console.log(volume);
-
-                return volume.per_volumes_constraint.min_size;
-            });
+    public async deleteVolume(volumeId: string): Promise<void> {
+        await this.instance.delete(`volumes/${volumeId}`);
     }
 
     //////////// SNAPSHOTS ////////////
+    public async listSnapshots(): Promise<IScalewaySnapshot[]> {
+        const response = await this.instance.get(
+            'snapshots',
+            {
+                params: {
+                    project: this.projectId,
+                },
+            }
+        )
+            .then((r) => r.data.snapshots);
+
+        return response;
+    }
+
+    public async getSnapshot(snapshotId: string): Promise<IScalewaySnapshot> {
+        const response = await this.instance.get(`snapshots/${snapshotId}`)
+            .then((r) => r.data.snapshot);
+
+        return response;
+    }
+
     public async createSnapshot(
         volumeId: string, snapshotName: string
     ): Promise<IScalewaySnapshot> {
         const snapshot = await this.instance.post(
-            '/snapshots',
+            'snapshots',
             {
                 project: this.projectId,
                 volume_id: volumeId,
@@ -226,35 +240,35 @@ export class ScalewayApi {
         return snapshot;
     }
 
-    public async listSnapshots(): Promise<IScalewaySnapshot[]> {
-        const response = await this.instance.get('/snapshots')
-            .then((r) => r.data);
-
-        return response;
-    }
-
-    public async getSnapshot(snapshotId: string): Promise<IScalewaySnapshot> {
-        const response = await this.instance.get(`/snapshots/${snapshotId}`)
-            .then((r) => r.data.snapshot);
-
-        return response;
-    }
-
     public async deleteSnapshot(snapshotId: string): Promise<void> {
-        await this.instance.delete(`/snapshots/${snapshotId}`);
+        await this.instance.delete(`snapshots/${snapshotId}`);
     }
 
     //////////// IMAGES ////////////
+    public async listImages(): Promise<IScalewayImage[]> {
+        const response = await this.instance.get(
+            'images',
+            {
+                params: {
+                    project: this.projectId,
+                },
+            }
+        )
+            .then((r) => r.data.images);
+
+        return response;
+    }
+
     public async createImage(
         imageName: string, snapshotId: string, arch: string
     ): Promise<IScalewayImage> {
         const imageId = await this.instance.post(
-            '/images',
+            'images',
             {
+                project: this.projectId,
                 name: imageName,
                 root_volume: snapshotId,
                 arch: arch,
-                project: this.projectId,
             }
         )
             .then((r) => r.data.image);
@@ -263,13 +277,13 @@ export class ScalewayApi {
     }
 
     public async getImage(imageId: string): Promise<IScalewayImage> {
-        const response = await this.instance.get(`/images/${imageId}`)
+        const response = await this.instance.get(`images/${imageId}`)
             .then((r) => r.data.image);
 
         return response;
     }
 
     public async deleteImage(imageId: string): Promise<void> {
-        await this.instance.delete(`/images/${imageId}`);
+        await this.instance.delete(`images/${imageId}`);
     }
 }
