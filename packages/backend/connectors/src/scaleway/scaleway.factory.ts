@@ -176,9 +176,9 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         };
         const taskToCreate: ITaskToCreate = {
             type: ScalewayInstallFactory.type,
-            name: `Install SCALEWAY on connector ${connector.name} in region ${connectorConfig.region}`,
+            name: `Install Scaleway on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: ScalewayInstallFactory.stepMax,
-            message: 'Installing SCALEWAY image...',
+            message: 'Installing Scaleway image...',
             data,
         };
 
@@ -201,7 +201,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         };
         const taskToCreate: ITaskToCreate = {
             type: ScalewayUninstallFactory.type,
-            name: `Uninstall SCALEWAY on connector ${connector.name} in region ${connectorConfig.region}`,
+            name: `Uninstall Scaleway on connector ${connector.name} in region ${connectorConfig.region}`,
             stepMax: ScalewayUninstallFactory.stepMax,
             message: 'Uninstalling Scaleway datacenter...',
             data,

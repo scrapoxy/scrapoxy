@@ -127,7 +127,7 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
             console.error(err);
 
             this.toastsService.error(
-                'Connector SCALEWAY',
+                'Connector Scaleway',
                 err.message
             );
         } finally {
@@ -171,7 +171,7 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
                 console.error(err);
 
                 this.toastsService.error(
-                    'Connector SCALEWAY',
+                    'Connector Scaleway',
                     err.message
                 );
             } finally {
