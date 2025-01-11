@@ -26,7 +26,7 @@
         "start:backend-app": "nx serve backend-app",
         "start:backend-app:production": "nx serve backend-app --configuration production",
         "start:website": "nx serve website",
-        "test": "nx run-many --target=test"
+        "test": "nx run-many --target=test --output-style=static"
     },
     "dependencies": {
         "@angular/animations": "~17.0.0",
