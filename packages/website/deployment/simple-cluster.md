@@ -29,9 +29,14 @@ frontend master
 backend all
     mode tcp
     server-template master 2 master:8888 check init-addr last,none resolvers default
+    
 ```
 
 Adjust the `server-template` directive to align the required number of Master instances based on the [desired sizing](#sizing).
+
+::: warning
+Ensure there is an empty line at the end of the `haproxy.cfg` file.
+:::
 
 ---
 
