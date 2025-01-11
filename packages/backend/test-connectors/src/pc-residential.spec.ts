@@ -37,6 +37,7 @@ describe(
                             config: {
                                 country: 'All',
                             } satisfies IConnectorProxyCheapResidentialConfig,
+                            install: void 0,
                         },
                     ],
                 },

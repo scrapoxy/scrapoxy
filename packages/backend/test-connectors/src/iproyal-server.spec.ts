@@ -38,6 +38,7 @@ describe(
                                 product: 'all',
                                 country: 'all',
                             } satisfies IConnectorIproyalServerConfig,
+                            install: void 0,
                         },
                     ],
                 },

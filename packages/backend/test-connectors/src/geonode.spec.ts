@@ -43,6 +43,7 @@ describe(
                                 country: 'all',
                                 lifetime: 10,
                             } satisfies IConnectorGeonodeConfig,
+                            install: void 0,
                         },
                         {
                             name: 'Test on Shared Datacenter',
@@ -51,6 +52,7 @@ describe(
                                 country: 'all',
                                 lifetime: 10,
                             } satisfies IConnectorGeonodeConfig,
+                            install: void 0,
                         },
                     ],
                 },

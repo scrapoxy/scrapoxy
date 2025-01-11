@@ -40,6 +40,7 @@ describe(
                             securityGroupName: `${SCRAPOXY_DATACENTER_PREFIX}-test-${suffix}`,
                             tag: 'spxtest',
                         } satisfies IConnectorAwsConfig,
+                        install: {},
                     },
                 ],
             },

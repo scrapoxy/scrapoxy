@@ -28,6 +28,7 @@ describe(
                     {
                         name: `Test on region ${connectorConfig.region}`,
                         config: connectorConfig,
+                        install: {},
                     },
                 ],
             },

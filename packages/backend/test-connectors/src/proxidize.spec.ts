@@ -31,6 +31,8 @@ describe(
                     connectors: [
                         {
                             name: 'Test on hardware',
+                            config: void 0,
+                            install: void 0,
                         },
                     ],
                 },

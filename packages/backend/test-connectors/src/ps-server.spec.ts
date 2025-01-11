@@ -41,6 +41,7 @@ describe(
                                 networkType: EProxySellerNetworkType.ALL,
                                 country: 'all',
                             } satisfies IConnectorProxySellerServerConfig,
+                            install: void 0,
                         },
                     ],
                 },

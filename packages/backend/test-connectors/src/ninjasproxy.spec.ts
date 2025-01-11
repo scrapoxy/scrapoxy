@@ -31,6 +31,8 @@ describe(
                     connectors: [
                         {
                             name: 'Test on proxies',
+                            config: void 0,
+                            install: void 0,
                         },
                     ],
                 },

@@ -34,6 +34,7 @@ describe(
                             config: {
                                 packageFilter: 'all',
                             },
+                            install: void 0,
                         },
                     ],
                 },

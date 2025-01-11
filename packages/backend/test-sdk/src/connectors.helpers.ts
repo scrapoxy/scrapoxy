@@ -181,8 +181,8 @@ async function createMasterApp(
 
 export interface ITestConnector {
     name: string;
-    config?: any;
-    install?: any;
+    config: any;
+    install: any;
 }
 
 export interface ITestCredential {

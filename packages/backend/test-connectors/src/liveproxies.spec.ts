@@ -37,6 +37,7 @@ describe(
                         {
                             name: `Test on ${connectorConfig.productName}`,
                             config: connectorConfig,
+                            install: void 0,
                         },
                     ],
                 },

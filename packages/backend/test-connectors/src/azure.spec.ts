@@ -42,6 +42,7 @@ describe(
                             imageResourceGroupName: `spxtest_image_${suffix}_rg`,
                             useSpotInstances: false,
                         } satisfies IConnectorAzureConfig,
+                        install: {},
                     },
                 ],
             },

@@ -35,6 +35,7 @@ describe(
                                 country: 'all',
                                 sessionDuration: 10,
                             },
+                            install: void 0,
                         },
                     ],
                 },

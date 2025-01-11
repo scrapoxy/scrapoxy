@@ -39,6 +39,7 @@ describe(
                                 proxyType: EConnectorNetnutProxyType.RES,
                                 country: 'us',
                             } satisfies IConnectorNetnutConfig,
+                            install: void 0,
                         },
                     ],
                 },

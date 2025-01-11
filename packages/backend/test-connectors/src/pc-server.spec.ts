@@ -38,6 +38,7 @@ describe(
                             config: {
                                 networkType: EProxyCheapNetworkType.ALL,
                             } satisfies IConnectorProxyCheapServerConfig,
+                            install: void 0,
                         },
                     ],
                 },

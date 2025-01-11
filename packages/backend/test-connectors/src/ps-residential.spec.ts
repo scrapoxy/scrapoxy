@@ -41,6 +41,7 @@ describe(
                                 isp: 'all',
                                 title: 'spx-test',
                             } satisfies IConnectorProxySellerResidentialConfig,
+                            install: void 0,
                         },
                     ],
                 },

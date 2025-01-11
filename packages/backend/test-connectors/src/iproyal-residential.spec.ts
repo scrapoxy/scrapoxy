@@ -39,6 +39,7 @@ describe(
                                 country: 'all',
                                 highEndPool: false,
                             } satisfies IConnectorIproyalResidentialConfig,
+                            install: void 0,
                         },
                     ],
                 },

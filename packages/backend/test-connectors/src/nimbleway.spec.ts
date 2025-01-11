@@ -35,6 +35,7 @@ describe(
                             config: {
                                 country: 'all',
                             } satisfies IConnectorNimblewayConfig,
+                            install: void 0,
                         },
                     ],
                 },

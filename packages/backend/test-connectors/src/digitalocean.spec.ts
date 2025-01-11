@@ -36,6 +36,7 @@ describe(
                             snapshotId: '',
                             tag: 'spxtest',
                         } satisfies IConnectorDigitalOceanConfig,
+                        install: {},
                     },
                 ],
             },

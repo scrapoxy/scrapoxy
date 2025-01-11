@@ -42,6 +42,7 @@ describe(
                                 zoneType: EBrightdataProductType.RESIDENTIAL,
                                 country: 'us',
                             } satisfies IConnectorBrightdataConfig,
+                            install: void 0,
                         },
                     ],
                 },

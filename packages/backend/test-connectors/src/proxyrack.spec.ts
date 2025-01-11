@@ -41,6 +41,7 @@ describe(
                                 isp: 'all',
                                 osName: EProxyrackOs.All,
                             } satisfies IConnectorProxyrackConfig,
+                            install: void 0,
                         },
                     ],
                 },
