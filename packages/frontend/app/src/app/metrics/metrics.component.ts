@@ -200,6 +200,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
 
     updateWindow(window: number) {
         this.currentWindow = window;
+        this.refresh();
     }
 
     private refresh() {
