@@ -1,6 +1,17 @@
 {
     "releases": [
         {
+            "version": "4.18.1",
+            "commitGroups": [
+                {
+                    "title": "Bugfixes",
+                    "commits": [
+                        "**scaleway**: check credentials on listIntances method to avoid permissions issue on project"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.18.0",
             "commitGroups": [
                 {
