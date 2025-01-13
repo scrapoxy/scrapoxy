@@ -6,7 +6,6 @@ import type {
     IScalewayExtraVolume,
     IScalewayImage,
     IScalewayInstance,
-    IScalewayProject,
     IScalewaySnapshot,
 } from './scaleway.interface';
 import type {
@@ -64,17 +63,6 @@ export class ScalewayApi {
                 throw err;
             }
         );
-    }
-
-    //////////// PROJECTS ////////////
-    public async getCurrentProject(): Promise<IScalewayProject> {
-        return await this.instance.get(
-            `projects/${this.projectId}`,
-            {
-                baseURL: 'https://api.scaleway.com/account/v3',
-            }
-        )
-            .then((r) => r.data);
     }
 
     //////////// INSTANCE TYPES ////////////

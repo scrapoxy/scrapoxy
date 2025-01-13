@@ -108,12 +108,10 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
                 this.agents
             );
 
-            await api.getCurrentProject();
+            await api.listInstances();
         } catch (err: any) {
             if (err.message.includes('denied')) {
                 throw new CredentialInvalidError('Secret access key invalid');
-            } else if (err.message.includes('invalid argument')) {
-                throw new CredentialInvalidError('Project ID not found');
             } else {
                 throw new CredentialInvalidError(err.message);
             }
