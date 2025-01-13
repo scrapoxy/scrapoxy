@@ -1,5 +1,8 @@
 # Environment variables
 
+Scrapoxy can be customized with environment variables to align with specific infrastructure or setup requirements.
+
+
 ## Security
 
 ### Commander

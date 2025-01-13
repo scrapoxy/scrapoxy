@@ -1,5 +1,10 @@
 # Questions & Answers
 
+This section provides answers to frequently asked questions from users.
+
+For any unanswered questions, feel free to ask on [Discord](https://discord.gg/ktNGGwZnUD).
+
+
 ## General
 
 ### How to bypass Anti-Bot systems?

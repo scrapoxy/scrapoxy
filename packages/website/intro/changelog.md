@@ -1,5 +1,8 @@
 # Changelog
 
+Every change to Scrapoxy, from its humble beginnings to its current glory, is documented here. 
+The changelog uses semantic versioning.
+
 <template v-for="release in data.releases">
 
 <h2 :id="release.versionLink">{{ release.version }}</h2>

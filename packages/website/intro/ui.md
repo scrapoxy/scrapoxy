@@ -1,4 +1,7 @@
-# Web Interface
+# User Interface
+
+This page details each section within the Scrapoxy User Interface.
+
 
 ## Login
 

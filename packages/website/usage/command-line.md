@@ -1,5 +1,10 @@
 # Command Line Usage
 
+Basic usage of Scrapoxy via the command line is covered here.
+
+For more configuration, check out the [environment variables](env.md).
+
+
 ## Minimum versions
 
 Scrapoxy requires a minimum version of:
