@@ -9,19 +9,6 @@ and business-ready datasets for download. Welcome to the internet’s most trust
 
 An active Bright Data subscription is required.
 
-Please contact support to:
-
-1. Whitelist the domain `fingerprint.scrapoxy.io` ;
-2. Adjust the rate limit for `fingerprint.scrapoxy.io` if you plan to use more than 10 proxies simultaneously.
-
-The rate limit is calculated as follows:
-
-`Ratelimit = Number of simultaneaous proxies x 2800 requests per day`
-
-For example, 100 proxies requires 280,000 requests per day.
-
-Additionally, set the Proxies Timeout to 30 seconds (see Connector configuration below).
-
 
 ## Bright Data Dashboard
 

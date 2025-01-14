@@ -16,6 +16,7 @@ import type {
     IFingerprint,
     IFingerprintOptions,
     IFingerprintRequest,
+    IFingerprintResponseRaw,
     IProxyToRefresh,
 } from '@scrapoxy/common';
 import type { ClientRequestArgs } from 'http';
@@ -28,8 +29,8 @@ class RedirectError extends Error {
 }
 
 
-function fingerprintRequest(args: ClientRequestArgs) {
-    return new Promise<IFingerprint>((
+function fingerprintRequest(args: ClientRequestArgs): Promise<IFingerprintResponseRaw> {
+    return new Promise<IFingerprintResponseRaw>((
         resolve, reject
     ) => {
         let timeout: NodeJS.Timeout | undefined = void 0;
@@ -70,19 +71,20 @@ function fingerprintRequest(args: ClientRequestArgs) {
                             timeout = void 0;
                         }
 
-                        const rawData = Buffer.concat(buffers)
+                        const body = Buffer.concat(buffers)
                             .toString();
 
                         if (response.statusCode === 200) {
                             try {
-                                const data = JSON.parse(rawData) as IFingerprint;
-
-                                resolve(data);
+                                resolve({
+                                    headers: response.headers,
+                                    body,
+                                });
                             } catch (err: any) {
                                 reject(err);
                             }
                         } else {
-                            reject(new Error(`Get ${response.statusCode} status code: ${rawData}`));
+                            reject(new Error(`Get ${response.statusCode} status code: ${body}`));
                         }
                     }
                 );
@@ -175,6 +177,7 @@ function fingerprintImpl(
     );
 
     return fingerprintRequest(reqArgs)
+        .then((response) => transport.parseFingerprintResponse(response))
         .catch((err: any) => {
             if (err instanceof RedirectError) {
                 const location = (err as RedirectError).location;

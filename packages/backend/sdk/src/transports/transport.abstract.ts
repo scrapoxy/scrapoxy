@@ -6,6 +6,8 @@ import type {
 import type {
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
+    IFingerprint,
+    IFingerprintResponseRaw,
     IProxyToConnect,
     IProxyToRefresh,
 } from '@scrapoxy/common';
@@ -49,6 +51,12 @@ export abstract class ATransportService {
         sockets: ISockets,
         callback: (err: Error, socket: Socket) => void
     ): void;
+
+    parseFingerprintResponse(response: IFingerprintResponseRaw): IFingerprint {
+        const body = JSON.parse(response.body);
+
+        return body as IFingerprint;
+    }
 
     protected parseBodyError(
         r: IncomingMessage, callback: (err: Error) => void

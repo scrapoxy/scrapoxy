@@ -124,6 +124,12 @@ export const FINGERPRINT_RESPONSE_SWAGGER_PROPS = {
 };
 
 
+export interface IFingerprintResponseRaw {
+    headers: Record<string, string | string[] | undefined>;
+    body: string;
+}
+
+
 export interface IFingerprintResponse {
     fingerprint: IFingerprint | null;
     fingerprintError: string | null;
