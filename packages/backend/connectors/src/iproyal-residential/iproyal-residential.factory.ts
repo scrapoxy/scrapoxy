@@ -20,6 +20,7 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorListProxies,
+    IConnectorToRefresh,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -62,8 +63,8 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory {
         // Nothing to validate
     }
 
-    async buildConnectorService(): Promise<IConnectorService> {
-        return new ConnectorIproyalService();
+    async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
+        return new ConnectorIproyalService(connector.connectorConfig);
     }
 
     async buildInstallCommand(): Promise<ITaskToCreate> {

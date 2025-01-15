@@ -1,58 +1,16 @@
 import { Logger } from '@nestjs/common';
-import {
-    Agents,
-    TRANSPORT_PROXY_TYPE,
-} from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_IPROYAL_SERVER_TYPE,
-    EProxyStatus,
-    EProxyType,
-} from '@scrapoxy/common';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { IproyalServerApi } from './api';
+import { convertToProxy } from './iproyal-server.helpers';
 import type {
     IConnectorIproyalServerConfig,
     IConnectorIproyalServerCredential,
-    IIproyalServerProxy,
 } from './iproyal-server.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
-    IProxyTransport,
 } from '@scrapoxy/common';
-
-
-function convertToProxy(proxy: IIproyalServerProxy): IConnectorProxyRefreshed | undefined {
-    if (!proxy?.ip_address || proxy.ip_address.length <= 0 ||
-        !proxy.port || proxy.port <= 0 ||
-        !proxy.username || proxy.username.length <= 0 ||
-        !proxy.password || proxy.password.length <= 0) {
-        return;
-    }
-
-    const config: IProxyTransport = {
-        type: EProxyType.HTTP,
-        address: {
-            hostname: proxy.ip_address,
-            port: proxy.port,
-        },
-        auth: {
-            username: proxy.username,
-            password: proxy.password,
-        },
-    };
-    const key = proxy.id.toString();
-    const p: IConnectorProxyRefreshed = {
-        type: CONNECTOR_IPROYAL_SERVER_TYPE,
-        transportType: TRANSPORT_PROXY_TYPE,
-        key,
-        name: key,
-        status: EProxyStatus.STARTED,
-        config,
-    };
-
-    return p;
-}
 
 
 export class ConnectorIproyalService implements IConnectorService {
@@ -79,7 +37,10 @@ export class ConnectorIproyalService implements IConnectorService {
             this.connectorConfig.country
         );
         const proxiesFiltered = proxies
-            .map(convertToProxy)
+            .map((p) => convertToProxy(
+                p,
+                this.connectorConfig.country
+            ))
             .filter((p) => p && keys.includes(p.key));
 
         return proxiesFiltered as IConnectorProxyRefreshed[];
@@ -95,7 +56,10 @@ export class ConnectorIproyalService implements IConnectorService {
             this.connectorConfig.country
         );
         const proxiesFiltered = proxies
-            .map(convertToProxy)
+            .map((p) => convertToProxy(
+                p,
+                this.connectorConfig.country
+            ))
             .filter((p) => p && !excludeKeys.includes(p.key))
             .slice(
                 0,

@@ -28,6 +28,7 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorListProxies,
+    IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
     INimblewayGeoItem,
@@ -79,8 +80,8 @@ export class ConnectorNimblewayFactory implements IConnectorFactory, OnModuleDes
         // Nothing to validate
     }
 
-    async buildConnectorService(): Promise<IConnectorService> {
-        return new ConnectorNimblewayService();
+    async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
+        return new ConnectorNimblewayService(connector.connectorConfig);
     }
 
     async buildInstallCommand(): Promise<ITaskToCreate> {

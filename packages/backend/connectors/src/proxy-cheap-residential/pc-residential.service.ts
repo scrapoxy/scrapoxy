@@ -6,13 +6,13 @@ import {
 } from '@scrapoxy/common';
 import { TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE } from './transport/pc-residential.constants';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
-import type{
+import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
 
 
-function convertToProxy(session: string): IConnectorProxyRefreshed {
+export function convertToProxy(session: string): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_PROXY_CHEAP_RESIDENTIAL_TYPE,
         transportType: TRANSPORT_PROXY_CHEAP_RESIDENTIAL_TYPE,
@@ -20,6 +20,7 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
         name: session,
         status: EProxyStatus.STARTED,
         config: {},
+        countryLike: null, // Not used because I can't test...
     };
 
     return p;

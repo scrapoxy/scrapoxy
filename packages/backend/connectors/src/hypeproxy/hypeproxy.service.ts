@@ -21,7 +21,7 @@ import type {
 } from '@scrapoxy/common';
 
 
-function convertToProxy(proxy: IHypeproxyProxy): IConnectorProxyRefreshed | undefined {
+export function convertToProxy(proxy: IHypeproxyProxy): IConnectorProxyRefreshed | undefined {
     const config: IProxyTransport = {
         type: EProxyType.HTTP,
         address: {
@@ -40,6 +40,7 @@ function convertToProxy(proxy: IHypeproxyProxy): IConnectorProxyRefreshed | unde
         name: proxy.shortId,
         status: EProxyStatus.STARTED,
         config,
+        countryLike: 'fr', // They only have 4G mobile proxies in France
     };
 
     return p;

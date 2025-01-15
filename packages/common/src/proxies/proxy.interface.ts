@@ -148,7 +148,7 @@ export const PROXY_DATA_META = [
     'disconnectedTs',
     'autoRotateDelayFactor',
     'ciphers',
-
+    'countryLike',
 ];
 
 
@@ -161,6 +161,7 @@ export interface IProxyData extends IProxyBase {
     disconnectedTs: number | null;
     autoRotateDelayFactor: number;
     ciphers: string | null;
+    countryLike: string | null;
 }
 
 
@@ -256,6 +257,7 @@ export interface IConnectorProxyRefreshed {
     name: string;
     status: EProxyStatus;
     config: any;
+    countryLike: string | null;
 }
 
 
@@ -322,6 +324,7 @@ export const PROXY_TO_REFRESH_META = [
     'requestsInvalid',
     'bytesReceived',
     'bytesSent',
+    'countryLike',
 ];
 
 
@@ -331,6 +334,7 @@ export interface IProxyToRefresh extends IProxyToConnect {
     requestsInvalid: number;
     bytesReceived: number;
     bytesSent: number;
+    countryLike: string | null;
 }
 
 

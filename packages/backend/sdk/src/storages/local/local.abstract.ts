@@ -230,6 +230,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 lastConnectionTs: 0,
                 autoRotateDelayFactor: Math.random(),
                 ciphers: null,
+                countryLike: null,
             };
 
             this.proxies.set(

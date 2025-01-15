@@ -51,6 +51,7 @@ function convertToProxy(
         name: `${d.host}:${d.proxy_port}`,
         status,
         config,
+        countryLike: null, // Not used because it is a hardware proxy
     };
 
     return p;

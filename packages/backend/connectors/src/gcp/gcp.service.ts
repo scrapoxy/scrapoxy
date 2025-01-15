@@ -1,79 +1,17 @@
 import { Logger } from '@nestjs/common';
-import {
-    Agents,
-    TRANSPORT_DATACENTER_TYPE,
-} from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_GCP_TYPE,
-    EProxyStatus,
-    randomNames,
-} from '@scrapoxy/common';
+import { Agents } from '@scrapoxy/backend-sdk';
+import { randomNames } from '@scrapoxy/common';
 import { GcpApi } from './api';
-import { getGcpExternalIp } from './gcp.helpers';
-import { EGcpInstanceStatus } from './gcp.interface';
+import { convertToProxy } from './gcp.helpers';
 import type {
     IConnectorGcpConfig,
     IConnectorGcpCredential,
-    IGcpInstance,
 } from './gcp.interface';
-import type {
-    IConnectorService,
-    ITransportProxyRefreshedConfigDatacenter,
-} from '@scrapoxy/backend-sdk';
+import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertStatus(status: EGcpInstanceStatus): EProxyStatus {
-    if (!status) {
-        return EProxyStatus.ERROR;
-    }
-
-    switch (status) {
-        case EGcpInstanceStatus.RUNNING:
-            return EProxyStatus.STARTED;
-
-        case EGcpInstanceStatus.PROVISIONING:
-        case EGcpInstanceStatus.STAGING:
-            return EProxyStatus.STARTING;
-
-        case EGcpInstanceStatus.SUSPENDED:
-        case EGcpInstanceStatus.TERMINATED:
-            return EProxyStatus.STOPPED;
-
-        case EGcpInstanceStatus.SUSPENDING:
-        case EGcpInstanceStatus.STOPPING:
-            return EProxyStatus.STOPPING;
-
-        default:
-            return EProxyStatus.ERROR;
-    }
-}
-
-
-function convertToProxy(
-    instance: IGcpInstance, port: number
-): IConnectorProxyRefreshed {
-    const hostname = getGcpExternalIp(instance);
-    const config: ITransportProxyRefreshedConfigDatacenter = {
-        address: hostname ? {
-            hostname,
-            port,
-        } : void 0,
-    };
-    const proxy: IConnectorProxyRefreshed = {
-        type: CONNECTOR_GCP_TYPE,
-        transportType: TRANSPORT_DATACENTER_TYPE,
-        key: instance.name as string,
-        name: instance.name as string,
-        config,
-        status: convertStatus(instance.status),
-    };
-
-    return proxy;
-}
 
 
 export class ConnectorGcpService implements IConnectorService {
@@ -105,7 +43,8 @@ export class ConnectorGcpService implements IConnectorService {
 
         return instances.map((i) => convertToProxy(
             i,
-            this.connectorConfig.port
+            this.connectorConfig.port,
+            this.connectorConfig.zone
         ));
     }
 

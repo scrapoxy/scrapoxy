@@ -1,38 +1,16 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_PROXY_LOCAL_TYPE,
-    EProxyStatus,
-} from '@scrapoxy/common';
 import { ProxyLocalApi } from './api';
-import { TRANSPORT_PROXY_LOCAL_TYPE } from './transport/proxy-local.constants';
-import type { IConnectorProxyLocalCredential } from './proxy-local.interface';
-import type { IConnectorProxyRefreshedConfigProxyLocal } from './transport/proxy-local.interface';
+import { convertToProxy } from './proxy-local.helpers';
+import type {
+    IConnectorProxyLocalConfig,
+    IConnectorProxyLocalCredential,
+} from './proxy-local.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertToProxy(
-    url: string,
-    session: string
-): IConnectorProxyRefreshed {
-    const config: IConnectorProxyRefreshedConfigProxyLocal = {
-        url,
-    };
-    const proxy: IConnectorProxyRefreshed = {
-        type: CONNECTOR_PROXY_LOCAL_TYPE,
-        transportType: TRANSPORT_PROXY_LOCAL_TYPE,
-        key: session,
-        name: session,
-        status: EProxyStatus.STARTED,
-        config,
-    };
-
-    return proxy;
-}
 
 
 export class ConnectorProxyLocalService implements IConnectorService {
@@ -43,6 +21,7 @@ export class ConnectorProxyLocalService implements IConnectorService {
     constructor(
         private readonly url: string,
         credentialConfig: IConnectorProxyLocalCredential,
+        private readonly connectorConfig: IConnectorProxyLocalConfig,
         agents: Agents
     ) {
         this.api = new ProxyLocalApi(
@@ -61,7 +40,8 @@ export class ConnectorProxyLocalService implements IConnectorService {
             .filter((s) => keys.includes(s))
             .map((session) => convertToProxy(
                 this.url,
-                session
+                session,
+                this.connectorConfig.region
             ));
     }
 
@@ -76,7 +56,8 @@ export class ConnectorProxyLocalService implements IConnectorService {
 
         return sessions.map((session) => convertToProxy(
             this.url,
-            session
+            session,
+            this.connectorConfig.region
         ));
     }
 

@@ -97,6 +97,7 @@ export class ConnectorProxyLocalFactory implements IConnectorFactory, OnModuleDe
         const service = new ConnectorProxyLocalService(
             this.moduleConfig.url,
             connector.credentialConfig,
+            connector.connectorConfig,
             this.agents
         );
 

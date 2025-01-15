@@ -4,7 +4,10 @@ import {
     EProxyStatus,
 } from '@scrapoxy/common';
 import { TRANSPORT_SMARTPROXY_SERVER_TYPE } from './transport';
-import type { IConnectorSmartproxyCredential } from './smartproxy.interface';
+import type {
+    IConnectorSmartproxyConfig,
+    IConnectorSmartproxyCredential,
+} from './smartproxy.interface';
 import type {
     IConnectorService,
     IProxyToConnectConfigResidential,
@@ -20,6 +23,7 @@ export class ConnectorSmartproxyServerService implements IConnectorService {
 
     constructor(
         private readonly credentialConfig: IConnectorSmartproxyCredential,
+        private readonly connectorConfig: IConnectorSmartproxyConfig,
         private readonly hostname: string
     ) {}
 
@@ -46,6 +50,7 @@ export class ConnectorSmartproxyServerService implements IConnectorService {
                 transportType: TRANSPORT_SMARTPROXY_SERVER_TYPE,
                 status: EProxyStatus.STARTED,
                 config,
+                countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
             };
         });
 
@@ -79,6 +84,7 @@ export class ConnectorSmartproxyServerService implements IConnectorService {
                     transportType: TRANSPORT_SMARTPROXY_SERVER_TYPE,
                     status: EProxyStatus.STARTED,
                     config,
+                    countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
                 });
 
                 excludeKeysSet.add(key);

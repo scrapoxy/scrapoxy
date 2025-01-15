@@ -157,6 +157,10 @@ function fingerprintImpl(
         + '&bytesReceived=' + proxy.bytesReceived
         + '&bytesSent=' + proxy.bytesSent;
 
+    if (proxy.countryLike) {
+        urlOpts.pathname += '&country=' + proxy.countryLike;
+    }
+
     const reqArgs = transport.buildFingerprintRequestArgs(
         'GET',
         urlOpts,

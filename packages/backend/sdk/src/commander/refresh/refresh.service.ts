@@ -248,6 +248,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                 requests: 0,
                 requestsValid: 0,
                 requestsInvalid: 0,
+                countryLike: remoteProxy.countryLike,
             };
             localProxiesCreatedMap.set(
                 localProxy.key,
@@ -453,6 +454,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                     requests: 0,
                     requestsValid: 0,
                     requestsInvalid: 0,
+                    countryLike: remoteProxy.countryLike,
                 };
                 localProxiesMap.set(
                     localProxy.key,
@@ -807,6 +809,7 @@ export class CommanderRefreshService extends ACommanderService implements OnModu
                         disconnectedTs: localProxy.disconnectedTs,
                         autoRotateDelayFactor: localProxy.autoRotateDelayFactor,
                         ciphers: localProxy.ciphers,
+                        countryLike: localProxy.countryLike,
                     };
 
                     localProxiesUpdated.push(proxyUpdated);

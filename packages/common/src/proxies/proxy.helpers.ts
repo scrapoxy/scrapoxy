@@ -80,6 +80,7 @@ export function toProxyData(p: IProxyData): IProxyData {
         disconnectedTs: p.disconnectedTs,
         autoRotateDelayFactor: p.autoRotateDelayFactor,
         ciphers: p.ciphers,
+        countryLike: p.countryLike,
     };
 
     return data;
@@ -111,6 +112,7 @@ export function toProxySync(p: IProxySync): IProxySync {
         requests: p.requests,
         requestsValid: p.requestsValid,
         requestsInvalid: p.requestsInvalid,
+        countryLike: p.countryLike,
     };
 
     return sync;
@@ -139,6 +141,7 @@ export function fromProxySyncToData(p: IProxySync): IProxyData {
         disconnectedTs: p.disconnectedTs,
         autoRotateDelayFactor: p.autoRotateDelayFactor,
         ciphers: p.ciphers,
+        countryLike: p.countryLike,
     };
 
     return data;

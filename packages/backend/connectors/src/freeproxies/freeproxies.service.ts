@@ -30,6 +30,7 @@ function convertToProxy(f: IFreeproxy): IConnectorProxyRefreshed {
         name: f.key,
         status: !!f.fingerprint ? EProxyStatus.STARTED : EProxyStatus.STARTING,
         config,
+        countryLike: f.fingerprint?.countryCode ?? null,
     };
 
     return p;

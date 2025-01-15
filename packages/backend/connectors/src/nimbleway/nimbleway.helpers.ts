@@ -1,5 +1,13 @@
+import {
+    CONNECTOR_NIMBLEWAY_TYPE,
+    EProxyStatus,
+} from '@scrapoxy/common';
+import { TRANSPORT_NIMBLEWAY_TYPE } from './transport/nimbleway.constants';
 import type { INimblewaySessionOptions } from './nimbleway.interface';
-import type { INimblewayGeoItem } from '@scrapoxy/common';
+import type {
+    IConnectorProxyRefreshed,
+    INimblewayGeoItem,
+} from '@scrapoxy/common';
 
 
 export function formatUsername(
@@ -26,4 +34,22 @@ export function toNimblewayGeoItem(i: INimblewayGeoItem): INimblewayGeoItem {
     };
 
     return item;
+}
+
+
+export function convertToProxy(
+    key: string,
+    country: string
+): IConnectorProxyRefreshed {
+    const p: IConnectorProxyRefreshed = {
+        type: CONNECTOR_NIMBLEWAY_TYPE,
+        transportType: TRANSPORT_NIMBLEWAY_TYPE,
+        key: key,
+        name: key,
+        status: EProxyStatus.STARTED,
+        config: {},
+        countryLike: country !== 'all' ? country : null,
+    };
+
+    return p;
 }

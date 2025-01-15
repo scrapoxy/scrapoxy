@@ -6,13 +6,16 @@ import {
 import { TRANSPORT_NETNUT_TYPE } from './transport/netnut.constants';
 import type { IConnectorNetnutConfig } from './netnut.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
-import type{
+import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
 
 
-function convertToProxy(session: string): IConnectorProxyRefreshed {
+export function convertToProxy(
+    session: string,
+    country: string
+): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_NETNUT_TYPE,
         transportType: TRANSPORT_NETNUT_TYPE,
@@ -20,6 +23,7 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
         name: session,
         status: EProxyStatus.STARTED,
         config: {},
+        countryLike: country !== 'all' ? country : null,
     };
 
     return p;
@@ -34,7 +38,10 @@ export class ConnectorNetnutService implements IConnectorService {
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
-        const proxies = keys.map(convertToProxy);
+        const proxies = keys.map((key)=>convertToProxy(
+            key,
+            this.config.country
+        ));
 
         return proxies;
     }
@@ -46,7 +53,10 @@ export class ConnectorNetnutService implements IConnectorService {
         const proxyType = this.config.proxyType.toUpperCase();
         for (let i = 0; i < count; i++) {
             const id = Math.floor(Math.random() * 99999999) + 1;
-            proxies.push(convertToProxy(`${proxyType}${id}`));
+            proxies.push(convertToProxy(
+                `${proxyType}${id}`,
+                this.config.country
+            ));
         }
 
         return proxies;

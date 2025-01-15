@@ -1,44 +1,20 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_BRIGHTDATA_TYPE,
-    EProxyStatus,
-} from '@scrapoxy/common';
 import { BrightdataApi } from './api';
-import { getBrightdataPrefix } from './brightdata.helpers';
+import {
+    convertToProxy,
+    getBrightdataPrefix,
+} from './brightdata.helpers';
 import { TRANSPORT_BRIGHTDATA_SERVER_TYPE } from './transport';
 import type {
     IConnectorBrightdataConfig,
     IConnectorBrightdataCredential,
-    ITransportProxyRefreshedConfigBrightdata,
 } from './brightdata.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertToProxy(
-    key: string,
-    username: string,
-    password: string
-): IConnectorProxyRefreshed {
-    const config: ITransportProxyRefreshedConfigBrightdata = {
-        username,
-        password,
-    };
-    const p: IConnectorProxyRefreshed = {
-        type: CONNECTOR_BRIGHTDATA_TYPE,
-        transportType: TRANSPORT_BRIGHTDATA_SERVER_TYPE,
-        key,
-        name: key,
-        status: EProxyStatus.STARTED,
-        config,
-    };
-
-    return p;
-}
 
 
 export class ConnectorBrightdataServerService implements IConnectorService {
@@ -118,8 +94,10 @@ export class ConnectorBrightdataServerService implements IConnectorService {
         const proxies = ips
             .map((ip) => convertToProxy(
                 `${prefix}${ip}`,
+                TRANSPORT_BRIGHTDATA_SERVER_TYPE,
                 status.customer,
-                zone.password[ 0 ]
+                zone.password[ 0 ],
+                this.connectorConfig.country
             ));
 
         return proxies;

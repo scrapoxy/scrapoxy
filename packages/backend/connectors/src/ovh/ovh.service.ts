@@ -1,79 +1,17 @@
 import { Logger } from '@nestjs/common';
-import {
-    Agents,
-    TRANSPORT_DATACENTER_TYPE,
-} from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_OVH_TYPE,
-    EProxyStatus,
-    randomName,
-} from '@scrapoxy/common';
+import { Agents } from '@scrapoxy/backend-sdk';
+import { randomName } from '@scrapoxy/common';
 import { OvhApi } from './api';
-import { getOvhExternalIp } from './ovh.helpers';
-import { EOvhInstanceStatus } from './ovh.interface';
+import { convertToProxy } from './ovh.helpers';
 import type {
     IConnectorOvhConfig,
     IConnectorOvhCredential,
-    IOvhInstance,
 } from './ovh.interface';
-import type {
-    IConnectorService,
-    ITransportProxyRefreshedConfigDatacenter,
-} from '@scrapoxy/backend-sdk';
+import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertStatus(status: EOvhInstanceStatus): EProxyStatus {
-    if (!status) {
-        return EProxyStatus.ERROR;
-    }
-
-    switch (status) {
-        case EOvhInstanceStatus.ACTIVE:
-            return EProxyStatus.STARTED;
-
-        case EOvhInstanceStatus.BUILD:
-        case EOvhInstanceStatus.REBOOT:
-        case EOvhInstanceStatus.HARD_REBOOT:
-            return EProxyStatus.STARTING;
-
-        case EOvhInstanceStatus.STOPPED:
-        case EOvhInstanceStatus.SHUTOFF:
-            return EProxyStatus.STOPPED;
-
-        case EOvhInstanceStatus.DELETING:
-            return EProxyStatus.STOPPING;
-
-        default:
-            return EProxyStatus.ERROR;
-    }
-}
-
-
-function convertToProxy(
-    instance: IOvhInstance, port: number
-): IConnectorProxyRefreshed {
-    const hostname = getOvhExternalIp(instance);
-    const config: ITransportProxyRefreshedConfigDatacenter = {
-        address: hostname ? {
-            hostname,
-            port,
-        } : void 0,
-    };
-    const proxy: IConnectorProxyRefreshed = {
-        type: CONNECTOR_OVH_TYPE,
-        transportType: TRANSPORT_DATACENTER_TYPE,
-        key: instance.id,
-        name: instance.name,
-        config,
-        status: convertStatus(instance.status),
-    };
-
-    return proxy;
-}
 
 
 export class ConnectorOvhService implements IConnectorService {
@@ -106,7 +44,8 @@ export class ConnectorOvhService implements IConnectorService {
             .filter((i) => i.name.startsWith(`${this.connectorConfig.tag}-`))
             .map((i) => convertToProxy(
                 i,
-                this.connectorConfig.port
+                this.connectorConfig.port,
+                this.connectorConfig.region
             ));
     }
 
@@ -124,7 +63,8 @@ export class ConnectorOvhService implements IConnectorService {
 
         return instances.map((i) => convertToProxy(
             i,
-            this.connectorConfig.port
+            this.connectorConfig.port,
+            this.connectorConfig.region
         ));
     }
 

@@ -51,6 +51,7 @@ function convertToProxy(
         transportType: TRANSPORT_PROXY_TYPE,
         config,
         status: EProxyStatus.STARTED,
+        countryLike: country !== 'all' ? country : null,
     };
 }
 

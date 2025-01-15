@@ -1,42 +1,16 @@
 import { Logger } from '@nestjs/common';
-import {
-    Agents,
-    TRANSPORT_DATACENTER_TYPE,
-} from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_AWS_TYPE,
-    EProxyStatus,
-} from '@scrapoxy/common';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { AwsApi } from './api';
+import { convertToProxy } from './aws.helpers';
 import type {
     IConnectorAwsConfig,
     IConnectorAwsCredential,
 } from './aws.interface';
-import type {
-    IConnectorService,
-    ITransportProxyRefreshedConfigDatacenter,
-} from '@scrapoxy/backend-sdk';
+import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertStatus(code: string): EProxyStatus {
-    switch (code) {
-        case '0':
-            return EProxyStatus.STARTING;
-        case '16':
-            return EProxyStatus.STARTED;
-        case '32':
-        case '64':
-            return EProxyStatus.STOPPING;
-        case '80':
-            return EProxyStatus.STOPPED;
-        default:
-            return EProxyStatus.ERROR;
-    }
-}
 
 
 export class ConnectorAwsService implements IConnectorService {
@@ -71,24 +45,11 @@ export class ConnectorAwsService implements IConnectorService {
             ],
         });
 
-        return instances.map((i) => {
-            const config: ITransportProxyRefreshedConfigDatacenter = {
-                address: i.ipAddress && i.ipAddress.length > 0 ? {
-                    hostname: i.ipAddress[ 0 ],
-                    port: this.connectorConfig.port,
-                } : void 0,
-            };
-            const proxy: IConnectorProxyRefreshed = {
-                type: CONNECTOR_AWS_TYPE,
-                transportType: TRANSPORT_DATACENTER_TYPE,
-                key: i.instanceId[ 0 ],
-                name: i.instanceId[ 0 ],
-                config,
-                status: convertStatus(i.instanceState[ 0 ].code[ 0 ]),
-            };
-
-            return proxy;
-        });
+        return instances.map((i) => convertToProxy(
+            i,
+            this.connectorConfig.port,
+            this.connectorConfig.region
+        ));
     }
 
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
@@ -103,24 +64,11 @@ export class ConnectorAwsService implements IConnectorService {
             terminateOnShutdown: true,
         });
 
-        return instances.map((i) => {
-            const config: ITransportProxyRefreshedConfigDatacenter = {
-                address: i.ipAddress && i.ipAddress.length > 0 ? {
-                    hostname: i.ipAddress[ 0 ],
-                    port: this.connectorConfig.port,
-                } : void 0,
-            };
-            const proxy: IConnectorProxyRefreshed = {
-                type: CONNECTOR_AWS_TYPE,
-                transportType: TRANSPORT_DATACENTER_TYPE,
-                key: i.instanceId[ 0 ],
-                name: i.instanceId[ 0 ],
-                config,
-                status: convertStatus(i.instanceState[ 0 ].code[ 0 ]),
-            };
-
-            return proxy;
-        });
+        return instances.map((i) => convertToProxy(
+            i,
+            this.connectorConfig.port,
+            this.connectorConfig.region
+        ));
     }
 
     async startProxies(keys: string[]): Promise<void> {

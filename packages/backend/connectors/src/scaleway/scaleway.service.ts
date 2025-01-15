@@ -67,6 +67,10 @@ export class ConnectorScalewayService implements IConnectorService {
         this.logger.debug('getProxies()');
 
         const instances = await this.api.listInstances(this.connectorConfig.tag);
+        const countryLike = this.connectorConfig.region.substring(
+            0,
+            2
+        );
 
         return instances.map((instance) => {
             const config: ITransportProxyRefreshedConfigDatacenter = {
@@ -85,6 +89,7 @@ export class ConnectorScalewayService implements IConnectorService {
                 name: instance.name,
                 config,
                 status: convertStatus(instance.state),
+                countryLike,
             };
 
             return proxy;
@@ -111,6 +116,10 @@ export class ConnectorScalewayService implements IConnectorService {
             countToCreate -= CREATE_BATCH_SIZE;
         }
 
+        const countryLike = this.connectorConfig.region.substring(
+            0,
+            2
+        );
         const proxiesRefreshed = allInstances.map((instance) => {
             const config: ITransportProxyRefreshedConfigDatacenter = {
                 address:
@@ -128,6 +137,7 @@ export class ConnectorScalewayService implements IConnectorService {
                 name: instance.name,
                 config,
                 status: EProxyStatus.STARTING, // Override the status to avoid stopped instance at the beginning
+                countryLike,
             };
 
             return proxy;

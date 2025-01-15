@@ -1,5 +1,13 @@
-import { EBrightdataProductType } from '@scrapoxy/common';
-import type { IBrightdataZoneView } from '@scrapoxy/common';
+import {
+    CONNECTOR_BRIGHTDATA_TYPE,
+    EBrightdataProductType,
+    EProxyStatus,
+} from '@scrapoxy/common';
+import type { ITransportProxyRefreshedConfigBrightdata } from './brightdata.interface';
+import type {
+    IBrightdataZoneView,
+    IConnectorProxyRefreshed,
+} from '@scrapoxy/common';
 
 
 export function getBrightdataPrefix(zoneType: EBrightdataProductType): string {
@@ -30,4 +38,29 @@ export function toBrightdataZoneView(z: IBrightdataZoneView): IBrightdataZoneVie
     };
 
     return zone;
+}
+
+
+export function convertToProxy(
+    key: string,
+    transportType: string,
+    username: string,
+    password: string,
+    country: string
+): IConnectorProxyRefreshed {
+    const config: ITransportProxyRefreshedConfigBrightdata = {
+        username,
+        password,
+    };
+    const p: IConnectorProxyRefreshed = {
+        type: CONNECTOR_BRIGHTDATA_TYPE,
+        transportType,
+        key,
+        name: key,
+        status: EProxyStatus.STARTED,
+        config,
+        countryLike: country !== 'all' ? country : null,
+    };
+
+    return p;
 }

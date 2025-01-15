@@ -32,6 +32,7 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
+    IIsocodeCountry,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -150,7 +151,7 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
     private async queryCountries(
         credentialConfig: IConnectorProxySellerServerCredential,
         parameters: IConnectorProxySellerServerQueryType
-    ): Promise<string[]> {
+    ): Promise<IIsocodeCountry[]> {
         const api = new ProxySellerServerApi(
             credentialConfig.token,
             this.agents
@@ -159,11 +160,15 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
             parameters.networkType,
             'all'
         );
-        const countries = proxies.map((p) => p.country)
-            .filter((
-                c, i, a
-            ) => a.indexOf(c) === i);
+        const countries: IIsocodeCountry[] = proxies.map((p) => ({
+            code: p.country_alpha3.toLowerCase(),
+            name: p.country,
+        }));
+        // Remove duplicates
+        const countriesFiltered = countries.filter((
+            c, index
+        ) => countries.findIndex((f) => f.code === c.code) === index);
 
-        return countries;
+        return countriesFiltered;
     }
 }

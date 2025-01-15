@@ -52,6 +52,7 @@ export class ConnectorSmartproxyEndpointsService implements IConnectorService {
                 transportType: this.transportType,
                 status: EProxyStatus.STARTED,
                 config,
+                countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
             };
         });
 
@@ -86,6 +87,7 @@ export class ConnectorSmartproxyEndpointsService implements IConnectorService {
                     transportType: this.transportType,
                     status: EProxyStatus.STARTED,
                     config,
+                    countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
                 });
 
                 excludeKeysSet.add(key);

@@ -5,6 +5,7 @@ import {
 } from '@scrapoxy/common';
 import { v4 as uuid } from 'uuid';
 import { TRANSPORT_ZYTE_API_TYPE } from './transport/zyte.constants';
+import type { IConnectorZyteConfig } from './zyte.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -12,7 +13,10 @@ import type {
 } from '@scrapoxy/common';
 
 
-function convertToProxy(id: string): IConnectorProxyRefreshed {
+function convertToProxy(
+    id: string,
+    region: string
+): IConnectorProxyRefreshed {
     const arr = id.split('-');
     const name = arr[ arr.length - 1 ];
     const proxy: IConnectorProxyRefreshed = {
@@ -22,6 +26,7 @@ function convertToProxy(id: string): IConnectorProxyRefreshed {
         name,
         status: EProxyStatus.STARTED,
         config: {},
+        countryLike: region !== 'all' ? region : null,
     };
 
     return proxy;
@@ -31,10 +36,15 @@ function convertToProxy(id: string): IConnectorProxyRefreshed {
 export class ConnectorZyteApiService implements IConnectorService {
     private readonly logger = new Logger(ConnectorZyteApiService.name);
 
+    constructor(private readonly connectorConfig: IConnectorZyteConfig) {}
+
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug('getProxies()');
 
-        const proxies = keys.map(convertToProxy);
+        const proxies = keys.map((key)=>convertToProxy(
+            key,
+            this.connectorConfig.region
+        ));
 
         return proxies;
     }
@@ -45,7 +55,10 @@ export class ConnectorZyteApiService implements IConnectorService {
         const proxies: IConnectorProxyRefreshed[] = [];
         for (let i = 0; i < count; i++) {
             const id = uuid();
-            proxies.push(convertToProxy(id));
+            proxies.push(convertToProxy(
+                id,
+                this.connectorConfig.region
+            ));
         }
 
         return proxies;

@@ -37,6 +37,8 @@ export interface IProxySellerProxy {
     password: string;
     country: string;
     // eslint-disable-next-line @typescript-eslint/naming-convention
+    country_alpha3: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     status_type: EProxySellerProxyStatus;
 }
 

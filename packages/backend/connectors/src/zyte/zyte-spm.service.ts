@@ -6,7 +6,10 @@ import {
 } from '@scrapoxy/common';
 import { ZyteSmartProxyManagerApi } from './api';
 import { TRANSPORT_ZYTE_SPM_TYPE } from './transport/zyte.constants';
-import type { IConnectorZyteCredential } from './zyte.interface';
+import type {
+    IConnectorZyteConfig,
+    IConnectorZyteCredential,
+} from './zyte.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
@@ -14,7 +17,10 @@ import type {
 } from '@scrapoxy/common';
 
 
-function convertToProxy(session: string): IConnectorProxyRefreshed {
+function convertToProxy(
+    session: string,
+    region: string
+): IConnectorProxyRefreshed {
     const proxy: IConnectorProxyRefreshed = {
         type: CONNECTOR_ZYTE_TYPE,
         transportType: TRANSPORT_ZYTE_SPM_TYPE,
@@ -22,6 +28,7 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
         name: session,
         status: EProxyStatus.STARTED,
         config: {},
+        countryLike: region !== 'all' ? region : null,
     };
 
     return proxy;
@@ -35,6 +42,7 @@ export class ConnectorZyteSmartProxyManagerService implements IConnectorService 
 
     constructor(
         credentialConfig: IConnectorZyteCredential,
+        private readonly connectorConfig: IConnectorZyteConfig,
         agents: Agents
     ) {
         this.api = new ZyteSmartProxyManagerApi(
@@ -50,7 +58,10 @@ export class ConnectorZyteSmartProxyManagerService implements IConnectorService 
 
         return sessions
             .filter((s) => keys.includes(s))
-            .map(convertToProxy);
+            .map((s) => convertToProxy(
+                s,
+                this.connectorConfig.region
+            ));
     }
 
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
@@ -62,7 +73,10 @@ export class ConnectorZyteSmartProxyManagerService implements IConnectorService 
             sessions.push(session);
         }
 
-        return sessions.map(convertToProxy);
+        return sessions.map((s) => convertToProxy(
+            s,
+            this.connectorConfig.region
+        ));
     }
 
     async startProxies(): Promise<void> {

@@ -1,50 +1,20 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_PROXYRACK_TYPE,
-    EProxyStatus,
-    randomName,
-} from '@scrapoxy/common';
+import { randomName } from '@scrapoxy/common';
 import { ProxyrackApi } from './api';
-import { TRANSPORT_PROXYRACK_TYPE } from './transport/proxyrack.constants';
+import {
+    convertNameToProxy,
+    convertSessionToProxy,
+} from './proxyrack.helpers';
 import type {
     IConnectorProxyrackConfig,
     IConnectorProxyrackCredential,
-    IProxyrackSession,
 } from './proxyrack.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertSessionToProxy(session: IProxyrackSession): IConnectorProxyRefreshed {
-    const p: IConnectorProxyRefreshed = {
-        type: CONNECTOR_PROXYRACK_TYPE,
-        transportType: TRANSPORT_PROXYRACK_TYPE,
-        key: session.session,
-        name: session.session,
-        status: session.proxy.online ? EProxyStatus.STARTED : EProxyStatus.STARTING,
-        config: {},
-    };
-
-    return p;
-}
-
-
-function convertNameToProxy(name: string): IConnectorProxyRefreshed {
-    const p: IConnectorProxyRefreshed = {
-        type: CONNECTOR_PROXYRACK_TYPE,
-        transportType: TRANSPORT_PROXYRACK_TYPE,
-        key: name,
-        name,
-        status: EProxyStatus.STARTING,
-        config: {},
-    };
-
-    return p;
-}
 
 
 export class ConnectorProxyrackService implements IConnectorService {
@@ -69,7 +39,10 @@ export class ConnectorProxyrackService implements IConnectorService {
 
         const sessions = await this.api.listAllSessions();
         const proxies = sessions
-            .map(convertSessionToProxy)
+            .map((s) => convertSessionToProxy(
+                s,
+                this.connectorConfig.country
+            ))
             .filter((p) => p && keys.includes(p.key));
 
         return proxies;
@@ -83,7 +56,10 @@ export class ConnectorProxyrackService implements IConnectorService {
         // List all sessions
         const sessions = await this.api.listAllSessions();
         const proxiesFiltered = sessions
-            .map(convertSessionToProxy)
+            .map((s) => convertSessionToProxy(
+                s,
+                this.connectorConfig.country
+            ))
             .filter((p) => p && !excludeKeys.includes(p.key))
             .slice(
                 0,
@@ -106,7 +82,10 @@ export class ConnectorProxyrackService implements IConnectorService {
                         osName: this.connectorConfig.osName,
                     });
 
-                    proxiesFiltered.push(convertNameToProxy(name));
+                    proxiesFiltered.push(convertNameToProxy(
+                        name,
+                        this.connectorConfig.country
+                    ));
                 })();
 
                 promises.push(promise);

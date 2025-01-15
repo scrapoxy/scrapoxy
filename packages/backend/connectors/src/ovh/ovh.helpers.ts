@@ -1,11 +1,21 @@
-import { EOvhVisibility } from './ovh.interface';
+import { TRANSPORT_DATACENTER_TYPE } from '@scrapoxy/backend-sdk';
+import {
+    CONNECTOR_OVH_TYPE,
+    EProxyStatus,
+} from '@scrapoxy/common';
+import {
+    EOvhInstanceStatus,
+    EOvhVisibility,
+} from './ovh.interface';
 import type {
     IOvhFlavor,
     IOvhInstance,
     IOvhProject,
     IOvhSnapshot,
 } from './ovh.interface';
+import type { ITransportProxyRefreshedConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
+    IConnectorProxyRefreshed,
     IOvhFlavorView,
     IOvhProjectView,
     IOvhRegionView,
@@ -64,4 +74,84 @@ export function toOvhSnapshotView(snapshot: IOvhSnapshot): IOvhSnapshotView {
     };
 
     return s;
+}
+
+
+const REGION_PREFIX_TO_COUNTRY_CODE: Record<string, string> = {
+    BHS: 'ca',
+    'CA-EAST-TOR': 'ca',
+    DE: 'de',
+    GRA: 'fr',
+    RBX: 'fr',
+    SBG: 'fr',
+    UK: 'uk',
+    WAW: 'pl',
+};
+
+
+function convertRegionToCountryCode(region: string | null | undefined): string | null {
+    if (!region) {
+        return null;
+    }
+
+    for (const prefix in REGION_PREFIX_TO_COUNTRY_CODE) {
+        if (region.startsWith(prefix)) {
+            return REGION_PREFIX_TO_COUNTRY_CODE[ prefix ];
+        }
+    }
+
+    return null;
+}
+
+
+function convertStatus(status: EOvhInstanceStatus): EProxyStatus {
+    if (!status) {
+        return EProxyStatus.ERROR;
+    }
+
+    switch (status) {
+        case EOvhInstanceStatus.ACTIVE:
+            return EProxyStatus.STARTED;
+
+        case EOvhInstanceStatus.BUILD:
+        case EOvhInstanceStatus.REBOOT:
+        case EOvhInstanceStatus.HARD_REBOOT:
+            return EProxyStatus.STARTING;
+
+        case EOvhInstanceStatus.STOPPED:
+        case EOvhInstanceStatus.SHUTOFF:
+            return EProxyStatus.STOPPED;
+
+        case EOvhInstanceStatus.DELETING:
+            return EProxyStatus.STOPPING;
+
+        default:
+            return EProxyStatus.ERROR;
+    }
+}
+
+
+export function convertToProxy(
+    instance: IOvhInstance,
+    port: number,
+    region: string
+): IConnectorProxyRefreshed {
+    const hostname = getOvhExternalIp(instance);
+    const config: ITransportProxyRefreshedConfigDatacenter = {
+        address: hostname ? {
+            hostname,
+            port,
+        } : void 0,
+    };
+    const proxy: IConnectorProxyRefreshed = {
+        type: CONNECTOR_OVH_TYPE,
+        transportType: TRANSPORT_DATACENTER_TYPE,
+        key: instance.id,
+        name: instance.name,
+        config,
+        status: convertStatus(instance.status),
+        countryLike: convertRegionToCountryCode(region),
+    };
+
+    return proxy;
 }

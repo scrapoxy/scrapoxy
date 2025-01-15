@@ -1871,6 +1871,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 requestsInvalid: 0,
                 bytesSent: 0,
                 bytesReceived: 0,
+                countryLike: proxy.countryLike,
                 nextRefreshTs: 0,
                 lastConnectionTs: 0,
             };
@@ -1903,6 +1904,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         fingerprint: proxy.fingerprint,
                         fingerprintError: proxy.fingerprintError,
                         disconnectedTs: proxy.disconnectedTs,
+                        countryLike: proxy.countryLike,
                     },
                 });
         }

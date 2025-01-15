@@ -63,6 +63,7 @@ function convertToProxy(proxy: INinjasproxyProxy): IConnectorProxyRefreshed | un
         name: proxy.address,
         status: EProxyStatus.STARTED,
         config,
+        countryLike: null,
     };
 
     return p;

@@ -151,6 +151,7 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
             case ESmartproxyCredentialType.DC_DEDICATED: {
                 return new ConnectorSmartproxyServerService(
                     credentialConfig,
+                    connector.connectorConfig,
                     'dc.smartproxy.com'
                 );
             }
@@ -168,6 +169,7 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
             case ESmartproxyCredentialType.ISP_SHARED: {
                 return new ConnectorSmartproxyServerService(
                     credentialConfig,
+                    connector.connectorConfig,
                     'isp.smartproxy.com'
                 );
             }

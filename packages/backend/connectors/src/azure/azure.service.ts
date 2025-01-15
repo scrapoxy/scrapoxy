@@ -10,6 +10,7 @@ import {
     randomNames,
 } from '@scrapoxy/common';
 import { AzureApi } from './api';
+import { convertRegionToCountryCode } from './azure.helpers';
 import { EAzureDeploymentMode } from './azure.interface';
 import { AzureResourceGroupState } from './state';
 import { AzureVmsTemplateBuilder } from './template';
@@ -85,6 +86,7 @@ export class ConnectorAzureService implements IConnectorService {
                 name: vm.name,
                 config,
                 status: vm.status,
+                countryLike: convertRegionToCountryCode(this.connectorConfig.location),
             };
 
             vms.set(
@@ -108,6 +110,7 @@ export class ConnectorAzureService implements IConnectorService {
                     name: deploymentName,
                     config,
                     status: EProxyStatus.STARTING,
+                    countryLike: convertRegionToCountryCode(this.connectorConfig.location),
                 };
 
                 vms.set(

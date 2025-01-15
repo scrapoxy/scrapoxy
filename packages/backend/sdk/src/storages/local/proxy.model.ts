@@ -49,6 +49,7 @@ export function toProxyToRefresh(proxy: IProxyModel): IProxyToRefresh {
         requestsInvalid: proxy.requestsInvalid,
         bytesReceived: proxy.bytesReceived,
         bytesSent: proxy.bytesSent,
+        countryLike: proxy.countryLike,
     };
 
     return connect;

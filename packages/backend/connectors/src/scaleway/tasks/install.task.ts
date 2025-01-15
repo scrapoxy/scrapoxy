@@ -193,6 +193,7 @@ class ScalewayInstallCommand extends ATaskCommand {
                     requests: 0,
                     requestsValid: 0,
                     requestsInvalid: 0,
+                    countryLike: null,
                 };
                 const sockets = new Sockets();
                 try {

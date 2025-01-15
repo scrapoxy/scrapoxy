@@ -121,12 +121,13 @@ export class ConnectorZyteFactory implements IConnectorFactory, OnModuleDestroy 
 
         switch (credentialConfig.credentialType) {
             case EZyteCredentialType.ZYTE_API: {
-                return new ConnectorZyteApiService();
+                return new ConnectorZyteApiService(connector.connectorConfig);
             }
 
             case EZyteCredentialType.SMART_PROXY_MANAGER: {
                 return new ConnectorZyteSmartProxyManagerService(
                     credentialConfig,
+                    connector.connectorConfig,
                     this.agents
                 );
             }

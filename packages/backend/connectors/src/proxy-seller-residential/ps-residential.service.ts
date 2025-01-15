@@ -1,15 +1,7 @@
 import { Logger } from '@nestjs/common';
-import {
-    Agents,
-    TRANSPORT_PROXY_TYPE,
-} from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_PROXY_SELLER_RESIDENTIAL_TYPE,
-    EProxyStatus,
-    EProxyType,
-
-} from '@scrapoxy/common';
+import { Agents } from '@scrapoxy/backend-sdk';
 import { ProxySellerResidentialApi } from './api';
+import { convertToProxy } from './ps-residential.helpers';
 import type {
     IConnectorProxySellerResidentialConfig,
     IConnectorProxySellerResidentialCredential,
@@ -19,43 +11,7 @@ import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
-    IProxyTransport,
 } from '@scrapoxy/common';
-
-
-const DEFAULT_HOSTNAME = 'res.proxy-seller.com';
-const DEFAULT_PORT = 10000;
-
-function convertToProxy(
-    list: IProxySellerResidentList, index: number
-): IConnectorProxyRefreshed {
-    const config: IProxyTransport = {
-        type: EProxyType.HTTP,
-        address: {
-            hostname: DEFAULT_HOSTNAME,
-            port: DEFAULT_PORT + index,
-        },
-        auth: {
-            username: list.login,
-            password: list.password,
-        },
-    };
-    const p: IConnectorProxyRefreshed = {
-        type: CONNECTOR_PROXY_SELLER_RESIDENTIAL_TYPE,
-        transportType: TRANSPORT_PROXY_TYPE,
-        name: `${list.title}${index.toString(10)
-            .padStart(
-                5,
-                '0'
-            )}`,
-        key: `${list.login}${index}`,
-        config,
-        status: EProxyStatus.STARTED,
-
-    };
-
-    return p;
-}
 
 
 export class ConnectorProxySellerResidentialService implements IConnectorService {
@@ -88,7 +44,8 @@ export class ConnectorProxySellerResidentialService implements IConnectorService
             for (let i = 0; i < list.export.ports; ++i) {
                 proxies.push(convertToProxy(
                     list,
-                    i
+                    i,
+                    this.connectorConfig.countryCode
                 ));
             }
         }
@@ -107,7 +64,7 @@ export class ConnectorProxySellerResidentialService implements IConnectorService
             title: this.connectorConfig.title,
             whitelist: '',
             geo: {
-                country: this.connectorConfig.countryCode === 'all' ? '' : this.connectorConfig.countryCode,
+                country: this.connectorConfig.countryCode === 'all' ? '' : this.connectorConfig.countryCode.toUpperCase(),
                 region: this.connectorConfig.region === 'all' ? '' : this.connectorConfig.region,
                 city: this.connectorConfig.city === 'all' ? '' : this.connectorConfig.city,
                 isp: this.connectorConfig.isp === 'all' ? '' : this.connectorConfig.isp,
@@ -121,7 +78,8 @@ export class ConnectorProxySellerResidentialService implements IConnectorService
         for (let i = 0; i < list.export.ports; ++i) {
             proxies.push(convertToProxy(
                 list,
-                i
+                i,
+                this.connectorConfig.countryCode
             ));
         }
 

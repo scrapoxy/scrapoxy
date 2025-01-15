@@ -21,7 +21,10 @@ import type {
 } from '@scrapoxy/common';
 
 
-function convertToProxy(line: string): IConnectorProxyRefreshed | undefined {
+export function convertToProxy(
+    line: string,
+    packageFilter: any
+): IConnectorProxyRefreshed | undefined {
     if (!line) {
         return;
     }
@@ -48,6 +51,14 @@ function convertToProxy(line: string): IConnectorProxyRefreshed | undefined {
         return;
     }
 
+    let countryLike: string | null;
+
+    if (packageFilter === 'all') {
+        countryLike = null;
+    } else {
+        countryLike = packageFilter.split('-')[ 0 ];
+    }
+
     const config: IProxyTransport = {
         type: EProxyType.HTTP,
         address: {
@@ -67,6 +78,7 @@ function convertToProxy(line: string): IConnectorProxyRefreshed | undefined {
         name: name,
         status: EProxyStatus.STARTED,
         config,
+        countryLike,
     };
 
     return p;
@@ -96,7 +108,10 @@ export class ConnectorRayobyteService implements IConnectorService {
         const filter = (this.connectorConfig.packageFilter ?? 'all').toLowerCase();
         const proxies = await this.api.exportProxies(filter);
         const proxiesFiltered = proxies
-            .map(convertToProxy)
+            .map((p) => convertToProxy(
+                p,
+                this.connectorConfig.packageFilter
+            ))
             .filter((p) => p && keys.includes(p.key));
 
         return proxiesFiltered as IConnectorProxyRefreshed[];
@@ -111,7 +126,10 @@ export class ConnectorRayobyteService implements IConnectorService {
         const filter = (this.connectorConfig.packageFilter ?? 'all').toLowerCase();
         const proxies = await this.api.exportProxies(filter);
         const proxiesFiltered = proxies
-            .map(convertToProxy)
+            .map((p) => convertToProxy(
+                p,
+                this.connectorConfig.packageFilter
+            ))
             .filter((p) => p && !excludeKeys.includes(p.key))
             .slice(
                 0,

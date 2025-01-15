@@ -5,14 +5,18 @@ import {
     EProxyStatus,
 } from '@scrapoxy/common';
 import { TRANSPORT_IPROYAL_RESIDENTIAL_TYPE } from './transport/iproyal-residential.constants';
+import type { IConnectorIproyalResidentialConfig } from './iproyal-residential.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
-import type{
+import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
 
 
-function convertToProxy(session: string): IConnectorProxyRefreshed {
+export function convertToProxy(
+    session: string,
+    country: string
+): IConnectorProxyRefreshed {
     const p: IConnectorProxyRefreshed = {
         type: CONNECTOR_IPROYAL_RESIDENTIAL_TYPE,
         transportType: TRANSPORT_IPROYAL_RESIDENTIAL_TYPE,
@@ -20,6 +24,7 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
         name: session,
         status: EProxyStatus.STARTED,
         config: {},
+        countryLike: country !== 'all' ? country : null,
     };
 
     return p;
@@ -29,10 +34,15 @@ function convertToProxy(session: string): IConnectorProxyRefreshed {
 export class ConnectorIproyalService implements IConnectorService {
     private readonly logger = new Logger(ConnectorIproyalService.name);
 
+    constructor(private readonly connectorConfig: IConnectorIproyalResidentialConfig) {}
+
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
-        const proxies = keys.map(convertToProxy);
+        const proxies = keys.map((key) => convertToProxy(
+            key,
+            this.connectorConfig.country
+        ));
 
         return proxies;
     }
@@ -42,7 +52,10 @@ export class ConnectorIproyalService implements IConnectorService {
 
         const proxies: IConnectorProxyRefreshed[] = [];
         for (let i = 0; i < count; i++) {
-            proxies.push(convertToProxy(generateRandomString(8)));
+            proxies.push(convertToProxy(
+                generateRandomString(8),
+                this.connectorConfig.country
+            ));
         }
 
         return proxies;

@@ -1,70 +1,18 @@
 import { Logger } from '@nestjs/common';
-import {
-    Agents,
-    TRANSPORT_DATACENTER_TYPE,
-} from '@scrapoxy/backend-sdk';
-import {
-    CONNECTOR_DIGITALOCEAN_TYPE,
-    EProxyStatus,
-    randomNames,
-} from '@scrapoxy/common';
+import { Agents } from '@scrapoxy/backend-sdk';
+import { randomNames } from '@scrapoxy/common';
 import { DigitalOceanApi } from './api';
-import { getDigitalOceanPublicAddress } from './digitalocean.helpers';
+import { convertToProxy } from './digitalocean.helpers';
 import { EDigitalOceanDropletStatus } from './digitalocean.interface';
 import type {
     IConnectorDigitalOceanConfig,
     IConnectorDigitalOceanCredential,
-    IDigitalOceanDroplet,
 } from './digitalocean.interface';
-import type {
-    IConnectorService,
-    ITransportProxyRefreshedConfigDatacenter,
-} from '@scrapoxy/backend-sdk';
+import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
-
-
-function convertStatus(status: EDigitalOceanDropletStatus): EProxyStatus {
-    if (!status) {
-        return EProxyStatus.ERROR;
-    }
-
-    switch (status) {
-        case EDigitalOceanDropletStatus.NEW:
-            return EProxyStatus.STARTING;
-        case EDigitalOceanDropletStatus.ACTIVE:
-            return EProxyStatus.STARTED;
-        case EDigitalOceanDropletStatus.OFF:
-            return EProxyStatus.STOPPED;
-        default:
-            return EProxyStatus.ERROR;
-    }
-}
-
-
-function convertToProxy(
-    droplet: IDigitalOceanDroplet, port: number
-): IConnectorProxyRefreshed {
-    const hostname = getDigitalOceanPublicAddress(droplet);
-    const config: ITransportProxyRefreshedConfigDatacenter = {
-        address: hostname ? {
-            hostname,
-            port,
-        } : void 0,
-    };
-    const proxy: IConnectorProxyRefreshed = {
-        type: CONNECTOR_DIGITALOCEAN_TYPE,
-        transportType: TRANSPORT_DATACENTER_TYPE,
-        key: droplet.id.toString(10),
-        name: droplet.name,
-        config,
-        status: convertStatus(droplet.status),
-    };
-
-    return proxy;
-}
 
 
 export class ConnectorDigitaloceanService implements IConnectorService {
