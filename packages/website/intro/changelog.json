@@ -1,6 +1,32 @@
 {
     "releases": [
         {
+            "version": "4.19.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**connector**: add the Massive connector",
+                        "**fingerprint**: refine fingerprinting with country-based preferences"
+                    ]
+                },
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**brightdata**: use Brightdata GEOip for fingerprint to avoid Scrapoxy ban",
+                        "**cloud**: update cloud base image to Ubuntu 24.04",
+                        "**liveproxies**: enhance detection of enterprise plans",
+                        "**cleaning**: remove unused OAuth connection code and connection checks",
+                        "**frontend**: improve formatting of country and region selections",
+                        "**frontend**: make username and password fields read-only in project settings",
+                        "**stats**: enable instant scaling metric refresh",
+                        "**connectors**: improve handling of connector validation errors",
+                        "**website**: update 'Get Started' documentation"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.18.1",
             "commitGroups": [
                 {
