@@ -2,7 +2,6 @@ import { CommanderRefreshClientService } from '../commander-client';
 import type {
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorProxyRefreshed,
     IConnectorToRefresh,
     ICredentialData,
@@ -43,8 +42,6 @@ export interface IConnectorFactory {
     validateInstallCommand: (credential: ICredentialData, connector: IConnectorData) => Promise<void>;
 
     queryCredential: (credential: ICredentialData, query: ICredentialQuery) => Promise<any>;
-
-    listAllProxies: (credentialConfig: any) => Promise<IConnectorListProxies>;
 }
 
 

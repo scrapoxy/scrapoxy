@@ -45,7 +45,6 @@ import type {
 import type {
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
@@ -256,10 +255,6 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
-        throw new Error('Not implemented');
     }
 
     private async queryRegions(): Promise<IRegionDatacenterLocal[]> {

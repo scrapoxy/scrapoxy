@@ -27,7 +27,6 @@ import type {
     IConnectorService,
 } from '@scrapoxy/backend-sdk';
 import type {
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
@@ -149,10 +148,6 @@ export class ConnectorProxyrackFactory implements IConnectorFactory, OnModuleDes
             }
         }
 
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
-        throw new Error('Not implemented');
     }
 
     private async queryCountries(credentialConfig: IConnectorProxyrackCredential): Promise<string[]> {

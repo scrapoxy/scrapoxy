@@ -3,7 +3,6 @@ import type {
     ICertificateInfo,
 } from '../certificate';
 import type { IOptionalValue } from '../optional';
-import type { IProxyInfo } from '../proxies';
 
 
 export interface IConnectorScale {
@@ -170,11 +169,4 @@ export interface IConnectorToRefresh {
 
 export interface IConnectorToInstall {
     config: any;
-}
-
-
-export interface IConnectorListProxies {
-    proxies: IProxyInfo[];
-
-    errors: string[];
 }

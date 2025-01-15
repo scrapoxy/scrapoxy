@@ -51,7 +51,6 @@ import type {
 import type {
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
@@ -63,7 +62,6 @@ import type {
     IOvhQuerySnapshots,
     IOvhRegionView,
     IOvhSnapshotView,
-    IProxyInfo,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -283,51 +281,6 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(credentialConfig: IConnectorOvhCredential): Promise<IConnectorListProxies> {
-        const
-            api = new OvhApi(
-                credentialConfig.appKey,
-                credentialConfig.appKey,
-                credentialConfig.consumerKey,
-                this.agents
-            ),
-            response: IConnectorListProxies = {
-                proxies: [],
-                errors: [],
-            };
-
-        try {
-            const
-                projectsIds = await api.getAllProjectsIds(),
-                promises: Promise<void>[] = [];
-
-            for (const projectId of projectsIds) {
-                const promise = (async() => {
-                    try {
-                        const instances = await api.getAllInstances(projectId);
-                        for (const instance of instances) {
-                            const proxy: IProxyInfo = {
-                                key: instance.name,
-                                description: `region=${instance.region}`,
-                            };
-                            response.proxies.push(proxy);
-                        }
-                    } catch (err: any) {
-                        response.errors.push(err.message);
-                    }
-                })();
-
-                promises.push(promise);
-            }
-
-            await Promise.all(promises);
-        } catch (err: any) {
-            response.errors.push(err.message);
-        }
-
-        return response;
     }
 
     private async queryProjects(credentialConfig: IConnectorOvhCredential): Promise<IOvhProjectView[]> {

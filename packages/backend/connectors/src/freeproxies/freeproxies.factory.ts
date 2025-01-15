@@ -15,7 +15,6 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorFreeproxyConfig,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ITaskToCreate,
 } from '@scrapoxy/common';
@@ -89,10 +88,6 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
     }
 
     async queryCredential(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
         throw new Error('Not implemented');
     }
 }

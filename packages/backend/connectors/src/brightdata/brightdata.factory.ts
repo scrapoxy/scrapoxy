@@ -33,7 +33,6 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     IBrightdataZoneView,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
@@ -153,10 +152,6 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
-        throw new Error('Not implemented');
     }
 
     private async queryZones(credentialConfig: IConnectorBrightdataCredential): Promise<IBrightdataZoneView[]> {

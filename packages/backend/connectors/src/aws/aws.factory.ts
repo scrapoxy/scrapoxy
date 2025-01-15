@@ -42,12 +42,10 @@ import type {
     IAwsQueryInstanceType,
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
     IFingerprintOptions,
-    IProxyInfo,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -265,53 +263,6 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(credentialConfig: IConnectorAwsCredential): Promise<IConnectorListProxies> {
-        const
-            api = new AwsApi(
-                credentialConfig.accessKeyId,
-                credentialConfig.secretAccessKey,
-                AWS_DEFAULT_REGION,
-                this.agents
-            ),
-            response: IConnectorListProxies = {
-                proxies: [],
-                errors: [],
-            };
-
-        try {
-            const
-                promises: Promise<void>[] = [],
-                regions = await api.describeRegions();
-            for (const region of regions) {
-                const promise = (async() => {
-                    const apiRegion = new AwsApi(
-                        credentialConfig.accessKeyId,
-                        credentialConfig.secretAccessKey,
-                        region,
-                        this.agents
-                    );
-                    const instances = await apiRegion.describeInstances();
-
-                    for (const instance of instances) {
-                        const proxy: IProxyInfo = {
-                            key: instance.instanceId[ 0 ],
-                            description: `region=${region}`,
-                        };
-                        response.proxies.push(proxy);
-                    }
-                })();
-
-                promises.push(promise);
-            }
-
-            await Promise.all(promises);
-        } catch (err: any) {
-            response.errors.push(err.message);
-        }
-
-        return response;
     }
 
     private async queryRegions(credentialConfig: IConnectorAwsCredential): Promise<string[]> {

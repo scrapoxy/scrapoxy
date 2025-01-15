@@ -18,10 +18,7 @@ import type {
     IConnectorFactory,
     IConnectorService,
 } from '@scrapoxy/backend-sdk';
-import type {
-    IConnectorListProxies,
-    ITaskToCreate,
-} from '@scrapoxy/common';
+import type { ITaskToCreate } from '@scrapoxy/common';
 
 
 @Injectable()
@@ -79,10 +76,6 @@ export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory 
     }
 
     async queryCredential(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
         throw new Error('Not implemented');
     }
 }

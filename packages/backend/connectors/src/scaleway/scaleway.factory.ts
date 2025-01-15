@@ -42,12 +42,10 @@ import type {
 import type {
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
     IFingerprintOptions,
-    IProxyInfo,
     IScalewayQueryInstanceType,
     ITaskToCreate,
 } from '@scrapoxy/common';
@@ -258,45 +256,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(credentialConfig: IConnectorScalewayCredential): Promise<IConnectorListProxies> {
-        const response: IConnectorListProxies = {
-            proxies: [],
-            errors: [],
-        };
-
-        try {
-            const
-                promises: Promise<void>[] = [];
-            for (const region in EScalewayRegions) {
-                const promise = (async() => {
-                    const apiRegion = new ScalewayApi(
-                        credentialConfig.secretAccessKey,
-                        region,
-                        credentialConfig.projectId,
-                        this.agents
-                    );
-                    const instances = await apiRegion.listInstances();
-
-                    for (const instance of instances) {
-                        const proxy: IProxyInfo = {
-                            key: instance.id[ 0 ],
-                            description: `region=${region}`,
-                        };
-                        response.proxies.push(proxy);
-                    }
-                })();
-
-                promises.push(promise);
-            }
-
-            await Promise.all(promises);
-        } catch (err: any) {
-            response.errors.push(err.message);
-        }
-
-        return response;
     }
 
     private async queryRegions(): Promise<string[]> {

@@ -30,7 +30,6 @@ import type {
     IConnectorService,
 } from '@scrapoxy/backend-sdk';
 import type {
-    IConnectorListProxies,
     IConnectorToRefresh,
     ITaskToCreate,
 } from '@scrapoxy/common';
@@ -151,10 +150,6 @@ export class ConnectorZyteFactory implements IConnectorFactory, OnModuleDestroy 
     }
 
     async queryCredential(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
         throw new Error('Not implemented');
     }
 }

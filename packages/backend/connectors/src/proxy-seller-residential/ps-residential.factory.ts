@@ -36,7 +36,6 @@ import type {
     IConnectorService,
 } from '@scrapoxy/backend-sdk';
 import type {
-    IConnectorListProxies,
     IConnectorProxySellerResidentialQueryCities,
     IConnectorProxySellerResidentialQueryIsps,
     IConnectorProxySellerResidentialQueryRegions,
@@ -158,10 +157,6 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
-        throw new Error('Not implemented');
     }
 
     private async queryCountries(): Promise<IProxySellerGeoCountryView[]> {

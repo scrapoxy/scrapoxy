@@ -43,13 +43,11 @@ import type {
 import type {
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
     IFingerprintOptions,
     IGcpQueryMachineTypes,
-    IProxyInfo,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -294,52 +292,6 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(credentialConfig: IConnectorGcpCredential): Promise<IConnectorListProxies> {
-        const
-            api = new GcpApi(
-                credentialConfig.projectId,
-                credentialConfig.clientEmail,
-                credentialConfig.privateKeyId,
-                credentialConfig.privateKey,
-                this.agents
-            ),
-            response: IConnectorListProxies = {
-                proxies: [],
-                errors: [],
-            };
-
-        try {
-            const
-                promises: Promise<void>[] = [],
-                zones = await api.listZones();
-            for (const zone of zones) {
-                const promise = (async() => {
-                    try {
-                        const instances = await api.listInstances(zone.name);
-
-                        for (const instance of instances) {
-                            const proxy: IProxyInfo = {
-                                key: instance.name,
-                                description: `zone=${zone.name}`,
-                            };
-                            response.proxies.push(proxy);
-                        }
-                    } catch (err: any) {
-                        response.errors.push(err.message);
-                    }
-                })();
-
-                promises.push(promise);
-            }
-
-            await Promise.all(promises);
-        } catch (err: any) {
-            response.errors.push(err.message);
-        }
-
-        return response;
     }
 
     private async queryZones(credentialConfig: IConnectorGcpCredential): Promise<string[]> {

@@ -44,12 +44,10 @@ import type {
     IAzureQueryVmSizes,
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
     IFingerprintOptions,
-    IProxyInfo,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -266,36 +264,6 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(credentialConfig: IConnectorAzureCredential): Promise<IConnectorListProxies> {
-        const
-            api = new AzureApi(
-                credentialConfig.tenantId,
-                credentialConfig.clientId,
-                credentialConfig.secret,
-                credentialConfig.subscriptionId,
-                this.agents
-            ),
-            response: IConnectorListProxies = {
-                proxies: [],
-                errors: [],
-            };
-
-        try {
-            const vms = await api.listVirtualMachines();
-            for (const vm of vms) {
-                const proxy: IProxyInfo = {
-                    key: vm.name as string,
-                    description: `location=${vm.location}`,
-                };
-                response.proxies.push(proxy);
-            }
-        } catch (err: any) {
-            response.errors.push(err.message);
-        }
-
-        return response;
     }
 
     private async queryLocations(credentialConfig: IConnectorAzureCredential): Promise<IAzureLocation[]> {

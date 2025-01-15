@@ -46,7 +46,6 @@ import type {
 import type {
     ICertificate,
     IConnectorData,
-    IConnectorListProxies,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
@@ -58,7 +57,6 @@ import type {
     IDigitalOceanSnapshotView,
     IFingerprintOptions,
     IOAuthToken,
-    IProxyInfo,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -286,33 +284,6 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
                 throw new CredentialQueryNotFoundError(query.type);
             }
         }
-    }
-
-    async listAllProxies(credentialConfig: IConnectorDigitalOceanCredential): Promise<IConnectorListProxies> {
-        const
-            api = new DigitalOceanApi(
-                credentialConfig.token,
-                this.agents
-            ),
-            response: IConnectorListProxies = {
-                proxies: [],
-                errors: [],
-            };
-
-        try {
-            const droplets = await api.getAllDroplets();
-            for (const droplet of droplets) {
-                const proxy: IProxyInfo = {
-                    key: droplet.id.toString(10),
-                    description: `name=${droplet.name} / region=${droplet.region.name}`,
-                };
-                response.proxies.push(proxy);
-            }
-        } catch (err: any) {
-            response.errors.push(err.message);
-        }
-
-        return response;
     }
 
     private async queryRegions(credentialConfig: IConnectorDigitalOceanCredential): Promise<IDigitalOceanRegionView[]> {

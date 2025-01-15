@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import { resolve } from 'path';
 import { ConsoleLogger } from '@nestjs/common';
 import { Command } from 'commander';
-import { addCommandCheckConnectors } from './commands/check-connectors';
 import { addCommandStart } from './commands/start';
 import type { IPackageInfo } from './commands/start/start.interface';
 
@@ -57,10 +56,6 @@ program
 addCommandStart(
     program,
     pkg,
-    logger
-);
-addCommandCheckConnectors(
-    program,
     logger
 );
 

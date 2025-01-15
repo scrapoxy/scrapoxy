@@ -37,7 +37,6 @@ import type {
     IConnectorService,
 } from '@scrapoxy/backend-sdk';
 import type {
-    IConnectorListProxies,
     IConnectorToRefresh,
     ITaskToCreate,
 } from '@scrapoxy/common';
@@ -202,10 +201,6 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
     }
 
     async queryCredential(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
-    async listAllProxies(): Promise<IConnectorListProxies> {
         throw new Error('Not implemented');
     }
 
