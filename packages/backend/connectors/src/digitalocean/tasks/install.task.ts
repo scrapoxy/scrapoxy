@@ -110,7 +110,7 @@ class DigitalOceanInstallCommand extends ATaskCommand {
                 const droplet = await api.createDropletReference({
                     name: randomName(),
                     region: this.data.region,
-                    imageName: 'ubuntu-20-04-x64',
+                    imageName: 'ubuntu-24-04-x64',
                     size: DIGITALOCEAN_DEFAULT_SIZE,
                     userData,
                 });

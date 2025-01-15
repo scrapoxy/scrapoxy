@@ -166,10 +166,10 @@ class AwsInstallCommand extends ATaskCommand {
 
                 if (architectures.includes('arm64')) {
                     architecture = 'arm64';
-                    name = 'ubuntu/images/hvm-ssd/ubuntu-lunar-23.04-arm64-server-*';
+                    name = 'ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-*';
                 } else if (architectures.includes('x86_64')) {
                     architecture = 'x86_64';
-                    name = 'ubuntu/images/hvm-ssd/ubuntu-lunar-23.04-amd64-server-*';
+                    name = 'ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*';
                 } else {
                     throw new Error(`Cannot find any architecture for the instance type ${this.data.instanceType}`);
                 }

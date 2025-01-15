@@ -117,10 +117,10 @@ class OvhInstallCommand extends ATaskCommand {
                     this.data.projectId,
                     this.data.region
                 );
-                const image = images.find((i) => i.name === 'Ubuntu 22.04');
+                const image = images.find((i) => i.name === 'Ubuntu 24.04');
 
                 if (!image) {
-                    throw new Error('Cannot find Ubuntu 22.04 image');
+                    throw new Error('Cannot find Ubuntu 24.04 image');
                 }
 
                 const instances = await api.createInstances({

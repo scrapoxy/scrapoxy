@@ -141,11 +141,11 @@ class AzureInstallCommand extends ATaskCommand {
                 let sku: string;
 
                 if (this.data.vmSize.startsWith('Standard_A1')) {
-                    sku = '20_04-lts';
+                    sku = 'server-gen1';
                 } else if (this.data.vmSize.startsWith('Standard_D2pl')) {
-                    sku = '20_04-lts-arm64';
+                    sku = 'server-arm64';
                 } else {
-                    sku = '20_04-lts-gen2';
+                    sku = 'server';
                 }
 
                 const template = new AzureVmsTemplateBuilder(
@@ -156,7 +156,7 @@ class AzureInstallCommand extends ATaskCommand {
                         this.data.vmName,
                         {
                             publisher: 'canonical',
-                            offer: '0001-com-ubuntu-server-focal',
+                            offer: 'ubuntu-24_04-lts',
                             sku,
                             version: 'latest',
                         },
