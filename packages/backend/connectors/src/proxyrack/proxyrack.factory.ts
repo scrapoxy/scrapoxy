@@ -74,10 +74,6 @@ export class ConnectorProxyrackFactory implements IConnectorFactory, OnModuleDes
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorProxyrackCredential,
         connectorConfig: IConnectorProxyrackConfig

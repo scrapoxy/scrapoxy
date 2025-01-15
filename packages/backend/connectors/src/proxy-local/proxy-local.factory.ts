@@ -74,10 +74,6 @@ export class ConnectorProxyLocalFactory implements IConnectorFactory, OnModuleDe
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorProxyLocalCredential,
         connectorConfig: IConnectorProxyLocalConfig

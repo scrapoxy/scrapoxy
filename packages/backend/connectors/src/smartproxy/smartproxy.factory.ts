@@ -125,10 +125,6 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory, OnModuleIn
         );
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorSmartproxyCredential,
         connectorConfig: IConnectorSmartproxyConfig

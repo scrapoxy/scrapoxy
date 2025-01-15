@@ -35,14 +35,6 @@ export interface ICredentialToCreate extends ICredentialToUpdate {
 }
 
 
-export interface ICredentialToCreateCallback {
-    projectId: string;
-    name: string;
-    type: string;
-    config: any;
-}
-
-
 export interface ICredentialQuery {
     type: string;
     parameters?: any;

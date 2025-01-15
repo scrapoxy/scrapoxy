@@ -74,10 +74,6 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorProxySellerServerCredential,
         connectorConfig: IConnectorProxySellerServerConfig

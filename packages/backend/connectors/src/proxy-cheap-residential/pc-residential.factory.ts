@@ -41,10 +41,6 @@ export class ConnectorProxyCheapResidentialFactory implements IConnectorFactory 
         );
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorProxyCheapResidentialCredential,
         connectorConfig: IConnectorProxyCheapResidentialConfig

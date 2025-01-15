@@ -118,10 +118,6 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
         }
     }
 
-    async validateCredentialCallback(): Promise<IConnectorGcpCredential> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorGcpCredential,
         connectorConfig: IConnectorGcpConfig

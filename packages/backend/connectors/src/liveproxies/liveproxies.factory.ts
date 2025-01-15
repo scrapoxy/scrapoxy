@@ -76,10 +76,6 @@ export class ConnectorLiveproxiesFactory implements IConnectorFactory, OnModuleD
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorLiveproxiesCredential,
         connectorConfig: IConnectorLiveproxiesConfig

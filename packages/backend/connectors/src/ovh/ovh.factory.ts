@@ -124,10 +124,6 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
         }
     }
 
-    async validateCredentialCallback(): Promise<IConnectorOvhCredential> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorOvhCredential,
         connectorConfig: IConnectorOvhConfig

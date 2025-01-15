@@ -67,10 +67,6 @@ export class ConnectorProxyCheapServerFactory implements IConnectorFactory, OnMo
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorProxyCheapServerCredential,
         connectorConfig: IConnectorProxyCheapServerConfig

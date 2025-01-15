@@ -97,10 +97,6 @@ export class ConnectorZyteFactory implements IConnectorFactory, OnModuleDestroy 
         }
     }
 
-    async validateCredentialCallback(): Promise<IConnectorZyteCredential> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorZyteCredential,
         connectorConfig: IConnectorZyteConfig

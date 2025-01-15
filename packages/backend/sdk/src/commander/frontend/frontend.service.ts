@@ -70,7 +70,6 @@ import type {
     ICredentialData,
     ICredentialQuery,
     ICredentialToCreate,
-    ICredentialToCreateCallback,
     ICredentialToUpdate,
     ICredentialView,
     IFreeproxiesToRemoveOptions,
@@ -430,24 +429,6 @@ export class CommanderFrontendService extends ACommanderService {
         };
 
         await this.storageproviders.storage.createCredential(credential);
-
-        return toCredentialView(credential);
-    }
-
-    async createCredentialCallback(callback: ICredentialToCreateCallback): Promise<ICredentialView> {
-        this.logger.debug(`createCredentialCallback(): callback.projectId=${callback.projectId} / callback.name=${callback.name}`);
-
-        const factory = this.connectorproviders.getFactory(callback.type);
-        const config = await factory.validateCredentialCallback(callback);
-        const credentialToCreate: ICredentialToCreate = {
-            name: callback.name,
-            type: callback.type,
-            config,
-        };
-        const credential = await this.createCredential(
-            callback.projectId,
-            credentialToCreate
-        );
 
         return toCredentialView(credential);
     }

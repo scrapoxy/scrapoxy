@@ -13,7 +13,6 @@ import {
     CONNECTOR_DIGITALOCEAN_TYPE,
     EDigitalOceanQueryCredential,
 } from '@scrapoxy/common';
-import axios from 'axios';
 import { DigitalOceanApi } from './api';
 import {
     toDigitalOceanRegionView,
@@ -49,14 +48,12 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    ICredentialToCreateCallback,
     IDigitalOceanQuerySizes,
     IDigitalOceanQuerySnapshots,
     IDigitalOceanRegionView,
     IDigitalOceanSizeView,
     IDigitalOceanSnapshotView,
     IFingerprintOptions,
-    IOAuthToken,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -114,30 +111,6 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
         } catch (err: any) {
             throw new CredentialInvalidError(err.message);
         }
-    }
-
-    async validateCredentialCallback(credentialToCreate: ICredentialToCreateCallback): Promise<IConnectorDigitalOceanCredential> {
-        const clientId = 'CLIENT_ID';
-        const clientSecret = 'CLIENT_SECRET';
-        const redirectUri = 'REDIRECT_URI';
-        const res = await axios.post<IOAuthToken>(
-            'https://cloud.digitalocean.com/v1/oauth/token',
-            {},
-            {
-                params: {
-                    grant_type: 'authorization_code',
-                    code: credentialToCreate.config.code,
-                    client_id: clientId,
-                    client_secret: clientSecret,
-                    redirect_uri: redirectUri,
-                },
-            }
-        );
-        const config: IConnectorDigitalOceanCredential = {
-            token: res.data.access_token,
-        };
-
-        return config;
     }
 
     async validateConnectorConfig(

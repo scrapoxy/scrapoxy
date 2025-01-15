@@ -17,7 +17,6 @@ import type {
     ICredentialData,
     ICredentialQuery,
     ICredentialToCreate,
-    ICredentialToCreateCallback,
     ICredentialToUpdate,
     ICredentialView,
     IFreeproxiesToRemoveOptions,
@@ -207,16 +206,6 @@ export class CommanderFrontendClientService implements ICommanderFrontendClient 
         const res = await lastValueFrom(this.client
             .post<ICredentialView>(
             `${this.baseUrl}/projects/${projectId}/credentials`,
-            credentialToCreate
-        ));
-
-        return res;
-    }
-
-    async createCredentialCallback(credentialToCreate: ICredentialToCreateCallback): Promise<ICredentialView> {
-        const res = await lastValueFrom(this.client
-            .post<ICredentialView>(
-            `${this.baseUrl}/credentials/callback`,
             credentialToCreate
         ));
 

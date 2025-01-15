@@ -76,10 +76,6 @@ export class ConnectorGeonodeFactory implements IConnectorFactory, OnModuleDestr
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorGeonodeCredential,
         connectorConfig: IConnectorGeonodeConfig

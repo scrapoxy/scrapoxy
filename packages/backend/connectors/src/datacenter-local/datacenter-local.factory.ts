@@ -106,10 +106,6 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorDatacenterLocalCredential,
         connectorConfig: IConnectorDatacenterLocalConfig

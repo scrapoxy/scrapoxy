@@ -56,7 +56,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { CallbackComponent } from './callback/callback.component';
 import { P404Component } from './error/404.component';
 import { LayoutModule } from './layout/layout.module';
 import { LoginComponent } from './login/login.component';
@@ -66,7 +65,6 @@ import { LoginComponent } from './login/login.component';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        CallbackComponent,
         ConnectorAwsModule,
         ConnectorAzureModule,
         ConnectorBrightdataModule,

@@ -40,7 +40,6 @@ const commandsAuthFrontend = [
     'GET /frontend/projects/00000000-0000-0000-0000-000000000000/credentials',
     'GET /frontend/projects/00000000-0000-0000-0000-000000000000/credentials/00000000-0000-0000-0000-000000000000',
     'POST /frontend/projects/00000000-0000-0000-0000-000000000000/credentials',
-    'POST /frontend/credentials/callback',
     'PUT /frontend/projects/00000000-0000-0000-0000-000000000000/credentials/00000000-0000-0000-0000-000000000000',
     'DELETE /frontend/projects/00000000-0000-0000-0000-000000000000/credentials/00000000-0000-0000-0000-000000000000',
     'POST /frontend/projects/00000000-0000-0000-0000-000000000000/credentials/00000000-0000-0000-0000-000000000000/query',

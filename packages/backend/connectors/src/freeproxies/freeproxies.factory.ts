@@ -37,10 +37,6 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
         // Nothing to validate
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: any,
         connectorConfig: IConnectorFreeproxyConfig

@@ -116,10 +116,6 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         }
     }
 
-    async validateCredentialCallback(): Promise<IConnectorAwsCredential> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorAwsCredential,
         connectorConfig: IConnectorAwsConfig

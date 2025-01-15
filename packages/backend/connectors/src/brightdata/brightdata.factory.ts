@@ -80,10 +80,6 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorBrightdataCredential,
         connectorConfig: IConnectorBrightdataConfig

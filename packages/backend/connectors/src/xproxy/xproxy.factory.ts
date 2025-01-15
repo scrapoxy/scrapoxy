@@ -61,10 +61,6 @@ export class ConnectorXProxyFactory implements IConnectorFactory, OnModuleDestro
         }
     }
 
-    async validateCredentialCallback(): Promise<any> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(): Promise<void> {
         // Nothing to validate
     }

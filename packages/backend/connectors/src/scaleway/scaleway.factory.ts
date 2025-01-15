@@ -116,10 +116,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         }
     }
 
-    async validateCredentialCallback(): Promise<IConnectorScalewayCredential> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorScalewayCredential,
         connectorConfig: IConnectorScalewayConfig

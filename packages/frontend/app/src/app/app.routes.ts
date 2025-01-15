@@ -1,4 +1,3 @@
-import { CallbackComponent } from './callback/callback.component';
 import { P404Component } from './error/404.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
@@ -24,10 +23,6 @@ export const routes: Routes = [
                 loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
             },
         ],
-    },
-    {
-        path: 'callback',
-        component: CallbackComponent,
     },
     {
         path: 'login',

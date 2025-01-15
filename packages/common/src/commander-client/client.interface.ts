@@ -9,7 +9,6 @@ import type {
     ICredentialData,
     ICredentialQuery,
     ICredentialToCreate,
-    ICredentialToCreateCallback,
     ICredentialToUpdate,
     ICredentialView,
 } from '../credentials';
@@ -72,8 +71,6 @@ export interface ICommanderFrontendClient {
     getCredentialById: (projectId: string, credentialId: string) => Promise<ICredentialData>;
 
     createCredential: (projectId: string, credentialToCreate: ICredentialToCreate) => Promise<ICredentialView>;
-
-    createCredentialCallback: (credentialToCreate: ICredentialToCreateCallback) => Promise<ICredentialView>;
 
     updateCredential: (projectId: string, credentialId: string, credentialToUpdate: ICredentialToUpdate) => Promise<ICredentialView>;
 

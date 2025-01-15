@@ -114,10 +114,6 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
         }
     }
 
-    async validateCredentialCallback(): Promise<IConnectorAzureCredential> {
-        throw new Error('Not implemented');
-    }
-
     async validateConnectorConfig(
         credentialConfig: IConnectorAzureCredential,
         connectorConfig: IConnectorAzureConfig

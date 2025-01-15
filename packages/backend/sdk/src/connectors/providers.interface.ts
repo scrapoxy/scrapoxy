@@ -6,7 +6,6 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    ICredentialToCreateCallback,
     IFingerprintOptions,
     IProxyKeyToRemove,
     ITaskToCreate,
@@ -26,8 +25,6 @@ export interface IConnectorFactory {
     config: IConnectorConfig;
 
     validateCredentialConfig: (config: any) => Promise<void>;
-
-    validateCredentialCallback: (credentialToCreate: ICredentialToCreateCallback) => Promise<any>;
 
     validateConnectorConfig: (credentialConfig: any, connectorConfig: any) => Promise<void>;
 

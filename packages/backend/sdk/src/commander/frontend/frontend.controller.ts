@@ -33,7 +33,6 @@ import type {
     ICredentialData,
     ICredentialQuery,
     ICredentialToCreate,
-    ICredentialToCreateCallback,
     ICredentialToUpdate,
     ICredentialView,
     IFreeproxiesToRemoveOptions,
@@ -254,14 +253,6 @@ export class CommanderFrontendController {
             projectId,
             credentialToCreate
         );
-
-        return credential;
-    }
-
-    @Post('credentials/callback')
-    @UseGuards(CommanderFrontendRoleGuard)
-    async createCredentialCallback(@Body() credentialToCreate: ICredentialToCreateCallback): Promise<ICredentialView> {
-        const credential = await this.commander.createCredentialCallback(credentialToCreate);
 
         return credential;
     }
