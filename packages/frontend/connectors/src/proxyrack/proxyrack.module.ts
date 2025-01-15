@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
     FormsModule,
@@ -20,6 +21,7 @@ import { ConnectorProxyrackFactory } from './proxyrack.factory';
 @NgModule({
     imports: [
         ButtonModule,
+        CommonModule,
         ConnectorprovidersModule,
         FormModule,
         FormsModule,

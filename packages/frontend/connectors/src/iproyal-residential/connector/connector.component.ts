@@ -7,8 +7,10 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { CONNECTOR_IPROYAL_RESIDENTIAL_TYPE } from '@scrapoxy/common';
-import { convertCodesToCountries } from '@scrapoxy/frontend-sdk';
+import {
+    CONNECTOR_IPROYAL_RESIDENTIAL_TYPE,
+    convertCodesToCountries,
+} from '@scrapoxy/common';
 import { ValidatorLifetime } from './input-lifetime/input-lifetime.component';
 import type { OnInit } from '@angular/core';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';

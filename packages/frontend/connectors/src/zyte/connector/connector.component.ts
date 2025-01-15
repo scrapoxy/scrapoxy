@@ -10,11 +10,11 @@ import {
 } from '@angular/forms';
 import {
     CONNECTOR_ZYTE_TYPE,
+    convertCodesToCountries,
     EZyteCredentialType,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
-    convertCodesToCountries,
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
@@ -130,7 +130,7 @@ export class ConnectorZyteComponent implements IConnectorComponent, OnInit {
                 switch (credentialType) {
                     case EZyteCredentialType.ZYTE_API: {
                         this.subForm.patchValue({
-                            region: 'US',
+                            region: 'us',
                             apiUrl: 'api.zyte.com:8011',
                         });
 

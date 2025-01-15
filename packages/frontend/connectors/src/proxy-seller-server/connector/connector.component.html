@@ -30,7 +30,9 @@
                         <option [ngValue]="null" disabled>----- Select Country ------</option>
                         <option ngValue="all">All</option>
                         @for (country of countries; track countries) {
-                            <option [ngValue]="country">{{ country }}</option>
+                            <option [ngValue]="country.code">
+                                {{ country.name }} ({{ country.code | uppercase }})
+                            </option>
                         }
                     </select>
 

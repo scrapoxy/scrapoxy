@@ -20,7 +20,7 @@ function formatUsername(
 
     if (country !== 'all') {
         lines.push('country');
-        lines.push(country);
+        lines.push(country.toLowerCase());
     }
 
     return lines.join('-');

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
     FormsModule,
@@ -19,6 +20,7 @@ import { ConnectorGeonodeFactory } from './geonode.factory';
 
 @NgModule({
     imports: [
+        CommonModule,
         ButtonModule,
         ConnectorprovidersModule,
         FormModule,

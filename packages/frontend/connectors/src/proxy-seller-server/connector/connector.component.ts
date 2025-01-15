@@ -22,6 +22,7 @@ import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,
     IConnectorProxySellerServerQueryType,
+    IIsocodeCountry,
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
@@ -48,7 +49,7 @@ export class ConnectorProxySellerServerComponent implements IConnectorComponent,
 
     EProxySellerNetworkType = EProxySellerNetworkType;
 
-    countries: string[] = [];
+    countries: IIsocodeCountry[] = [];
 
     readonly subForm: FormGroup;
 
@@ -117,7 +118,9 @@ export class ConnectorProxySellerServerComponent implements IConnectorComponent,
                         parameters,
                     }
                 )
-                    .then((countries: string[]) => countries.sort());
+                    .then((countries: IIsocodeCountry[]) => countries.sort((
+                        a, b
+                    ) => a.name.localeCompare(b.name)));
             } catch (err: any) {
                 console.error(err);
 

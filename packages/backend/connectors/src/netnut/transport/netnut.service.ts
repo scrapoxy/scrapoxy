@@ -23,8 +23,12 @@ function formatUsername(
 ): string {
     let country = options.country;
 
+    if (country === 'all') {
+        country = 'any';
+    }
+
     if (options.proxyType === EConnectorNetnutProxyType.MOB) {
-        if (options.country === 'us') {
+        if (country === 'us') {
             country = 'row';
         }
     }
@@ -32,7 +36,7 @@ function formatUsername(
     return [
         username,
         options.proxyType,
-        country,
+        country.toUpperCase(),
         'sid',
         options.session.toString(10),
     ].join('-');

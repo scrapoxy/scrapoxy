@@ -25,9 +25,9 @@
                 <c-input-group>
                     <select cSelect id="country" formControlName="country">
                         <option [ngValue]="null" disabled>----- Select Country ------</option>
-                        <option value="any">All</option>
+                        <option value="all">All</option>
                         @for (country of countries; track country.code) {
-                            <option [value]="country.code">{{ country.name }}</option>
+                            <option [value]="country.code">{{ country.name }} ({{ country.code | uppercase }})</option>
                         }
                     </select>
                 </c-input-group>

@@ -24,28 +24,32 @@
         @if (fingerprint!.asnName) {
             <div class="fp-row">
                 <div class="fp-title">ASN:</div>
-                <div class="fp-content">{{ fingerprint!.asnName }}</div>
+                <div class="fp-content">{{ fingerprint!.asnName | titlecase }}</div>
             </div>
         }
 
         @if (fingerprint!.continentName) {
             <div class="fp-row">
                 <div class="fp-title">Zone:</div>
-                <div class="fp-content">{{ fingerprint!.continentName }} ({{ fingerprint!.continentCode }})</div>
+                <div class="fp-content">
+                    {{ fingerprint!.continentName }} ({{ fingerprint!.continentCode | uppercase }})
+                </div>
             </div>
         }
 
         @if (fingerprint!.countryName) {
             <div class="fp-row">
                 <div class="fp-title">Country:</div>
-                <div class="fp-content">{{ fingerprint!.countryName }} ({{ fingerprint!.countryCode }})</div>
+                <div class="fp-content">
+                    {{ fingerprint!.countryName | titlecase }} ({{ fingerprint!.countryCode | uppercase }})
+                </div>
             </div>
         }
 
         @if (fingerprint!.cityName) {
             <div class="fp-row">
                 <div class="fp-title">City:</div>
-                <div class="fp-content">{{ fingerprint!.cityName }}</div>
+                <div class="fp-content">{{ fingerprint!.cityName | titlecase }}</div>
             </div>
         }
 

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
     FormsModule,
@@ -19,6 +20,7 @@ import { ConnectorZyteFactory } from './zyte.factory';
 @NgModule({
     imports: [
         ButtonModule,
+        CommonModule,
         ConnectorprovidersModule,
         FormModule,
         FormsModule,

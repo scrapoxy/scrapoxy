@@ -247,6 +247,11 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
                         const str = Buffer.concat(chunks)
                             .toString();
                         const geo = JSON.parse(str) as IProxySellerGeoCountryData[];
+
+                        for (const country of geo) {
+                            country.code = country.code.toLowerCase();
+                        }
+
                         resolve(geo);
                     }
                 );

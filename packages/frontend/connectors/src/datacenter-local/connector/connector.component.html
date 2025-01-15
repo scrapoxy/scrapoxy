@@ -13,7 +13,9 @@
                         [attr.disabled]="processingRegions ? true : null">
                         <option [ngValue]="null" disabled>----- Select Region ------</option>
                         @for (region of regions; track region.id) {
-                            <option [ngValue]="region.id">{{ region.description }} ({{ region.id }})</option>
+                            <option [ngValue]="region.id">
+                                {{ region.description }} ({{ region.id | uppercase }})
+                            </option>
                         }
                     </select>
 

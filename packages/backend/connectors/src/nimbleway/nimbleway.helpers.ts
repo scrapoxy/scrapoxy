@@ -21,7 +21,7 @@ export function formatUsername(
 
 export function toNimblewayGeoItem(i: INimblewayGeoItem): INimblewayGeoItem {
     const item: INimblewayGeoItem = {
-        code: i.code,
+        code: i.code.toLowerCase(),
         name: i.name,
     };
 

@@ -8,7 +8,7 @@
                     <option [ngValue]="null" disabled>----- Select Region ------</option>
                     <option value="all">All</option>
                     @for (country of countries; track country.code) {
-                        <option [ngValue]="country.code">{{ country.name }} ({{ country.code }})</option>
+                        <option [ngValue]="country.code">{{ country.name }} ({{ country.code | uppercase }})</option>
                     }
                 </select>
 

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
     FormsModule,
@@ -20,6 +21,7 @@ import { ConnectorNimblewayFactory } from './nimbleway.factory';
 @NgModule({
     imports: [
         ButtonModule,
+        CommonModule,
         ConnectorprovidersModule,
         FormModule,
         FormsModule,

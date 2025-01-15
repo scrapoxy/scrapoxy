@@ -8,15 +8,16 @@ import { ActivatedRoute } from '@angular/router';
 import {
     EEventScope,
     EProxyStatus,
+    getCountryName,
     isProxyOnline,
     ProxiesSynchronizedEvent,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
     EventsService,
-    getCountryName,
     ProjectCurrentService,
     ToastsService,
+    toTitleCase,
 } from '@scrapoxy/frontend-sdk';
 import jsVectorMap from 'jsvectormap';
 import 'jsvectormap/dist/maps/world';
@@ -54,19 +55,19 @@ function getTooltipContent(proxy: IProxyBase): string {
     }
 
     if (fingerprint.asnName) {
-        content += `<div class="fp-row"><div class="fp-title">ASN:</div><div class="fp-content">${fingerprint.asnName}</div></div>`;
+        content += `<div class="fp-row"><div class="fp-title">ASN:</div><div class="fp-content">${toTitleCase(fingerprint.asnName)}</div></div>`;
     }
 
     if (fingerprint.continentName) {
-        content += `<div class="fp-row"><div class="fp-title">Zone:</div><div class="fp-content">${fingerprint.continentName} (${fingerprint.continentCode})</div></div>`;
+        content += `<div class="fp-row"><div class="fp-title">Zone:</div><div class="fp-content">${toTitleCase(fingerprint.continentName)} (${fingerprint.continentCode?.toUpperCase()})</div></div>`;
     }
 
     if (fingerprint.countryName) {
-        content += `<div class="fp-row"><div class="fp-title">Zone:</div><div class="fp-content">${fingerprint.countryName} (${fingerprint.countryCode})</div></div>`;
+        content += `<div class="fp-row"><div class="fp-title">Zone:</div><div class="fp-content">${toTitleCase(fingerprint.countryName)} (${fingerprint.countryCode?.toUpperCase()})</div></div>`;
     }
 
     if (fingerprint.cityName) {
-        content += `<div class="fp-row"><div class="fp-title">City:</div><div class="fp-content">${fingerprint.cityName}</div></div>`;
+        content += `<div class="fp-row"><div class="fp-title">City:</div><div class="fp-content">${toTitleCase(fingerprint.cityName)}</div></div>`;
     }
 
     if (fingerprint.timezone) {
@@ -404,12 +405,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         );
 
         // Country
-        const countryCode = proxy.fingerprint?.countryCode;
+        const countryCode = proxy.fingerprint?.countryCode?.toLowerCase();
 
         if (countryCode) {
             this.proxiesByCountries.add(
                 countryCode,
-                getCountryName(countryCode) ?? countryCode,
+                toTitleCase(getCountryName(countryCode)) ?? countryCode.toUpperCase(),
                 proxy.id,
                 (code) => {
                     const mapRegions = this.map.regions[ code.toUpperCase() ];
@@ -431,7 +432,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 this.proxiesByCities.add(
                     city,
-                    `${cityName} (${countryCode})`,
+                    `${toTitleCase(cityName)} (${countryCode.toUpperCase()})`,
                     proxy.id
                 );
             }
@@ -443,7 +444,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         if (asnName) {
             this.proxiesByAsns.add(
                 asnName,
-                asnName,
+                toTitleCase(asnName) as string,
                 proxy.id
             );
         }
