@@ -11,6 +11,7 @@ import {
 import {
     CONNECTOR_LIVEPROXIES_TYPE,
     ELiveproxiesQueryCredential,
+    isLiveproxiesEnterprisePlan,
 } from '@scrapoxy/common';
 import {
     CommanderFrontendClientService,
@@ -70,7 +71,7 @@ export class ConnectorLiveproxiesComponent implements IConnectorComponent, OnIni
     }
 
     get isEnterprise(): boolean {
-        return this.subForm.value.productName === 'ENTERPRISE';
+        return isLiveproxiesEnterprisePlan(this.subForm.value.productName);
     }
 
     async ngOnInit(): Promise<void> {

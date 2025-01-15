@@ -10,6 +10,7 @@ import {
     CONNECTOR_LIVEPROXIES_TYPE,
     ELiveproxiesPlanStatus,
     ELiveproxiesQueryCredential,
+    isLiveproxiesEnterprisePlan,
 } from '@scrapoxy/common';
 import { LiveproxiesApi } from './api';
 import { ConnectorLiveproxiesB2bService } from './liveproxies-b2b.service';
@@ -97,7 +98,7 @@ export class ConnectorLiveproxiesFactory implements IConnectorFactory, OnModuleD
     async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
         const config = connector.connectorConfig as IConnectorLiveproxiesConfig;
 
-        if (config.productName === 'ENTERPRISE') {
+        if (isLiveproxiesEnterprisePlan(config.productName)) {
             return new ConnectorLiveproxiesB2bService(
                 connector.credentialConfig,
                 connector.connectorConfig,

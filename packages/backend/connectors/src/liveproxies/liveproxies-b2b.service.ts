@@ -7,6 +7,7 @@ import {
     CONNECTOR_LIVEPROXIES_TYPE,
     EProxyStatus,
     EProxyType,
+    isLiveproxiesEnterprisePlan,
 } from '@scrapoxy/common';
 import { LiveproxiesApi } from './api';
 import type {
@@ -82,7 +83,7 @@ export class ConnectorLiveproxiesB2bService implements IConnectorService {
             throw new Error(`Plan ${this.connectorConfig.packageId} not found`);
         }
 
-        if (plan.productName !== 'ENTERPRISE') {
+        if (!isLiveproxiesEnterprisePlan(plan.productName)) {
             throw new Error(`Plan ${this.connectorConfig.packageId} is not ENTERPRISE`);
         }
 
@@ -107,7 +108,7 @@ export class ConnectorLiveproxiesB2bService implements IConnectorService {
             throw new Error(`Plan not found: ${this.connectorConfig.packageId}`);
         }
 
-        if (plan.productName !== 'ENTERPRISE') {
+        if (!isLiveproxiesEnterprisePlan(plan.productName)) {
             throw new Error(`Plan ${this.connectorConfig.packageId} is not ENTERPRISE`);
         }
 
