@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
+    ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
     CredentialQueryNotFoundError,
@@ -87,17 +88,21 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
             connectorConfig
         );
 
-        const api = new ProxySellerServerApi(
-            credentialConfig.token,
-            this.agents
-        );
-        const proxies = await api.getAllProxies(
-            connectorConfig.networkType,
-            connectorConfig.country
-        );
+        try {
+            const api = new ProxySellerServerApi(
+                credentialConfig.token,
+                this.agents
+            );
+            const proxies = await api.getAllProxies(
+                connectorConfig.networkType,
+                connectorConfig.country
+            );
 
-        if (proxies.length <= 0) {
-            throw new Error('No proxies available this configuration');
+            if (proxies.length <= 0) {
+                throw new Error('No proxies available this configuration');
+            }
+        } catch (err: any) {
+            throw new ConnectorInvalidError(err.message); // TODO: check that all connectors throw this error in the validation
         }
     }
 
