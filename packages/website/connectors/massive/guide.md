@@ -2,7 +2,7 @@
 
 ![Massive](/assets/images/massive.svg){width=230 nozoom}
 
-[Massive Network](https://partners.joinmassive.com/plans?ref=oguwmwr) offers a robust residential proxy network featuring full global coverage, 
+[Massive Network](https://partners.joinmassive.com/create-account-enterprise?ref=oguwmwr) offers a robust residential proxy network featuring full global coverage, 
 device type targeting, and precise city, state, and ZIP-level targeting. 
 With an extensive IP pool, top-tier performance, competitive pricing, and 100% ethically sourced residential IPs, 
 Massive delivers unmatched reliability and flexibility for businesses worldwide.

@@ -23,7 +23,7 @@ Scrapoxy is not:
 - a webscraper like [Scrapy](https://scrapy.org), [Crawlee](https://crawlee.dev) or [Octoparse](https://www.octoparse.com);
 - a cloud provider like [AWS](https://aws.amazon.com), [GCP](https://cloud.google.com) or [Azure](https://azure.microsoft.com);
 - a browser farm like [Puppeteer](https://pptr.dev), [Selenium](https://www.selenium.dev) or [Playwright](https://playwright.dev);
-- a proxy service like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IP Royal](https://iproyal.com/?r=432273) or [Zyte](https://www.zyte.com).
+- a proxy service like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IP Royal](https://iproyal.com/?r=432273) or [Zyte](https://refer.zyte.com/72VhrR).
 
 
 ## What you can do with Scrapoxy?
@@ -86,7 +86,7 @@ Scrapoxy handles the startup/shutdown of proxy instances to rotate IP addresses 
 
 ### 🌐 Proxy Services 🌐
 
-Scrapoxy supports many proxy services like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IPRoyal](https://iproyal.com/?r=432273) or [Zyte](https://www.zyte.com).
+Scrapoxy supports many proxy services like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IPRoyal](https://iproyal.com/?r=432273) or [Zyte](https://refer.zyte.com/72VhrR).
 
 It connects to these services and uses a variety of parameters such as country or OS type,
 to create a diversity of proxies.

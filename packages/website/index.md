@@ -75,7 +75,7 @@ providers:
           url: 'https://iproyal.com/?r=432273'
           img: '/assets/images/iproyal.svg'
         - name: 'Massive'
-          url: 'https://partners.joinmassive.com/plans?ref=oguwmwr'
+          url: 'https://partners.joinmassive.com/create-account-enterprise?ref=oguwmwr'
           img: '/assets/images/massive.svg'
         - name: 'NetNut'
           url: 'https://netnut.io?ref=ymzmmmu'
@@ -114,7 +114,7 @@ providers:
           url: 'https://smartproxy.pxf.io/Qy5mVo'
           img: '/assets/images/smartproxy.svg'
         - name: 'Zyte'
-          url: 'https://www.zyte.com'
+          url: 'https://refer.zyte.com/72VhrR'
           img: '/assets/images/zyte.svg'
 
 sponsors:
