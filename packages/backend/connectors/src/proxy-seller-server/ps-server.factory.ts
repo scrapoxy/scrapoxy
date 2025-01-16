@@ -97,7 +97,7 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
                 throw new Error('No proxies available this configuration');
             }
         } catch (err: any) {
-            throw new ConnectorInvalidError(err.message); // TODO: check that all connectors throw this error in the validation
+            throw new ConnectorInvalidError(err.message);
         }
     }
 

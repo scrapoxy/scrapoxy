@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
+    ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
     CredentialQueryNotFoundError,
@@ -91,7 +92,7 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
                 connectorConfig.country
             );
         } catch (err: any) {
-            throw new CredentialInvalidError(err.message);
+            throw new ConnectorInvalidError(err.message);
         }
     }
 
