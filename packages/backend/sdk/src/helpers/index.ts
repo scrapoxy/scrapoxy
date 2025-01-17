@@ -6,8 +6,6 @@ export * from './connection';
 
 export * from './http';
 
-export * from './install-script.builder';
-
 export * from './logger';
 
 export * from './sessions';

@@ -134,6 +134,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         const service = new ConnectorScalewayService(
             connector.credentialConfig,
             connector.connectorConfig,
+            connector.certificate as ICertificate,
             this.agents
         );
 

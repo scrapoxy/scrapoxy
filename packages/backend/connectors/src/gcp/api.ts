@@ -281,6 +281,18 @@ export class GcpApi {
                 },
                 resourceManagerTags: {},
                 machineType: request.machineType,
+                metadata: {
+                    items: [
+                        {
+                            key: 'startup-script',
+                            value: request.startupScript,
+                        },
+                        {
+                            key: 'block-project-ssh-keys',
+                            value: 'true',
+                        },
+                    ],
+                },
             },
             sourceInstanceTemplate: `projects/${this.projectId}/global/instanceTemplates/${request.templateName}`,
         };

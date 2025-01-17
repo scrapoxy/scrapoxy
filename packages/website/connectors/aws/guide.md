@@ -173,7 +173,7 @@ Complete the form with the following information:
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
 4. **Region**: The region where the instances will be created;
-5. **Port**: The port of the proxy (on AWS);
+5. **Port**: The port of the proxy (on AWS). If it is modified after installation, the security group must also be updated to allow traffic on the new port;
 6. **Instance Type**: The type of the instance;
 7. **Image ID**: The name of the image in the region;
 8. **Security group name**: The name of the security group containing the firewall rules;

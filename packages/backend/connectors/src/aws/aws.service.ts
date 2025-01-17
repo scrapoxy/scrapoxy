@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    RunScriptBuilder,
+} from '@scrapoxy/backend-sdk';
 import { AwsApi } from './api';
 import { convertToProxy } from './aws.helpers';
 import type {
@@ -8,6 +11,7 @@ import type {
 } from './aws.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
+    ICertificate,
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
@@ -21,6 +25,7 @@ export class ConnectorAwsService implements IConnectorService {
     constructor(
         credentialConfig: IConnectorAwsCredential,
         private readonly connectorConfig: IConnectorAwsConfig,
+        private readonly certificate: ICertificate,
         agents: Agents
     ) {
         this.api = new AwsApi(
@@ -55,6 +60,11 @@ export class ConnectorAwsService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
+        const userData = await new RunScriptBuilder(
+            this.connectorConfig.port,
+            this.certificate
+        )
+            .build();
         const instances = await this.api.runInstances({
             count,
             instanceType: this.connectorConfig.instanceType,
@@ -62,6 +72,7 @@ export class ConnectorAwsService implements IConnectorService {
             securityGroup: this.connectorConfig.securityGroupName,
             group: this.connectorConfig.tag,
             terminateOnShutdown: true,
+            userData,
         });
 
         return instances.map((i) => convertToProxy(

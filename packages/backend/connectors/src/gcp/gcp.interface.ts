@@ -89,6 +89,7 @@ export interface IGcpBulkInsertInstancesRequest {
     machineType: string;
     templateName: string;
     zone: string;
+    startupScript: string;
 }
 
 

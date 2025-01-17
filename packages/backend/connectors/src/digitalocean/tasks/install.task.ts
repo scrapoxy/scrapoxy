@@ -105,7 +105,10 @@ class DigitalOceanInstallCommand extends ATaskCommand {
         switch (this.task.stepCurrent) {
             case 0: {
                 // Create Droplet
-                const userData = await new InstallScriptBuilder(this.data.certificate)
+                const userData = await new InstallScriptBuilder(
+                    this.data.port,
+                    this.data.certificate
+                )
                     .build();
                 const droplet = await api.createDropletReference({
                     name: randomName(),

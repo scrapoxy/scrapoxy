@@ -118,7 +118,10 @@ class ScalewayInstallCommand extends ATaskCommand {
 
                 this.data.instanceId = instance.id;
 
-                const userData = await new InstallScriptBuilder(this.data.certificate)
+                const userData = await new InstallScriptBuilder(
+                    this.data.port,
+                    this.data.certificate
+                )
                     .build();
 
                 await api.setUserData(

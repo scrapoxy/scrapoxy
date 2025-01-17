@@ -174,7 +174,10 @@ class GcpInstallCommand extends ATaskCommand {
                 }
 
                 // Create install instance
-                const startupScript = await new InstallScriptBuilder(this.data.certificate)
+                const startupScript = await new InstallScriptBuilder(
+                    this.data.port,
+                    this.data.certificate
+                )
                     .build();
                 const instanceName = `${this.data.templateName}-instance`;
                 const insertInstanceOp = await api.insertInstance({

@@ -143,7 +143,7 @@ Complete the form with the following information:
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
 4. **Zone**: The region where the instances will be created;
-5. **Port**: The port of the proxy (on GCP);
+5. **Port**: The port of the proxy (on GCP); If **Port** is modified after installation, the filewall rule must also be updated to allow traffic on the new port.
 6. **Machine Type**: The type of the instance;
 7. **Template Name**: The name of the template to use; 
 8. **Network Name**: The name of the network to use; 

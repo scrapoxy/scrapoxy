@@ -139,6 +139,7 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
         const service = new ConnectorGcpService(
             connector.credentialConfig,
             connector.connectorConfig,
+            connector.certificate as ICertificate,
             this.agents
         );
 

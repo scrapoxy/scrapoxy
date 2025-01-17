@@ -142,6 +142,7 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
         const service = new ConnectorOvhService(
             connector.credentialConfig,
             connector.connectorConfig,
+            connector.certificate as ICertificate,
             this.agents
         );
 

@@ -102,6 +102,7 @@ export interface IDigitalOceanCreateDropletsRequest {
     size: string;
     snapshotId: number;
     tags: string[];
+    userData: string;
 }
 
 

@@ -134,6 +134,7 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         const service = new ConnectorAwsService(
             connector.credentialConfig,
             connector.connectorConfig,
+            connector.certificate as ICertificate,
             this.agents
         );
 

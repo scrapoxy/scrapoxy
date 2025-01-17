@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
+    RunScriptBuilder,
     TRANSPORT_DATACENTER_TYPE,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -23,6 +24,7 @@ import type {
     ITransportProxyRefreshedConfigDatacenter,
 } from '@scrapoxy/backend-sdk';
 import type {
+    ICertificate,
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
@@ -39,6 +41,7 @@ export class ConnectorAzureService implements IConnectorService {
     constructor(
         private readonly credentialConfig: IConnectorAzureCredential,
         private readonly connectorConfig: IConnectorAzureConfig,
+        private readonly certificate: ICertificate,
         agents: Agents
     ) {
         this.api = new AzureApi(
@@ -126,6 +129,11 @@ export class ConnectorAzureService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
+        const runScript = await new RunScriptBuilder(
+            this.connectorConfig.port,
+            this.certificate
+        )
+            .build();
         const namesLimit = randomNames(Math.min(
             count,
             VMS_LIMIT_PER_REQUEST
@@ -136,6 +144,7 @@ export class ConnectorAzureService implements IConnectorService {
         )
             .addVms(
                 namesLimit,
+                runScript,
                 this.connectorConfig.useSpotInstances
             )
             .build();

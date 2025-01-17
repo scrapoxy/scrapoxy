@@ -132,6 +132,7 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
         const service = new ConnectorAzureService(
             connector.credentialConfig,
             connector.connectorConfig,
+            connector.certificate as ICertificate,
             this.agents
         );
 

@@ -1,8 +1,9 @@
-import { promises as fs } from 'fs';
 import {
     Proxy,
     sigstop,
 } from '@scrapoxy/proxy-sdk';
+import { ConfigLoader } from './config-loader';
+import { watchFile } from './watch';
 import type { IProxyLogger } from '@scrapoxy/proxy-sdk';
 
 
@@ -28,39 +29,65 @@ class ProxyLoggerConsole implements IProxyLogger {
 
 
 (async() => {
-    const
-        port = parseInt(
-            process.env.PORT ?? '3128',
-            10
-        ),
-        timeout = parseInt(
-            process.env.TIMEOUT ?? '60000', // One minute
-            10
-        );
-    const [
-        cert, key,
-    ] = await Promise.all([
-        fs.readFile('certificate.pem')
-            .then((buffer) => buffer.toString()),
-        fs.readFile('certificate.key')
-            .then((buffer) => buffer.toString()),
-    ]);
     const logger = new ProxyLoggerConsole();
-    const proxy = new Proxy(
-        logger,
-        timeout,
-        cert,
-        key
+    let proxy: Proxy | undefined = void 0;
+    const watcher = watchFile(
+        'config.ini',
+        async(filename) => {
+            if (proxy) {
+                logger.log('Closing previous proxy...');
+                try {
+                    await proxy.close();
+                } catch (err: any) {
+                    logger.error(err);
+                } finally {
+                    proxy = void 0;
+                }
+            }
+
+            logger.log(`Loading configuration file ${filename}...`);
+
+            const config = new ConfigLoader();
+            await config.load(filename);
+
+            proxy = new Proxy(
+                logger,
+                config.getKeyInt('timeout'),
+                config.certificate,
+                config.key
+            );
+
+            proxy.listen(config.getKeyInt('port'))
+                .catch((err: any) => {
+                    logger.error(err);
+                });
+        },
+        logger
+    );
+
+    watcher.on(
+        'close',
+        () => {
+            if (proxy) {
+                proxy.close()
+                    .catch((err: any) => {
+                        logger.error(err);
+                    });
+            }
+        }
+    );
+
+    watcher.on(
+        'error',
+        (err: any) => {
+            logger.error(err);
+        }
     );
 
     sigstop(() => {
-        proxy.close()
-            .catch((err: any) => {
-                logger.error(err);
-            });
+        watcher.close();
     });
 
-    await proxy.listen(port);
 })()
     .catch((err: any) => {
         console.error(err);

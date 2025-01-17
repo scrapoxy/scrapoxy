@@ -110,7 +110,10 @@ class OvhInstallCommand extends ATaskCommand {
         switch (this.task.stepCurrent) {
             case 0: {
                 // Create install instance
-                const userData = await new InstallScriptBuilder(this.data.certificate)
+                const userData = await new InstallScriptBuilder(
+                    this.data.port,
+                    this.data.certificate
+                )
                     .build();
                 // Find image
                 const images = await api.getAllImages(

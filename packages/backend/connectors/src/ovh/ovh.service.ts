@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    RunScriptBuilder,
+} from '@scrapoxy/backend-sdk';
 import { randomName } from '@scrapoxy/common';
 import { OvhApi } from './api';
 import { convertToProxy } from './ovh.helpers';
@@ -9,6 +12,7 @@ import type {
 } from './ovh.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
+    ICertificate,
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
@@ -22,6 +26,7 @@ export class ConnectorOvhService implements IConnectorService {
     constructor(
         credentialConfig: IConnectorOvhCredential,
         private readonly connectorConfig: IConnectorOvhConfig,
+        private readonly certificate: ICertificate,
         agents: Agents
     ) {
         this.api = new OvhApi(
@@ -52,12 +57,18 @@ export class ConnectorOvhService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
+        const userData = await new RunScriptBuilder(
+            this.connectorConfig.port,
+            this.certificate
+        )
+            .build();
         const instances = await this.api.createInstances({
             projectId: this.connectorConfig.projectId,
             region: this.connectorConfig.region,
             name: `${this.connectorConfig.tag}-${randomName()}`,
             flavorId: this.connectorConfig.flavorId,
             imageId: this.connectorConfig.snapshotId,
+            userData,
             count,
         });
 

@@ -1,29 +1,21 @@
-import { promises as fs } from 'fs';
-import { resolve } from 'path';
-import { getEnvAssetsPath } from './config';
-import type { ICertificate } from '@scrapoxy/common';
+import { AScriptBuilder } from './script-builder.abstract';
 
 
-export class InstallScriptBuilder {
-    private readonly rootPath: string;
-
-    constructor(private readonly certificate: ICertificate) {
-        this.rootPath = resolve(
-            getEnvAssetsPath(),
-            'proxy'
-        );
-    }
-
+export class InstallScriptBuilder extends AScriptBuilder {
     async build(): Promise<string> {
-        const
-            certificateKey = this.writeFileFromString(
-                this.certificate.key,
-                '/root/certificate.key'
-            ),
-            certificatePem = this.writeFileFromString(
-                this.certificate.cert,
-                '/root/certificate.pem'
-            );
+        const configIni = [
+            '[general]',
+            `port=${this.port}`,
+            'timeout=60000',
+            '[certificate]',
+            this.certificate.cert,
+            '[key]',
+            this.certificate.key,
+        ].join('\n');
+        const configIniFile = this.writeFileFromString(
+            configIni,
+            '/root/config.ini'
+        );
         const [
             mainJs, packageJson, proxyupSh,
         ] = await Promise.all([
@@ -53,35 +45,11 @@ export class InstallScriptBuilder {
             ...mainJs,
             ...packageJson,
             ...proxyupSh,
-            ...certificatePem,
-            ...certificateKey,
+            ...configIniFile,
             'sudo npm install --prefix /root',
             'sudo chmod a+x /etc/init.d/proxyup.sh',
             'sudo update-rc.d proxyup.sh defaults',
             'sudo /etc/init.d/proxyup.sh start',
         ].join('\n');
-    }
-
-    private writeFileFromString(
-        data: string, destination: string
-    ): string[] {
-        return [
-            `cat << 'EOF' | sudo tee ${destination} > /dev/null`, data, 'EOF',
-        ];
-    }
-
-    private async writeFileFromFile(
-        filename: string, destination: string
-    ): Promise<string[]> {
-        const source = resolve(
-            this.rootPath,
-            filename
-        );
-        const data = await fs.readFile(source);
-
-        return this.writeFileFromString(
-            data.toString(),
-            destination
-        );
     }
 }

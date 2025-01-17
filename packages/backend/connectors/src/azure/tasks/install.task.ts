@@ -136,7 +136,10 @@ class AzureInstallCommand extends ATaskCommand {
                 ]);
 
                 // Create VM reference
-                const installScript = await new InstallScriptBuilder(this.data.certificate)
+                const installScript = await new InstallScriptBuilder(
+                    this.data.port,
+                    this.data.certificate
+                )
                     .build();
                 let sku: string;
 

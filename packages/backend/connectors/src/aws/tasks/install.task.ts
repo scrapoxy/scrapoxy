@@ -194,7 +194,10 @@ class AwsInstallCommand extends ATaskCommand {
                 ) => b.creationDate[ 0 ].localeCompare(a.creationDate[ 0 ]));
                 const imageId = imagesSorted[ 0 ].imageId[ 0 ];
                 // Create instance
-                const userData = await new InstallScriptBuilder(this.data.certificate)
+                const userData = await new InstallScriptBuilder(
+                    this.data.port,
+                    this.data.certificate
+                )
                     .build();
                 const instances = await api.runInstances({
                     count: 1,

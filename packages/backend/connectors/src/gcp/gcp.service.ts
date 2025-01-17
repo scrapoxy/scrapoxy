@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    RunScriptBuilder,
+} from '@scrapoxy/backend-sdk';
 import { randomNames } from '@scrapoxy/common';
 import { GcpApi } from './api';
 import { convertToProxy } from './gcp.helpers';
@@ -9,6 +12,7 @@ import type {
 } from './gcp.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
+    ICertificate,
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
@@ -22,6 +26,7 @@ export class ConnectorGcpService implements IConnectorService {
     constructor(
         credentialConfig: IConnectorGcpCredential,
         private readonly connectorConfig: IConnectorGcpConfig,
+        private readonly certificate: ICertificate,
         agents: Agents
     ) {
         this.api = new GcpApi(
@@ -51,12 +56,19 @@ export class ConnectorGcpService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
+        const startupScript = await new RunScriptBuilder(
+            this.connectorConfig.port,
+            this.certificate
+        )
+            .build();
+
         await this.api.bulkInsertInstances({
             instancesNames: randomNames(count),
             labelName: this.connectorConfig.label,
             machineType: this.connectorConfig.machineType,
             templateName: this.connectorConfig.templateName,
             zone: this.connectorConfig.zone,
+            startupScript,
         });
 
         return [];

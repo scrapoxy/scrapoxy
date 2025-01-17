@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
+    RunScriptBuilder,
     TRANSPORT_DATACENTER_TYPE,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -20,6 +21,7 @@ import type {
     ITransportProxyRefreshedConfigDatacenter,
 } from '@scrapoxy/backend-sdk';
 import type {
+    ICertificate,
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
@@ -53,6 +55,7 @@ export class ConnectorScalewayService implements IConnectorService {
     constructor(
         private readonly credentialConfig: IConnectorScalewayCredential,
         private readonly connectorConfig: IConnectorScalewayConfig,
+        private readonly certificate: ICertificate,
         agents: Agents
     ) {
         this.api = new ScalewayApi(
@@ -171,6 +174,16 @@ export class ConnectorScalewayService implements IConnectorService {
                 this.connectorConfig.tag,
             ],
         });
+        const userData = await new RunScriptBuilder(
+            this.connectorConfig.port,
+            this.certificate
+        )
+            .build();
+
+        await this.api.setUserData(
+            instance.id,
+            userData
+        );
 
         await this.api.startInstance(instance.id);
 

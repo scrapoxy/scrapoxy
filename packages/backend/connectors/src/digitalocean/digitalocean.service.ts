@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    RunScriptBuilder,
+} from '@scrapoxy/backend-sdk';
 import { randomNames } from '@scrapoxy/common';
 import { DigitalOceanApi } from './api';
 import { convertToProxy } from './digitalocean.helpers';
@@ -10,6 +13,7 @@ import type {
 } from './digitalocean.interface';
 import type { IConnectorService } from '@scrapoxy/backend-sdk';
 import type {
+    ICertificate,
     IConnectorProxyRefreshed,
     IProxyKeyToRemove,
 } from '@scrapoxy/common';
@@ -23,6 +27,7 @@ export class ConnectorDigitaloceanService implements IConnectorService {
     constructor(
         credentialConfig: IConnectorDigitalOceanCredential,
         private readonly connectorConfig: IConnectorDigitalOceanConfig,
+        private readonly certificate: ICertificate,
         agents: Agents
     ) {
         this.api = new DigitalOceanApi(
@@ -47,6 +52,11 @@ export class ConnectorDigitaloceanService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
+        const userData = await new RunScriptBuilder(
+            this.connectorConfig.port,
+            this.certificate
+        )
+            .build();
         const snapshotId = parseInt(this.connectorConfig.snapshotId);
         const droplets = await this.api.createDroplets({
             names: randomNames(count),
@@ -56,6 +66,7 @@ export class ConnectorDigitaloceanService implements IConnectorService {
             tags: [
                 this.connectorConfig.tag,
             ],
+            userData,
         });
 
         return droplets.map((d) => convertToProxy(

@@ -144,11 +144,13 @@ export class AzureVmsTemplateBuilder {
 
     addVms(
         names: string[],
+        runScript: string,
         useSpotInstances: boolean
     ): AzureVmsTemplateBuilder {
         for (const name of names) {
             this.addVm(
                 name,
+                runScript,
                 useSpotInstances
             );
         }
@@ -216,11 +218,20 @@ export class AzureVmsTemplateBuilder {
 
     private addVm(
         name: string,
+        runScript: string,
         useSpotInstances: boolean
     ): AzureVmsTemplateBuilder {
         this.addVmIp(name);
         this.addVmNic(name);
 
+        const
+            userDataB64 = Buffer.from(runScript)
+                .toString('base64');
+        const
+            adminPassword = `#${Buffer.from(uuid())
+                .toString('base64')}#`,
+            adminUsername = `#${Buffer.from(uuid())
+                .toString('base64')}#`;
         const vm: any = {
             type: 'Microsoft.Compute/virtualMachines',
             apiVersion: '2019-12-01',
@@ -232,6 +243,12 @@ export class AzureVmsTemplateBuilder {
             properties: {
                 hardwareProfile: {
                     vmSize: '[parameters(\'vmSize\')]',
+                },
+                osProfile: {
+                    computerName: name,
+                    adminUsername,
+                    adminPassword,
+                    customData: userDataB64,
                 },
                 storageProfile: {
                     imageReference: {
@@ -332,7 +349,7 @@ export class AzureImageTemplateBuilder {
                     location: '[parameters(\'location\')]',
                     properties: {
                         osType: 'Linux',
-                        osState: 'Specialized',
+                        osState: 'Generalized',
                         identifier: {
                             publisher: SCRAPOXY_DATACENTER_PREFIX,
                             offer: `${this.prefix}offer`,

@@ -131,6 +131,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
         const service = new ConnectorDigitaloceanService(
             connector.credentialConfig,
             connector.connectorConfig,
+            connector.certificate as ICertificate,
             this.agents
         );
 

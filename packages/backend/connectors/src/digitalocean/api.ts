@@ -169,6 +169,7 @@ export class DigitalOceanApi {
                 region: request.region,
                 tags: request.tags,
                 size: request.size,
+                user_data: request.userData,
             }
         );
 
