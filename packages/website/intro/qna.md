@@ -140,6 +140,12 @@ Scrapoxy needs the ability to access the open port (default is 3128) on the inst
 This access facilitates the acquisition of the instance's fingerprint and enables the proper relay of traffic.
 Ensure that your firewall settings include a rule that permits this access.
 
+#### Cause 4:  Improper connector installation
+
+In some cases, the installation may fail silently without providing any indication. 
+If this occurs, the only solution is to uninstall and then reinstall the connector. 
+Fortunately, this issue is rare and usually happens only during the installation process rather than during normal operation.
+
 
 ## Proxy
 
