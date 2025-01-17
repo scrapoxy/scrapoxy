@@ -47,7 +47,7 @@ export abstract class ATransportBrightdataService extends ATransportResidentialS
     override parseFingerprintResponse(response: IFingerprintResponseRaw): IFingerprint {
         const body = JSON.parse(response.body);
         const fp: IFingerprint = {
-            ip: 'hidden',
+            ip: (response.connectHeaders?.[ 'x-brd-ip' ] as string | undefined) ?? 'hidden',
             useragent: null,
             asnName: body.asn?.org_name ?? null,
             asnNetwork: null,

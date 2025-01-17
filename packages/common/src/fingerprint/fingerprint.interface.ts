@@ -126,6 +126,7 @@ export const FINGERPRINT_RESPONSE_SWAGGER_PROPS = {
 
 export interface IFingerprintResponseRaw {
     headers: Record<string, string | string[] | undefined>;
+    connectHeaders?: Record<string, string | string[] | undefined>;
     body: string;
 }
 

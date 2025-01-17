@@ -206,6 +206,11 @@ export abstract class ATransportDatacenterService extends ATransportService {
                             returnedSocket = proxySocket;
                         }
 
+                        // Attach proxy response headers to the socket for fingerprinting
+                        (returnedSocket as any).connectHeaders = {
+                            ...proxyRes.headers,
+                        };
+
                         oncreate(
                             void 0 as any,
                             returnedSocket
@@ -287,6 +292,11 @@ export abstract class ATransportDatacenterService extends ATransportService {
                 proxyRes: IncomingMessage, socket: Socket
             ) => {
                 if (proxyRes.statusCode === 200) {
+                    // Attach proxy response headers to the socket for fingerprinting
+                    (socket as any).connectHeaders = {
+                        ...proxyRes.headers,
+                    };
+
                     callback(
                         void 0 as any,
                         socket

@@ -78,6 +78,7 @@ function fingerprintRequest(args: ClientRequestArgs): Promise<IFingerprintRespon
                             try {
                                 resolve({
                                     headers: response.headers,
+                                    connectHeaders: (response.socket as any)?.connectHeaders,
                                     body,
                                 });
                             } catch (err: any) {

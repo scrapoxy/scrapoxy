@@ -221,7 +221,7 @@ This compilation includes proxies from all connectors, with pagination to enhanc
 A proxy is characterized by the following attributes:
 1. **Connector**: The name of the associated connector;
 2. **Name**: The identifier assigned to the proxy;
-3. **IP Address**: The IP address of the proxy along with geo-localization information;
+3. **IP Address / ID**: The proxy's IP address, along with its geolocation details or the unique identifier provided by the provider;
 4. **Status**: Indicates the current status of the proxy (refer to the descriptions below);
 5. **Received**: The amount of bytes received by the proxy;
 6. **Sent**: The amount of bytes sent by the proxy;

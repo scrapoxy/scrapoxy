@@ -398,6 +398,11 @@ export abstract class ATransportProxyService extends ATransportService {
                         }
 
                         const returnedSocket = connect(options);
+
+                        // Attach proxy response headers to the socket for fingerprinting
+                        (returnedSocket as any).connectHeaders = {
+                            ...proxyRes.headers,
+                        };
                         returnedSocket.on(
                             'error',
                             (err: any) => {
@@ -603,6 +608,11 @@ export abstract class ATransportProxyService extends ATransportService {
                 proxyRes: IncomingMessage, socket: Socket
             ) => {
                 if (proxyRes.statusCode === 200) {
+                    // Attach proxy response headers to the socket for fingerprinting
+                    (socket as any).connectHeaders = {
+                        ...proxyRes.headers,
+                    };
+
                     callback(
                         void 0 as any,
                         socket

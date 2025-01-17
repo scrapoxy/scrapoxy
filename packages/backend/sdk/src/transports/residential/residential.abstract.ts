@@ -136,6 +136,11 @@ export abstract class ATransportResidentialService extends ATransportService {
                 proxyRes: IncomingMessage, socket: Socket
             ) => {
                 if (proxyRes.statusCode === 200) {
+                    // Attach proxy response headers to the socket for fingerprinting
+                    (socket as any).connectHeaders = {
+                        ...proxyRes.headers,
+                    };
+
                     callback(
                         void 0 as any,
                         socket
@@ -310,6 +315,8 @@ export abstract class ATransportResidentialService extends ATransportService {
                         }
 
                         const returnedSocket = connect(options);
+
+
                         returnedSocket.on(
                             'error',
                             (err: any) => {
@@ -338,6 +345,11 @@ export abstract class ATransportResidentialService extends ATransportService {
                                 returnedSocket.emit('close');
                             }
                         );
+
+                        // Attach proxy response headers to the socket for fingerprinting
+                        (returnedSocket as any).connectHeaders = {
+                            ...proxyRes.headers,
+                        };
 
                         oncreate(
                             void 0 as any,
