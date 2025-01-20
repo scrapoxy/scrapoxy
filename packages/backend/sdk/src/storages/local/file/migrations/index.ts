@@ -11,6 +11,7 @@ import { migration as migration0010 } from './0010-zyte-url';
 import { migration as migration0011 } from './0011-zyte-credential-type';
 import { migration as migration0012 } from './0012-iproyal-residential';
 import { migration as migration0013 } from './0013-country-case';
+import { migration as migration0014 } from './0014-brightdata-v3';
 
 
 export default [
@@ -27,4 +28,5 @@ export default [
     migration0011,
     migration0012,
     migration0013,
+    migration0014,
 ];

@@ -1,21 +1,17 @@
 import * as fs from 'fs';
-import {
-    ConnectorBrightdataModule,
-    IConnectorBrightdataConfig,
-} from '@scrapoxy/backend-connectors';
+import { ConnectorBrightdataModule } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
 import { testConnectors } from '@scrapoxy/backend-test-sdk';
-import {
-    CONNECTOR_BRIGHTDATA_TYPE,
-    EBrightdataProductType,
-} from '@scrapoxy/common';
+import { CONNECTOR_BRIGHTDATA_TYPE } from '@scrapoxy/common';
 
 
 describe(
     'Connector Provider - Brightdata',
     () => {
         const agents = new Agents();
-        const credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/brightdata/credentials.json');
+        const
+            connectorConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/brightdata/config.json'),
+            credentialConfigData = fs.readFileSync('packages/backend/test-connectors/src/assets/brightdata/credentials.json');
 
         afterAll(() => {
             agents.close();
@@ -35,15 +31,7 @@ describe(
                     name: 'Unique Credential',
                     config: JSON.parse(credentialConfigData.toString()),
                     connectors: [
-                        {
-                            name: 'Test on ISP shared',
-                            config: {
-                                zoneName: 'isp_shared',
-                                zoneType: EBrightdataProductType.RESIDENTIAL,
-                                country: 'us',
-                            } satisfies IConnectorBrightdataConfig,
-                            install: void 0,
-                        },
+                        JSON.parse(connectorConfigData.toString()),
                     ],
                 },
             ]

@@ -20,6 +20,8 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
 import type {
+    IBrightdataQueryZone,
+    IBrightdataUsername,
     IBrightdataZoneView,
     ICommanderFrontendClient,
     IIsocodeCountry,
@@ -30,6 +32,9 @@ import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 @Component({
     selector: `connector-${CONNECTOR_BRIGHTDATA_TYPE}`,
     templateUrl: 'connector.component.html',
+    styleUrls: [
+        'connector.component.scss',
+    ],
 })
 export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit {
     @Input()
@@ -47,11 +52,19 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
     @Input()
     createMode: boolean;
 
-    countries: IIsocodeCountry[];
+    EBrightdataProductType = EBrightdataProductType;
 
-    zones: IBrightdataZoneView[] = [];
+    zones: string[] = [];
+
+    countries: IIsocodeCountry[] = [];
 
     readonly subForm: FormGroup;
+
+    passwordType = 'password';
+
+    processingUsername = false;
+
+    processingZone = false;
 
     processingZones = false;
 
@@ -65,123 +78,36 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
             zoneName: [
                 void 0, Validators.required,
             ],
-            zoneType: [
+            productType: [
+                void 0, Validators.required,
+            ],
+            username: [
+                void 0, Validators.required,
+            ],
+            password: [
                 void 0, Validators.required,
             ],
             country: [
                 void 0, Validators.required,
             ],
         });
-
-        this.countries = convertCodesToCountries([
-            'ae',
-            'al',
-            'am',
-            'ar',
-            'at',
-            'au',
-            'az',
-            'ba',
-            'bd',
-            'be',
-            'bg',
-            'bo',
-            'br',
-            'by',
-            'ca',
-            'ch',
-            'cl',
-            'cn',
-            'co',
-            'cr',
-            'cy',
-            'cz',
-            'de',
-            'dk',
-            'do',
-            'ec',
-            'ee',
-            'eg',
-            'es',
-            'fi',
-            'fr',
-            'gb',
-            'ge',
-            'gh',
-            'gr',
-            'hk',
-            'hr',
-            'hu',
-            'id',
-            'ie',
-            'il',
-            'im',
-            'in',
-            'iq',
-            'is',
-            'it',
-            'jm',
-            'jo',
-            'jp',
-            'ke',
-            'kg',
-            'kh',
-            'kr',
-            'kw',
-            'kz',
-            'la',
-            'lk',
-            'lt',
-            'lu',
-            'lv',
-            'ma',
-            'md',
-            'mk',
-            'mm',
-            'mx',
-            'my',
-            'ng',
-            'nl',
-            'no',
-            'nz',
-            'om',
-            'pa',
-            'pe',
-            'ph',
-            'pk',
-            'pl',
-            'pt',
-            'qa',
-            'ro',
-            'rs',
-            'ru',
-            'sa',
-            'se',
-            'sg',
-            'si',
-            'sk',
-            'sl',
-            'th',
-            'tj',
-            'tm',
-            'tn',
-            'tr',
-            'tw',
-            'tz',
-            'ua',
-            'us',
-            'uy',
-            'uz',
-            'vn',
-            'za',
-            'zm',
-        ]);
     }
 
-    get countryEnabled(): boolean {
-        return [
-            EBrightdataProductType.MOBILE, EBrightdataProductType.RESIDENTIAL,
-        ].includes(this.subForm.value.zoneType);
+    get serverProductType(): boolean {
+        switch (this.subForm.value.productType) {
+            // Server
+            case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED:
+            case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED:
+            case EBrightdataProductType.ISP_SHARED_UNLIMITED:
+            case EBrightdataProductType.ISP_DEDICATED_UNLIMITED:
+            case EBrightdataProductType.RESIDENTIAL_DEDICATED: {
+                return true;
+            }
+
+            default: {
+                return false;
+            }
+        }
     }
 
     async ngOnInit(): Promise<void> {
@@ -205,16 +131,35 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
         this.processingZones = true;
 
         try {
-            this.zones = await this.commander.queryCredential(
+            const usernamePromise: Promise<IBrightdataUsername> = this.commander.queryCredential(
+                this.projectId,
+                this.credentialId,
+                {
+                    type: EBrightdataQueryCredential.Username,
+                }
+            )
+                .then((data) => data.username);
+            const zonesPromise: Promise<string[]> = this.commander.queryCredential(
                 this.projectId,
                 this.credentialId,
                 {
                     type: EBrightdataQueryCredential.Zones,
                 }
             )
-                .then((zones: IBrightdataZoneView[]) => zones.sort((
-                    a, b
-                ) => a.name.localeCompare(b.name)));
+                .then((zns: string[]) => zns.sort());
+            const [
+                username, zones,
+            ] = await Promise.all([
+                usernamePromise, zonesPromise,
+            ]);
+
+            this.subForm.patchValue({
+                username,
+            });
+
+            this.zones = zones;
+
+            await this.zoneNameChanged();
         } catch (err: any) {
             console.error(err);
 
@@ -222,30 +167,115 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
                 'Connector Bright Data',
                 err.message
             );
+
+            this.subForm.patchValue({
+                username: void 0,
+            });
         } finally {
             this.processingZones = false;
         }
     }
 
+    getProductTypeLabel(productType: EBrightdataProductType | undefined): string {
+        switch (productType) {
+            case EBrightdataProductType.DATACENTER_SHARED_PAYPERUSAGE: {
+                return 'Datacenter - Shared (Pay per GB)';
+            }
+            case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED: {
+                return 'Datacenter - Shared Unlimited';
+            }
+            case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED: {
+                return 'Datacenter - Dedicated Unlimited';
+            }
+            case EBrightdataProductType.ISP_SHARED_PAYPERUSAGE: {
+                return 'ISP - Shared (Pay per GB)';
+            }
+            case EBrightdataProductType.ISP_SHARED_UNLIMITED: {
+                return 'ISP - Shared Unlimited';
+            }
+            case EBrightdataProductType.ISP_DEDICATED_UNLIMITED: {
+                return 'ISP - Dedicated Unlimited';
+            }
+            case EBrightdataProductType.RESIDENTIAL_SHARED: {
+                return 'Residential - Shared';
+            }
+            case EBrightdataProductType.RESIDENTIAL_DEDICATED: {
+                return 'Residential - Dedicated';
+            }
+            case EBrightdataProductType.MOBILE_SHARED: {
+                return 'Mobile - Shared (Pay per GB)';
+            }
+            case EBrightdataProductType.MOBILE_DEDICATED: {
+                return 'Mobile - Dedicated';
+            }
+            default: {
+                return '';
+            }
+        }
+    }
+
     async zoneNameChanged(): Promise<void> {
         const zoneName = this.subForm.value.zoneName;
-        let zoneType: string | undefined;
 
-        if (zoneName) {
-            const zone = this.zones.find((z) => z.name === zoneName);
-            zoneType = zone ? zone.type : void 0;
-        } else {
-            zoneType = void 0;
+        if (!zoneName || zoneName.length <= 0) {
+            this.subForm.patchValue({
+                productType: void 0,
+                password: void 0,
+            });
+
+            return;
         }
 
-        this.subForm.patchValue({
-            zoneType,
-        });
+        this.processingZone = true;
 
-        if (!this.countryEnabled) {
+        try {
+            const parameters: IBrightdataQueryZone = {
+                zoneName,
+            };
+            const zone: IBrightdataZoneView = await this.commander.queryCredential(
+                this.projectId,
+                this.credentialId,
+                {
+                    type: EBrightdataQueryCredential.Zone,
+                    parameters,
+                }
+            );
+
             this.subForm.patchValue({
-                country: 'all',
+                productType: zone.productType,
+                password: zone.password,
             });
+
+            this.countries = convertCodesToCountries(zone.countries);
+
+            // Existing country is not available in the new zone, reset it
+            if (this.countries.findIndex((c) => c.code === this.subForm.value.country) < 0) {
+                this.subForm.patchValue({
+                    country: 'all',
+                });
+            }
+        } catch (err: any) {
+            console.error(err);
+
+            this.toastsService.error(
+                'Connector Bright Data',
+                err.message
+            );
+
+            this.subForm.patchValue({
+                productType: void 0,
+                password: void 0,
+            });
+        } finally {
+            this.processingZone = false;
+        }
+    }
+
+    togglePassword() {
+        if (this.passwordType === 'password') {
+            this.passwordType = 'text';
+        } else {
+            this.passwordType = 'password';
         }
     }
 }

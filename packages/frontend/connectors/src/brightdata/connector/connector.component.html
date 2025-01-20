@@ -12,8 +12,8 @@
                         (change)="zoneNameChanged()"
                         [attr.disabled]="processingZones ? true : null">
                         <option [ngValue]="null" disabled>----- Select Zone ------</option>
-                        @for (zone of zones; track zone.name) {
-                            <option [ngValue]="zone.name">{{ zone.name }} ({{ zone.type }})</option>
+                        @for (zone of zones; track zone) {
+                            <option [ngValue]="zone">{{ zone }}</option>
                         }
                     </select>
 
@@ -26,24 +26,119 @@
             </c-col>
         </c-row>
     }
+    @if (subForm.controls['productType']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="productType">Product Type</label>
 
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        class="form-control"
+                        id="productType"
+                        [attr.disabled]="processingZone ? true : null"
+                        readonly
+                        [value]="getProductTypeLabel(subForm.value.productType)"/>
+
+                    @if (processingZone) {
+                        <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['username']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="username">Username</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        type="text"
+                        cFormControl
+                        id="username"
+                        formControlName="username"
+                        [attr.disabled]="processingUsername ? true : null"
+                        readonly/>
+
+                    @if (processingUsername) {
+                        <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.controls['password']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="password">Password</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        [type]="passwordType"
+                        cFormControl
+                        id="password"
+                        formControlName="password"
+                        [attr.disabled]="processingZone ? true : null"
+                        readonly/>
+
+                    @if (processingZone) {
+                        <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
+                    }
+
+                    <button
+                        cButton
+                        color="secondary"
+                        variant="outline"
+                        cTooltip="Show Password"
+                        cTooltipPlacement="top"
+                        (click)="togglePassword()">
+                        <svg cIcon name="cilZoom"></svg>
+                    </button>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
     @if (subForm.controls['country']; as c) {
         <c-row>
             <label cLabel cCol md="2" for="country">Country</label>
 
             <c-col md="10">
-                @if (countryEnabled) {
-                    <select cSelect id="country" formControlName="country">
-                        <option [ngValue]="null" disabled>----- Select Country ------</option>
-                        <option value="all">All</option>
-                        @for (country of countries; track country.code) {
-                            <option [value]="country.code">{{ country.name }} ({{ country.code | uppercase }})</option>
+                @if (countries.length > 0) {
+                    <c-input-group>
+                        <select
+                            cSelect
+                            id="country"
+                            formControlName="country"
+                            [attr.disabled]="processingZone ? true : null">
+                            <option [ngValue]="null" disabled>----- Select Country ------</option>
+                            <option value="all">All</option>
+                            @for (country of countries; track country.code) {
+                                <option [value]="country.code">{{ country.name }} ({{ country.code | uppercase }})
+                                </option>
+                            }
+                        </select>
+
+                        @if (processingZone) {
+                            <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
                         }
-                    </select>
+                    </c-input-group>
+                    @if (serverProductType) {
+                        <div class="country-info">
+                            For this product, the proxy country will change only during proxy replacement, not during
+                            rotation.
+                        </div>
+                    }
                 } @else {
                     <div>
-                        The country must be selected in the
-                        <a href="https://brightdata.com/cp" target="_blank">BrightData Dashboard</a>.
+                        Country selection is not available for this product type.
                     </div>
                 }
             </c-col>

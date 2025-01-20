@@ -9,9 +9,13 @@ const schemaCredential = Joi.object({
 const schemaConfig = Joi.object({
     zoneName: Joi.string()
         .required(),
-    zoneType: Joi.string()
+    productType: Joi.string()
         .required()
         .valid(...BRIGHTDATA_PRODUCT_TYPES),
+    username: Joi.string()
+        .required(),
+    password: Joi.string()
+        .required(),
     country: Joi.string()
         .required(),
 });

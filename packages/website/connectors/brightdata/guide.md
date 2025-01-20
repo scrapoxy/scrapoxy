@@ -108,7 +108,10 @@ Complete the form with the following information:
 4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
 5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
 6. **Zone**: The zone to use;
-7. **Country**: Select the country to use, or `All` to use all countries (only available for Residential and Mobile proxies).
+7. **Product Type**: The type of product (read-only, determined by the selected Zone);
+8. **Username**: The proxy connection username (readonly, determined by the selected Zone);
+9. **Password**: The proxy connection password (readonly, determined by the selected Zone);
+10. **Country**: Select the country to use, or `All` to use all countries.
 
 And click on `Create`.
 
@@ -133,9 +136,11 @@ Within this connector, you can perform 2 actions on the proxies:
 1. **Trash button**: Initiates a proxy rotation. The session is temporarily removed and will be reused later.
 2. **Cross button**: Requests a replacement from BrightData to permanently replace the IP, which comes with associated costs.
 
-::: info
 If a country is chosen from the configuration menu,
 the trash button will swap the current instance with an instance of the selected country.
+
+::: info
+In the Residential product, Bright Data preserves user privacy by providing an ID in place of each proxy’s IP address.
 :::
 
 

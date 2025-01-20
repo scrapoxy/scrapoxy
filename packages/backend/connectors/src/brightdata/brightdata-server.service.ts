@@ -87,16 +87,14 @@ export class ConnectorBrightdataServerService implements IConnectorService {
     }
 
     private async getActiveProxies(): Promise<IConnectorProxyRefreshed[]> {
-        const status = await this.api.getStatus();
-        const zone = await this.api.getZone(this.connectorConfig.zoneName);
         const ips = await this.api.getZoneRouteIps(this.connectorConfig.zoneName);
-        const prefix = getBrightdataPrefix(zone.plan.product);
+        const prefix = getBrightdataPrefix(this.connectorConfig.productType);
         const proxies = ips
             .map((ip) => convertToProxy(
                 `${prefix}${ip}`,
                 TRANSPORT_BRIGHTDATA_SERVER_TYPE,
-                status.customer,
-                zone.password[ 0 ],
+                this.connectorConfig.username,
+                this.connectorConfig.password,
                 this.connectorConfig.country
             ));
 

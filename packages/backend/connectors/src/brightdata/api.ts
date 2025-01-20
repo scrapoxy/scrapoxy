@@ -3,9 +3,10 @@ import { sleep } from '@scrapoxy/common';
 import axios from 'axios';
 import type {
     IBrightdataStatus,
+    IBrightdataZone,
     IBrightdataZoneData,
+    IBrightdataZonesCountries,
 } from './brightdata.interface';
-import type { IBrightdataZoneView } from '@scrapoxy/common';
 import type { AxiosInstance } from 'axios';
 
 
@@ -48,9 +49,19 @@ export class BrightdataApi {
             (err) => {
                 this.lastRequestTime = Date.now();
 
+                if (err.response?.data) {
+                    err.message = err.response.data;
+                }
+
                 throw err;
             }
         );
+    }
+
+    async getCountries(productType: string): Promise<string[]> {
+        const res = await this.instance.get<IBrightdataZonesCountries>('countrieslist');
+
+        return res.data?.zone_type[ productType ]?.country_codes ?? [];
     }
 
     async getStatus(): Promise<IBrightdataStatus> {
@@ -59,8 +70,8 @@ export class BrightdataApi {
         return res.data;
     }
 
-    async getAllActiveZones(): Promise<IBrightdataZoneView[]> {
-        const res = await this.instance.get<IBrightdataZoneView[]>('zone/get_active_zones');
+    async getAllActiveZones(): Promise<IBrightdataZone[]> {
+        const res = await this.instance.get<IBrightdataZone[]>('zone/get_active_zones');
 
         return res.data;
     }
