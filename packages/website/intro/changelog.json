@@ -1,6 +1,24 @@
 {
     "releases": [
         {
+            "version": "4.20.0",
+            "breaking": "Azure and Brightdata connectors must be uninstall and reinstall to work properly",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**brightdata**: display the proxy ID provided by Brightdata instead of the hidden text",
+                        "**brightdata**: simplify architecture for better product and country handling",
+                        "**proxy-seller**: enhanced country handling and added support for IPv6",
+                        "**clouds**: support modifying the cloud instance port both before and after installation",
+                        "**proxy**: proxy replacement managed at proxy level instead of connector level",
+                        "**connector**: display correctly verification error message during connector configuration",
+                        "**fingerprint**: add test for country preference to fingerprint request"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.19.0",
             "commitGroups": [
                 {
