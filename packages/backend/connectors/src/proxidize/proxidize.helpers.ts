@@ -50,6 +50,7 @@ export function convertToProxy(
         key: d.Index.toString(10),
         name: d.public_ip_http_ipv4,
         status: convertStatus(d.Status),
+        removingForceCap: true,
         config,
         countryLike: null, // Not used because it is hardware.
     };

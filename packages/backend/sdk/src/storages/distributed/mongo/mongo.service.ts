@@ -1857,6 +1857,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                 status: proxy.status,
                 removing: proxy.removing,
                 removingForce: proxy.removingForce,
+                removingForceCap: proxy.removingForceCap,
                 createdTs: proxy.createdTs,
                 fingerprint: proxy.fingerprint,
                 fingerprintError: proxy.fingerprintError,
@@ -1901,6 +1902,7 @@ export class StorageMongoService implements IStorageService, IProbeService, OnMo
                         // createdTs => not modified
                         removing: proxy.removing,
                         removingForce: proxy.removingForce,
+                        removingForceCap: proxy.removingForceCap,
                         fingerprint: proxy.fingerprint,
                         fingerprintError: proxy.fingerprintError,
                         disconnectedTs: proxy.disconnectedTs,

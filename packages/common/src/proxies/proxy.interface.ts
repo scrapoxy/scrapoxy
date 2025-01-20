@@ -52,21 +52,6 @@ export enum EConnectMode {
 }
 
 
-const PROXY_BASE_META = [
-    ...FINGERPRINT_RESPONSE_META,
-    'id',
-    'type',
-    'connectorId',
-    'projectId',
-    'key',
-    'name',
-    'status',
-    'removing',
-    'removingForce',
-    'createdTs',
-];
-
-
 export const PROXY_BASE_SWAGGER_PROPS = {
     ...FINGERPRINT_RESPONSE_SWAGGER_PROPS,
     id: {
@@ -124,6 +109,22 @@ export const PROXY_BASE_SWAGGER_PROPS = {
 };
 
 
+const PROXY_BASE_META = [
+    ...FINGERPRINT_RESPONSE_META,
+    'id',
+    'type',
+    'connectorId',
+    'projectId',
+    'key',
+    'name',
+    'status',
+    'removing',
+    'removingForce',
+    'removingForceCap',
+    'createdTs',
+];
+
+
 export interface IProxyBase extends IFingerprintResponse {
     id: string;
     type: string;
@@ -134,6 +135,7 @@ export interface IProxyBase extends IFingerprintResponse {
     status: EProxyStatus;
     removing: boolean;
     removingForce: boolean;
+    removingForceCap: boolean;
     createdTs: number;
 }
 
@@ -256,6 +258,7 @@ export interface IConnectorProxyRefreshed {
     key: string;
     name: string;
     status: EProxyStatus;
+    removingForceCap: boolean;
     config: any;
     countryLike: string | null;
 }

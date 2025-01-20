@@ -52,6 +52,7 @@ export class ConnectorBrightdataResidentialService implements IConnectorService 
         const proxies = keys.map((key) => convertToProxy(
             key,
             TRANSPORT_BRIGHTDATA_RESIDENTIAL_TYPE,
+            false,
             this.connectorConfig.username,
             this.connectorConfig.password,
             this.connectorConfig.country

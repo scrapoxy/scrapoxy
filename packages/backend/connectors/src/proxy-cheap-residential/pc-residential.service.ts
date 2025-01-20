@@ -19,6 +19,7 @@ export function convertToProxy(session: string): IConnectorProxyRefreshed {
         key: session,
         name: session,
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         config: {},
         countryLike: null, // Not used because I can't test...
     };

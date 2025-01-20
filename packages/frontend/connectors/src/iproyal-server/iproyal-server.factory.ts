@@ -33,7 +33,6 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory {
        canInstall: false,
        canUninstall: false,
        useCertificate: false,
-       canReplaceProxy: false,
    };
 
    constructor(connectorproviders: ConnectorprovidersService) {

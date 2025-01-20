@@ -294,6 +294,7 @@ export class EventsProxiesClient {
                 proxyFound.status = proxy.status;
                 proxyFound.removing = proxy.removing;
                 proxyFound.removingForce = proxy.removingForce;
+                proxyFound.removingForceCap = proxy.removingForceCap;
                 proxyFound.fingerprint = proxy.fingerprint;
                 proxyFound.fingerprintError = proxy.fingerprintError;
                 proxyFound.online = isProxyOnline(proxy);

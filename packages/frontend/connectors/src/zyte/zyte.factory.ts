@@ -32,7 +32,6 @@ export class ConnectorZyteFactory implements IConnectorFactory {
         type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,
-        canReplaceProxy: false,
         useCertificate: false,
     };
 

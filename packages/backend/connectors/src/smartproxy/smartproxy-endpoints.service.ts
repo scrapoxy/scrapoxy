@@ -32,7 +32,7 @@ export class ConnectorSmartproxyEndpointsService implements IConnectorService {
         this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
         const endpoint = this.getEndpoint();
-        const proxies = keys.map((key) => {
+        const proxies: IConnectorProxyRefreshed[] = keys.map((key) => {
             const config: IProxyToConnectConfigResidential = {
                 address: {
                     hostname: endpoint.hostname,
@@ -51,6 +51,7 @@ export class ConnectorSmartproxyEndpointsService implements IConnectorService {
                 type: CONNECTOR_SMARTPROXY_TYPE,
                 transportType: this.transportType,
                 status: EProxyStatus.STARTED,
+                removingForceCap: false,
                 config,
                 countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
             };
@@ -86,6 +87,7 @@ export class ConnectorSmartproxyEndpointsService implements IConnectorService {
                     type: CONNECTOR_SMARTPROXY_TYPE,
                     transportType: this.transportType,
                     status: EProxyStatus.STARTED,
+                    removingForceCap: false,
                     config,
                     countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
                 });

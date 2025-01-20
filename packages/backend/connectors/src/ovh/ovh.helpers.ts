@@ -150,6 +150,7 @@ export function convertToProxy(
         name: instance.name,
         config,
         status: convertStatus(instance.status),
+        removingForceCap: false,
         countryLike: convertRegionToCountryCode(region),
     };
 

@@ -32,7 +32,6 @@ export class ConnectorXProxyFactory implements IConnectorFactory {
         type: EConnectorType.Hardware,
         canInstall: false,
         canUninstall: false,
-        canReplaceProxy: true,
         useCertificate: false,
     };
 

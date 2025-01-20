@@ -160,6 +160,7 @@ export class ConnectorGeonodeService implements IConnectorService {
             key,
             config,
             status: EProxyStatus.STARTED,
+            removingForceCap: false,
             countryLike: this.connectorConfig.country !== 'all' ? this.connectorConfig.country : null,
         };
 

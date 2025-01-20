@@ -92,6 +92,7 @@ export class ConnectorScalewayService implements IConnectorService {
                 name: instance.name,
                 config,
                 status: convertStatus(instance.state),
+                removingForceCap: false,
                 countryLike,
             };
 
@@ -140,6 +141,7 @@ export class ConnectorScalewayService implements IConnectorService {
                 name: instance.name,
                 config,
                 status: EProxyStatus.STARTING, // Override the status to avoid stopped instance at the beginning
+                removingForceCap: false,
                 countryLike,
             };
 

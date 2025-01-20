@@ -127,6 +127,7 @@ export function convertToProxy(
         name: droplet.name,
         config,
         status: convertStatus(droplet.status),
+        removingForceCap: false,
         countryLike: convertRegionToCountryCode(droplet.region.slug),
     };
 

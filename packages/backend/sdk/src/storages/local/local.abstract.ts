@@ -214,6 +214,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 config: void 0,
                 removing: false,
                 removingForce: false,
+                removingForceCap: false,
                 fingerprint: null,
                 fingerprintError: null,
                 createdTs: nowTime,
@@ -1623,6 +1624,7 @@ export abstract class AStorageLocal<C extends IStorageLocalModuleConfig> impleme
                 proxyModel.config = proxy.config;
                 proxyModel.removing = proxy.removing;
                 proxyModel.removingForce = proxy.removingForce;
+                proxyModel.removingForceCap = proxy.removingForceCap;
                 proxyModel.fingerprint = proxy.fingerprint;
                 proxyModel.fingerprintError = proxy.fingerprintError;
                 proxyModel.disconnectedTs = proxy.disconnectedTs;

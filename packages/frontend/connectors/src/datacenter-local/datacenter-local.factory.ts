@@ -33,7 +33,6 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory {
         type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,
-        canReplaceProxy: false,
         useCertificate: true,
     };
 

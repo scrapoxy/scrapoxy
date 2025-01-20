@@ -122,6 +122,7 @@ export function convertToProxy(
         name: instance.name as string,
         config,
         status: convertStatus(instance.status),
+        removingForceCap: false,
         countryLike: convertZoneToCountryCode(zone),
     };
 

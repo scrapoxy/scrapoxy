@@ -67,6 +67,7 @@ export function convertToProxy(instance: IInstanceDatacenterLocalView): IConnect
         name: instance.id,
         config,
         status: convertStatus(instance.status),
+        removingForceCap: false,
         countryLike: convertRegion(instance.region),
     };
 

@@ -40,6 +40,7 @@ export function convertToProxy(proxy: IHypeproxyProxy): IConnectorProxyRefreshed
         name: proxy.shortId,
         status: EProxyStatus.STARTED,
         config,
+        removingForceCap: true,
         countryLike: 'fr', // They only have 4G mobile proxies in France
     };
 

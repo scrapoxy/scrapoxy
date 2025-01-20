@@ -96,6 +96,7 @@ export function convertToProxy(
         name: i.instanceId[ 0 ],
         config,
         status: convertStatus(i.instanceState[ 0 ].code[ 0 ]),
+        removingForceCap: false,
         countryLike: convertRegionToCountryCode(region),
     };
 

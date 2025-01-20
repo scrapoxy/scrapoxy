@@ -31,7 +31,6 @@ export class ConnectorFreeproxiesFactory implements IConnectorFactory {
         type: EConnectorType.List,
         canInstall: false,
         canUninstall: false,
-        canReplaceProxy: false,
         useCertificate: false,
     };
 

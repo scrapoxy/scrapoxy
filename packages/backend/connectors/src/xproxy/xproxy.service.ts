@@ -50,6 +50,7 @@ function convertToProxy(
         key: d.position.toString(10),
         name: `${d.host}:${d.proxy_port}`,
         status,
+        removingForceCap: true,
         config,
         countryLike: null, // Not used because it is a hardware proxy
     };

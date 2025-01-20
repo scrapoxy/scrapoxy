@@ -84,6 +84,7 @@ export function convertToProxy(
         key: proxy.id.toString(),
         name: getName(proxy),
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         config,
         countryLike: country !== 'all' ? country : null,
     };

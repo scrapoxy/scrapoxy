@@ -65,6 +65,7 @@ export function convertSessionToProxy(
         key: session.session,
         name: session.session,
         status: session.proxy.online ? EProxyStatus.STARTED : EProxyStatus.STARTING,
+        removingForceCap: true,
         config: {},
         countryLike: country !== 'all' ? country : null,
     };
@@ -83,6 +84,7 @@ export function convertNameToProxy(
         key: name,
         name,
         status: EProxyStatus.STARTING,
+        removingForceCap: true,
         config: {},
         countryLike: country !== 'all' ? country : null,
     };

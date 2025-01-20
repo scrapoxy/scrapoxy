@@ -89,6 +89,7 @@ export function convertToProxy(proxy: IProxyCheapProxy): IConnectorProxyRefreshe
         key: proxy.id.toString(),
         name: getName(proxy),
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         config,
         countryLike: null,
     };

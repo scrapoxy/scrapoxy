@@ -23,6 +23,7 @@ function convertToProxy(
         key: session,
         name: session,
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         config: {},
         countryLike: country !== 'all' ? country : null,
     };

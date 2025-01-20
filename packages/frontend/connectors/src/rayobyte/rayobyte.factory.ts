@@ -33,7 +33,6 @@ export class ConnectorRayobyteFactory implements IConnectorFactory {
         canInstall: false,
         canUninstall: false,
         useCertificate: false,
-        canReplaceProxy: true,
     };
 
     constructor(connectorproviders: ConnectorprovidersService) {

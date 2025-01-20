@@ -127,7 +127,7 @@
                                                     <svg cIcon name="cilTrash"></svg>
                                                 </button>
 
-                                                @if (getConfig(proxy)?.canReplaceProxy) {
+                                                @if (proxy.removingForceCap) {
                                                     <button
                                                         cButton
                                                         color="secondary"

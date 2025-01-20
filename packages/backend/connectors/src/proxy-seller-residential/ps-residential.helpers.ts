@@ -53,6 +53,7 @@ export function convertToProxy(
         key: `${list.login}${index}`,
         config,
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         countryLike: country != 'all' ? country : null,
     };
 

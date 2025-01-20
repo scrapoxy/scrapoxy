@@ -34,7 +34,6 @@ export class ConnectorGcpFactory implements IConnectorFactory {
        type: EConnectorType.Datacenter,
        canInstall: true,
        canUninstall: true,
-       canReplaceProxy: false,
        useCertificate: true,
    };
 

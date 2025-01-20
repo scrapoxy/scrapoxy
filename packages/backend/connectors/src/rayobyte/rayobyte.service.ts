@@ -77,6 +77,7 @@ export function convertToProxy(
         key: name,
         name: name,
         status: EProxyStatus.STARTED,
+        removingForceCap: true,
         config,
         countryLike,
     };

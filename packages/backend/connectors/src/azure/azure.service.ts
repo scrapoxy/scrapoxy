@@ -89,6 +89,7 @@ export class ConnectorAzureService implements IConnectorService {
                 name: vm.name,
                 config,
                 status: vm.status,
+                removingForceCap: false,
                 countryLike: convertRegionToCountryCode(this.connectorConfig.location),
             };
 
@@ -113,6 +114,7 @@ export class ConnectorAzureService implements IConnectorService {
                     name: deploymentName,
                     config,
                     status: EProxyStatus.STARTING,
+                    removingForceCap: false,
                     countryLike: convertRegionToCountryCode(this.connectorConfig.location),
                 };
 

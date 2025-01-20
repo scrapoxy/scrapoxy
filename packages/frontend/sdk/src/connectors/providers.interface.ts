@@ -37,8 +37,6 @@ export interface IConnectorConfig {
 
     canUninstall: boolean;
 
-    canReplaceProxy: boolean;
-
     useCertificate: boolean;
 }
 

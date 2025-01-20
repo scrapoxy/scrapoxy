@@ -93,6 +93,7 @@ export class ConnectorBrightdataServerService implements IConnectorService {
             .map((ip) => convertToProxy(
                 `${prefix}${ip}`,
                 TRANSPORT_BRIGHTDATA_SERVER_TYPE,
+                true,
                 this.connectorConfig.username,
                 this.connectorConfig.password,
                 this.connectorConfig.country

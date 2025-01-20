@@ -25,6 +25,7 @@ function convertToProxy(
         key: id,
         name,
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         config: {},
         countryLike: region !== 'all' ? region : null,
     };

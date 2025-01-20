@@ -52,6 +52,7 @@ function convertToProxy(
         transportType: TRANSPORT_PROXY_TYPE,
         config,
         status: EProxyStatus.STARTED,
+        removingForceCap: false,
         countryLike: country !== 'all' ? country : null,
     };
 }

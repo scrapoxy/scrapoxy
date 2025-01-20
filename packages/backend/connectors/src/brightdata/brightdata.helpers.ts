@@ -170,6 +170,7 @@ export function getBrightdataPrefix(productType: EBrightdataProductType): string
 export function convertToProxy(
     key: string,
     transportType: string,
+    removingForceCap: boolean,
     username: string,
     password: string,
     country: string
@@ -184,6 +185,7 @@ export function convertToProxy(
         key,
         name: key,
         status: EProxyStatus.STARTED,
+        removingForceCap,
         config,
         countryLike: country !== 'all' ? country : null,
     };
