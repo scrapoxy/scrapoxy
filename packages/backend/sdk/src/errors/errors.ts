@@ -435,22 +435,19 @@ export class CredentialInvalidError extends HttpBaseException {
 }
 
 
-export class CredentialQueryNotFoundError extends HttpBaseException {
-    static readonly id = ECommanderError.CredentialQueryNotFound;
+export class CredentialQueryInvalidError extends HttpBaseException {
+    static readonly id = ECommanderError.CredentialQueryInvalid;
 
-    static from(data: any): CredentialQueryNotFoundError {
-        return new CredentialQueryNotFoundError(data.command);
+    static from(data: any): CredentialQueryInvalidError {
+        return new CredentialQueryInvalidError(data.message);
     }
 
-    constructor(command: string) {
+    constructor(message: any) {
         super(
             HttpStatus.BAD_REQUEST,
-            CredentialQueryNotFoundError.id,
-            `Credential query ${command} not found`,
-            true,
-            {
-                command,
-            }
+            CredentialQueryInvalidError.id,
+            message,
+            true
         );
     }
 }

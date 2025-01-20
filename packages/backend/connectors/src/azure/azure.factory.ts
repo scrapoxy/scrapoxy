@@ -5,7 +5,6 @@ import {
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    CredentialQueryNotFoundError,
     TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
@@ -258,7 +257,7 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
     }

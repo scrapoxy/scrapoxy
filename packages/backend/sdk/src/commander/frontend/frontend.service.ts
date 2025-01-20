@@ -30,6 +30,7 @@ import {
     ConnectorCertificateNotUsedError,
     ConnectorRemoveError,
     ConnectorUpdateError,
+    CredentialInvalidError,
     CredentialRemoveError,
     CredentialUpdateError,
     ProjectRemoveError,
@@ -516,12 +517,17 @@ export class CommanderFrontendService extends ACommanderService {
             credentialId
         );
         const factory = this.connectorproviders.getFactory(credential.type);
-        const res = await factory.queryCredential(
-            credential,
-            query
-        );
 
-        return res;
+        try {
+            const res = await factory.queryCredential(
+                credential,
+                query
+            );
+
+            return res;
+        } catch (err: any) {
+            throw new CredentialInvalidError(err.message);
+        }
     }
 
     //////////// CONNECTORS ////////////

@@ -8,7 +8,6 @@ import {
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    CredentialQueryNotFoundError,
     DatacenterLocalClient,
     TasksService,
     validate,
@@ -248,7 +247,7 @@ export class ConnectorDatacenterLocalFactory implements IConnectorFactory, OnMod
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
     }

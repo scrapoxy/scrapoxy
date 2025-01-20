@@ -6,7 +6,6 @@ import {
     Agents,
     ConnectorprovidersService,
     CredentialInvalidError,
-    CredentialQueryNotFoundError,
     getEnvAssetsPath,
     validate,
 } from '@scrapoxy/backend-sdk';
@@ -150,7 +149,7 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
     }

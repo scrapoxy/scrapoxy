@@ -13,7 +13,7 @@ import {
     CredentialInvalidError,
     CredentialNameAlreadyExistsError,
     CredentialNotFoundError,
-    CredentialQueryNotFoundError,
+    CredentialQueryInvalidError,
     CredentialRemoveError,
     CredentialUpdateError,
     FreeproxiesNotFoundError,
@@ -123,8 +123,8 @@ export function catchError(data: any) {
                 throw CredentialInvalidError.from(data);
             }
 
-            case CredentialQueryNotFoundError.id: {
-                throw CredentialQueryNotFoundError.from(data);
+            case CredentialQueryInvalidError.id: {
+                throw CredentialQueryInvalidError.from(data);
             }
 
             //////////// CONNECTORS ////////////

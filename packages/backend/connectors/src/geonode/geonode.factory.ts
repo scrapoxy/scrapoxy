@@ -4,7 +4,6 @@ import {
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    CredentialQueryNotFoundError,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -144,7 +143,7 @@ export class ConnectorGeonodeFactory implements IConnectorFactory, OnModuleDestr
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
     }

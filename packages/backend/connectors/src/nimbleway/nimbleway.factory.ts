@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import {
     Agents,
     ConnectorprovidersService,
-    CredentialQueryNotFoundError,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -100,7 +99,7 @@ export class ConnectorNimblewayFactory implements IConnectorFactory, OnModuleDes
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
 

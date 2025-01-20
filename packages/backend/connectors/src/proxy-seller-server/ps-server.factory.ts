@@ -4,7 +4,6 @@ import {
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    CredentialQueryNotFoundError,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -139,7 +138,7 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
     }

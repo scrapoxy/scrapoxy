@@ -21,7 +21,7 @@ export enum ECommanderError {
     CredentialUpdate = 'credential_update',
     CredentialRemove = 'credential_remove',
     CredentialInvalid = 'credential_invalid',
-    CredentialQueryNotFound = 'credential_query_not_found',
+    CredentialQueryInvalid = 'credential_query_invalid',
 
     //////////// CONNECTORS ////////////
     ConnectorNotFound = 'connector_not_found',

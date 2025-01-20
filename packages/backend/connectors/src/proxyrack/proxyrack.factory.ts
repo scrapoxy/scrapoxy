@@ -3,7 +3,6 @@ import {
     Agents,
     ConnectorprovidersService,
     CredentialInvalidError,
-    CredentialQueryNotFoundError,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -140,7 +139,7 @@ export class ConnectorProxyrackFactory implements IConnectorFactory, OnModuleDes
             }
 
             default: {
-                throw new CredentialQueryNotFoundError(query.type);
+                throw new Error(`Invalid query type: ${query.type}`);
             }
         }
 
