@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
+import { convertIso3ToIso2 } from '@scrapoxy/common';
 import { ProxySellerServerApi } from './api';
 import { convertToProxy } from './ps-server.helpers';
 import type {
@@ -32,14 +33,15 @@ export class ConnectorProxySellerServerService implements IConnectorService {
     async getProxies(keys: string[]): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`getProxies(): keys.length=${keys.length}`);
 
+        const country = convertIso3ToIso2(this.connectorConfig.country) ?? 'all';
         const proxies = await this.api.getAllProxies(
             this.connectorConfig.networkType,
-            this.connectorConfig.country.toUpperCase()
+            this.connectorConfig.country !== 'all' ? this.connectorConfig.country.toUpperCase() : void 0
         );
         const proxiesFiltered = proxies
             .map((p) => convertToProxy(
                 p,
-                this.connectorConfig.country
+                country
             ))
             .filter((p) => p && keys.includes(p.key));
 
@@ -51,14 +53,15 @@ export class ConnectorProxySellerServerService implements IConnectorService {
     ): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count} / totalCount=${totalCount} / excludeKeys.length=${excludeKeys.length}`);
 
+        const country = convertIso3ToIso2(this.connectorConfig.country) ?? 'all';
         const proxies = await this.api.getAllProxies(
             this.connectorConfig.networkType,
-            this.connectorConfig.country.toUpperCase()
+            this.connectorConfig.country !== 'all' ? this.connectorConfig.country.toUpperCase() : void 0
         );
         const proxiesFiltered = proxies
             .map((p) => convertToProxy(
                 p,
-                this.connectorConfig.country
+                country
             ))
             .filter((p) => p && !excludeKeys.includes(p.key))
             .slice(

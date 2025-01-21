@@ -89,7 +89,7 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
             );
             const proxies = await api.getAllProxies(
                 connectorConfig.networkType,
-                connectorConfig.country
+                connectorConfig.country !== 'all' ? connectorConfig.country.toUpperCase() : void 0
             );
 
             if (proxies.length <= 0) {
@@ -151,10 +151,7 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory, OnM
             credentialConfig.token,
             this.agents
         );
-        const proxies = await api.getAllProxies(
-            parameters.networkType,
-            'all'
-        );
+        const proxies = await api.getAllProxies(parameters.networkType);
         const countries: IIsocodeCountry[] = proxies.map((p) => ({
             code: p.country_alpha3.toLowerCase(),
             name: p.country,

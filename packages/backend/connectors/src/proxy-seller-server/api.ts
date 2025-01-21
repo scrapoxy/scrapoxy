@@ -49,7 +49,7 @@ export class ProxySellerServerApi {
 
     async getAllProxies(
         networkType: EProxySellerNetworkType,
-        country: string
+        country?: string
     ): Promise<IProxySellerProxy[]> {
         let proxies: IProxySellerProxy[];
 
@@ -92,8 +92,9 @@ export class ProxySellerServerApi {
                 });
         }
 
-        if (country !== 'all') {
-            proxies = proxies.filter((p) => p.country === country);
+        if (country) {
+            const countryUc = country.toUpperCase();
+            proxies = proxies.filter((p) => p.country_alpha3 === countryUc);
         }
 
         return proxies;

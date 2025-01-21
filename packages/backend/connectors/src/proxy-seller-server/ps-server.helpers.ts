@@ -15,7 +15,8 @@ import type {
 
 function getName(proxy: IProxySellerProxy): string {
     switch (proxy.networkType) {
-        case EProxySellerNetworkType.IPV4: {
+        case EProxySellerNetworkType.IPV4:
+        case EProxySellerNetworkType.IPV6: {
             return `DC${proxy.id}`;
         }
 
