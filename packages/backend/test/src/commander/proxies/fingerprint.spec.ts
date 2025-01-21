@@ -1,5 +1,10 @@
 import { Logger } from '@nestjs/common';
 import {
+    convertDatacenterLocalRegion,
+    IConnectorDatacenterLocalConfig,
+    IConnectorDatacenterLocalCredential,
+} from '@scrapoxy/backend-connectors';
+import {
     DatacenterLocalApp,
     SUBSCRIPTION_LOCAL_DEFAULTS,
 } from '@scrapoxy/backend-sdk';
@@ -15,6 +20,7 @@ import {
     CONNECTOR_DATACENTER_LOCAL_TYPE,
     countProxiesOnlineViews,
     EDatacenterLocalQueryCredential,
+    IConnectorData,
     IFingerprint,
     ONE_MINUTE_IN_MS,
     PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
@@ -24,11 +30,6 @@ import {
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import type {
-    IConnectorDatacenterLocalConfig,
-    IConnectorDatacenterLocalCredential,
-} from '@scrapoxy/backend-connectors';
-import type {
-    IConnectorView,
     ICredentialView,
     IDatacenterLocalQueryRegionSizes,
     IProjectData,
@@ -42,7 +43,7 @@ async function installConnector(
     credentialId: string,
     commanderApp: CommanderApp,
     region: string
-): Promise<IConnectorView> {
+): Promise<IConnectorData> {
     const parameters: IDatacenterLocalQueryRegionSizes = {
         region,
     };
@@ -99,7 +100,13 @@ async function installConnector(
         true
     );
 
-    return connector;
+
+    const connectorData = await commanderApp.frontendClient.getConnectorById(
+        projectId,
+        connector.id
+    );
+
+    return connectorData;
 }
 
 
@@ -135,7 +142,7 @@ describe(
             () => {
                 let
                     commanderApp: CommanderApp,
-                    connectors: IConnectorView[],
+                    connectors: IConnectorData[],
                     credential: ICredentialView,
                     masterApp: MasterApp,
                     project: IProjectData,
@@ -252,6 +259,7 @@ describe(
                         // Get fingerprint
                         for (let i = 0; i < regions.length; ++i) {
                             const connector = connectors[ i ],
+                                connectorConfig = connector.config as IConnectorDatacenterLocalConfig,
                                 region = regions[ i ];
                             const view = await commanderApp.frontendClient.getAllConnectorProxiesById(
                                 project.id,
@@ -260,6 +268,12 @@ describe(
                             for (const proxy of view.proxies) {
                                 expect(proxy.fingerprint?.continentName)
                                     .toBe(region.id);
+                                try {
+                                    expect(proxy.fingerprint?.countryCode)
+                                        .toBe(convertDatacenterLocalRegion(connectorConfig.region));
+                                } catch (err: any) {
+                                    throw err;
+                                }
                             }
                         }
                     }
@@ -309,7 +323,7 @@ describe(
             () => {
                 let
                     commanderApp: CommanderApp,
-                    connector: IConnectorView,
+                    connector: IConnectorData,
                     credential: ICredentialView,
                     masterApp: MasterApp,
                     project: IProjectData,
@@ -450,7 +464,7 @@ describe(
             () => {
                 let
                     commanderApp: CommanderApp,
-                    connector: IConnectorView,
+                    connector: IConnectorData,
                     credential: ICredentialView,
                     masterApp: MasterApp,
                     project: IProjectData,

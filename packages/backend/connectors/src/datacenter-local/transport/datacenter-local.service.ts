@@ -51,7 +51,7 @@ export class TransportDatacenterLocalService extends ATransportDatacenterService
             continentName: connectorConfig.region,
             continentCode: 'XX',
             countryName: 'France',
-            countryCode: 'FR',
+            countryCode: 'fr',
             cityName: 'Paris',
             latitude: 48.8566,
             longitude: 2.3522,

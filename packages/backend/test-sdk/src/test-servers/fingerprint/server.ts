@@ -2,11 +2,14 @@ import { createServer } from 'http';
 import { Server } from 'net';
 import {
     BadRequestException,
+    Body,
     Controller,
     Get,
     HttpCode,
     Module,
+    Options,
     Post,
+    Query,
     Req,
 } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -26,17 +29,42 @@ const USERAGENT_REGEXP = new RegExp(`^${SCRAPOXY_USER_AGENT_PREFIX}\/[^ ]+ \([^;
 class FingerprintController {
     @Get('json')
     @HttpCode(200)
-    getFingerprintGET(@Req() req: Request): Promise<IFingerprint | undefined> {
-        return this.getFingerprintImpl(req);
+    getFingerprintGET(
+        @Req() req: Request,
+            @Query() query: any
+    ): Promise<IFingerprint | undefined> {
+        return this.fingerprintImpl(
+            req,
+            query
+        );
+    }
+
+    @Options('json')
+    @HttpCode(200)
+    getFingerprintOPTIONS(
+        @Req() req: Request,
+            @Query() query: any
+    ): Promise<IFingerprint | undefined> {
+        return this.fingerprintImpl(
+            req,
+            query
+        );
     }
 
     @Post('json')
     @HttpCode(200)
-    getFingerprintPOST(@Req() req: Request): Promise<IFingerprint | undefined> {
-        return this.getFingerprintImpl(req);
+    getFingerprintPOST(
+        @Req() req: Request, @Body() body: any
+    ): Promise<IFingerprint | undefined> {
+        return this.fingerprintImpl(
+            req,
+            body
+        );
     }
 
-    private async getFingerprintImpl(req: Request): Promise<IFingerprint | undefined> {
+    private async fingerprintImpl(
+        req: Request, payload: any
+    ): Promise<IFingerprint | undefined> {
         // Check useragent
         const userAgent = req.headers[ 'user-agent' ] as string;
 
@@ -44,6 +72,8 @@ class FingerprintController {
             throw new BadRequestException('Invalid useragent');
         }
 
+        // Check country preference
+        const countryLike = payload.country as string | undefined;
         // Parse and return fingerprint
         let fingerprint: IFingerprint | undefined;
         const fingerprintRaw = req.headers[ 'x-fingerprint' ] as string;
@@ -60,6 +90,10 @@ class FingerprintController {
 
         if (!fingerprint) {
             fingerprint = DEFAULT_FINGERPRINT;
+        }
+
+        if (countryLike) {
+            fingerprint.countryCode = countryLike;
         }
 
         return fingerprint;
