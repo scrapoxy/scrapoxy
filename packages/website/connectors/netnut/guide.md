@@ -2,7 +2,7 @@
 
 ![NetNut](/assets/images/netnut.svg){width=250 nozoom}
 
-[NetNut](https://netnut.io?ref=ymzmmmu) provides DC, ISP, Residential and Mobiles. 
+[NetNut](/l/netnut) provides DC, ISP, Residential and Mobiles. 
 With NetNut, transform any websites data into accurate and comprehensive structured data.
 
 
@@ -13,7 +13,7 @@ An active NetNut subscription is required.
 
 ## NetNut Portal
 
-Connect to [Portal](https://portal.netnut.io/dashboard).
+Connect to [Portal](/l/netnut-dashboard).
 
 
 ### Update the credentials

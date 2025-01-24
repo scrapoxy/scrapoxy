@@ -7,8 +7,8 @@ I invest significant time and resources into maintaining and improving this proj
 covering expenses for hosting, promotion, and more.
 
 If you appreciate the value Scrapoxy provides and wish to support its continued development, 
-discuss new features, access the roadmap, or receive professional support, please consider [becoming a sponsor](https://www.buymeacoffee.com/scrapoxy)!
+discuss new features, access the roadmap, or receive professional support, please consider [becoming a sponsor](/l/buymeacoffee)!
 
 Your support would greatly contribute to the project's sustainability and growth:
 
-[![Sponsor](/assets/images/buymeacoffee.svg){width=230}](https://www.buymeacoffee.com/scrapoxy)
+[![Sponsor](/assets/images/buymeacoffee.svg){width=230}](/l/buymeacoffee)

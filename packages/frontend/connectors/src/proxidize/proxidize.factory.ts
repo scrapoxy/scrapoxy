@@ -28,7 +28,7 @@ export class ConnectorProxidizeFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'Proxidize Credential',
        defaultConnectorName: 'Proxidize Connector',
-       url: 'https://proxidize.com',
+       url: 'https://scrapoxy.io/l/proxidize',
        type: EConnectorType.Hardware,
        canInstall: false,
        canUninstall: false,

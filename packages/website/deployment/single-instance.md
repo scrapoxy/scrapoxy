@@ -9,7 +9,7 @@ For greater scalability, consider configuring a [simple cluster](./simple-cluste
 
 ## Docker
 
-Scrapoxy is hosted on Docker hub: [scrapoxy/scrapoxy](https://hub.docker.com/r/scrapoxy/scrapoxy/).
+Scrapoxy is hosted on Docker hub: [scrapoxy/scrapoxy](/l/docker-scrapoxy).
 
 
 ### Volume

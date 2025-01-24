@@ -2,7 +2,7 @@
 
 ![GCP](/assets/images/gcp.svg){width=280 nozoom}
 
-[Google Cloud Platform](https://cloud.google.com) is a cloud computing services that runs on the same infrastructure
+[Google Cloud Platform](/l/gcp) is a cloud computing services that runs on the same infrastructure
 that Google uses internally.
 
 
@@ -13,7 +13,7 @@ An active GCP subscription is required.
 
 ## GCP Console
 
-Connect to [Console](https://console.cloud.google.com).
+Connect to [Console](/l/gcp-console).
 
 
 ### Step 1: Create new project

@@ -2,7 +2,7 @@
 
 ![Digital Ocean](/assets/images/digitalocean.svg){width=280 nozoom}
 
-[Digital Ocean](https://digitalocean.com) is an US multinational cloud provider.
+[Digital Ocean](/l/digitalocean) is an US multinational cloud provider.
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active Digital Ocean subscription is required.
 
 ## Digital Ocean Admin
 
-Connect to [Admin](https://cloud.digitalocean.com).
+Connect to [Admin](/l/digitalocean-admin).
 
 
 ### Create new credential

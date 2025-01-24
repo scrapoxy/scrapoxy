@@ -2,10 +2,10 @@
 
 ![Zyte](/assets/images/zyte.svg){width=150 nozoom}
 
-[Zyte](https://refer.zyte.com/72VhrR) (formely Crawlera) is a proxies service for Data Extraction.
+[Zyte](/l/zyte) (formely Crawlera) is a proxies service for Data Extraction.
 
-Scrapoxy supports both [Zyte API (Proxy Mode)](https://docs.zyte.com/zyte-api/usage/proxy-mode.html)
-and [Smart Proxy Manager](https://docs.zyte.com/smart-proxy-manager-get-started.html).
+Scrapoxy supports both [Zyte API (Proxy Mode)](/l/zyte-api)
+and [Smart Proxy Manager](/l/zyte-spm).
 
 
 ## Prerequisites
@@ -21,7 +21,7 @@ If you try to send the cookie through a different proxy, the Zyte API will remov
 A simpler solution is to keep all session requests on the same proxy in Scrapoxy.
 :::
 
-Connect to the Zyte [App](https://app.zyte.com):
+Connect to the Zyte [App](/l/zyte-app):
 
 ![Zyte API Token](zyte_api_token.png)
 
@@ -32,7 +32,7 @@ Connect to the Zyte [App](https://app.zyte.com):
 
 ## Smart Proxy Manager
 
-Connect to the Zyte [App](https://app.zyte.com):
+Connect to the Zyte [App](/l/zyte-app):
 
 ![Zyte SPM Account Select](zyte_spm_account_select.png)
 

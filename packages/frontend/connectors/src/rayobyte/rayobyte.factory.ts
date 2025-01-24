@@ -28,7 +28,7 @@ export class ConnectorRayobyteFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Rayobyte Credential',
         defaultConnectorName: 'Rayobyte Connector',
-        url: 'https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com',
+        url: 'https://scrapoxy.io/l/rayobyte',
         type: EConnectorType.StaticIp,
         canInstall: false,
         canUninstall: false,

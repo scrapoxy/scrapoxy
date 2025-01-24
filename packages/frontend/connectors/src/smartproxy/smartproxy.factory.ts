@@ -28,7 +28,7 @@ export class ConnectorSmartproxyFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'Smartproxy Credential',
        defaultConnectorName: 'Smartproxy Connector',
-       url: 'https://smartproxy.pxf.io/Qy5mVo',
+       url: 'https://scrapoxy.io/l/smartproxy',
        type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,

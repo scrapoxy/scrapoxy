@@ -5,7 +5,7 @@ I will be happy to receive your contributions!
 
 ## Bug Reports or Feature Requests
 
-You can report **bugs 🐞** or **request features 🤲** by [opening an issue](https://github.com/scrapoxy/scrapoxy/issues).
+You can report **bugs 🐞** or **request features 🤲** by [opening an issue](/l/github-scrapoxy-issues).
 
 
 ## Pull Requests
@@ -16,7 +16,7 @@ The following rules should be followed:
 - **Agreement**: You must agree to the [Contributor License Agreement](agreement.md);
 - **One pull request per feature**: If you want to do more than one thing, send multiple pull requests;
 - **Create feature branches**: Don't ask us to pull from your master branch;
-- **Commit messages**: Use [AngularJS's commit message convention](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit);
+- **Commit messages**: Use [AngularJS's commit message convention](/l/angular-commit-convention);
 - **Linter**: Run `npm run lint` to check your code before sending a pull request;
 - **Tests**: Add tests for your code and make sure all tests pass before sending a pull request;
 - **Documentation**: This is a mono-repository, so you can add documentation for your feature.
@@ -41,4 +41,4 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 or more of the project maintainers.
 
 This Code of Conduct is adapted from the Contributor Covenant, version 1.0.0, 
-available at [http://contributor-covenant.org/version/1/0/0](http://contributor-covenant.org/version/1/0/0/).
+available at [http://contributor-covenant.org/version/1/0/0](/l/contributor-covenant).

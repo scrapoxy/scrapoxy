@@ -2,7 +2,7 @@
 
 ![Ninjas Proxy](/assets/images/ninjasproxy.svg){width=280 nozoom}
 
-[Ninjas Proxy](https://ninjasproxy.com) is a provider that offers static and residential proxies.
+[Ninjas Proxy](/l/ninjasproxy) is a provider that offers static and residential proxies.
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active Ninjas Proxy subscription is required.
 
 ## Ninjas Proxy Dashboard
 
-Connect to [Dashboard](https://hello.ninjasproxy.com).
+Connect to [Dashboard](/l/ninjasproxy-dashboard).
 
 
 ### Get the credentials

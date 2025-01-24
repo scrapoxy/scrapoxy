@@ -31,7 +31,7 @@ export class ConnectorProxySellerResidentialFactory implements IConnectorFactory
        },
        defaultCredentialName: 'Proxy-Seller Residential Credential',
        defaultConnectorName: 'Proxy-Seller Residential Connector',
-       url: 'https://proxy-seller.com/?partner=GR930FP5IOO78P',
+       url: 'https://scrapoxy.io/l/proxy-seller',
        type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,

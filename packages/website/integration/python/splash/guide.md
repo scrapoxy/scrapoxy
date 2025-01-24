@@ -9,13 +9,13 @@ This tutorial explains how to use the Splash rendering engine with Scrapoxy.
 
 The official image has the following issues:
 
-* Proxy Issue with HTTPS: Splash has a [known issue](https://github.com/scrapinghub/splash/pull/1194) when using proxies on HTTPS URLs.
+* Proxy Issue with HTTPS: Splash has a [known issue](/l/splash-issue) when using proxies on HTTPS URLs.
 * Page Cache: By default, Splash caches pages. If you request the same page twice, the second request will return the cached version rather than making a new request via Scrapoxy.
 
 Use the image `scrapoxy/splash` to solve these issues.
 
 ::: info
-If you're interested in the underlying code, you can find it [here](https://github.com/scrapoxy/scrapoxy/tree/master/packages/splash/src).
+If you're interested in the underlying code, you can find it [here](/l/scrapoxy-splash).
 :::
 
 

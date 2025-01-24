@@ -5,9 +5,7 @@ const
     title = 'Scrapoxy',
     description = 'Scrapoxy is a super proxies manager that orchestrates all your proxies into one place, rather than spreading management across multiple scrapers. Deployed on your own infrastructure, Scrapoxy serves as a single proxy endpoint for your scrapers. It builds a pool of private proxies from your datacenter subscription, integrates them with proxy vendors, manages IP rotation and fingerprinting, and smartly routes traffic to avoid bans.',
     iconUrl = '/assets/images/scrapoxy.svg',
-    url = 'https://scrapoxy.io',
-    discordUrl = 'https://discord.gg/ktNGGwZnUD',
-    githubUrl = 'https://github.com/scrapoxy/scrapoxy';
+    url = 'https://scrapoxy.io';
 
 export default defineConfig({
     lang: 'en-US',
@@ -56,13 +54,13 @@ export default defineConfig({
         nav: [
             {text: '🏠 Home', link: '/'},
             {text: '📄 Documentation', link: '/intro/scrapoxy'},
-            {text: '✉️ Contact', link: `${githubUrl}/issues`},
+            {text: '✉️ Contact', link: '/l/github-scrapoxy-issues'},
             {
                 text: '📙 Resources',
                 items: [
                     {text: 'Changelog', link: '/intro/changelog'},
-                    {text: 'Discord', link: discordUrl},
-                    {text: 'Previous version', link: 'https://docs-v3.scrapoxy.io'},
+                    {text: 'Discord', link: '/l/discord-scrapoxy'},
+                    {text: 'Previous version', link: '/l/scrapoxy-doc-v3'},
                 ]
             }
         ],
@@ -226,8 +224,8 @@ export default defineConfig({
         ],
 
         socialLinks: [
-            {icon: 'github', link: githubUrl},
-            {icon: 'discord', link: discordUrl},
+            {icon: 'github', link: '/l/github-scrapoxy'},
+            {icon: 'discord', link: '/l/discord-scrapoxy'},
         ],
 
         footer: {
@@ -276,5 +274,6 @@ export default defineConfig({
     ignoreDeadLinks: [
         // ignore all localhost links
         /^https?:\/\/localhost/,
+        /\/l\//,
     ],
 })

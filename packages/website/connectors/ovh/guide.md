@@ -2,7 +2,7 @@
 
 ![OVH](/assets/images/ovh.svg){width=280 nozoom}
 
-[OVH Cloud](https://www.ovh.com) is a french cloud computing service created by OVH
+[OVH Cloud](/l/ovh) is a french cloud computing service created by OVH
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active OVH subscription is required.
 
 ## OVH Manager
 
-Connect to [Manager](https://www.ovh.com/manager).
+Connect to [Manager](/l/ovh-manager).
 
 
 ### Step 1: Create new project
@@ -43,7 +43,7 @@ Remember the `Project ID`.
 
 ### Step 2: Create new credential
 
-Connect on [https://www.ovh.com/auth/api/createToken](https://www.ovh.com/auth/api/createToken):
+Connect on [https://www.ovh.com/auth/api/createToken](/l/ovh-token):
 
 ![OVH Credential_Create](ovh_credential_create.png)
 

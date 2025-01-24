@@ -2,7 +2,7 @@
 
 ![Kameleo](kameleo.svg){width=230 nozoom}
 
-This tutorial uses [Kameleo](https://kameleo.io/web-scraping?utm_source=scrapoxy&utm_medium=github&utm_campaign=scrapoxy_integration_guide), 
+This tutorial uses [Kameleo](/l/kameleo), 
 an anti-detect browser designed for web-scraping.
 
 Kameleo provides a powerful antidetect browser for better data collection on websites with anti-bot detection systems such as Cloudflare, DataDome, and PerimeterX.
@@ -38,7 +38,7 @@ pip install kameleo.local-api-client
 ## Step 3: Download and install Kameleo.CLI
 
 Kameleo can be found
-[here](https://kameleo.io/downloads?utm_source=scrapoxy&utm_medium=github&utm_campaign=scrapoxy_integration_guide).
+[here](/l/kameleo-downloads).
 
 
 ## Step 4: Start Kameleo.CLI
@@ -134,7 +134,7 @@ profile = client.create_profile(body=create_profile_request)
 
 The recommended default settings are designed to work with most anti-bot systems.
 
-It is possible to experiment with different browsers, as well as settings for [canvas](https://help.kameleo.io/hc/en-us/articles/7021925786397-Intelligent-Canvas-Spoofing-Our-research-on-canvas-fingerprinting),
+It is possible to experiment with different browsers, as well as settings for [canvas](/l/kameleo-canvas),
 WebGL, audio spoofing, and more.
 
 
@@ -142,8 +142,8 @@ WebGL, audio spoofing, and more.
 
 Kameleo includes 2 custom-built browsers designed to bypass anti-bot systems during web scraping:
 
-* Chrome, Edge, and Safari are emulated by [Chroma](https://help.kameleo.io/hc/en-us/articles/13301851271836-Chroma);
-* Firefox is emulated by [Junglefox](https://help.kameleo.io/hc/en-us/articles/13301908333852-Junglefox).
+* Chrome, Edge, and Safari are emulated by [Chroma](/l/kameleo-chroma).;
+* Firefox is emulated by [Junglefox](/l/kameleo-junglefox).
 
 Start the browser profile:
 
@@ -155,9 +155,9 @@ client.start_profile(profile.id)
 ## Step 9: Automate the browser
 
 Kameleo supports the most popular automation frameworks, such as
-[Selenium](https://www.selenium.dev/),
-[Puppeteer](https://pptr.dev/), and
-[Playwright](https://playwright.dev/).
+[Selenium](/l/selenium),
+[Puppeteer](/l/puppeteer), and
+[Playwright](/l/playwright).
 
 Thanks to Kameleo **anti-bot systems won't recognise the presence** of an automation framework.
 
@@ -239,6 +239,6 @@ with sync_playwright() as playwright:
 
 For more information about Kameleo, check out the following resources:
 
-* [Terminology](https://help.kameleo.io/hc/en-us/articles/4420420859793-Terminology)
-* [Getting Started guide](https://help.kameleo.io/hc/en-us/articles/4418166326417-Getting-started-with-Kameleo-Automation)
-* [Examples on Kameleo's GitHub](https://github.com/kameleo-io/local-api-examples)
+* [Terminology](/l/kameleo-terminology)
+* [Getting Started guide](/l/kameleo-getting-started)
+* [Examples on Kameleo's GitHub](/l/kameleo-examples)

@@ -2,7 +2,7 @@
 
 ![Bright Data](/assets/images/brightdata.svg){width=280 nozoom}
 
-[Bright Data](https://get.brightdata.com/khkl3keb25ld) provides award-winning proxy networks, AI-powered web scrapers, 
+[Bright Data](/l/brightdata) provides award-winning proxy networks, AI-powered web scrapers, 
 and business-ready datasets for download. Welcome to the internet’s most trusted web data platform.
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active Bright Data subscription is required.
 
 ## Bright Data Dashboard
 
-Connect to [Dashboard](https://brightdata.com/cp).
+Connect to [Dashboard](/l/brightdata-dashboard).
 
 
 ### Create a token

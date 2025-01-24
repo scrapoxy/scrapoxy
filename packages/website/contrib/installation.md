@@ -12,10 +12,10 @@ It has also been tested on Windows but it requires more configuration (see below
 
 Scrapoxy requires:
 
-- [Node.js](https://nodejs.org): 20.0.0 or later; 
-- [Java](https://openjdk.org): 8 or later;
-- [Python](https://www.python.org): 3.6 or later;
-- [Gitleaks](https://github.com/gitleaks/gitleaks)
+- [Node.js](/l/nodejs): 20.0.0 or later; 
+- [Java](/l/openjdk): 8 or later;
+- [Python](/l/python): 3.6 or later;
+- [Gitleaks](/l/gitleaks)
 
 
 ## Get the repository

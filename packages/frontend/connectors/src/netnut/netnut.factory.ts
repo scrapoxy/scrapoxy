@@ -28,7 +28,7 @@ export class ConnectorNetnutFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'NetNut Credential',
        defaultConnectorName: 'NetNut Connector',
-       url: 'https://netnut.io?ref=ymzmmmu',
+       url: 'https://scrapoxy.io/l/netnut',
        type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,

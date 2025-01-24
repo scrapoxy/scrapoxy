@@ -2,7 +2,7 @@
 
 ![HRequests](hrequests.svg){width=350 nozoom}
 
-This tutorial uses the powerful Python HTTP library [HRequests](https://daijro.gitbook.io/hrequests).
+This tutorial uses the powerful Python HTTP library [HRequests](/l/python-hrequests).
 
 
 ## Step 1: Install the library

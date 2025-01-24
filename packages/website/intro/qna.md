@@ -2,7 +2,7 @@
 
 This section provides answers to frequently asked questions from users.
 
-For any unanswered questions, feel free to ask on [Discord](https://discord.gg/ktNGGwZnUD).
+For any unanswered questions, feel free to ask on [Discord](/l/discord-scrapoxy).
 
 
 ## General
@@ -19,7 +19,7 @@ I recommend watching this video on how anti-bot systems work and techniques to b
 Scrapoxy typically uses a `username:password` combination to select the appropriate project 
 and as a security measure to prevent unauthorized access to the master.
 
-However, you can bypass this security layer by using the [proxy-chain](https://www.npmjs.com/package/proxy-chain) library.
+However, you can bypass this security layer by using the [proxy-chain](/l/proxy-chain) library.
     
 ```js
 const puppeteer = require('puppeteer');

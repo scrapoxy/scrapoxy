@@ -2,7 +2,7 @@
 
 ![Requests](requests.svg){width=180 nozoom}
 
-This tutorial uses the famous Python HTTP library [Requests](http://docs.python-requests.org/en/master/).
+This tutorial uses the famous Python HTTP library [Requests](/l/python-requests).
 
 ## Step 1: Install the library
 

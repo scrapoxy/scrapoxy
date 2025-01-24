@@ -28,7 +28,7 @@ export class ConnectorBrightdataFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'BrightData Credential',
        defaultConnectorName: 'BrightData Connector',
-       url: 'https://get.brightdata.com/khkl3keb25ld',
+       url: 'https://scrapoxy.io/l/brightdata',
        type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,

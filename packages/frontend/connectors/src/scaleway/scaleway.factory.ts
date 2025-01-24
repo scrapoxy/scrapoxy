@@ -29,7 +29,7 @@ export class ConnectorScalewayFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Scaleway Credential',
         defaultConnectorName: 'Scaleway Connector',
-        url: 'https://www.scaleway.com/en/',
+        url: 'https://scrapoxy.io/l/scaleway',
         type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,

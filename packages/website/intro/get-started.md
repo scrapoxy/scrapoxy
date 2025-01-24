@@ -5,7 +5,7 @@ This is a **quick guide** to installing Scrapoxy in just a few minutes.
 
 ## Step 1: Install Scrapoxy with Docker
 
-Ensure that [Docker](https://www.docker.com) is installed on your computer.
+Ensure that [Docker](/l/docker) is installed on your computer.
 
 Open the **terminal** and run the following command:
 
@@ -27,7 +27,7 @@ Instead, provision a **virtual machine**, install Docker, and then run the Scrap
 ### Alternate method: Install with NPM
 
 Scrapoxy can be installed via NPM in cases where Docker is unavailable or not preferred.
-Make sure that [Node.js](https://nodejs.org) is installed on your computer.
+Make sure that [Node.js](/l/nodejs) is installed on your computer.
 
 
 #### On Linux

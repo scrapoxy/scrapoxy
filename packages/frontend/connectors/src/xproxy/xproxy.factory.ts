@@ -28,7 +28,7 @@ export class ConnectorXProxyFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'XProxy Credential',
         defaultConnectorName: 'XProxy Connector',
-        url: 'https://xproxy.io',
+        url: 'https://scrapoxy.io/l/xproxy',
         type: EConnectorType.Hardware,
         canInstall: false,
         canUninstall: false,

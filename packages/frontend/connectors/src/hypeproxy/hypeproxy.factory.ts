@@ -28,7 +28,7 @@ export class ConnectorHypeproxyFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'HypeProxy Credential',
         defaultConnectorName: 'HypeProxy Connector',
-        url: 'https://hypeproxy.io',
+        url: 'https://scrapoxy.io/l/hypeproxy',
         type: EConnectorType.StaticIp,
         canInstall: false,
         canUninstall: false,

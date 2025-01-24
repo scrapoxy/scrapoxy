@@ -28,7 +28,7 @@ export class ConnectorMassiveFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'Massive Credential',
        defaultConnectorName: 'Massive Connector',
-       url: 'https://partners.joinmassive.com/create-account-enterprise?ref=oguwmwr',
+       url: 'https://scrapoxy.io/l/massive',
        type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,

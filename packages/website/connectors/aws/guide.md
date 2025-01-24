@@ -2,7 +2,7 @@
 
 ![AWS](/assets/images/aws.svg){width=150, nozoom}
 
-[Amazon Web Services](https://aws.amazon.com) is a subsidiary of Amazon that provides on-demand cloud computing.
+[Amazon Web Services](/l/aws) is a subsidiary of Amazon that provides on-demand cloud computing.
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active subscription to Amazon Web Services (AWS) is required.
 
 ## AWS Console
 
-Connect to [AWS Console](https://console.aws.amazon.com).
+Connect to [AWS Console](/l/aws-console).
 
 There are 2 methods for generating a new credential with AWS:
 

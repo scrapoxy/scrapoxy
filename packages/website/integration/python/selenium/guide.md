@@ -2,7 +2,7 @@
 
 ![Selenium](selenium.svg){width=230 nozoom}
 
-This tutorial uses the Python web scraping framework [Selenium](https://www.seleniumhq.org/).
+This tutorial uses the Python web scraping framework [Selenium](/l/selenium).
 
 
 ### Step 1: Install the library

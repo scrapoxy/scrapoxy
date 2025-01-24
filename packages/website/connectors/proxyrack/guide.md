@@ -2,7 +2,7 @@
 
 ![Proxyrack](/assets/images/proxyrack.svg){width=250 nozoom}
 
-[Proxyrack](https://www.proxyrack.com) is an online platform that provides diverse and rotating residential, datacenter, and mobile proxies.
+[Proxyrack](/l/proxyrack) is an online platform that provides diverse and rotating residential, datacenter, and mobile proxies.
 
 
 ## Prerequisites
@@ -16,7 +16,7 @@ Scrapoxy supports only `Private Unmetered Residential` proxies.
 
 ## Proxyrack Admin
 
-Connect to [Admin](https://member.proxyrack.com/access/member).
+Connect to [Admin](/l/proxyrack-admin).
 
 
 ### Get the credentials

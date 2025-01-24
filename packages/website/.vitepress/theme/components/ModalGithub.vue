@@ -37,7 +37,7 @@ function close() {
                     <p>Your support would mean a lot, just adding a <b>GitHub star 🌟</b> would be awesome!</p>
                     <a class="link"
                        target="_blank"
-                       href="https://github.com/scrapoxy/scrapoxy">https://github.com/scrapoxy/scrapoxy</a>
+                       href="/l/github">https://github.com/scrapoxy/scrapoxy</a>
                     <p>Thank you! 🙏</p>
                     <p class="signature">Fabien</p>
                     <div class="model-footer">

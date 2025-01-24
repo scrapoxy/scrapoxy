@@ -2,13 +2,13 @@
 
 ![Github](github.svg){width=230}
 
-[GitHub](https://github.com) is a web-based platform that enables developers to store and manage
+[GitHub](/l/github) is a web-based platform that enables developers to store and manage
 their source code repositories,
 
 
 ## Github Settings
 
-Connect to [Settings](https://github.com/settings).
+Connect to [Settings](/l/github-settings).
 
 ### Create new credential
 

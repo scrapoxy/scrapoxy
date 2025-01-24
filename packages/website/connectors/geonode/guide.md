@@ -2,7 +2,7 @@
 
 ![Geonode](/assets/images/geonode.svg){width=280 nozoom}
 
-[Geonode](https://geonode.pxf.io/c/5392682/2020638/25070?trafsrc=impact) provides the Right Proxies for Your Business. 
+[Geonode](/l/geonode) provides the Right Proxies for Your Business. 
 Join thousands of developers using the fastest-growing residential proxy network. 
 Geonode’s proxies speak for themselves.
 
@@ -16,7 +16,7 @@ An active Geonode subscription is required.
 
 ## Geonode Dashboard
 
-Connect to [Dashboard](https://app.geonode.com).
+Connect to [Dashboard](/l/geonode-dashboard).
 
 
 ### Get credentials

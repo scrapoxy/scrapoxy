@@ -28,7 +28,7 @@ export class ConnectorProxyrackFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Proxyrack Credential',
         defaultConnectorName: 'Proxyrack Connector',
-        url: 'https://proxyrack.com',
+        url: 'https://scrapoxy.io/l/proxyrack',
         type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,

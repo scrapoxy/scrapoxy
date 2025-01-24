@@ -28,7 +28,7 @@ export class ConnectorGeonodeFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'Geonode Credential',
        defaultConnectorName: 'Geonode Connector',
-       url: 'https://geonode.pxf.io/c/5392682/2020638/25070?trafsrc=impact',
+       url: 'https://scrapoxy.io/l/geonode',
        type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,

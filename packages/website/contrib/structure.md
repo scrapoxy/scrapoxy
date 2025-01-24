@@ -1,6 +1,6 @@
 # Project Structure
 
-The Scrapoxy repository follows the [NX](https://nx.dev) mono-repository pattern.
+The Scrapoxy repository follows the [NX](/l/nx) mono-repository pattern.
 
 It contains all the packages associated with the project.
 

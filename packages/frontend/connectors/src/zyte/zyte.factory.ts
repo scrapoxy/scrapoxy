@@ -28,7 +28,7 @@ export class ConnectorZyteFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Zyte Credential',
         defaultConnectorName: 'Zyte Connector',
-        url: 'https://refer.zyte.com/72VhrR',
+        url: 'https://scrapoxy.io/l/zyte',
         type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,

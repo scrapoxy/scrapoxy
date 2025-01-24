@@ -2,7 +2,7 @@
 
 ![ScrapeGraphAI](scrapegraphai.svg){width=180 nozoom}
 
-This tutorial introduces [ScrapeGraphAI](https://scrapegraphai.com), a robust scraping framework.
+This tutorial introduces [ScrapeGraphAI](/l/scrapegraphai), a robust scraping framework.
 
 ScrapeGraphAI leverages advanced LLM models to efficiently parse and extract data from web pages,
 eliminating the need for intricate XPath or CSS selectors and the maintenance they require.
@@ -10,7 +10,7 @@ eliminating the need for intricate XPath or CSS selectors and the maintenance th
 
 ## Step 1: Install the framework
 
-Follow the instructions [here](https://scrapegraph-ai.readthedocs.io/en/latest/getting_started/installation.html) for detailed steps.
+Follow the instructions [here](/l/scrapegraphai-install) for detailed steps.
 
 In summary, run the following command:
 
@@ -27,7 +27,7 @@ playwright install --with-deps
 
 ## Step 2: Install Mistra model from Ollama
 
-Follow the instructions [here](https://ollama.com/download) for detailled steps.
+Follow the instructions [here](/l/ollama-downloads) for detailled steps.
 
 In summary, run the following command:
 

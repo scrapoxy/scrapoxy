@@ -2,7 +2,7 @@
 
 ![Azure](/assets/images/azure.svg){width=230, nozoom}
 
-[Microsoft Azure](https://azure.microsoft.com) is a cloud computing service created by Microsoft.
+[Microsoft Azure](/l/azure) is a cloud computing service created by Microsoft.
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active Microsoft Azure subscription is required.
 
 ## Azure Portal
 
-Connect to [Azure Portal](https://portal.azure.com).
+Connect to [Azure Portal](/l/azure-portal).
 
 
 ### Step 1: Register a new application

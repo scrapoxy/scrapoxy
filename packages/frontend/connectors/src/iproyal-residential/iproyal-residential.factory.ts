@@ -28,7 +28,7 @@ export class ConnectorIproyalResidentialFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'IPRoyal Residential Credential',
        defaultConnectorName: 'IPRoyal Residential Connector',
-       url: 'https://iproyal.com/?r=432273',
+       url: 'https://scrapoxy.io/l/iproyal',
        type: EConnectorType.DynamicIP,
        canInstall: false,
        canUninstall: false,

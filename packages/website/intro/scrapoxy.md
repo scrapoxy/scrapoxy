@@ -19,11 +19,11 @@ and smartly routes traffic to **avoid bans** 🚫.
 ## What is not Scrapoxy?
 
 Scrapoxy is not:
-- a proxies list manager like [ProxyBroker2](https://github.com/bluet/proxybroker2);
-- a webscraper like [Scrapy](https://scrapy.org), [Crawlee](https://crawlee.dev) or [Octoparse](https://www.octoparse.com);
-- a cloud provider like [AWS](https://aws.amazon.com), [GCP](https://cloud.google.com) or [Azure](https://azure.microsoft.com);
-- a browser farm like [Puppeteer](https://pptr.dev), [Selenium](https://www.selenium.dev) or [Playwright](https://playwright.dev);
-- a proxy service like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IP Royal](https://iproyal.com/?r=432273) or [Zyte](https://refer.zyte.com/72VhrR).
+- a proxies list manager like [ProxyBroker2](/l/proxy-broker-2);
+- a webscraper like [Scrapy](/l/scrapy), [Crawlee](/l/crawlee) or [Octoparse](/l/octoparse);
+- a cloud provider like [AWS](/l/aws), [GCP](/l/gcp) or [Azure](/l/azure);
+- a browser farm like [Puppeteer](/l/puppeteer), [Selenium](/l/selenium) or [Playwright](/l/playwright);
+- a proxy service like [Rayobyte](/l/rayobyte), [IP Royal](/l/iproyal) or [Zyte](/l/zyte).
 
 
 ## What you can do with Scrapoxy?
@@ -44,13 +44,13 @@ Scrapoxy is not:
 
 I started developing the Scrapoxy project in 2015. 
 
-At that time, I was working with [Scrapy](https://scrapy.org) and encountering issues with my scrapers getting banned 😟. 
+At that time, I was working with [Scrapy](/l/scrapy) and encountering issues with my scrapers getting banned 😟. 
 There were also few low-cost solutions for obtaining IP addresses. 
 Additionally, manually installing proxies was too time-consuming and tedious 😭. 
 
 A solution was needed to automate these tasks 🤖. 
 
-Scrapoxy initially focused on managing the [AWS](https://aws.amazon.com) provider. 
+Scrapoxy initially focused on managing the [AWS](/l/aws) provider. 
 Users could start and stop instances and **get a new IP address** each time. 
 
 However, an essential element was missing: **the routing 🔀**. 
@@ -76,7 +76,7 @@ and Scrapoxy helps you achieve that 🎯.
 
 ### ☁️ Datacenter Providers with easy installation ☁️
 
-Scrapoxy supports many datacenter providers like [AWS](https://aws.amazon.com), [Azure](https://azure.com), or [GCP](https://cloud.google.com).
+Scrapoxy supports many datacenter providers like [AWS](/l/aws), [Azure](/l/azure), or [GCP](/l/gcp).
 
 It installs a proxy image on each datacenter, helping the quick launch of a proxy instance. 
 Traffic is routed to proxy instances to provide many IP addresses. 
@@ -86,7 +86,7 @@ Scrapoxy handles the startup/shutdown of proxy instances to rotate IP addresses 
 
 ### 🌐 Proxy Services 🌐
 
-Scrapoxy supports many proxy services like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IPRoyal](https://iproyal.com/?r=432273) or [Zyte](https://refer.zyte.com/72VhrR).
+Scrapoxy supports many proxy services like [Rayobyte](/l/rayobyte), [IPRoyal](/l/iproyal) or [Zyte](/l/zyte).
 
 It connects to these services and uses a variety of parameters such as country or OS type,
 to create a diversity of proxies.
@@ -94,7 +94,7 @@ to create a diversity of proxies.
 
 ### 💻 Hardware materials 💻
 
-Scrapoxy supports many 4G proxy farms hardware types like [Proxidize](https://proxidize.com).
+Scrapoxy supports many 4G proxy farms hardware types like [Proxidize](/l/proxidize).
 
 It uses their APIs to handle IP rotation on 4G networks.
 

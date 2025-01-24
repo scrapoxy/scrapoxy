@@ -2,7 +2,7 @@
 
 ![Nimble](/assets/images/nimbleway.svg){width=250 nozoom}
 
-[Nimble](https://tracking.nimbleway.com/SH4a) is an experience seamless data-gathering with high-performance residential proxies, optimized for superior quality and granular control.
+[Nimble](/l/nimble) is an experience seamless data-gathering with high-performance residential proxies, optimized for superior quality and granular control.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ Scrapoxy supports only `Nimble IP`.
 
 ## Nimble Dashboard
 
-Connect to [Dashboard](https://app.nimbleway.com).
+Connect to [Dashboard](/l/nimble-dashboard).
 
 
 ### Get the credentials

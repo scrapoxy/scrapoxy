@@ -120,4 +120,4 @@ Your signature:
 ```
 
 
-Document adapted from [Sun Contributor Agreement](https://www.oracle.com/technetwork/oca-405177.pdf).
+Document adapted from [Sun Contributor Agreement](/l/oracle-agreement).

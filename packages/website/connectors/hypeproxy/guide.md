@@ -2,7 +2,7 @@
 
 ![HypeProxy](/assets/images/hypeproxy.svg){width=250 nozoom}
 
-[HypeProxy](https://hypeproxy.io) provides ultra-stable EU Mobile Proxies with Unlimited IP Rotations and 100% Clean IPs.
+[HypeProxy](/l/hypeproxy) provides ultra-stable EU Mobile Proxies with Unlimited IP Rotations and 100% Clean IPs.
 Specially designed to meet your needs: data scraping, browser automation, account creation, growth hacking, SEO...
 
 
@@ -13,7 +13,7 @@ An active HypeProxy subscription is required.
 
 ## HypeProxy Dashboard
 
-Connect to [Dashboard](https://app.hypeproxy.io).
+Connect to [Dashboard](/l/hypeproxy-dashboard).
 
 
 ### Get the credentials

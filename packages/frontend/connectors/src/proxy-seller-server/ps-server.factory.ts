@@ -31,7 +31,7 @@ export class ConnectorProxySellerServerFactory implements IConnectorFactory {
        },
        defaultCredentialName: 'Proxy-Seller Server Credential',
        defaultConnectorName: 'Proxy-Seller Server Connector',
-       url: 'https://proxy-seller.com/?partner=GR930FP5IOO78P',
+       url: 'https://scrapoxy.io/l/proxy-seller',
        type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,

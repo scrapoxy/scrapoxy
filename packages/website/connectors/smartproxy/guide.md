@@ -2,7 +2,7 @@
 
 ![Smartproxy](/assets/images/smartproxy.svg){width=280 nozoom}
 
-[Smartproxy](https://smartproxy.pxf.io/Qy5mVo) is the award-winning proxy service provider with efficient data extraction and multi-accounting infrastructure.
+[Smartproxy](/l/smartproxy) is the award-winning proxy service provider with efficient data extraction and multi-accounting infrastructure.
 They provides access to 65M+ global IPs.
 
 
@@ -19,7 +19,7 @@ An active Smartproxy subscription is required.
 
 ## Smartproxy Dashboard
 
-Connect to [Dashboard](https://dashboard.smartproxy.com).
+Connect to [Dashboard](/l/smartproxy-dashboard).
 
 You need to create a new credential for each type of product.
 

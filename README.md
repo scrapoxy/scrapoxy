@@ -22,7 +22,7 @@ and smartly routes traffic to **avoid bans** 🚫.
 
 ### ☁️ Datacenter Providers with easy installation ☁️
 
-Scrapoxy supports many datacenter providers like [AWS](https://aws.amazon.com), [Azure](https://azure.com), or [GCP](https://cloud.google.com).
+Scrapoxy supports many datacenter providers like [AWS](https://scrapoxy.io/l/aws), [Azure](https://scrapoxy.io/l/azure), or [GCP](https://scrapoxy.io/l/gcp).
 
 It installs a proxy image on each datacenter, helping the quick launch of a proxy instance.
 Traffic is routed to proxy instances to provide many IP addresses.
@@ -32,7 +32,7 @@ Scrapoxy handles the startup/shutdown of proxy instances to rotate IP addresses 
 
 ### 🌐 Proxy Services 🌐
 
-Scrapoxy supports many proxy services like [Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com), [IPRoyal](https://iproyal.com/?r=432273) or [Zyte](https://refer.zyte.com/72VhrR).
+Scrapoxy supports many proxy services like [Rayobyte](https://scrapoxy.io/l/rayobyte), [IPRoyal](https://scrapoxy.io/l/iproyal) or [Zyte](https://scrapoxy.io/l/zyte).
 
 It connects to these services and uses a variety of parameters such as country or OS type,
 to create a diversity of proxies.
@@ -40,7 +40,7 @@ to create a diversity of proxies.
 
 ### 💻 Hardware materials 💻
 
-Scrapoxy supports many 4G proxy farms hardware types like [Proxidize](https://proxidize.com).
+Scrapoxy supports many 4G proxy farms hardware types like [Proxidize](https://scrapoxy.io/l/proxidize).
 
 It uses their APIs to handle IP rotation on 4G networks.
 
@@ -131,11 +131,11 @@ More information on [scrapoxy.io](https://scrapoxy.io).
 
 ## Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=scrapoxy/scrapoxy)](https://github.com/scrapoxy/scrapoxy/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=scrapoxy/scrapoxy)](https://scrapoxy.io/l/github-scrapoxy-contributors)
 
 Want to contribute? Check out the [guide](https://scrapoxy.io/contrib/guidelines)!
 
-Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/fabienvauchelles)
+Here is my contact on [![Linkedin Badge](https://img.shields.io/badge/-Linkedin-blue?style=flat&logo=Linkedin&logoColor=white)](https://scrapoxy.io/l/linkedin-fabienvauchelles)
 
 
 ## Sponsorship
@@ -147,16 +147,16 @@ I invest significant time and resources into maintaining and improving this proj
 covering expenses for hosting, promotion, and more.
 
 If you appreciate the value Scrapoxy provides and wish to support its continued development,
-discuss new features, access the roadmap, or receive professional support, please consider [becoming a sponsor](https://www.buymeacoffee.com/scrapoxy)!
+discuss new features, access the roadmap, or receive professional support, please consider [becoming a sponsor](https://scrapoxy.io/l/buymeacoffee)!
 
 Your support would greatly contribute to the project's sustainability and growth:
 
-<a href="https://www.buymeacoffee.com/scrapoxy" target="_blank"><img src="https://raw.githubusercontent.com/scrapoxy/scrapoxy/master/packages/website/public/assets/images/buymeacoffee.svg" width="230"/></a>
+<a href="https://scrapoxy.io/l/buymeacoffee" target="_blank"><img src="https://raw.githubusercontent.com/scrapoxy/scrapoxy/master/packages/website/public/assets/images/buymeacoffee.svg" width="230"/></a>
 
 
 ## Licence
 
-See [The AGPLv3 License](https://github.com/scrapoxy/scrapoxy/blob/master/LICENCE.md).
+See [The AGPLv3 License](https://scrapoxy.io/l/github-scrapoxy-licence).
 
 
 ## Acknowledgements
@@ -166,8 +166,8 @@ I would like to thank all the contributors to the project and the open-source co
 
 ## Follow-up
 
-[![Discord](https://img.shields.io/discord/1095676356496461934?logo=discord&label=Discord&color=7289da&style=flat-square)](https://discord.gg/ktNGGwZnUD)
-[![Docker](https://img.shields.io/docker/v/scrapoxy/scrapoxy?logo=docker&label=Docker&style=flat-square)](https://hub.docker.com/r/scrapoxy/scrapoxy)
-[![NPM](https://img.shields.io/npm/v/scrapoxy?label=NPM&color=bc3433&style=flat-square)](https://www.npmjs.com/package/scrapoxy)
+[![Discord](https://img.shields.io/discord/1095676356496461934?logo=discord&label=Discord&color=7289da&style=flat-square)](https://scrapoxy.io/l/discord-scrapoxy)
+[![Docker](https://img.shields.io/docker/v/scrapoxy/scrapoxy?logo=docker&label=Docker&style=flat-square)](https://scrapoxy.io/l/docker-scrapoxy)
+[![NPM](https://img.shields.io/npm/v/scrapoxy?label=NPM&color=bc3433&style=flat-square)](https://scrapoxy.io/l/npm-scrapoxy)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=scrapoxy/scrapoxy&type=Timeline)](https://star-history.com/#scrapoxy/scrapoxy&Timeline)
+[![Star History Chart](https://api.star-history.com/svg?repos=scrapoxy/scrapoxy&type=Timeline)](https://scrapoxy.io/l/star-history)

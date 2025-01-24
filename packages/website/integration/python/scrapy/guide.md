@@ -2,7 +2,7 @@
 
 ![Scrapy](scrapy.svg){width=230 nozoom}
 
-This tutorial uses the famous Python web scraping framework [Scrapy](https://scrapy.org/). 
+This tutorial uses the famous Python web scraping framework [Scrapy](/l/scrapy). 
 
 
 ## Step 1: Install the framework
@@ -178,8 +178,8 @@ and `HOST_IP` with the IP address of the machine running Scrapoxy.
 
 ## Step 9: Integrate scrapy-impersonate (optional)
 
-The library [scrapy-impersonate](https://github.com/jxlil/scrapy-impersonate) is a Scrapy download handler.
-This project integrates [curl_cffi](https://github.com/yifeikong/curl_cffi) to perform HTTP requests,
+The library [scrapy-impersonate](/l/scrapy-impersonate) is a Scrapy download handler.
+This project integrates [curl_cffi](/l/curl-cffi) to perform HTTP requests,
 so it can impersonate browsers' TLS signatures or JA3 fingerprints.
 
 ::: warning
@@ -223,7 +223,7 @@ class ExampleSpider(Spider):
 ```
 
 In this example, the request will emulate a Chrome 110 browser,
-but you have the flexibility to choose from [many other useragents](https://github.com/jxlil/scrapy-impersonate?tab=readme-ov-file#supported-browsers).
+but you have the flexibility to choose from [many other useragents](/l/scrapy-impersonate-browsers).
 
 ::: info
 The middleware `scrapoxy.ProxyDownloaderMiddleware` is compatible with `scrapy-impersonate`.

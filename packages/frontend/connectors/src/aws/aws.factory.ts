@@ -29,7 +29,7 @@ export class ConnectorAwsFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'AWS Credential',
         defaultConnectorName: 'AWS Connector',
-        url: 'https://aws.amazon.com',
+        url: 'https://scrapoxy.io/l/aws',
         type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,

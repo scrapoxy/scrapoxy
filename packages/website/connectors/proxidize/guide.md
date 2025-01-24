@@ -2,7 +2,7 @@
 
 ![Proxidize](/assets/images/proxidize.svg){width=250 nozoom}
 
-[Proxidize](https://proxidize.com) is a revolutionary mobile proxy network creation and management platform 
+[Proxidize](/l/proxidize) is a revolutionary mobile proxy network creation and management platform 
 built on mobile devices allowing businesses to create ultra-powerful proxies that are incomparable to anything else.
 
 

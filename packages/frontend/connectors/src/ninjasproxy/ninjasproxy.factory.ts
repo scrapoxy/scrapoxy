@@ -28,7 +28,7 @@ export class ConnectorNinjasproxyFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'Ninjas Proxy Credential',
        defaultConnectorName: 'Ninjas Proxy Connector',
-       url: 'https://ninjasproxy.com/',
+       url: 'https://scrapoxy.io/l/ninjasproxy',
        type: EConnectorType.StaticIp,
        canInstall: false,
        canUninstall: false,

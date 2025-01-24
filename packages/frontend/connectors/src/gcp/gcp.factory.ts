@@ -30,7 +30,7 @@ export class ConnectorGcpFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'GCP Credential',
        defaultConnectorName: 'GCP Connector',
-       url: 'https://cloud.google.com',
+       url: 'https://scrapoxy.io/l/gcp',
        type: EConnectorType.Datacenter,
        canInstall: true,
        canUninstall: true,

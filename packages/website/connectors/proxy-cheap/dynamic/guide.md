@@ -2,7 +2,7 @@
 
 ![Proxy-Cheap](/assets/images/proxy-cheap.svg){width=230 nozoom}
 
-[Proxy-Cheap](https://app.proxy-cheap.com/r/lt6xyT) offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale. Theirs solutions serve customers from data scraping to market research and other industries. 
+[Proxy-Cheap](/l/proxy-cheap) offers enterprise-level proxies for novices and professionals. They provide affordable solutions for customers to obtain data and circumvent restrictions while operating at scale. Theirs solutions serve customers from data scraping to market research and other industries. 
 
 This connector is for Rotating Residential Proxies.
 
@@ -14,7 +14,7 @@ An active Proxy-Cheap subscription is required on Residential Proxies.
 
 ## Proxy-Cheap Dashboard
 
-Connect to [Dashboard](https://app.proxy-cheap.com).
+Connect to [Dashboard](/l/proxy-cheap-dashboard).
 
 
 ### Get the proxy credentials

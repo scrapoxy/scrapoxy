@@ -29,7 +29,7 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Digital Ocean Credential',
         defaultConnectorName: 'Digital Ocean Connector',
-        url: 'https://www.digitalocean.com',
+        url: 'https://scrapoxy.io/l/digitalocean',
         type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,

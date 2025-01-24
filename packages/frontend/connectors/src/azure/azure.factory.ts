@@ -29,7 +29,7 @@ export class ConnectorAzureFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Azure Credential',
         defaultConnectorName: 'Azure Connector',
-        url: 'https://azure.microsoft.com',
+        url: 'https://scrapoxy.io/l/azure',
         type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,

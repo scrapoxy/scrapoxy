@@ -153,4 +153,4 @@ Please check the examples [here](../integration/python/scrapy/guide.md).
 ## Contact
 
 If you agree with all the conditions,
-you can join [Scrapoxy’s Discord](https://discord.gg/ktNGGwZnUD) and contact me in DM. 💬
+you can join [Scrapoxy’s Discord](/l/discord-scrapoxy) and contact me in DM. 💬

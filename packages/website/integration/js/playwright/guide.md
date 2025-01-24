@@ -2,7 +2,7 @@
 
 ![Playwright](playwright.svg){width=250 nozoom}
 
-[Playwright](https://playwright.dev/) is a webscraping framework for Node.JS developed by Microsoft, 
+[Playwright](/l/playwright) is a webscraping framework for Node.JS developed by Microsoft, 
 which provides a high-level API to control Chromium, Firefox and Webkit over the DevTools Protocol.
 
 

@@ -5,28 +5,28 @@ Users have the flexibility to either utilize their own private proxies or incorp
 
 Scrapoxy supports HTTP/HTTPS proxies and SOCKS4/SOCKS5 proxies.
 
-Check out this [video](https://www.youtube.com/watch?v=Uw_xEvIMleY) from [ProxyScrape](https://proxyscrape.com?ref=odgynzc):
+Check out this [video](/l/youtube-proxyscrape) from [ProxyScrape](/l/proxyscrape):
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Uw_xEvIMleY?si=Pwx1QOzc6W4erU1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Or this [video](https://www.youtube.com/watch?v=Dk1c6FETufg) from [Proxy-Sale](https://proxy-sale.com/?partner_link=ZnsKIlMpWo):
+Or this [video](/l/youtube-proxy-sale) from [Proxy-Sale](/l/proxy-sale):
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Dk1c6FETufg?si=1EO3-S0jruFiUQKK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Additionally, read this [insightful article](https://proxyscrape.com/blog/scrapoxy-the-ultimate-tool-for-unrestricted-web-scraping?ref=odgynzc) from ProxyScrape.
+Additionally, read this [insightful article](/l/proxyscrape-scrapoxy) from ProxyScrape.
 
 For instance, public proxies can be obtained from:
-- [ProxyScrape](https://proxyscrape.com/free-proxy-list?ref=odgynzc)
-- [Spys One](https://spys.one)
-- [IPRoyal](https://iproyal.com/free-proxy-list?r=432273)
-- [Free Proxy CZ](http://free-proxy.cz)
-- [Free Proxy World](https://www.freeproxy.world)
-- [Proxy List Download](https://www.proxy-list.download)
-- [Scraping Ant](https://scrapingant.com/free-proxies)
-- [ProxyDB.net](https://proxydb.net)
+- [ProxyScrape](/l/proxyscrape)
+- [Spys One](/l/spys-one)
+- [IPRoyal](/l/iproyal-freeproxies)
+- [Free Proxy CZ](/l/free-proxy-cz)
+- [Free Proxy World](/l/free-proxy-world)
+- [Proxy List Download](/l/proxy-list-download)
+- [Scraping Ant](/l/scraping-ant)
+- [ProxyDB.net](/l/proxydb)
 - ...
 
-Feel free to reach out to me on [Discord](https://discord.gg/ktNGGwZnUD) if you'd like to contribute and add your proxy list.
+Feel free to reach out to me on [Discord](/l/discord-scrapoxy) if you'd like to contribute and add your proxy list.
 
 ::: warning
 Please note that using this connector with Pay-Per-GB subscriptions

@@ -2,7 +2,7 @@
 
 ![XProxy](/assets/images/xproxy.svg){width=230 nozoom}
 
-[XProxy](https://xproxy.io) creates a secure proxy that supports HTTP, SOCKS5, IPv4, IPv6 with 4G/5G dongles.
+[XProxy](/l/xproxy) creates a secure proxy that supports HTTP, SOCKS5, IPv4, IPv6 with 4G/5G dongles.
 
 
 ## Prerequisites
@@ -17,7 +17,7 @@ Before using XProxy, ensure the following prerequisites are met:
 Be aware that XProxy employees have SSH root access to the material, and the password cannot be changed.
 :::
 
-It is recommended to deploy the XProxy box behind a firewall in a [DMZ (Demilitarized Zone)](https://en.wikipedia.org/wiki/DMZ_(computing)).
+It is recommended to deploy the XProxy box behind a firewall in a [DMZ (Demilitarized Zone)](/l/wikipedia-dmz).
 This configuration enables control over inbound connections to the box while preventing any outbound connections to your internal network.
 
 

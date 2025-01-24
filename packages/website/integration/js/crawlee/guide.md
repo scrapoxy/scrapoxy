@@ -2,7 +2,7 @@
 
 ![Crawlee](crawlee.svg){width=230 nozoom}
 
-This tutorial uses the Crawlee web scraping framework [Crawlee](https://crawlee.dev). 
+This tutorial uses the Crawlee web scraping framework [Crawlee](/l/crawlee). 
 
 
 ## Step 1: Install the framework and setup a project

@@ -2,7 +2,7 @@
 
 ![Puppeteer](puppeteer.svg){width=120 nozoom}
 
-[Puppeteer](https://pptr.dev) is a webscraping framework for Node.JS,
+[Puppeteer](/l/puppeteer) is a webscraping framework for Node.JS,
 which provides a high-level API to control Chrome or Chromium over the DevTools Protocol.
 
 
@@ -82,7 +82,7 @@ On MacOS, Chrome prompts for a certificate when using MITM:
 ![Chrome certificate](macos_certificate_error.png)
 
 Unfortunately, you cannot bypass this message using Puppeteer options.
-The only [solution](https://github.com/puppeteer/puppeteer/issues/1319#issuecomment-1834387149) is to intercept the request 
+The only [solution](/l/puppeteer-issue) is to intercept the request 
 and use a library like axios to make the request instead.
 
 First, install `axios`:

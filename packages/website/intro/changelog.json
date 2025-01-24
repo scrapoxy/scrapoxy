@@ -61,7 +61,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**connector**: add the Scaleway connector (thanks to [Rémy Fontaine](https://github.com/remyft) from [Sahar](https://sahar.fr))"
+                        "**connector**: add the Scaleway connector (thanks to [Rémy Fontaine](https://scrapoxy.io/l/github-remyft) from [Sahar](https://scrapoxy.io/l/sahar))"
                     ]
                 },
                 {
@@ -109,7 +109,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**gcp**: add smaller machine types (thanks [runa](https://github.com/runa)!)"
+                        "**gcp**: add smaller machine types (thanks [runa](https://scrapoxy.io/l/github-runa)!)"
                     ]
                 }
             ]
@@ -149,7 +149,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**geonode**: add [Geonode](https://geonode.pxf.io/c/5392682/2020638/25070?trafsrc=impact) proxies support"
+                        "**geonode**: add [Geonode](https://scrapoxy.io/l/geonode) proxies support"
                     ]
                 },
                 {
@@ -247,7 +247,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**liveproxies**: add [Live Proxies](https://liveproxies.io/aff/pv5i8f8) support"
+                        "**liveproxies**: add [Live Proxies](https://scrapoxy.io/l/liveproxies) support"
                     ]
                 },
                 {
@@ -296,7 +296,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**smartproxy**: added support for [Smartproxy](https://smartproxy.pxf.io/Qy5mVo) datacenter pay per GB product"
+                        "**smartproxy**: added support for [Smartproxy](https://scrapoxy.io/l/smartproxy) datacenter pay per GB product"
                     ]
                 }
             ]
@@ -307,7 +307,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**smartproxy**: added support for [Smartproxy](https://smartproxy.pxf.io/Qy5mVo)",
+                        "**smartproxy**: added support for [Smartproxy](https://scrapoxy.io/l/smartproxy)",
                         "**task**: enabled naming tasks for better identification"
                     ]
                 },
@@ -337,7 +337,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**azure**: add support for Spot Instance (thanks to [Julien Maitrehenry](https://github.com/jmaitrehenry))",
+                        "**azure**: add support for Spot Instance (thanks to [Julien Maitrehenry](https://scrapoxy.io/l/github-jmaitrehenry))",
                         "**fingerprint**: use GET instead of POST method to access fingerprint server (to bypass firewall restrictions)"
                     ]
                 },
@@ -355,7 +355,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**brightdata**: add support for Residential and Mobile proxies for [BrightData](https://get.brightdata.com/khkl3keb25ld)",
+                        "**brightdata**: add support for Residential and Mobile proxies for [BrightData](https://scrapoxy.io/l/brightdata)",
                         "**fingerprint**: use GET instead of POST method to access fingerprint server (to bypass firewall restrictions)"
                     ]
                 },
@@ -373,7 +373,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**netnut**: add [NetNut](https://netnut.io?ref=ymzmmmu) connector"
+                        "**netnut**: add [NetNut](https://scrapoxy.io/l/netnut) connector"
                     ]
                 },
                 {
@@ -484,7 +484,7 @@
                 {
                     "title": "Features",
                     "commits": [
-                        "**proxy-seller**: add [Proxy-Seller connector](https://proxy-seller.com/?partner=GR930FP5IOO78P)"
+                        "**proxy-seller**: add [Proxy-Seller connector](https://scrapoxy.io/l/proxy-seller)"
                     ]
                 },
                 {
@@ -779,7 +779,7 @@
         },
         {
             "version": "4.0.0",
-            "description": "Scrapoxy 4 represents a complete rewrite, now developed in Typescript. It harnesses the capabilities of [NestJS](https://nestjs.com) and [Angular](https://angular.io) modules to enhance its functionality and efficiency.",
+            "description": "Scrapoxy 4 represents a complete rewrite, now developed in Typescript. It harnesses the capabilities of [NestJS](https://scrapoxy.io/l/nestjs) and [Angular](https://scrapoxy.io/l/angular) modules to enhance its functionality and efficiency.",
             "breaking": "Scrapoxy 4 is not compatible with previous versions.",
             "commitGroups": [
                 {

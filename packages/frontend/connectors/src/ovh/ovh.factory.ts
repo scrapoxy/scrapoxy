@@ -29,7 +29,7 @@ export class ConnectorOvhFactory implements IConnectorFactory {
        coupon: null,
        defaultCredentialName: 'OVH Cloud Credential',
        defaultConnectorName: 'OVH Cloud Connector',
-       url: 'https://www.ovhcloud.com',
+       url: 'https://scrapoxy.io/l/ovh',
        type: EConnectorType.Datacenter,
        canInstall: true,
        canUninstall: true,

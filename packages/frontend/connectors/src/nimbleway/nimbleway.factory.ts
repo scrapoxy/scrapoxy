@@ -28,7 +28,7 @@ export class ConnectorNimblewayFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Nimble Credential',
         defaultConnectorName: 'Nimble Connector',
-        url: 'https://tracking.nimbleway.com/SH4a',
+        url: 'https://scrapoxy.io/l/nimble',
         type: EConnectorType.DynamicIP,
         canInstall: false,
         canUninstall: false,

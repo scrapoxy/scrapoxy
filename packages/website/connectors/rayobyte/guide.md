@@ -2,7 +2,7 @@
 
 ![Rayobyte](/assets/images/rayobyte.svg){width=230 nozoom}
 
-[Rayobyte](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com) is an US platform that provides diverse and rotating residential, datacenter, and mobile proxies.
+[Rayobyte](/l/rayobyte) is an US platform that provides diverse and rotating residential, datacenter, and mobile proxies.
 
 
 ## Prerequisites
@@ -12,7 +12,7 @@ An active Rayobyte subscription is required.
 
 ## Rayobyte Dashboard
 
-Connect to [Dashboard](https://billing.rayobyte.com/hosting/aff.php?aff=2444&redirectTo=https://rayobyte.com/proxy/dashboard).
+Connect to [Dashboard](/l/rayobyte-dashboard).
 
 
 ### Get the credentials

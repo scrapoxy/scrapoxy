@@ -2,11 +2,11 @@
 
 ![Proxy-Seller](/assets/images/proxy-seller.svg){width=260 nozoom}
 
-[Proxy-Seller](https://proxy-seller.com/?partner=GR930FP5IOO78P) offers DC/ISP/Mobile proxy service offers businesses a high-quality, cost-effective solution for reliable data access, tailored to meet the demands of professional use.
+[Proxy-Seller](/l/proxy-seller) offers DC/ISP/Mobile proxy service offers businesses a high-quality, cost-effective solution for reliable data access, tailored to meet the demands of professional use.
 
 This connector is for Mobile Proxies, ISP Proxies and Datacenter Proxies.
 
-Check out this [video](https://www.youtube.com/watch?v=uGkVpWpBGDs):
+Check out this [video](/l/youtube-proxy-seller):
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uGkVpWpBGDs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -18,7 +18,7 @@ An active Proxy-Seller subscription is required on Mobile Proxies, ISP Proxies o
 
 ## Proxy-Seller Dashboard
 
-Connect to [Dashboard](https://proxy-seller.com/personal/api).
+Connect to [Dashboard](/l/proxy-seller-dashboard).
 
 
 ### Get the API credentials

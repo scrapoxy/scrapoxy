@@ -2,10 +2,10 @@
 
 ![Scaleway](/assets/images/scaleway.svg){width=230, nozoom}
 
-[Scaleway](https://www.scaleway.com/)  is a French cloud computing provider that offers on-demand infrastructure solutions. 
+[Scaleway](/l/scaleway)  is a French cloud computing provider that offers on-demand infrastructure solutions. 
 In 2023, Scaleway operates 7 data centers in 3 regions across Europe.
 
-Thanks a lot to [Rémy Fontaine](https://github.com/remyft) of [Sahar](https://sahar.fr) for the contribution! 
+Thanks a lot to [Rémy Fontaine](/l/github-remyft) of [Sahar](/l/sahar) for the contribution! 
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ An active subscription to Scaleway is required.
 
 ## Scaleway Console
 
-Connect to [Scaleway Console](https://console.scaleway.com).
+Connect to [Scaleway Console](/l/scaleway-console).
 
 
 ### Get the Secret Key

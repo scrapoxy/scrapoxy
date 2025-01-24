@@ -99,7 +99,7 @@ Periodically, the refresh module queries the connector to update the list of pro
 
 On datacenter providers, Scrapoxy instructs the start or removal of VM instances.
 
-Additionally, Scrapoxy leverages the master module to query [fingerprint.scrapoxy.io](https://fingerprint.scrapoxy.io) to obtain proxies' status. 
+Additionally, Scrapoxy leverages the master module to query [fingerprint.scrapoxy.io](/l/fingerprint) to obtain proxies' status. 
 This server provides details such as the real IP address, geo-localization, and other information about the proxy.
 
 
@@ -119,10 +119,10 @@ it offers a quick and straightforward setup with efficient performance.
 
 ### Distributed Storage ⭐
 
-Distributed storage, on the other hand, utilizes [MongoDB](https://www.mongodb.com) 
-and follows a Command Query Responsibility Segregation ([CQRS](https://en.wikipedia.org/wiki/Command_Query_Responsibility_Segregation)) pattern. 
+Distributed storage, on the other hand, utilizes [MongoDB](/l/mongodb) 
+and follows a Command Query Responsibility Segregation ([CQRS](/l/wikipedia-cqrs)) pattern. 
 
-[RabbitMQ](https://www.rabbitmq.com) plays a pivotal role in dispatching commands and events to the storage module,
+[RabbitMQ](/l/rabbitmq) plays a pivotal role in dispatching commands and events to the storage module,
 facilitating the management of data across a distributed environment.
 
 This approach enables **scalability** and enhanced data handling capabilities.

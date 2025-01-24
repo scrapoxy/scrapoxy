@@ -2,7 +2,7 @@
 
 ![Axios](axios.svg){width=230 nozoom}
 
-[Axios](https://axios-http.com) is a library to make HTTP requests. It handles CA certificate and proxy.
+[Axios](/l/axios) is a library to make HTTP requests. It handles CA certificate and proxy.
 
 ::: info
 The `https-proxy-agent` library lacks support for these features.
