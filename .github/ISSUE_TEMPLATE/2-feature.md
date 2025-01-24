@@ -5,7 +5,7 @@ labels: "type: feature"
 
 ---
 
-- [ ] I'd be willing to implement this feature ([contributing guide](https://www.scrapoxy.io/contrib/guidelines))
+- [ ] I'd be willing to implement this feature ([contributing guide](https://scrapoxy.io/contrib/guidelines))
 
 
 ## Description
