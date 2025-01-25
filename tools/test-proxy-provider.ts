@@ -12,7 +12,7 @@ import type {
 interface IProxyCheck {
     name: string;
     url: string;
-    inactive?: boolean;
+    active: boolean;
 }
 
 
@@ -312,11 +312,11 @@ async function runAllTests(proxyUrl: string): Promise<void> {
 
     // Run tests
     for (const proxy of proxiesJson) {
-        if (proxy.inactive) {
-            console.log(`\nSkipping tests on '${proxy.name}'...`);
-        } else {
+        if (proxy.active) {
             console.log(`\nRunning tests on '${proxy.name}':`);
             await runAllTests(proxy.url);
+        } else {
+            console.log(`\nSkipping tests on '${proxy.name}'...`);
         }
     }
 })()
