@@ -1,6 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { convertIso3ToIso2 } from '@scrapoxy/common';
+import {
+    convertIso3ToIso2,
+    pickRandom,
+} from '@scrapoxy/common';
 import { ProxySellerServerApi } from './api';
 import { convertToProxy } from './ps-server.helpers';
 import type {
@@ -63,13 +66,13 @@ export class ConnectorProxySellerServerService implements IConnectorService {
                 p,
                 country
             ))
-            .filter((p) => p && !excludeKeys.includes(p.key))
-            .slice(
-                0,
-                count
-            );
+            .filter((p) => p && !excludeKeys.includes(p.key));
+        const proxiesCut = pickRandom(
+            proxiesFiltered,
+            count
+        );
 
-        return proxiesFiltered as IConnectorProxyRefreshed[];
+        return proxiesCut as IConnectorProxyRefreshed[];
     }
 
     async startProxies(): Promise<void> {

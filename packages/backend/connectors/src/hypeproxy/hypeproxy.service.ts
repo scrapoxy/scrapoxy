@@ -7,6 +7,7 @@ import {
     CONNECTOR_HYPEPROXY_TYPE,
     EProxyStatus,
     EProxyType,
+    pickRandom,
 } from '@scrapoxy/common';
 import { HypeproxyApi } from './api';
 import type {
@@ -83,13 +84,13 @@ export class ConnectorHypeproxyService implements IConnectorService {
         const proxies = await this.api.getInformations();
         const proxiesFiltered = proxies
             .map(convertToProxy)
-            .filter((p) => p && !excludeKeys.includes(p.key))
-            .slice(
-                0,
-                count
-            );
+            .filter((p) => p && !excludeKeys.includes(p.key));
+        const proxiesCut = pickRandom(
+            proxiesFiltered,
+            count
+        );
 
-        return proxiesFiltered as IConnectorProxyRefreshed[];
+        return proxiesCut as IConnectorProxyRefreshed[];
     }
 
     async startProxies(): Promise<void> {

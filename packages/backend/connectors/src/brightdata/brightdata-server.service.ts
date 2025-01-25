@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
+import { pickRandom } from '@scrapoxy/common';
 import { BrightdataApi } from './api';
 import {
     convertToProxy,
@@ -49,13 +50,12 @@ export class ConnectorBrightdataServerService implements IConnectorService {
 
         const proxies = await this.getActiveProxies();
         const proxiesFiltered = proxies
-            .filter((p) => !excludeKeys.includes(p.key))
-            .slice(
-                0,
-                count
-            );
+            .filter((p) => !excludeKeys.includes(p.key));
 
-        return proxiesFiltered;
+        return pickRandom(
+            proxiesFiltered,
+            count
+        );
     }
 
     async startProxies(): Promise<void> {

@@ -7,6 +7,7 @@ import {
     CONNECTOR_RAYOBYTE_TYPE,
     EProxyStatus,
     EProxyType,
+    pickRandom,
 } from '@scrapoxy/common';
 import { RayobyteApi } from './api';
 import type {
@@ -131,13 +132,13 @@ export class ConnectorRayobyteService implements IConnectorService {
                 p,
                 this.connectorConfig.packageFilter
             ))
-            .filter((p) => p && !excludeKeys.includes(p.key))
-            .slice(
-                0,
-                count
-            );
+            .filter((p) => p && !excludeKeys.includes(p.key));
+        const proxiesCut = pickRandom(
+            proxiesFiltered,
+            count
+        );
 
-        return proxiesFiltered as IConnectorProxyRefreshed[];
+        return proxiesCut as IConnectorProxyRefreshed[];
     }
 
     async startProxies(): Promise<void> {

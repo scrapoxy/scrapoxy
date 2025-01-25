@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
+import { pickRandom } from '@scrapoxy/common';
 import { IproyalServerApi } from './api';
 import { convertToProxy } from './iproyal-server.helpers';
 import type {
@@ -60,13 +61,13 @@ export class ConnectorIproyalService implements IConnectorService {
                 p,
                 this.connectorConfig.country
             ))
-            .filter((p) => p && !excludeKeys.includes(p.key))
-            .slice(
-                0,
-                count
-            );
+            .filter((p) => p && !excludeKeys.includes(p.key));
+        const proxiesCut = pickRandom(
+            proxiesFiltered,
+            count
+        );
 
-        return proxiesFiltered as IConnectorProxyRefreshed[];
+        return proxiesCut as IConnectorProxyRefreshed[];
     }
 
     async startProxies(): Promise<void> {

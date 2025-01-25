@@ -1,6 +1,9 @@
 import { Logger } from '@nestjs/common';
 import { Agents } from '@scrapoxy/backend-sdk';
-import { randomName } from '@scrapoxy/common';
+import {
+    pickRandom,
+    randomName,
+} from '@scrapoxy/common';
 import { ProxyrackApi } from './api';
 import {
     convertNameToProxy,
@@ -60,13 +63,13 @@ export class ConnectorProxyrackService implements IConnectorService {
                 s,
                 this.connectorConfig.country
             ))
-            .filter((p) => p && !excludeKeys.includes(p.key))
-            .slice(
-                0,
-                count
-            );
+            .filter((p) => p && !excludeKeys.includes(p.key));
+        const proxiesCut = pickRandom(
+            proxiesFiltered,
+            count
+        );
         // Create missing sessions
-        const diff = count - proxiesFiltered.length;
+        const diff = count - proxiesCut.length;
 
         if (diff > 0) {
             const promises: Promise<void>[] = [];
@@ -82,7 +85,7 @@ export class ConnectorProxyrackService implements IConnectorService {
                         osName: this.connectorConfig.osName,
                     });
 
-                    proxiesFiltered.push(convertNameToProxy(
+                    proxiesCut.push(convertNameToProxy(
                         name,
                         this.connectorConfig.country
                     ));
@@ -94,7 +97,7 @@ export class ConnectorProxyrackService implements IConnectorService {
             await Promise.all(promises);
         }
 
-        return proxiesFiltered as IConnectorProxyRefreshed[];
+        return proxiesCut as IConnectorProxyRefreshed[];
     }
 
     async startProxies(): Promise<void> {

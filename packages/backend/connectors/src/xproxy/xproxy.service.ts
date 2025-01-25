@@ -7,6 +7,7 @@ import {
     CONNECTOR_XPROXY_TYPE,
     EProxyStatus,
     EProxyType,
+    pickRandom,
 } from '@scrapoxy/common';
 import { XproxyApi } from './api';
 import type {
@@ -96,18 +97,18 @@ export class ConnectorXProxyService implements IConnectorService {
         this.logger.debug(`createProxies(): count=${count} / totalCount=${totalCount} / excludeKeys.length=${excludeKeys.length}`);
 
         const devices = await this.api.getDevices();
-        const proxies = devices
+        const proxiesFiltered = devices
             .filter((d) => !excludeKeys.includes(d.position.toString(10)))
-            .slice(
-                0,
-                count
-            )
             .map((d) => convertToProxy(
                 d,
                 this.credentialConfig.proxyHostname
             ));
+        const proxiesCut = pickRandom(
+            proxiesFiltered,
+            count
+        );
 
-        return proxies;
+        return proxiesCut as IConnectorProxyRefreshed[];
     }
 
     async startProxies(): Promise<void> {

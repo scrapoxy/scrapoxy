@@ -98,7 +98,6 @@ export class ConnectorLiveproxiesB2cService implements IConnectorService {
             }
         }
 
-        // TODO: should reproduce this behavior in all connectors
         const newProxies: IConnectorProxyRefreshed[] = [];
         while (newProxies.length < count && availableKeys.length > 0) {
             const randomKeyIndex = Math.floor(Math.random() * availableKeys.length);

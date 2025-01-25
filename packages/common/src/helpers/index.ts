@@ -2,6 +2,8 @@ export * from './duration';
 
 export * from './names';
 
+export * from './pick-random';
+
 export * from './retry';
 
 export * from './safe-join';
