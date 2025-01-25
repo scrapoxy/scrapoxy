@@ -17,11 +17,11 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
                 case 'shared': {
                     switch (zone.plan?.bandwidth) {
                         case 'payperusage': {
-                            return EBrightdataProductType.DATACENTER_SHARED_PAYPERUSAGE;
+                            return EBrightdataProductType.DatacenterSharedPayperusage;
                         }
 
                         case 'unlimited': {
-                            return EBrightdataProductType.DATACENTER_SHARED_UNLIMITED;
+                            return EBrightdataProductType.DatacenterSharedUnlimited;
                         }
 
                         default: {
@@ -31,7 +31,7 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
                 }
 
                 case 'dedicated': {
-                    return EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED;
+                    return EBrightdataProductType.DatacenterDedicatedUnlimited;
                 }
 
                 default: {
@@ -45,11 +45,11 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
                 case 'shared': {
                     switch (zone.plan?.bandwidth) {
                         case 'payperusage': {
-                            return EBrightdataProductType.ISP_SHARED_PAYPERUSAGE;
+                            return EBrightdataProductType.IspSharedPayPerUsage;
                         }
 
                         case 'unlimited': {
-                            return EBrightdataProductType.ISP_SHARED_UNLIMITED;
+                            return EBrightdataProductType.IspSharedUnlimited;
                         }
 
                         default: {
@@ -59,7 +59,7 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
                 }
 
                 case 'dedicated': {
-                    return EBrightdataProductType.ISP_DEDICATED_UNLIMITED;
+                    return EBrightdataProductType.IspDedicatedUnlimited;
                 }
 
                 default: {
@@ -71,11 +71,11 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
         case 'res_rotating': {
             switch (zone.plan?.vips_type) {
                 case 'shared': {
-                    return EBrightdataProductType.RESIDENTIAL_SHARED;
+                    return EBrightdataProductType.ResidentialShared;
                 }
 
                 case 'domain': {
-                    return EBrightdataProductType.RESIDENTIAL_DEDICATED;
+                    return EBrightdataProductType.ResidentialDedicated;
                 }
 
                 default: {
@@ -87,11 +87,11 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
         case 'mobile': {
             switch (zone.plan?.vips_type) {
                 case 'shared': {
-                    return EBrightdataProductType.MOBILE_SHARED;
+                    return EBrightdataProductType.MobileShared;
                 }
 
                 case 'domain': {
-                    return EBrightdataProductType.MOBILE_DEDICATED;
+                    return EBrightdataProductType.MobileDedicated;
                 }
 
                 default: {
@@ -109,27 +109,27 @@ export function toBrightdataProductType(zone: IBrightdataZoneData): EBrightdataP
 
 export function toBrightdataCountryProductType(productType: EBrightdataProductType): string {
     switch (productType) {
-        case EBrightdataProductType.DATACENTER_SHARED_PAYPERUSAGE: {
+        case EBrightdataProductType.DatacenterSharedPayperusage: {
             return 'DC_shared';
         }
 
-        case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED: {
+        case EBrightdataProductType.DatacenterSharedUnlimited: {
             return 'DC_dedicated_ip';
         }
 
-        case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED: {
+        case EBrightdataProductType.DatacenterDedicatedUnlimited: {
             return 'DC_dedicated_host';
         }
 
-        case EBrightdataProductType.ISP_SHARED_PAYPERUSAGE: {
+        case EBrightdataProductType.IspSharedPayPerUsage: {
             return 'ISP_shared';
         }
 
-        case EBrightdataProductType.ISP_SHARED_UNLIMITED: {
+        case EBrightdataProductType.IspSharedUnlimited: {
             return 'ISP_dedicated_ip';
         }
 
-        case EBrightdataProductType.ISP_DEDICATED_UNLIMITED: {
+        case EBrightdataProductType.IspDedicatedUnlimited: {
             return 'ISP_dedicated_host';
         }
 
@@ -142,25 +142,25 @@ export function toBrightdataCountryProductType(productType: EBrightdataProductTy
 
 export function getBrightdataPrefix(productType: EBrightdataProductType): string {
     switch (productType) {
-        case EBrightdataProductType.DATACENTER_SHARED_PAYPERUSAGE:
-        case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED:
-        case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED: {
+        case EBrightdataProductType.DatacenterSharedPayperusage:
+        case EBrightdataProductType.DatacenterSharedUnlimited:
+        case EBrightdataProductType.DatacenterDedicatedUnlimited: {
             return 'DCT';
         }
 
-        case EBrightdataProductType.ISP_SHARED_PAYPERUSAGE:
-        case EBrightdataProductType.ISP_SHARED_UNLIMITED:
-        case EBrightdataProductType.ISP_DEDICATED_UNLIMITED: {
+        case EBrightdataProductType.IspSharedPayPerUsage:
+        case EBrightdataProductType.IspSharedUnlimited:
+        case EBrightdataProductType.IspDedicatedUnlimited: {
             return 'ISP';
         }
 
-        case EBrightdataProductType.RESIDENTIAL_SHARED:
-        case EBrightdataProductType.RESIDENTIAL_DEDICATED: {
+        case EBrightdataProductType.ResidentialShared:
+        case EBrightdataProductType.ResidentialDedicated: {
             return 'RES';
         }
 
-        case EBrightdataProductType.MOBILE_SHARED:
-        case EBrightdataProductType.MOBILE_DEDICATED: {
+        case EBrightdataProductType.MobileShared:
+        case EBrightdataProductType.MobileDedicated: {
             return 'MOB';
         }
     }

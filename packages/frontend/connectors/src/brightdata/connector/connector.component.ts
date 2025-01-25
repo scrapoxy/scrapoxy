@@ -96,11 +96,11 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
     get serverProductType(): boolean {
         switch (this.subForm.value.productType) {
             // Server
-            case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED:
-            case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED:
-            case EBrightdataProductType.ISP_SHARED_UNLIMITED:
-            case EBrightdataProductType.ISP_DEDICATED_UNLIMITED:
-            case EBrightdataProductType.RESIDENTIAL_DEDICATED: {
+            case EBrightdataProductType.DatacenterSharedUnlimited:
+            case EBrightdataProductType.DatacenterDedicatedUnlimited:
+            case EBrightdataProductType.IspSharedUnlimited:
+            case EBrightdataProductType.IspDedicatedUnlimited:
+            case EBrightdataProductType.ResidentialDedicated: {
                 return true;
             }
 
@@ -178,34 +178,34 @@ export class ConnectorBrightdataComponent implements IConnectorComponent, OnInit
 
     getProductTypeLabel(productType: EBrightdataProductType | undefined): string {
         switch (productType) {
-            case EBrightdataProductType.DATACENTER_SHARED_PAYPERUSAGE: {
+            case EBrightdataProductType.DatacenterSharedPayperusage: {
                 return 'Datacenter - Shared (Pay per GB)';
             }
-            case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED: {
+            case EBrightdataProductType.DatacenterSharedUnlimited: {
                 return 'Datacenter - Shared Unlimited';
             }
-            case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED: {
+            case EBrightdataProductType.DatacenterDedicatedUnlimited: {
                 return 'Datacenter - Dedicated Unlimited';
             }
-            case EBrightdataProductType.ISP_SHARED_PAYPERUSAGE: {
+            case EBrightdataProductType.IspSharedPayPerUsage: {
                 return 'ISP - Shared (Pay per GB)';
             }
-            case EBrightdataProductType.ISP_SHARED_UNLIMITED: {
+            case EBrightdataProductType.IspSharedUnlimited: {
                 return 'ISP - Shared Unlimited';
             }
-            case EBrightdataProductType.ISP_DEDICATED_UNLIMITED: {
+            case EBrightdataProductType.IspDedicatedUnlimited: {
                 return 'ISP - Dedicated Unlimited';
             }
-            case EBrightdataProductType.RESIDENTIAL_SHARED: {
+            case EBrightdataProductType.ResidentialShared: {
                 return 'Residential - Shared';
             }
-            case EBrightdataProductType.RESIDENTIAL_DEDICATED: {
+            case EBrightdataProductType.ResidentialDedicated: {
                 return 'Residential - Dedicated';
             }
-            case EBrightdataProductType.MOBILE_SHARED: {
+            case EBrightdataProductType.MobileShared: {
                 return 'Mobile - Shared (Pay per GB)';
             }
-            case EBrightdataProductType.MOBILE_DEDICATED: {
+            case EBrightdataProductType.MobileDedicated: {
                 return 'Mobile - Dedicated';
             }
             default: {

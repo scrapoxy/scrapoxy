@@ -214,20 +214,20 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
 
         switch (connectorConfig.productType) {
             // Residential
-            case EBrightdataProductType.DATACENTER_SHARED_PAYPERUSAGE:
-            case EBrightdataProductType.ISP_SHARED_PAYPERUSAGE:
-            case EBrightdataProductType.RESIDENTIAL_SHARED:
-            case EBrightdataProductType.RESIDENTIAL_DEDICATED:
-            case EBrightdataProductType.MOBILE_SHARED:
-            case EBrightdataProductType.MOBILE_DEDICATED:{
+            case EBrightdataProductType.DatacenterSharedPayperusage:
+            case EBrightdataProductType.IspSharedPayPerUsage:
+            case EBrightdataProductType.ResidentialShared:
+            case EBrightdataProductType.ResidentialDedicated:
+            case EBrightdataProductType.MobileShared:
+            case EBrightdataProductType.MobileDedicated:{
                 return new ConnectorBrightdataResidentialService(connectorConfig);
             }
 
             // Server
-            case EBrightdataProductType.DATACENTER_SHARED_UNLIMITED:
-            case EBrightdataProductType.DATACENTER_DEDICATED_UNLIMITED:
-            case EBrightdataProductType.ISP_SHARED_UNLIMITED:
-            case EBrightdataProductType.ISP_DEDICATED_UNLIMITED: {
+            case EBrightdataProductType.DatacenterSharedUnlimited:
+            case EBrightdataProductType.DatacenterDedicatedUnlimited:
+            case EBrightdataProductType.IspSharedUnlimited:
+            case EBrightdataProductType.IspDedicatedUnlimited: {
                 return new ConnectorBrightdataServerService(
                     connector.credentialConfig,
                     connectorConfig,
@@ -325,14 +325,14 @@ export class ConnectorBrightdataFactory implements IConnectorFactory, OnModuleDe
 
         let countries: string[];
         switch (productType) {
-            case EBrightdataProductType.RESIDENTIAL_SHARED:
-            case EBrightdataProductType.MOBILE_SHARED: {
+            case EBrightdataProductType.ResidentialShared:
+            case EBrightdataProductType.MobileShared: {
                 countries = COUNTRY_CODES;
                 break;
             }
 
-            case EBrightdataProductType.RESIDENTIAL_DEDICATED:
-            case EBrightdataProductType.MOBILE_DEDICATED: {
+            case EBrightdataProductType.ResidentialDedicated:
+            case EBrightdataProductType.MobileDedicated: {
                 if (zone.plan?.vip_country && zone.plan.vip_country.length > 0) {
                     countries = zone.plan.vip_country.split(' ');
                 } else {
