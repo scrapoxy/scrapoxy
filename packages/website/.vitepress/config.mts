@@ -111,6 +111,7 @@ export default defineConfig({
                     {text: 'Azure', link: 'azure/guide'},
                     {text: 'Bright Data', link: 'brightdata/guide'},
                     {text: 'Digital Ocean', link: 'digitalocean/guide'},
+                    {text: 'Evomi', link: 'evomi/guide'},
                     {text: 'GCP', link: 'gcp/guide'},
                     {text: 'Geonode', link: 'geonode/guide'},
                     {text: 'HypeProxy', link: 'hypeproxy/guide'},

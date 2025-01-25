@@ -1,0 +1,160 @@
+<ng-container [formGroup]="subForm">
+    @if (subForm.controls['product']; as c) {
+        <c-row>
+            <label cLabel cCol md="2" for="product">Product</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <select
+                        cSelect
+                        id="product"
+                        formControlName="product"
+                        (change)="productChanged()"
+                        [attr.disabled]="processingProducts ? true : null">
+                        <option [ngValue]="null" disabled>----- Select Product ------</option>
+                        @for (product of products; track product) {
+                            <option [ngValue]="product">{{ toProductName(product) }}</option>
+                        }
+                    </select>
+
+                    @if (processingProducts) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.value.hostname?.length > 0) {
+        <c-row>
+            <label cLabel cCol md="2" for="hostname">Hostname</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        class="form-control"
+                        id="hostname"
+                        [attr.disabled]="processingProduct ? true : null"
+                        readonly
+                        [value]="subForm.value.hostname"/>
+
+                    @if (processingProduct) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.value.port > 0) {
+        <c-row>
+            <label cLabel cCol md="2" for="port">Port</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        class="form-control"
+                        type="number"
+                        id="port"
+                        [attr.disabled]="processingProduct ? true : null"
+                        readonly
+                        [value]="subForm.value.port"/>
+
+                    @if (processingProduct) {
+                        <span cInputGroupText>
+                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                        </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.value.username?.length > 0) {
+        <c-row>
+            <label cLabel cCol md="2" for="username">Username</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        type="text"
+                        cFormControl
+                        id="username"
+                        formControlName="username"
+                        [attr.disabled]="processingProduct ? true : null"
+                        readonly/>
+
+                    @if (processingProduct) {
+                        <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
+                    }
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.value.password?.length > 0) {
+        <c-row>
+            <label cLabel cCol md="2" for="password">Password</label>
+
+            <c-col md="10">
+                <c-input-group>
+                    <input
+                        [type]="apiKeyType"
+                        cFormControl
+                        id="password"
+                        formControlName="password"
+                        [attr.disabled]="processingProduct ? true : null"
+                        readonly/>
+
+                    @if (processingProduct) {
+                        <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
+                    }
+
+                    <button
+                        cButton
+                        color="secondary"
+                        variant="outline"
+                        cTooltip="Show Password"
+                        cTooltipPlacement="top"
+                        (click)="togglePassword()">
+                        <svg cIcon name="cilZoom"></svg>
+                    </button>
+                </c-input-group>
+            </c-col>
+        </c-row>
+    }
+    @if (subForm.value.product?.length > 0) {
+        @if (subForm.controls['country']; as c) {
+            <c-row>
+                <label cLabel cCol md="2" for="country">Country</label>
+
+                <c-col md="10">
+                    <c-input-group>
+                        <select
+                            cSelect
+                            id="country"
+                            formControlName="country"
+                            [attr.disabled]="processingProduct ? true : null">
+                            <option [ngValue]="null" disabled>----- Select Country ------</option>
+                            <option value="all">All</option>
+                            @for (country of countries; track country.code) {
+                                <option [value]="country.code">{{ country.name }} ({{ country.code | uppercase }})
+                                </option>
+                            }
+                        </select>
+
+                        @if (processingProduct) {
+                            <span cInputGroupText>
+                                <svg cIcon name="cilLoopCircular" class="spin"></svg>
+                            </span>
+                        }
+                    </c-input-group>
+                </c-col>
+            </c-row>
+        }
+    }
+</ng-container>

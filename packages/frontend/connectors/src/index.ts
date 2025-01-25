@@ -8,6 +8,8 @@ export * from './datacenter-local';
 
 export * from './digitalocean';
 
+export * from './evomi';
+
 export * from './freeproxies';
 
 export * from './gcp';
