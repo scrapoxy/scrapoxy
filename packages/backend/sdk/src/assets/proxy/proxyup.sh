@@ -51,7 +51,7 @@ start_it() {
     chown $USER:$USER "$LOG_DIR"
 
     echo "Starting $APP_NAME ..."
-    echo "cd $APP_DIR && $NODE_EXEC $NODE_APP $KWARGS 1>$LOG_FILE 2>&1 & echo \$! > $PID_FILE" | sudo -i -u $USER
+    echo "cd $APP_DIR && while true; do $NODE_EXEC $NODE_APP $KWARGS 1>$LOG_FILE 2>&1; sleep 1; done & echo \$! > $PID_FILE" | sudo -i -u $USER
     echo "$APP_NAME started with pid $(get_pid)"
 }
 
