@@ -194,7 +194,7 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
         const data: ITencentUninstallCommandData = {
             secretId: credentialConfig.secretId,
             secretKey: credentialConfig.secretKey,
-            region: connectorConfig.zone,
+            region: connectorConfig.region,
             imageId: connectorConfig.imageId,
         };
         const taskToCreate: ITaskToCreate = {
