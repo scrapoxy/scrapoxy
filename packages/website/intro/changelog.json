@@ -1,6 +1,25 @@
 {
     "releases": [
         {
+            "version": "4.21.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**connector**: add the Evomi connector",
+                        "**proxies**: randomize the selection of proxies during scaling"
+                    ]
+                },
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**test**: add missing installId for in-memory storage",
+                        "**cloud**: auto-restart proxy script if it crashes"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.20.0",
             "breaking": "Azure and Brightdata connectors must be uninstall and reinstall to work properly",
             "commitGroups": [
