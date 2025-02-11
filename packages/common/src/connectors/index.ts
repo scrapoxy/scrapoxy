@@ -58,6 +58,8 @@ export * from './scaleway';
 
 export * from './smartproxy';
 
+export * from './tencent';
+
 export * from './xproxy';
 
 export * from './zyte';

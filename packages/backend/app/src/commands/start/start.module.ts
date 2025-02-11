@@ -30,6 +30,7 @@ import {
     ConnectorRayobyteModule,
     ConnectorScalewayModule,
     ConnectorSmartproxyModule,
+    ConnectorTencentModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
 } from '@scrapoxy/backend-connectors';
@@ -99,6 +100,7 @@ export class AppStartModule {
             ConnectorRayobyteModule,
             ConnectorScalewayModule,
             ConnectorSmartproxyModule,
+            ConnectorTencentModule,
             ConnectorXProxyModule,
             ConnectorZyteModule,
             ProbeModule.forRootFromEnv(),
