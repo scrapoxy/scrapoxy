@@ -26,7 +26,7 @@ import {
     generateUseragent,
     ONE_MINUTE_IN_MS,
     ONE_SECOND_IN_MS,
-    PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+    PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
     randomName,
     SCRAPOXY_HEADER_PREFIX,
 } from '@scrapoxy/common';
@@ -99,7 +99,7 @@ describe(
                 key,
                 config,
                 useragent: generateUseragent(),
-                timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT_TEST,
+                timeoutDisconnected: PROXY_TIMEOUT_DISCONNECTED_DEFAULT,
                 ciphers: null,
             };
 
