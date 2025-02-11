@@ -2,7 +2,7 @@ import { AScriptBuilder } from './script-builder.abstract';
 
 
 export class RunScriptBuilder extends AScriptBuilder {
-    async build(): Promise<string> {
+    protected async generateScript(): Promise<string> {
         const configIni = [
             '[general]',
             `port=${this.port}`,
