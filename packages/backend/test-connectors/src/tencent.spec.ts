@@ -13,6 +13,7 @@ import {
     CONNECTOR_TENCENT_TYPE,
     TENCENT_DEFAULT_INSTANCE_TYPE,
     TENCENT_DEFAULT_REGION,
+    TENCENT_DEFAULT_ZONE,
 } from '@scrapoxy/common';
 
 
@@ -29,11 +30,13 @@ describe(
                     {
                         name: `Test on region ${TENCENT_DEFAULT_REGION} with instance type ${TENCENT_DEFAULT_INSTANCE_TYPE}`,
                         config: {
-                            zone: TENCENT_DEFAULT_REGION,
+                            region: TENCENT_DEFAULT_REGION,
+                            zone: TENCENT_DEFAULT_ZONE,
                             port: 3128,
                             instanceType: TENCENT_DEFAULT_INSTANCE_TYPE,
                             imageId: '',
                             tag: 'spxtest',
+                            projectId: '',
                         } satisfies IConnectorTencentConfig,
                         install: {},
                     },
@@ -74,7 +77,9 @@ describe(
                         .toHaveLength(0);
 
                     // Images
-                    const images = await api.describeImages();
+                    const images = await api.describeImages({
+                        imageType: 'PRIVATE_IMAGE',
+                    });
                     expect(images)
                         .toHaveLength(0);
                 }

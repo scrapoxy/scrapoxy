@@ -4,9 +4,11 @@ export enum ETencentQueryCredential {
     InstanceTypes = 'instancetypes',
 }
 
+
 export interface ITencentQueryZone {
     region: string;
 }
+
 
 export interface ITencentQueryInstanceType {
     region: string;

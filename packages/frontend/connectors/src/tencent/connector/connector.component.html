@@ -137,12 +137,22 @@
 
             <c-col md="10">
                 <input
-                    type="number"
+                    type="string"
                     cFormControl
                     id="projectId"
                     formControlName="projectId"
-                    placeholder="Enter the project ID"
+                    placeholder="Enter the project ID (optional)"
                     [valid]="c.dirty || c.touched ? c.valid : undefined" />
+
+                @if (c.dirty || c.touched) {
+                    <c-form-feedback [valid]="c.valid">
+                        @if (c.errors; as errs) {
+                            @if (errs['pattern']) {
+                                <div>Project ID is a number</div>
+                            }
+                        }
+                    </c-form-feedback>
+                }
             </c-col>
         </c-row>
     }

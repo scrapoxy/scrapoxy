@@ -27,7 +27,6 @@ export class InstallTencentComponent implements IInstallComponent, OnInit {
 
     async ngOnInit(): Promise<void> {
         await Promise.resolve();
-        console.log('=======INSTALL COMPONENT=====');
 
         if (this.form.get('config')) {
             this.form.removeControl('config');

@@ -1,59 +1,39 @@
-# Scaleway Connector
+# Tencent Cloud Connector
 
-![Scaleway](/assets/images/scaleway.svg){width=230, nozoom}
+![Tencent](/assets/images/tencent.svg){width=230, nozoom}
 
-[Scaleway](https://www.scaleway.com/)  is a French cloud computing provider that offers on-demand infrastructure solutions. 
-In 2023, Scaleway operates 7 data centers in 3 regions across Europe.
+[Tencent Cloud](/l/tencent) is a Chinese cloud computing provider that offers on-demand infrastructure solutions. 
+In 2023, Tencent Cloud operates over 70 availability zones in 26 regions across the globe.
 
-Thanks a lot to [Rémy Fontaine](https://github.com/remyft) of [Sahar](https://sahar.fr) for the contribution! 
+Thanks a lot to [Rémy Fontaine](/l/github-remyft) of [Sahar](/l/sahar) for the contribution!
+
 
 ## Prerequisites
 
-An active subscription to Scaleway is required.
+An active subscription to Tencent Cloud is required.
+
+When accessing regions other than Hong Kong, Tencent Cloud will require you to **complete verification**, 
+either through personal ID verification or by submitting company registration details.
 
 
-## Scaleway Console
+## Tencent Console
 
-Connect to [Scaleway Console](https://console.scaleway.com).
+Connect to [Tencent Console](/l/tencent-console).
 
 
-### Get the Secret Key
+### Get the Secret ID and Key
 
-![Scaleway SecretKey Select](scaleway_secretkey_select.png)
+![Tencent Key Create](tencent_key_create.png)
 
 1. On the top right, click on your name to open the menu;
-2. And click on `API Keys`.
+2. Click on `Access Key`;
+3. And click on `Create Key`.
 
 ---
 
-![Scaleway SecretKey Select 2](scaleway_secretkey_select2.png)
+![Tencent Key](tencent_key.png)
 
-1. Select the tab `API Keys` (should be already selected);
-2. And click on `Generate an API key`.
-
----
-
-![Scaleway SecretKey Generate Part 1](scaleway_secretkey_generate_part1.png)
-
-1. Choose `Myself (IAM user)` for the bearer;
-2. Select `Never` for expiration;
-3. Choose `No, skip for now` for Object Storage;
-4. And click on `Generate API key`.
-
----
-
-![Scaleway SecretKey Generate Part 2](scaleway_secretkey_generate_part2.png)
-
-1. Remember the `Secret Key`;
-2. And click on `Close` button.
-
-
-### Get the Project ID
-
-![Scaleway Project ID](scaleway_projectid.png)
-
-1. On the left sidebar, click on `Project Dashboard`;
-2. And click on the `Copy ID` button to remember the `Project ID`.
+Remember the `SecretId` and the `SecretKey`.
 
 
 ## Scrapoxy
@@ -65,7 +45,7 @@ Open Scrapoxy User Interface and select `Marketplace`:
 
 ![Credential Select](spx_credential_select.png)
 
-Select `Scaleway` to create a new credential (use search if necessary).
+Select `Tencent` to create a new credential (use search if necessary).
 
 ---
 
@@ -73,8 +53,8 @@ Select `Scaleway` to create a new credential (use search if necessary).
 
 Complete the form by entering the following information:
 1. **Name**: Specify the unique name for the credential;
-2. **Secret Access Jey**: Enter the remembered `Secret Key`;
-3. **Project ID**: Enter the remembered `Project ID`.
+2. **Secret ID**: Enter the remembered `Secret ID`;
+3. **Secret Key**: Enter the remembered `Secret Key`.
 
 And click on `Create`.
 
@@ -92,11 +72,12 @@ Complete the form with the following information:
 4. **Proxies Timeout**: Maximum duration for connecting to a proxy before considering it as offline;
 5. **Proxies Kick**: If enabled, maximum duration for a proxy to be offline before being removed from the pool;
 6. **Region**: The region where the instances will be created;
-7. **Port**: The port of the proxy (on Scaleway);
-8. **Instance Type**: The type of the instance;
-9. **Snapshot ID**: The ID of the snapshot in the region (keep it empty);
-10. **Image ID**: The ID of the image in the region (keep it empty);
-11. **Tag**: The default tag for instance.
+7. **Zone**: The zone inside the region;
+8. **Port**: The port of the proxy (on Tencent);
+9. **Instance Type**: The type of the instance;
+10. **Project ID**: The Project ID or leave it empty to use the default project;
+11. **Image ID**: The ID of the image in the region (keep it empty);
+12. **Tag**: The default tag for instance.
 
 And click on `Create`.
 

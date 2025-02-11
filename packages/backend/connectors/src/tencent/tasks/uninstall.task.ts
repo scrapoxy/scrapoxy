@@ -73,7 +73,7 @@ class TencentUninstallCommand extends ATaskCommand {
                 }
 
                 await api.deleteImages([
-                    this.data.imageId, 
+                    this.data.imageId,
                 ]);
 
                 const taskToUpdate: ITaskToUpdate = {
@@ -89,14 +89,10 @@ class TencentUninstallCommand extends ATaskCommand {
 
             case 1: {
                 // Wait image to be deregistered (only if doesn't exist)
-                try {
-                    await api.describeImage(this.data.imageId);
+                const image = await api.describeImage(this.data.imageId);
 
+                if (image) {
                     return this.waitTask();
-                } catch (err: any) {
-                    if (!err.message?.includes('not found')) { 
-                        throw err;
-                    }
                 }
 
                 // No next step

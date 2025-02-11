@@ -14,7 +14,8 @@ import { convertToProxy } from './tencent.helpers';
 import { ETencentInstanceState } from './tencent.interface';
 import type {
     IConnectorTencentConfig,
-    IConnectorTencentCredential, 
+    IConnectorTencentCredential,
+    ITencentRunInstancesRequest,
 } from './tencent.interface';
 import type {
     IConnectorService,
@@ -102,13 +103,13 @@ export class ConnectorTencentService implements IConnectorService {
 
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
-    
+
         const userData = await new RunScriptBuilder(
             this.connectorConfig.port,
             this.certificate
         )
             .build();
-        const instancesIds = await this.api.runInstances({
+        const runInstancesRequest: ITencentRunInstancesRequest = {
             count: count,
             instanceName: randomName(),
             instanceType: this.connectorConfig.instanceType,
@@ -117,10 +118,18 @@ export class ConnectorTencentService implements IConnectorService {
             terminateOnShutdown: true,
             userData,
             zone: this.connectorConfig.zone,
-            projectId: this.connectorConfig.projectId,
-        });
+        };
+
+        if (this.connectorConfig.projectId) {
+            runInstancesRequest.projectId = parseInt(
+                this.connectorConfig.projectId,
+                10
+            );
+        }
+
+        const instancesIds = await this.api.runInstances(runInstancesRequest);
         const instances = await this.api.describeInstances({
-            instancesIds: instancesIds, 
+            instancesIds: instancesIds,
         });
 
         return instances.map((i) => convertToProxy(

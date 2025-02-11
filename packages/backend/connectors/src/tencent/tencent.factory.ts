@@ -107,7 +107,6 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
                 this.agents
             );
             await api.describeRegions();
-            
         } catch (err: any) {
             if (err.message.includes('denied')) {
                 throw new CredentialInvalidError('Secret access key invalid');
@@ -164,6 +163,7 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
             secretKey: credentialConfig.secretKey,
             region: connectorConfig.region,
             zone: connectorConfig.zone,
+            projectId: connectorConfig.projectId, // different from connect.projectId
             hostname: void 0,
             port: connectorConfig.port,
             certificate,
@@ -270,7 +270,7 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
             this.agents
         );
         const regions = await api.describeRegions();
-    
+
         return regions;
     }
 
@@ -284,7 +284,7 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
             this.agents
         );
         const regions = await api.describeZones(parameters.region);
-    
+
         return regions;
     }
 

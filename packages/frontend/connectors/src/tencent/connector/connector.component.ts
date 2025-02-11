@@ -85,7 +85,7 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
                 void 0, Validators.required,
             ],
             projectId: [
-                void 0,
+                void 0, Validators.pattern(/^\d+$/),
             ],
             imageId: [
                 void 0,
@@ -107,7 +107,6 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
             'config',
             this.subForm
         );
-        console.log('=========NGONINIT========');
 
         if (this.createMode) {
             this.subForm.patchValue({
@@ -193,8 +192,7 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
                 )
                     .then((zones: string[]) => {
                         const sortedZone = zones.sort();
-                        this.subForm.setValue({
-                            ...this.subForm.value,
+                        this.subForm.patchValue({
                             zone: sortedZone.includes(TENCENT_DEFAULT_ZONE) ? TENCENT_DEFAULT_ZONE : sortedZone[ 0 ],
                         });
 

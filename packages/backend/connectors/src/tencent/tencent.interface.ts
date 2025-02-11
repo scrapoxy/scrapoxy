@@ -9,17 +9,31 @@ export interface IConnectorTencentConfig {
     zone: string;
     port: number;
     instanceType: string;
+    projectId: string;
     imageId: string;
     tag: string;
-    projectId: number;
 }
 
 
-export interface ITencentError {
-    class: string;
+//////////// REGIONS ////////////
+export interface ITencentDescribeRegionsResponse {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    Message: string;
+    RegionSet: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Region: string;
+    }[];
 }
+
+
+//////////// ZONES ////////////
+export interface ITencentDescribeZonesResponse {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ZoneSet: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Zone: string;
+    }[];
+}
+
 
 //////////// INSTANCES ////////////
 export enum ETencentInstanceState {
@@ -31,11 +45,6 @@ export enum ETencentInstanceState {
     REBOOTING = 'REBOOTING',
 }
 
-export interface ITencentDescribeInstancesRequest {
-    instancesIds?: string[];
-    zones?: string[];
-    group?: string;
-}
 
 export interface ITencentInstance {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -52,6 +61,20 @@ export interface ITencentInstance {
     Tags: string[];
 }
 
+
+export interface ITencentDescribeInstancesRequest {
+    instancesIds?: string[];
+    zones?: string[];
+    group?: string;
+}
+
+
+export interface ITencentDescribeInstancesResponse {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    InstanceSet: ITencentInstance[];
+}
+
+
 export interface ITencentRunInstancesRequest {
     imageId: string;
     instanceType: string;
@@ -59,21 +82,29 @@ export interface ITencentRunInstancesRequest {
     instanceName: string;
     zone: string;
     projectId?: number;
-    userData?: string;
+    userData: string;
     terminateOnShutdown?: boolean;
     group?: string;
-    
 }
+
+
+export interface ITencentRunInstancesResponse {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    InstanceIdSet: string[];
+}
+
+
+//////////// INSTANCE TYPES ////////////
+export interface ITencentDescribeInstanceTypeConfigsResponse {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    InstanceTypeConfigSet: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        InstanceType: string;
+    }[];
+}
+
 
 //////////// IMAGES ////////////
-export interface ITencentDescribeImagesRequest {
-    platform?: string;
-    imageType?: string;
-    imageId?: string;
-    name?: string;
-    instanceType?: string;
-}
-
 export enum ETencentImageState {
     CREATING = 'CREATING',
     NORMAL = 'NORMAL',
@@ -83,6 +114,7 @@ export enum ETencentImageState {
     DELETED = 'DELETED',
 }
 
+
 export interface ITencentImage {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     ImageId: string;
@@ -90,4 +122,24 @@ export interface ITencentImage {
     ImageState: string;
     // eslint-disable-next-line @typescript-eslint/naming-convention
     CreatedTime: string;
+}
+
+
+export interface ITencentDescribeImagesRequest {
+    platform?: string;
+    imageType?: string;
+    imageId?: string;
+    name?: string;
+    instanceType?: string;
+}
+
+export interface ITencentDescribeImagesResponse {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ImageSet: ITencentImage[];
+}
+
+
+export interface ITencentCreateImageResponse {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ImageId: string;
 }

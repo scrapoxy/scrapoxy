@@ -1,382 +1,334 @@
 import {
     ONE_SECOND_IN_MS,
-    TENCENT_DEFAULT_REGION, 
+    TENCENT_DEFAULT_REGION,
 } from '@scrapoxy/common';
 import axios, { AxiosError } from 'axios';
 import { TencentCloudSignerV4 } from './signature';
+import { buildFilters } from './tencent.helpers';
 import type {
+    ITencentCreateImageResponse,
     ITencentDescribeImagesRequest,
+    ITencentDescribeImagesResponse,
     ITencentDescribeInstancesRequest,
-    ITencentError,
+    ITencentDescribeInstancesResponse,
+    ITencentDescribeInstanceTypeConfigsResponse,
+    ITencentDescribeRegionsResponse,
+    ITencentDescribeZonesResponse,
     ITencentImage,
     ITencentInstance,
     ITencentRunInstancesRequest,
+    ITencentRunInstancesResponse,
 } from './tencent.interface';
 import type { Agents } from '@scrapoxy/backend-sdk';
 import type {
     AxiosInstance,
-    AxiosResponse, 
+    AxiosResponse,
 } from 'axios';
 
 
 export class TencentError extends Error {
-    constructor(
-        public errorClass: string,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Message: string
-    ) {
-        super(Message);
-    }
 }
 
+
 export class TencentApi {
-  private readonly instance: AxiosInstance;
+    private readonly instance: AxiosInstance;
 
-  constructor(
-      secretId: string,
-      secretKey: string,
-      region: string,
-      agents: Agents
-  ) {
-      this.instance = axios.create({
-          ...agents.axiosDefaults,
-          timeout: 20 * ONE_SECOND_IN_MS,
-          baseURL: 'https://cvm.tencentcloudapi.com',
-          headers: {
-              'X-TC-Version': '2017-03-12',
-              'Content-Type': 'application/json; charset=utf-8',
-          },
+    constructor(
+        secretId: string,
+        secretKey: string,
+        region: string,
+        agents: Agents
+    ) {
+        this.instance = axios.create({
+            ...agents.axiosDefaults,
+            timeout: 20 * ONE_SECOND_IN_MS,
+            baseURL: 'https://cvm.tencentcloudapi.com',
+            headers: {
+                'X-TC-Version': '2017-03-12',
+                'Content-Type': 'application/json; charset=utf-8',
+            },
 
-      });
+        });
 
-      const signature = new TencentCloudSignerV4(
-          region,
-          secretId,
-          secretKey,
-          'cvm'
-      );
+        const signature = new TencentCloudSignerV4(
+            region,
+            secretId,
+            secretKey,
+            'cvm'
+        );
 
-      this.instance.interceptors.request.use((config) => {
-          config.headers = config.headers || {};
-          
-          signature.sign(config);
+        this.instance.interceptors.request.use((config) => {
+            config.headers = config.headers || {};
 
-          return config;
-      });
+            signature.sign(config);
 
-      this.instance.interceptors.response.use(
-          (response) => {
-              const error = response?.data.Response.Error as ITencentError;
+            return config;
+        });
 
-              if (error?.Message) {
-                  throw new TencentError(
-                      error.class || 'UnknownError',
-                      error.Message
-                  );
-              }
+        this.instance.interceptors.response.use(
+            (response) => {
+                const error = response?.data.Response.Error;
 
-              return response;
-          },
-          (err: any) => {
-              if (err instanceof AxiosError) {
-                  const errAxios = err as AxiosError;
-                  const response = errAxios.response as AxiosResponse;
-                  const error = response?.data as ITencentError;
+                if (error?.Message) {
+                    throw new TencentError(error.Message);
+                }
 
-                  if (error) {
-                      throw new TencentError(
-                          error.class || 'UnknownError',
-                          error.Message
-                      );
-                  }
-              }
+                return response;
+            },
+            (err: any) => {
+                if (err instanceof AxiosError) {
+                    const errAxios = err as AxiosError;
+                    const response = errAxios.response as AxiosResponse;
+                    const error = response?.data;
 
-              throw err;
-          }
-      );
-  }
+                    if (error) {
+                        throw new TencentError(error.Message);
+                    }
+                }
 
-  public async describeRegions(): Promise<string[]> {
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          RegionSet: { Region: string }[];
-      }>(
-          'DescribeRegions',
-          {},
-          TENCENT_DEFAULT_REGION
-      );
+                throw err;
+            }
+        );
+    }
 
-      return data.RegionSet.map((r) => r.Region);
-  }
+    public async describeRegions(): Promise<string[]> {
+        const data = await this.tencentPost<ITencentDescribeRegionsResponse>(
+            'DescribeRegions',
+            {},
+            TENCENT_DEFAULT_REGION
+        );
 
-  public async describeZones(region: string): Promise<string[]> {
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          ZoneSet: { Zone: string }[];
-      }>(
-          'DescribeZones',
-          {},
-          region
-      );
+        return data.RegionSet.map((r) => r.Region);
+    }
 
-      return data.ZoneSet.map((z) => z.Zone);
-  }
+    public async describeZones(region: string): Promise<string[]> {
+        const data = await this.tencentPost<ITencentDescribeZonesResponse>(
+            'DescribeZones',
+            {},
+            region
+        );
 
-  public async describeInstances(request?: ITencentDescribeInstancesRequest): Promise<ITencentInstance[]> {
-      const body: Record<string, any> = {};
-      const keyConverter: Record<string, string> = {
-          instancesIds: 'instance-id',
-          zones: 'zone',
-          group: 'tag:Group',
-      };
+        return data.ZoneSet.map((z) => z.Zone);
+    }
 
-      if (request) {
-          body.Filters = this.buildFilters(
-              request,
-              keyConverter
-          );
-      }
+    public async describeInstances(request?: ITencentDescribeInstancesRequest): Promise<ITencentInstance[]> {
+        const body: Record<string, any> = {};
+        const keyConverter: Record<string, string> = {
+            instancesIds: 'instance-id',
+            zones: 'zone',
+            group: 'tag:Group',
+        };
 
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          InstanceSet: ITencentInstance[];
-      }>(
-          'DescribeInstances',
-          body
-      );
+        if (request) {
+            body.Filters = buildFilters(
+                request,
+                keyConverter
+            );
+        }
 
-      return data.InstanceSet;
-  }
+        const data = await this.tencentPost<ITencentDescribeInstancesResponse>(
+            'DescribeInstances',
+            body
+        );
 
-  public async runInstances(request: ITencentRunInstancesRequest): Promise<string[]> {
-      const body = {
-          ImageId: request.imageId,
-          InstanceType: request.instanceType,
-          InstanceCount: request.count,
-          InstanceChargeType: 'POSTPAID_BY_HOUR',
-          InstanceName: request.instanceName || 'Default-Instance',
-          UserData: request.userData
-              ? Buffer.from(request.userData)
-                  .toString('base64')
-              : undefined,
-          Placement: {
-              Zone: request.zone,
-              ProjectId: request.projectId ? Number(request.projectId) : undefined,
-          },
-          InternetAccessible: {
-              PublicIpAssigned: true,
-              InternetChargeType: 'TRAFFIC_POSTPAID_BY_HOUR',
-              InternetMaxBandwidthOut: 5,
-          },
-          TagSpecification: request.group
-              ? [
-                  {
-                      ResourceType: 'instance',
-                      Tags: [
-                          {
-                              Key: 'Group',
-                              Value: request.group,
-                          },
-                      ],
-                  },
-              ]
-              : undefined,
-      };
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          InstanceIdSet: string[];
-      }>(
-          'RunInstances',
-          body
-      );
+        return data.InstanceSet;
+    }
 
-      return data.InstanceIdSet;
-  }
+    public async runInstances(request: ITencentRunInstancesRequest): Promise<string[]> {
+        const body: any = {
+            ImageId: request.imageId,
+            InstanceType: request.instanceType,
+            InstanceCount: request.count,
+            InstanceChargeType: 'POSTPAID_BY_HOUR',
+            InstanceName: request.instanceName,
+            UserData: Buffer.from(request.userData)
+                .toString('base64'),
+            Placement: {
+                Zone: request.zone,
+            },
+            InternetAccessible: {
+                PublicIpAssigned: true,
+                InternetChargeType: 'TRAFFIC_POSTPAID_BY_HOUR',
+                InternetMaxBandwidthOut: 100, // 100 Mbps (min of all regions which is Singapore)
+            },
+            SystemDisk: {
+                DiskSize: 20, // Default is 50 GB
+            },
+        };
 
-  public async startInstances(instancesIds: string[]): Promise<void> {
-      const body = {
-          InstanceIds: instancesIds,
-      };
-      await this.tencentPost(
-          'StartInstances',
-          body
-      );
-  }
+        if (request.projectId) {
+            body.Placement.ProjectId = request.projectId;
+        }
 
-  public async stopInstances(instancesIds: string[]): Promise<void> {
-      const body = {
-          InstanceIds: instancesIds,
-      };
-      await this.tencentPost(
-          'StopInstances',
-          body
-      );
-  }
+        if (request.group) {
+            body.TagSpecification = [
+                {
+                    ResourceType: 'instance',
+                    Tags: [
+                        {
+                            Key: 'Group',
+                            Value: request.group,
+                        },
+                    ],
+                },
+            ];
+        }
 
-  public async terminateInstances(instancesIds: string[]): Promise<void> {
-      const body = {
-          InstanceIds: instancesIds,
-      };
-      await this.tencentPost(
-          'TerminateInstances',
-          body
-      );
-  }
+        const data = await this.tencentPost<ITencentRunInstancesResponse>(
+            'RunInstances',
+            body
+        );
 
-  public async listInstanceTypes(
-      allowedInstanceTypes: string[],
-      zone: string
-  ): Promise<string[]> {
-      const body = {
-          Filters: [
-              {
-                  Name: 'zone',
-                  Values: [
-                      zone, 
-                  ],
-              },
-          ],
-      };
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          InstanceTypeConfigSet: { InstanceType: string }[];
-      }>(
-          'DescribeInstanceTypeConfigs',
-          body
-      );
-      const allInstanceTypes = data.InstanceTypeConfigSet || [];
-      const filtered = allInstanceTypes.filter((inst) =>
-          allowedInstanceTypes.includes(inst.InstanceType));
+        return data.InstanceIdSet;
+    }
 
-      return filtered.map((i) => i.InstanceType);
-  }
+    public async startInstances(instancesIds: string[]): Promise<void> {
+        const body = {
+            InstanceIds: instancesIds,
+        };
+        await this.tencentPost(
+            'StartInstances',
+            body
+        );
+    }
 
-  public async describeImages(request?: ITencentDescribeImagesRequest): Promise<ITencentImage[]> {
-      const body: Record<string, any> = {};
-      const keyConverter: Record<string, string> = {
-          platform: 'platform',
-          imageType: 'image-type',
-          imageId: 'image-id',
-          name: 'image-name',
-      };
+    public async stopInstances(instancesIds: string[]): Promise<void> {
+        const body = {
+            InstanceIds: instancesIds,
+        };
+        await this.tencentPost(
+            'StopInstances',
+            body
+        );
+    }
 
-      if (request) {
-          if (request.instanceType) {
-              body.InstanceType = request.instanceType;
-          }
-          body.Filters = this.buildFilters(
-              request,
-              keyConverter
-          );
-      }
+    public async terminateInstances(instancesIds: string[]): Promise<void> {
+        const body = {
+            InstanceIds: instancesIds,
+        };
+        await this.tencentPost(
+            'TerminateInstances',
+            body
+        );
+    }
 
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          ImageSet: ITencentImage[];
-      }>(
-          'DescribeImages',
-          body
-      );
+    public async listInstanceTypes(
+        allowedInstanceTypes: string[],
+        zone: string
+    ): Promise<string[]> {
+        const body = {
+            Filters: [
+                {
+                    Name: 'zone',
+                    Values: [
+                        zone,
+                    ],
+                },
+            ],
+        };
+        const data = await this.tencentPost<ITencentDescribeInstanceTypeConfigsResponse>(
+            'DescribeInstanceTypeConfigs',
+            body
+        );
+        const allInstanceTypes = data.InstanceTypeConfigSet || [];
+        const filtered = allInstanceTypes.filter((inst) =>
+            allowedInstanceTypes.includes(inst.InstanceType));
 
-      return data.ImageSet;
-  }
+        return filtered.map((i) => i.InstanceType);
+    }
 
-  public async describeImage(imageId: string): Promise<ITencentImage> {
-      const body = {
-          ImageIds: [
-              imageId, 
-          ],
-      };
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          ImageSet: ITencentImage[];
-      }>(
-          'DescribeImages',
-          body
-      );
+    public async describeImages(request?: ITencentDescribeImagesRequest): Promise<ITencentImage[]> {
+        const body: Record<string, any> = {};
+        const keyConverter: Record<string, string> = {
+            platform: 'platform',
+            imageType: 'image-type',
+            imageId: 'image-id',
+            name: 'image-name',
+        };
 
-      return data.ImageSet[ 0 ];
-  }
+        if (request) {
+            if (request.instanceType) {
+                body.InstanceType = request.instanceType;
+            }
+            body.Filters = buildFilters(
+                request,
+                keyConverter
+            );
+        }
 
-  public async createImage(
-      imageName: string,
-      instancesId: string
-  ): Promise<string> {
-      const body = {
-          ImageName: imageName,
-          InstanceId: instancesId,
-      };
-      const data = await this.tencentPost<{
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-          ImageId: string;
-      }>(
-          'CreateImage',
-          body
-      );
+        const data = await this.tencentPost<ITencentDescribeImagesResponse>(
+            'DescribeImages',
+            body
+        );
 
-      return data.ImageId;
-  }
+        return data.ImageSet;
+    }
 
-  public async deleteImages(imagesIds: string[]): Promise<void> {
-      const body = {
-          ImageIds: imagesIds,
-          DeleteBindedSnap: true,
-      };
+    public async describeImage(imageId: string): Promise<ITencentImage | undefined> {
+        const body = {
+            ImageIds: [
+                imageId,
+            ],
+        };
+        const data = await this.tencentPost<ITencentDescribeImagesResponse>(
+            'DescribeImages',
+            body
+        );
 
-      await this.tencentPost(
-          'DeleteImages',
-          body
-      );
-  }
+        if (data.ImageSet.length <= 0) {
+            return;
+        }
 
-  private async tencentPost<T>(
-      action: string,
-      data: Record<string, any> = {},
-      region?: string
-  ): Promise<T> {
-      const config = {
-          headers: {
-              'X-TC-Action': action,
-              ...region ? {
-                  'X-TC-Region': region, 
-              } : {},
-          },
-      };
-      const response = await this.instance.post(
-          '/',
-          data,
-          config
-      );
+        return data.ImageSet[ 0 ];
+    }
 
-      return response.data.Response as T;
-  }
+    public async createImage(
+        imageName: string,
+        instancesId: string
+    ): Promise<string> {
+        const body = {
+            ImageName: imageName,
+            InstanceId: instancesId,
+        };
+        const data = await this.tencentPost<ITencentCreateImageResponse>(
+            'CreateImage',
+            body
+        );
 
-  private buildFilters(
-      request: Record<string, any>,
-      keyConverter: Record<string, string>
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-  ): { Name: string; Values: string[] }[] {
-      return Object.entries(request)
-          .flatMap(([
-              key, value, 
-          ]) => {
-              if (!keyConverter[ key ] || !value) {
-                  return [];
-              }
+        return data.ImageId;
+    }
 
-              if (Array.isArray(value)) {
-                  return {
-                      Name: keyConverter[ key ],
-                      Values: value,
-                  };
-              }
+    public async deleteImages(imagesIds: string[]): Promise<void> {
+        const body = {
+            ImageIds: imagesIds,
+            DeleteBindedSnap: true,
+        };
 
-              return {
-                  Name: keyConverter[ key ],
-                  Values: [
-                      value, 
-                  ],
-              };
-          });
-  }
+        await this.tencentPost(
+            'DeleteImages',
+            body
+        );
+    }
+
+    private async tencentPost<T>(
+        action: string,
+        data: Record<string, any> = {},
+        region?: string
+    ): Promise<T> {
+        const config = {
+            headers: {
+                'X-TC-Action': action,
+                ...region ? {
+                    'X-TC-Region': region,
+                } : {},
+            },
+        };
+        const response = await this.instance.post(
+            '/',
+            data,
+            config
+        );
+
+        return response.data.Response as T;
+    }
 }

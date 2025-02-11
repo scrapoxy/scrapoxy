@@ -18,7 +18,7 @@ const schemaConfig = Joi.object({
         .required(),
     projectId: Joi.number()
         .allow('')
-        .optional(),    
+        .optional(),
     imageId: Joi.string()
         .allow('')
         .optional(),

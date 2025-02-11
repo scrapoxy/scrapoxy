@@ -1,5 +1,3 @@
-import { promisify } from 'util';
-import { gzip } from 'zlib';
 import {
     Agents,
     CommanderFrontendClient,
@@ -25,9 +23,12 @@ import { v4 as uuid } from 'uuid';
 import { TencentApi } from '../api';
 import {
     ETencentImageState,
-    ETencentInstanceState, 
+    ETencentInstanceState,
 } from '../tencent.interface';
-import type { IConnectorTencentConfig } from '../tencent.interface';
+import type {
+    IConnectorTencentConfig,
+    ITencentRunInstancesRequest,
+} from '../tencent.interface';
 import type { IProxyToConnectConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
@@ -46,6 +47,7 @@ export interface ITencentInstallCommandData {
     secretKey: string;
     region: string;
     zone: string;
+    projectId: string;
     hostname: string | undefined;
     port: number;
     certificate: ICertificate;
@@ -56,7 +58,7 @@ export interface ITencentInstallCommandData {
     installId: string;
 }
 
-const gzipAsync = promisify(gzip);
+const MULTIPART_BOUNDARY = '==SPX==';
 const schemaData = Joi.object({
     secretId: Joi.string()
         .required(),
@@ -66,8 +68,9 @@ const schemaData = Joi.object({
         .required(),
     zone: Joi.string()
         .required(),
-    projectId: Joi.string()
-        .optional,
+    projectId: Joi.number()
+        .allow('')
+        .optional(),
     hostname: Joi.string()
         .optional(),
     port: Joi.number()
@@ -79,6 +82,7 @@ const schemaData = Joi.object({
     instanceType: Joi.string()
         .required(),
     imageId: Joi.string()
+        .allow('')
         .optional(),
     fingerprintOptions: Joi.object()
         .required(),
@@ -112,54 +116,48 @@ class TencentInstallCommand extends ATaskCommand {
         switch (this.task.stepCurrent) {
             case 0: {
                 // Create the instance
-                const rawScript = await new InstallScriptBuilder(
+                const script = await new InstallScriptBuilder(
                     this.data.port,
                     this.data.certificate
                 )
                     .build();
-                const compressedBuffer = await gzipAsync(rawScript);
-                const compressedBase64 = compressedBuffer.toString('base64');
-                const bootstrapScript = [
-                    '#!/bin/sh',
-                    'cat << \'EOF\' > /tmp/script.gz.b64',
-                    compressedBase64,
-                    'EOF',
-                    '',
-                    'base64 -d /tmp/script.gz.b64 > /tmp/script.gz',
-                    'gunzip /tmp/script.gz',
-                    'chmod +x /tmp/script',
-                    '/tmp/script',
-                    '', 
-                ].join('\n');
-                const boundary = '==MYBOUNDARY==';
-                const scriptBase64 = Buffer.from(
-                    bootstrapScript,
+                const scriptB64 = Buffer.from(
+                    script,
                     'utf-8'
                 )
                     .toString('base64');
                 const mimeMessage = [
                     'MIME-Version: 1.0',
-                    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+                    `Content-Type: multipart/mixed; boundary="${MULTIPART_BOUNDARY}"`,
                     '',
-                    `--${boundary}`,
+                    `--${MULTIPART_BOUNDARY}`,
                     'Content-Type: text/x-shellscript',
                     'Content-Transfer-Encoding: base64',
                     '',
-                    scriptBase64,
-                    `--${boundary}--`,
+                    scriptB64,
+                    `--${MULTIPART_BOUNDARY}--`,
                 ].join('\n');
                 const images = await api.describeImages({
                     instanceType: this.data.instanceType, platform: 'Ubuntu', imageType: 'PUBLIC_IMAGE',
                 });
                 const imageId = images[ 0 ].ImageId;
-                const instances = await api.runInstances({
+                const runInstancesRequest: ITencentRunInstancesRequest = {
                     instanceName: randomName(),
                     instanceType: this.data.instanceType,
                     count: 1,
                     imageId: imageId,
                     zone: this.data.zone,
                     userData: mimeMessage,
-                });
+                };
+
+                if (this.data.projectId) {
+                    runInstancesRequest.projectId = parseInt(
+                        this.data.projectId,
+                        10
+                    );
+                }
+
+                const instances = await api.runInstances(runInstancesRequest);
 
                 this.data.instanceId = instances[ 0 ];
 
@@ -178,8 +176,8 @@ class TencentInstallCommand extends ATaskCommand {
                 // Wait for the instance to be started
                 const instances = await api.describeInstances({
                     instancesIds: [
-                        this.data.instanceId as string, 
-                    ], 
+                        this.data.instanceId as string,
+                    ],
                 });
 
                 if (instances.length <= 0) {
@@ -262,7 +260,7 @@ class TencentInstallCommand extends ATaskCommand {
 
                 // Stop the instance
                 await api.stopInstances([
-                    this.data.instanceId as string, 
+                    this.data.instanceId as string,
                 ]);
 
                 const taskToUpdate: ITaskToUpdate = {
@@ -280,8 +278,8 @@ class TencentInstallCommand extends ATaskCommand {
                 // Create the image
                 const instances = await api.describeInstances({
                     instancesIds: [
-                        this.data.instanceId as string, 
-                    ], 
+                        this.data.instanceId as string,
+                    ],
                 });
                 const instance = instances[ 0 ];
 
@@ -306,7 +304,7 @@ class TencentInstallCommand extends ATaskCommand {
                 return taskToUpdate;
             }
 
-            case 4: { 
+            case 4: {
                 try {
                     const image = await api.describeImage(this.data.imageId as string);
 
@@ -318,7 +316,7 @@ class TencentInstallCommand extends ATaskCommand {
                 }
 
                 await api.terminateInstances([
-                    this.data.instanceId as string, 
+                    this.data.instanceId as string,
                 ]);
 
                 // Update connector configuration
@@ -380,13 +378,13 @@ class TencentInstallCommand extends ATaskCommand {
         if (this.data.instanceId) {
             const instance = await api.describeInstances({
                 instancesIds: [
-                    this.data.instanceId as string, 
-                ], 
+                    this.data.instanceId as string,
+                ],
             });
 
             if (instance) {
                 await api.terminateInstances([
-                    this.data.instanceId as string, 
+                    this.data.instanceId as string,
                 ]);
             }
         }

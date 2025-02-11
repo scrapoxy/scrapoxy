@@ -1,3 +1,7 @@
+import {
+    createHash,
+    createHmac,
+} from 'crypto';
 import { TRANSPORT_DATACENTER_TYPE } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_AWS_TYPE,
@@ -31,4 +35,65 @@ export function convertToProxy(
     };
 
     return proxy;
+}
+
+
+export function hashHex(message: string): string {
+    if (typeof message !== 'string') {
+        message = JSON.stringify(message);
+    }
+
+    return createHash('sha256')
+        .update(
+            message,
+            'utf8'
+        )
+        .digest('hex');
+
+}
+
+
+export function hmac(
+    key: string | Buffer,
+    message: string
+): Buffer {
+    return createHmac(
+        'sha256',
+        key
+    )
+        .update(
+            message,
+            'utf8'
+        )
+        .digest();
+}
+
+
+export function buildFilters(
+    request: Record<string, any>,
+    keyConverter: Record<string, string>
+// eslint-disable-next-line @typescript-eslint/naming-convention
+): { Name: string; Values: string[] }[] {
+    return Object.entries(request)
+        .flatMap(([
+            key, value,
+        ]) => {
+            if (!keyConverter[ key ] || !value) {
+                return [];
+            }
+
+            if (Array.isArray(value)) {
+                return {
+                    Name: keyConverter[ key ],
+                    Values: value,
+                };
+            }
+
+            return {
+                Name: keyConverter[ key ],
+                Values: [
+                    value,
+                ],
+            };
+        });
 }

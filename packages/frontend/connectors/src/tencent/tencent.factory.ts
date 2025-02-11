@@ -29,7 +29,7 @@ export class ConnectorTencentFactory implements IConnectorFactory {
         coupon: null,
         defaultCredentialName: 'Tencent Credential',
         defaultConnectorName: 'Tencent Connector',
-        url: 'https://www.tencentcloud.com/',
+        url: 'https://scrapoxy.io/l/tencent',
         type: EConnectorType.Datacenter,
         canInstall: true,
         canUninstall: true,

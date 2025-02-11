@@ -1,19 +1,13 @@
 import {
-    createHash,
-    createHmac, 
-} from 'crypto';
+    hashHex,
+    hmac,
+} from './tencent.helpers';
 import type { InternalAxiosRequestConfig } from 'axios';
 
 
+const ALGORITHM = 'TC3-HMAC-SHA256';
+
 export class TencentCloudSignerV4 {
-    private static readonly ALGORITHM = 'TC3-HMAC-SHA256';
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private static readonly DEFAULT_HOST = 'cvm.tencentcloudapi.com';
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private static readonly DEFAULT_CONTENT_TYPE = 'application/json; charset=utf-8';
-
     constructor(
         private readonly region: string,
         private readonly secretId: string,
@@ -33,14 +27,14 @@ export class TencentCloudSignerV4 {
         const method = config.method?.toUpperCase() ?? 'POST';
         const canonicalUri = '/';
         const canonicalQueryString = '';
-        const contentType = config.headers[ 'Content-Type' ] ?? TencentCloudSignerV4.DEFAULT_CONTENT_TYPE;
-        const host = config.headers.Host || TencentCloudSignerV4.DEFAULT_HOST;
+        const contentType = config.headers[ 'Content-Type' ] ?? 'application/json; charset=utf-8';
+        const host = config.headers.Host ?? 'cvm.tencentcloudapi.com';
         const action = (config.headers[ 'X-TC-Action' ] as string || '').toLowerCase();
         const signedHeaders = 'content-type;host;x-tc-action';
         const canonicalHeaders = [
             `content-type:${contentType}`, `host:${host}`, `x-tc-action:${action}`,
         ].join('\n') + '\n';
-        const hashedRequestPayload = this.hashHex(config.data || '');
+        const hashedRequestPayload = hashHex(config.data || '');
         const canonicalRequest = [
             method,
             canonicalUri,
@@ -50,62 +44,34 @@ export class TencentCloudSignerV4 {
             hashedRequestPayload,
         ].join('\n');
         const credentialScope = `${date}/${this.service}/tc3_request`;
-        const hashedCanonicalRequest = this.hashHex(canonicalRequest);
+        const hashedCanonicalRequest = hashHex(canonicalRequest);
         const stringToSign = [
-            TencentCloudSignerV4.ALGORITHM,
+            ALGORITHM,
             timestamp,
             credentialScope,
             hashedCanonicalRequest,
         ].join('\n');
-        const secretDate = this.hmac(
+        const secretDate = hmac(
             `TC3${this.secretKey}`,
             date
         );
-        const secretService = this.hmac(
+        const secretService = hmac(
             secretDate,
             this.service
         );
-        const secretSigning = this.hmac(
+        const secretSigning = hmac(
             secretService,
             'tc3_request'
         );
-        const signature = this.hmac(
+        const signature = hmac(
             secretSigning,
             stringToSign
         )
             .toString('hex');
-        const authorization = `${TencentCloudSignerV4.ALGORITHM} ` +
+        const authorization = `${ALGORITHM} ` +
             `Credential=${this.secretId}/${credentialScope}, ` +
             `SignedHeaders=${signedHeaders}, ` +
             `Signature=${signature}`;
         config.headers.Authorization = authorization;
-    }
-
-    private hashHex(message: string): string {
-        if (typeof message !== 'string') {
-            message = JSON.stringify(message);
-        }
-
-        return createHash('sha256')
-            .update(
-                message,
-                'utf8'
-            )
-            .digest('hex');
-        
-    }
-
-    private hmac(
-        key: string | Buffer, message: string
-    ): Buffer {
-        return createHmac(
-            'sha256',
-            key
-        )
-            .update(
-                message,
-                'utf8'
-            )
-            .digest();
     }
 }
