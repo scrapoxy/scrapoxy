@@ -1,7 +1,12 @@
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
+import { promisify } from 'util';
+import { gzip } from 'zlib';
 import { getEnvAssetsPath } from '../helpers';
 import type { ICertificate } from '@scrapoxy/common';
+
+
+const gzipAsync = promisify(gzip);
 
 
 export abstract class AScriptBuilder {
@@ -16,6 +21,23 @@ export abstract class AScriptBuilder {
             'proxy'
         );
     }
+
+    public async build(): Promise<string> {
+        const scriptRaw = await this.generateScript();
+        const scriptRawCompressed = await gzipAsync(scriptRaw);
+        const scriptRawCompressedB64 = scriptRawCompressed.toString('base64');
+
+        return [
+            '#!/bin/sh',
+            'cat << \'EOF\' > /tmp/spx.b64',
+            scriptRawCompressedB64,
+            'EOF',
+            '',
+            'base64 -d /tmp/spx.b64 | gunzip | bash -s --',
+        ].join('\n');
+    }
+
+    protected abstract generateScript(): Promise<string>;
 
     protected writeFileFromString(
         data: string, destination: string

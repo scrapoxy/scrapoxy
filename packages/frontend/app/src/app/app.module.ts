@@ -43,6 +43,7 @@ import {
     ConnectorRayobyteModule,
     ConnectorScalewayModule,
     ConnectorSmartproxyModule,
+    ConnectorTencentModule,
     ConnectorXProxyModule,
     ConnectorZyteModule,
 } from '@scrapoxy/frontend-connectors';
@@ -95,6 +96,7 @@ import { LoginComponent } from './login/login.component';
         ConnectorRayobyteModule,
         ConnectorScalewayModule,
         ConnectorSmartproxyModule,
+        ConnectorTencentModule,
         ConnectorXProxyModule,
         ConnectorZyteModule,
         HttpClientModule,
