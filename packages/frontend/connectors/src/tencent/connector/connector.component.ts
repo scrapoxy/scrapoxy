@@ -190,15 +190,24 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
                         parameters,
                     }
                 )
-                    .then((zones: string[]) => {
-                        const sortedZone = zones.sort();
-                        this.subForm.patchValue({
-                            zone: sortedZone.includes(TENCENT_DEFAULT_ZONE) ? TENCENT_DEFAULT_ZONE : sortedZone[ 0 ],
-                        });
+                    .then((zones: string[]) => zones.sort());
 
-                        return zones.sort();
+                let zone = this.subForm.value.zone as string | undefined;
+
+                // Set the default zone if zone is not in the list
+                if (zone &&
+                    this.zones.length > 0 &&
+                    !this.zones.includes(zone)) {
+                    if (this.zones.includes(TENCENT_DEFAULT_ZONE)) {
+                        zone = TENCENT_DEFAULT_ZONE;
+                    } else {
+                        zone = this.zones[ 0 ];
+                    }
+
+                    this.subForm.patchValue({
+                        zone,
                     });
-
+                }
 
                 await this.updateInstanceType(
                     this.subForm.value.zone,
