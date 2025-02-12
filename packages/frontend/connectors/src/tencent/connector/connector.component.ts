@@ -245,7 +245,14 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
                         parameters,
                     }
                 )
-                    .then((instanceTypes) => instanceTypes.sort());
+                    .then((instanceTypes: string[]) => {
+                        const sortedInstanceType = instanceTypes.sort();
+                        this.subForm.patchValue({
+                            instanceType: sortedInstanceType.includes(TENCENT_DEFAULT_INSTANCE_TYPE) ? TENCENT_DEFAULT_INSTANCE_TYPE : sortedInstanceType[ 0 ],
+                        });
+
+                        return instanceTypes.sort();
+                    });
             } catch (err: any) {
                 console.error(err);
 
