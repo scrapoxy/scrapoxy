@@ -29,7 +29,7 @@ const
 
 
 const isExternal = computed(
-    () => props.href && EXTERNAL_URL_RE.test(props.href)
+    () => props.href && (EXTERNAL_URL_RE.test(props.href))
 )
 
 
@@ -39,6 +39,7 @@ const component = computed(() => {
 
 
 function triggerParty() {
+    if (!party || !homeButton?.value) return;
     switch (props.shiny) {
         case 'sparkes': {
             party.sparkles(homeButton.value);

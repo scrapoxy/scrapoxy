@@ -39,10 +39,27 @@ export default defineConfig({
             'script',
             {},
             `window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-BWMFWJKLCC');`
+             function gtag(){dataLayer.push(arguments);}
+             gtag('js', new Date());
+             gtag('config', 'G-BWMFWJKLCC');`
         ],
+        [
+            'script',
+            {},
+            `window.addEventListener('click', (e) => {
+               const link = e.target.closest('a');
+                 if (link) {
+                   const href = link.getAttribute('href');
+                   if (href && href.indexOf('/l/') >= 0) {
+                     e.stopImmediatePropagation();
+                     window.location = href;
+                     return true;
+                   }
+                 }
+               },
+               { capture: true }
+             );`
+        ]
     ],
 
     themeConfig: {
