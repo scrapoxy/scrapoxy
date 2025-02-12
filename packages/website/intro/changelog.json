@@ -1,6 +1,17 @@
 {
     "releases": [
         {
+            "version": "4.22.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**connector**: add the Tencent Cloud connector  (thanks to [Rémy Fontaine](https://scrapoxy.io/l/github-remyft) from [Sahar](https://scrapoxy.io/l/sahar))"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.21.0",
             "commitGroups": [
                 {
