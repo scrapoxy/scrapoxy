@@ -28,7 +28,11 @@ Note: keep `__token__` as username.
 
 ## Build
 
-Use the correct virtual environment.
+Use the correct virtual environment and install the dependencies:
+
+```shell
+python -m pip install build twine
+```
 
 To build the package:
 
