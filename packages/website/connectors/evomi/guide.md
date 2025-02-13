@@ -2,7 +2,7 @@
 
 ![Evomi](/assets/images/evomi.svg){width=280 nozoom}
 
-[Evomi](/l/evomi) provides the most affordable in the market! 
+[Evomi](/l/evomi) provides the most affordable Residential Proxies in the market! 
 High-speed, reliable data collection without sacrificing quality. 
 Perfect for efficient web scraping and seamless data intelligence, free from blocks and CAPTCHAs.
 

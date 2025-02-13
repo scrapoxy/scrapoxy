@@ -24,7 +24,7 @@ export class ConnectorEvomiFactory implements IConnectorFactory {
 
    readonly config: IConnectorConfig = {
        name: 'Evomi',
-       description: 'Evomi is the most affordable in the market! High-speed, reliable data collection without sacrificing quality. Perfect for efficient web scraping and seamless data intelligence, free from blocks and CAPTCHAs.',
+       description: 'Evomi provides the most affordable Residential Proxies in the market! High-speed, reliable data collection without sacrificing quality. Perfect for efficient web scraping and seamless data intelligence, free from blocks and CAPTCHAs.',
        coupon: null,
        defaultCredentialName: 'Evomi Credential',
        defaultConnectorName: 'Evomi Connector',
