@@ -2,7 +2,7 @@
 
 ![Scrapy](scrapy.svg){width=230 nozoom}
 
-This tutorial uses the famous Python web scraping framework [Scrapy](/l/scrapy). 
+This tutorial uses the Python web scraping framework [Scrapy](/l/scrapy). 
 
 
 ## Step 1: Install the framework
@@ -12,7 +12,7 @@ pip install scrapy scrapoxy
 ```
 
 
-### Step 2: Retrieve project credentials
+## Step 2: Retrieve project credentials
 
 ![Credentials](../../credentials.png)
 
@@ -42,8 +42,8 @@ scrapy genspider myspider mydomain.com
 Edit `myproject/settings.py` and modify the following lines:
 
 ```python
-DOWNLOADER_MIDDLEWARES = {
-    'scrapoxy.ProxyDownloaderMiddleware': 100,
+ADDONS = {
+    'scrapoxy.Addon': 100,
 }
 
 SCRAPOXY_MASTER = "http://localhost:8888"
@@ -55,54 +55,65 @@ SCRAPOXY_PASSWORD = "PASSWORD"
 Replace `USERNAME` and `PASSWORD` by the credentials you copied earlier.
 
 
-## Step 5: Remove blacklisted instances (optional)
+## Step 5: Auto-scale the scraping session
+
+Scrapy can scale and waits until enough proxies are online before starting a scraping session.
+
+To modify this behavior, update `myproject/settings.py` with the following configuration:
+
+```python
+SCRAPOXY_WAIT_FOR_PROXIES = True
+SCRAPOXY_MODE_START = 'HOT'
+SCRAPOXY_MODE_RESTART = 'HOT'
+SCRAPOXY_MODE_STOP = 'OFF'
+SCRAPOXY_PROXIES_CHECK = 5  # Default is 10 seconds
+```
+
+**Session Start (`SCRAPOXY_MODE_START`)**
+
+When set to `HOT`, Scrapoxy launches the necessary proxy instances as soon as a scraping session begins. 
+Alternative values include `WARM`, `COLD`, or `None` to disable automatic startup.
+
+**Session Restart (`SCRAPOXY_MODE_RESTART`)**
+
+This setting forces Scrapoxy to adjust the current mode to the specified one 
+(`HOT`, `WARM`, `COLD`, or `None` to disable) if a mismatch is detected during the session.
+
+**Session Stop (`SCRAPOXY_MODE_STOP`)**
+
+With this parameter set to `OFF`, Scrapoxy shuts down proxy instances at the end of the session. 
+
+The last setting is disabled by default since terminating instances while multiple spiders are active can be risky;
+in such cases, the auto-scale down feature of Scrapoxy is recommended (see [Auto Scale Up](/intro/ui#project)).
+
+
+## Step 6: Remove blacklisted instances (optional)
 
 Scrapy uses Scrapoxy's API to kill blacklisted instances.
 
 Edit `myproject/settings.py` and add the following lines:
 
 ```python
-DOWNLOADER_MIDDLEWARES = {
-    'scrapoxy.ProxyDownloaderMiddleware': 100,
-    'scrapoxy.BlacklistDownloaderMiddleware': 101,
-}
-
+SCRAPOXY_WAIT_FOR_PROXIES = True  # if not already set
+SCRAPOXY_BLACKLIST_ENABLE = True
 SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES = [400, 429, 503]
 SCRAPOXY_BLACKLIST_FORCE = True
-SCRAPOXY_SLEEP_MIN = 60
-SCRAPOXY_SLEEP_MAX = 180
+SCRAPOXY_BLACKLIST_SLEEP = [5, 10]  # Optional (default value is [60, 170])
 ```
 
-This middleware requires **enabling MITM** in Scrapoxy.
+This requires **enabling MITM** in Scrapoxy.
 
-::: tip
-Add the HTTP status codes you want to blacklist in `SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES`.
-:::
+The HTTP status codes to be blacklisted are defined in `SCRAPOXY_BLACKLIST_HTTP_STATUS_CODES`.
 
-Scrapy will pause for a duration ranging between `SCRAPOXY_SLEEP_MIN` and `SCRAPOXY_SLEEP_MAX` seconds
-when no proxy instance is available.
+When a blacklisted instance is encountered, 
+Scrapy pauses for a random duration within the range specified by `SCRAPOXY_BLACKLIST_SLEEP` (in seconds).
+A fixed delay can also be set by providing a single integer value.
 
-If `SCRAPOXY_BLACKLIST_FORCE` is set to `True`, the middleware will automatically enforce instance removal.
-This feature is only available for certain connector types, indicated by the presence of a `Trash` icon in the Scrapoxy UI.
+If `SCRAPOXY_BLACKLIST_FORCE` is set to `True`, 
+the middleware will automatically remove the instance. 
 
-
-## Step 6: Auto-scale the scraping session (optional)
-
-Scrapy can start instances at the beginning of a session 
-and terminate them when the session finishes.
-
-Edit `myproject/settings.py` and add the following lines:
-
-```python
-SPIDER_MIDDLEWARES = {
-   "scrapoxy.ScaleSpiderMiddleware": 100,
-}
-
-SCRAPOXY_WAIT_FOR_SCALE = 120
-```
-
-Scrapy will wait for a duration of `SCRAPOXY_WAIT_FOR_SCALE` seconds before initiating the scraping session,
-allowing time for the instances to be ready.
+The last feature is available only for connector types that support it, 
+as indicated by a `Trash` icon in the Scrapoxy UI.
 
 
 ## Step 7: Sticky session (optional)
@@ -112,9 +123,7 @@ Scrapy can use the same proxy instance for a set of chained requests.
 Edit `myproject/settings.py` and add the following lines:
 
 ```python
-SPIDER_MIDDLEWARES = {
-   "scrapoxy.StickySpiderMiddleware": 101,
-}
+SCRAPOXY_STICKY_ENABLE = True
 ```
 
 This middleware requires **enabling MITM** in Scrapoxy.

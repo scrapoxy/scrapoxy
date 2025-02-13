@@ -10,14 +10,14 @@ class ProxyDownloaderMiddleware(object):
     def __init__(self, crawler):
         master = crawler.settings.get("SCRAPOXY_MASTER")
         if master:
-            self._proxy = f"{master}/?noconnect"
+            self._proxy = "%s/?noconnect" % (master)
 
         username = crawler.settings.get("SCRAPOXY_USERNAME")
         password = crawler.settings.get("SCRAPOXY_PASSWORD")
         if username and password:
-            auth_b64 = b64encode(f"{username}:{password}".encode("utf-8")).decode("utf-8")
+            auth_b64 = b64encode(("%s:%s" % (username, password)).encode("utf-8")).decode("utf-8")
             self._proxy_auth = (username, password)
-            self._proxy_auth_b64 = f"Basic {auth_b64}"
+            self._proxy_auth_b64 = "Basic %s" % auth_b64
 
     def process_request(self, request, spider):
         if request.meta.get("no-proxy"):

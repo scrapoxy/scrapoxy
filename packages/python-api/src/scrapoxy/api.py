@@ -20,14 +20,14 @@ class IProxyToRemove(TypedDict):
 
 class ScrapoxyApi:
     def __init__(self, url: str, username: str, password: str):
-        self._url = f"{url}/scraper"
-        self._token = b64encode(f"{username}:{password}".encode("utf-8")).decode("utf-8")
+        self._url = "%s/scraper" % (url)
+        self._token = b64encode(("%s:%s" % (username, password)).encode("utf-8")).decode("utf-8")
 
     def get_project(self):
         req = Request(
-            url=f"{self._url}/project",
+            url="%s/project" % (self._url),
             headers={
-                "Authorization": f"Basic {self._token}"
+                "Authorization": "Basic %s" % (self._token)
             }
         )
         contents = urlopen(req).read()
@@ -36,10 +36,10 @@ class ScrapoxyApi:
     def set_project_status(self, status: str):
         payload = {"status": status}
         req = Request(
-            url = f"{self._url}/project/status",
+            url = "%s/project/status" % (self._url),
             method="POST",
             headers={
-                "Authorization": f"Basic {self._token}",
+                "Authorization": "Basic %s" % (self._token),
                 "Content-Type": "application/json"
             },
             data=json.dumps(payload).encode("utf-8")
@@ -48,9 +48,9 @@ class ScrapoxyApi:
 
     def get_all_project_connectors_and_proxies(self):
         req = Request(
-            url=f"{self._url}/project/connectors",
+            url="%s/project/connectors" % (self._url),
             headers={
-                "Authorization": f"Basic {self._token}"
+                "Authorization": "Basic %s" % (self._token),
             }
         )
         contents = urlopen(req).read()
@@ -58,10 +58,10 @@ class ScrapoxyApi:
 
     def ask_proxies_to_remove(self, proxies_ids: List[IProxyToRemove]):
         req = Request(
-            url=f"{self._url}/project/proxies/remove",
+            url="%s/project/proxies/remove" % (self._url),
             method="POST",
             headers={
-                "Authorization": f"Basic {self._token}",
+                "Authorization": "Basic %s" % (self._token),
                 "Content-Type": "application/json"
             },
             data=json.dumps(proxies_ids).encode("utf-8")
