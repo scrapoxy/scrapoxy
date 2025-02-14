@@ -3,8 +3,12 @@ from scrapy import signals
 from scrapy.core.scheduler import Scheduler
 from scrapy.crawler import Crawler
 
+import logging
 import time
 import scrapoxy
+
+
+logger = logging.getLogger(__name__)
 
 
 class ScrapoxyScheduler(Scheduler):
@@ -42,12 +46,12 @@ class ScrapoxyScheduler(Scheduler):
 
     def spider_opened(self, spider):
         if self._mode_start:
-            spider.logger.info("Scrapoxy: Change project mode to '%s' when launching the spider" % (self._mode_start))
+            logger.info("Change project mode to '%s' when launching the spider" % (self._mode_start))
             self._api.set_project_status(self._mode_start)
 
     def spider_closed(self, spider):
         if self._mode_stop:
-            spider.logger.info("Scrapoxy: Change project mode to '%s' when closing the spider" % (self._mode_stop))
+            logger.info("Change project mode to '%s' when closing the spider" % (self._mode_stop))
             self._api.set_project_status(self._mode_stop)
 
     def next_request(self):
@@ -69,14 +73,14 @@ class ScrapoxyScheduler(Scheduler):
 
             if self.crawler._spx_proxies_count <= 0:
                 if self.crawler._spx_connectors_count <= 0:
-                    self.crawler.spider.logger.warning("Scrapoxy: No proxy online AND no connector active")
+                    logger.warning("No proxy online AND no connector active")
                 else:
-                    self.crawler.spider.logger.warning("Scrapoxy: No proxy online")
+                    logger.warning("No proxy online")
 
                 if self._mode_restart:
                     project = self._api.get_project()
                     if project['status'] != self._mode_restart:
-                        self.crawler.spider.logger.info("Scrapoxy: Invalid project mode '%s'. Change to '%s'" % (project['status'], self._mode_restart))
+                        logger.info("Invalid project mode '%s'. Change to '%s'" % (project['status'], self._mode_restart))
                         self._api.set_project_status(self._mode_restart)
 
         if self.crawler._spx_proxies_count <= 0:

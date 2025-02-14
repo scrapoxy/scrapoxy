@@ -1,8 +1,12 @@
 from random import randrange
 from scrapy.exceptions import IgnoreRequest
 from scrapoxy.api import ScrapoxyApi, is_proxy_online
-
 from twisted.internet.defer import Deferred
+
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class BlacklistError(Exception):
@@ -59,7 +63,7 @@ class BlacklistDownloaderMiddleware(object):
 
         id = id_raw.decode("utf-8")
 
-        spider.logger.info("Scrapoxy: Removing blacklisted instance %s for %s (HTTP status %d)" % (id, response.url, response.status))
+        logger.info("Removing blacklisted instance %s for %s (HTTP status %d)" % (id, response.url, response.status))
 
         self._api.ask_proxies_to_remove([
             {
@@ -80,7 +84,7 @@ class BlacklistDownloaderMiddleware(object):
            
             delay = randrange(self._sleep[0], self._sleep[1] + 1)
             if delay > 0:
-                spider.logger.info("Scrapoxy: Add %d seconds delay to replay request %s" % (delay, response.url))
+                logger.info("Add %d seconds delay to replay request %s" % (delay, response.url))
             
                 # Get reactor here to avoid reactors conflict issues
                 from twisted.internet import reactor
