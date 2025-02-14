@@ -1,0 +1,19 @@
+[project]
+name = "scrapoxy"
+version = "2.1.1"
+authors = [
+    { name="Fabien Vauchelles" },
+]
+description = "Python API for Scrapoxy and Scrapy"
+keywords = ["crawler", "crawling", "scrapoxy", "scrapy", "scraper", "scraping", "webscraping", "proxy"]
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/scrapoxy/scrapoxy"
+Issues = "https://github.com/scrapoxy/scrapoxy/issues"
