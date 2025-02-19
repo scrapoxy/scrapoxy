@@ -83,8 +83,14 @@ spec:
                     resources:
                         {{- toYaml .Values.commander.resources | nindent 24 }}
                     volumeMounts:
+{{- if .Values.configMap }}
+                        -   name: {{ .Release.Name }}-configfile
+                            mountPath: "/etc/scrapoxy/config.json"
+                            subPath: {{ .Values.configMapFilename }}
+{{- else }}
                         -   name: {{ .Release.Name }}-confd
                             mountPath: "/etc/scrapoxy"
+{{- end }}
                     env:
                         - name: NODE_ENV
                           value: "production"
@@ -115,6 +121,12 @@ spec:
                         - name: STORAGE_FILE_FILENAME
                           value: "/etc/scrapoxy/config.json"
 
+{{- if .Values.configMap }}
+            volumes:
+                - name: {{ .Release.Name }}-configfile
+                  configMap:
+                      name: {{ .Values.configMap }}
+{{- else }}
     volumeClaimTemplates:
         -   metadata:
                 name: {{ .Release.Name }}-confd
@@ -128,3 +140,4 @@ spec:
                     requests:
                         storage: {{ .Values.commander.fileStorageSize}}
                 volumeMode: Filesystem
+{{- end }}

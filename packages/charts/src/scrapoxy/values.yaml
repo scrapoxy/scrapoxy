@@ -1,3 +1,6 @@
+configMap: {}
+configMapFilename: 'config.json'
+
 image:
     repository: scrapoxy/scrapoxy
     tag: latest
