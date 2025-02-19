@@ -91,7 +91,6 @@ export enum EScalewayInstanceState {
     LOCKED = 'locked',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     STOPPED_IN_PLACE = 'stopped in place',
-
 }
 
 

@@ -21,6 +21,7 @@ import {
 import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,
+    IScalewayInstanceType,
     IScalewayQueryInstanceType,
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
@@ -48,7 +49,7 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
 
     regions: string[] = [];
 
-    instanceTypes: string[] = [];
+    instanceTypes: IScalewayInstanceType[] = [];
 
     readonly subForm: FormGroup;
 
@@ -166,7 +167,9 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
                         parameters,
                     }
                 )
-                    .then((instanceTypes) => instanceTypes.sort());
+                    .then((instanceTypes: IScalewayInstanceType[]) => instanceTypes.sort((
+                        a, b
+                    ) => a.hourlyPrice - b.hourlyPrice));
             } catch (err: any) {
                 console.error(err);
 

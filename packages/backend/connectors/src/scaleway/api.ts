@@ -8,6 +8,7 @@ import type {
     IScalewayInstance,
     IScalewaySnapshot,
 } from './scaleway.interface';
+import type { IScalewayInstanceType } from '@scrapoxy/common';
 import type {
     AxiosInstance,
     AxiosRequestConfig,
@@ -66,19 +67,31 @@ export class ScalewayApi {
     }
 
     //////////// INSTANCE TYPES ////////////
-    public async listInstanceTypes(types?: string[]): Promise<string[]> {
-        const instanceTypes = await this.instance.get('products/servers')
-            .then((r) => Object.keys(r.data.servers));
-        let instanceTypesFiltered: string[];
+    public async listInstanceTypes(maxHourlyPrice: number): Promise<IScalewayInstanceType[]> {
+        const res = await this.instance.get(
+            'products/servers',
+            {
+                params: {
+                    per_page: 100,
+                },
+            }
+        );
+        const instanceTypes: IScalewayInstanceType[] = [];
 
-        if (types) {
-            instanceTypesFiltered = instanceTypes
-                .filter((key: string) => types.includes(key));
-        } else {
-            instanceTypesFiltered = instanceTypes;
+        for (const [
+            name, value,
+        ] of Object.entries(res.data.servers)) {
+            const hourlyPrice = (value as any).hourly_price;
+
+            if (hourlyPrice < maxHourlyPrice) {
+                instanceTypes.push({
+                    name,
+                    hourlyPrice,
+                });
+            }
         }
 
-        return instanceTypesFiltered;
+        return instanceTypes;
     }
 
     //////////// INSTANCES ////////////

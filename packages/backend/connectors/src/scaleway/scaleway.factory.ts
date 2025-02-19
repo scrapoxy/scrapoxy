@@ -45,18 +45,13 @@ import type {
     ICredentialData,
     ICredentialQuery,
     IFingerprintOptions,
+    IScalewayInstanceType,
     IScalewayQueryInstanceType,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
 
-const FILTER_INSTANCE_TYPES = [
-    'COPARM1-2C-8G',
-    'DEV1-S',
-    'DEV1-M',
-    'PLAY2-NANO',
-    'PLAY2-MICRO',
-];
+const MAX_HOURLY_PRICE = 0.02; // euro
 
 
 @Injectable()
@@ -261,14 +256,14 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
     private async queryInstanceTypes(
         credentialConfig: IConnectorScalewayCredential,
         parameters: IScalewayQueryInstanceType
-    ): Promise<string[]> {
+    ): Promise<IScalewayInstanceType[]> {
         const api = new ScalewayApi(
             credentialConfig.secretAccessKey,
             parameters.region,
             credentialConfig.projectId,
             this.agents
         );
-        const instancesTypes = await api.listInstanceTypes(FILTER_INSTANCE_TYPES);
+        const instancesTypes = await api.listInstanceTypes(MAX_HOURLY_PRICE);
 
         return instancesTypes;
     }

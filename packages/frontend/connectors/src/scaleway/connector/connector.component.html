@@ -77,9 +77,9 @@
                         formControlName="instanceType"
                         [attr.disabled]="processingInstanceTypes ? true : null">
                         <option [ngValue]="null" disabled>----- Select Instance Type ------</option>
-                        @for (instanceType of instanceTypes; track instanceType) {
-                            <option [ngValue]="instanceType">
-                                {{ instanceType }}
+                        @for (instanceType of instanceTypes; track instanceType.name) {
+                            <option [ngValue]="instanceType.name">
+                                {{ instanceType.name }} ({{ instanceType.hourlyPrice }}€/hour)
                             </option>
                         }
                     </select>
