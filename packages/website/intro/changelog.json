@@ -1,6 +1,17 @@
 {
     "releases": [
         {
+            "version": "4.22.1",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**scaleway**: get and filter instance types by price"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.22.0",
             "commitGroups": [
                 {
