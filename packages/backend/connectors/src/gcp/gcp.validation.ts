@@ -27,12 +27,6 @@ const schemaConfig = Joi.object({
     firewallName: Joi.string()
         .required(),
 });
-const schemaInstallConfig = Joi.object({
-    diskType: Joi.string()
-        .required(),
-    diskSize: Joi.number()
-        .required(),
-});
 
 
-export { schemaCredential, schemaConfig, schemaInstallConfig };
+export { schemaCredential, schemaConfig };

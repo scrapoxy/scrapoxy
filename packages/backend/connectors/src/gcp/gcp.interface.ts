@@ -17,12 +17,6 @@ export interface IConnectorGcpConfig {
 }
 
 
-export interface IConnectorGcpInstallConfig {
-    diskSize: number;
-    diskType: string;
-}
-
-
 export interface IGcpItems<T> {
     items?: T[];
 }
@@ -39,12 +33,6 @@ export interface IGcpZone {
 export interface IGcpMachineType {
     id: string;
     name: string;
-}
-
-
-//////////// NETWORKS ////////////
-export interface IGcpNetwork {
-    id: string;
 }
 
 
@@ -70,23 +58,14 @@ export interface IGcpInsertFirewallRequest {
 
 
 //////////// INSTANCES ////////////
-export interface IGcpInsertInstanceRequest {
-    diskName: string;
+export interface IGcpBulkInsertInstancesRequest {
     diskSizeGb: string;
     diskType: string;
-    instanceName: string;
-    machineType: string;
-    networkName: string;
-    sourceImage: string;
-    startupScript: string;
-    zone: string;
-}
-
-
-export interface IGcpBulkInsertInstancesRequest {
     instancesNames: string[];
     labelName: string;
     machineType: string;
+    networkName: string;
+    sourceImage: string;
     templateName: string;
     zone: string;
     startupScript: string;
@@ -114,35 +93,6 @@ export interface IGcpInstance {
         }[];
     }[];
     status: EGcpInstanceStatus;
-}
-
-
-//////////// IMAGES ////////////
-export interface IGcpInsertImageRequest {
-    diskName: string;
-    imageName: string;
-    zone: string;
-}
-
-
-export interface IGcpImage {
-    id: string;
-}
-
-
-//////////// INSTANCE TEMPLATES ////////////
-export interface IGcpInsertTemplateRequest {
-    diskSizeGb: string;
-    diskType: string;
-    machineType: string;
-    networkName: string;
-    sourceImage: string;
-    templateName: string;
-}
-
-
-export interface IGcpInstanceTemplate {
-    id: string;
 }
 
 

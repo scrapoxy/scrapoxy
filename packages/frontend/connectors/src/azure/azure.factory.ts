@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorAzureComponent } from './connector/connector.component';
 import { CredentialAzureComponent } from './credential/credential.component';
-import { InstallAzureComponent } from './install/install.component';
 import type{
     IConnectorComponent,
     IConnectorConfig,
@@ -31,8 +30,8 @@ export class ConnectorAzureFactory implements IConnectorFactory {
         defaultConnectorName: 'Azure Connector',
         url: 'https://scrapoxy.io/l/azure',
         type: EConnectorType.Datacenter,
-        canInstall: true,
-        canUninstall: true,
+        canInstall: false,
+        canUninstall: false,
         useCertificate: true,
     };
 
@@ -53,6 +52,6 @@ export class ConnectorAzureFactory implements IConnectorFactory {
     }
 
     getInstallComponent(): Type<IInstallComponent> {
-        return InstallAzureComponent;
+        throw new Error('Not implemented');
     }
 }

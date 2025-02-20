@@ -183,29 +183,4 @@
             </c-col>
         </c-row>
     }
-    @if (subForm.controls['imageResourceGroupName']; as c) {
-        <c-row>
-            <label cLabel cCol md="2" for="imageResourceGroupName">Image Resource Group Name</label>
-
-            <c-col md="10">
-                <input
-                    type="text"
-                    cFormControl
-                    id="imageResourceGroupName"
-                    formControlName="imageResourceGroupName"
-                    placeholder="Enter the Image Resource Group Name"
-                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
-
-                @if (c.dirty || c.touched) {
-                    <c-form-feedback [valid]="c.valid">
-                        @if (c.errors; as errs) {
-                            @if (errs['required']) {
-                                <div>Image Resource Group Name is required.</div>
-                            }
-                        }
-                    </c-form-feedback>
-                }
-            </c-col>
-        </c-row>
-    }
 </ng-container>

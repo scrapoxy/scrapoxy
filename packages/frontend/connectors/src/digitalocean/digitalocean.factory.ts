@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorDigitaloceanComponent } from './connector/connector.component';
 import { CredentialDigitaloceanComponent } from './credential/credential.component';
-import { InstallDigitaloceanComponent } from './install/install.component';
 import type {
     IConnectorComponent,
     IConnectorConfig,
@@ -31,8 +30,8 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory {
         defaultConnectorName: 'Digital Ocean Connector',
         url: 'https://scrapoxy.io/l/digitalocean',
         type: EConnectorType.Datacenter,
-        canInstall: true,
-        canUninstall: true,
+        canInstall: false,
+        canUninstall: false,
         useCertificate: true,
     };
 
@@ -53,6 +52,6 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory {
     }
 
     getInstallComponent(): Type<IInstallComponent> {
-        return InstallDigitaloceanComponent;
+        throw new Error('Not implemented');
     }
 }

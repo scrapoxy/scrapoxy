@@ -14,7 +14,6 @@ import { IconModule } from '@coreui/icons-angular';
 import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorOvhComponent } from './connector/connector.component';
 import { CredentialOvhComponent } from './credential/credential.component';
-import { InstallOvhComponent } from './install/install.component';
 import { ConnectorOvhFactory } from './ovh.factory';
 
 
@@ -31,7 +30,7 @@ import { ConnectorOvhFactory } from './ovh.factory';
         TooltipModule,
     ],
     declarations: [
-        ConnectorOvhComponent, CredentialOvhComponent, InstallOvhComponent,
+        ConnectorOvhComponent, CredentialOvhComponent,
     ],
     providers: [
         ConnectorOvhFactory,

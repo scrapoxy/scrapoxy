@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
 } from '@scrapoxy/backend-sdk';
 import { randomName } from '@scrapoxy/common';
 import { OvhApi } from './api';
@@ -57,9 +57,21 @@ export class ConnectorOvhService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
-        const userData = await new RunScriptBuilder(
+        // Find image
+        const images = await this.api.getAllImages(
+            this.connectorConfig.projectId,
+            this.connectorConfig.region
+        );
+        const image = images.find((i) => i.name === 'Ubuntu 24.04');
+
+        if (!image) {
+            throw new Error('Cannot find Ubuntu 24.04 image');
+        }
+
+        const userData = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            'amd64'
         )
             .build();
         const instances = await this.api.createInstances({
@@ -67,7 +79,7 @@ export class ConnectorOvhService implements IConnectorService {
             region: this.connectorConfig.region,
             name: `${this.connectorConfig.tag}-${randomName()}`,
             flavorId: this.connectorConfig.flavorId,
-            imageId: this.connectorConfig.snapshotId,
+            imageId: image.id,
             userData,
             count,
         });

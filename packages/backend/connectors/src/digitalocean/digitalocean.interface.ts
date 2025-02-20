@@ -1,7 +1,6 @@
 import type {
     IDigitalOceanRegionView,
     IDigitalOceanSizeView,
-    IDigitalOceanSnapshotView,
 } from '@scrapoxy/common';
 
 
@@ -14,7 +13,6 @@ export interface IConnectorDigitalOceanConfig {
     region: string;
     port: number;
     size: string;
-    snapshotId: string;
     tag: string;
 }
 
@@ -100,44 +98,14 @@ export interface IDigitalOceanCreateDropletsRequest {
     names: string[];
     region: string;
     size: string;
-    snapshotId: number;
-    tags: string[];
-    userData: string;
-}
-
-
-export interface IDigitalOceanCreateDropletReferenceRequest {
-    name: string;
-    region: string;
-    size: string;
     imageName: string;
+    tags: string[];
     userData: string;
 }
 
 
 export interface IDigitalOceanDropletsResponse {
     droplets: IDigitalOceanDroplet[];
-}
-
-
-export interface IDigitalOceanDropletResponse {
-    droplet: IDigitalOceanDroplet;
-}
-
-
-//////////// SNAPSHOTS ////////////
-export interface IDigitalOceanSnapshot extends IDigitalOceanSnapshotView {
-    regions: string[];
-}
-
-
-export interface IDigitalOceanSnapshotsResponse {
-    snapshots: IDigitalOceanSnapshot[];
-}
-
-
-export interface IDigitalOceanSnapshotResponse {
-    snapshot: IDigitalOceanSnapshot;
 }
 
 

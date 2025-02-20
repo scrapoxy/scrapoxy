@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
 } from '@scrapoxy/backend-sdk';
 import { randomNames } from '@scrapoxy/common';
 import { GcpApi } from './api';
@@ -56,19 +56,23 @@ export class ConnectorGcpService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
-        const startupScript = await new RunScriptBuilder(
+        const startupScript = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            'amd64'
         )
             .build();
-
         await this.api.bulkInsertInstances({
+            diskSizeGb: '10',
+            diskType: 'pd-standard',
             instancesNames: randomNames(count),
             labelName: this.connectorConfig.label,
-            machineType: this.connectorConfig.machineType,
             templateName: this.connectorConfig.templateName,
-            zone: this.connectorConfig.zone,
+            machineType: this.connectorConfig.machineType,
+            networkName: this.connectorConfig.networkName,
             startupScript,
+            sourceImage: 'projects/debian-cloud/global/images/family/debian-12',
+            zone: this.connectorConfig.zone,
         });
 
         return [];

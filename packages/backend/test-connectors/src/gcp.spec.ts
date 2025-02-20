@@ -1,8 +1,5 @@
 import * as fs from 'fs';
-import {
-    ConnectorGcpModule,
-    GcpApi,
-} from '@scrapoxy/backend-connectors';
+import { ConnectorGcpModule } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
 import {
     ITestCredential,
@@ -13,10 +10,7 @@ import {
     GCP_DEFAULT_MACHINE_TYPE,
     GCP_DEFAULT_ZONE,
 } from '@scrapoxy/common';
-import type {
-    IConnectorGcpConfig,
-    IConnectorGcpInstallConfig,
-} from '@scrapoxy/backend-connectors';
+import type { IConnectorGcpConfig } from '@scrapoxy/backend-connectors';
 
 
 describe(
@@ -43,10 +37,7 @@ describe(
                             label: 'spxtest',
                             firewallName: `spxtest-proxy-fw-${suffix}`,
                         } satisfies IConnectorGcpConfig,
-                        install: {
-                            diskType: 'pd-standard',
-                            diskSize: 10,
-                        } satisfies IConnectorGcpInstallConfig,
+                        install: void 0,
                     },
                 ],
             },
@@ -66,42 +57,6 @@ describe(
             ],
             CONNECTOR_GCP_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallation',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    const api = new GcpApi(
-                        credentialTest.config.projectId,
-                        credentialTest.config.clientEmail,
-                        credentialTest.config.privateKeyId,
-                        credentialTest.config.privateKey,
-                        agents
-                    );
-
-                    for (const connectorTest of credentialTest.connectors) {
-                        await expect(api.getInstance(
-                            connectorTest.config.zone,
-                            `${connectorTest.config.templateName}-instance`
-                        ))
-                            .rejects
-                            .toThrow(/was not found/);
-
-                        await expect(api.getImage(`${connectorTest.config.templateName}-image`))
-                            .rejects
-                            .toThrow(/was not found/);
-
-                        await expect(api.getTemplate(connectorTest.config.templateName))
-                            .rejects
-                            .toThrow(/was not found/);
-
-                        await expect(api.getFirewall(connectorTest.config.firewallName))
-                            .rejects
-                            .toThrow(/was not found/);
-                    }
-                }
-            }
         );
     }
 );

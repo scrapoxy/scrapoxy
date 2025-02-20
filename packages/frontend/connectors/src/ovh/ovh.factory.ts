@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorOvhComponent } from './connector/connector.component';
 import { CredentialOvhComponent } from './credential/credential.component';
-import { InstallOvhComponent } from './install/install.component';
 import type {
     IConnectorComponent,
     IConnectorConfig,
@@ -31,8 +30,8 @@ export class ConnectorOvhFactory implements IConnectorFactory {
        defaultConnectorName: 'OVH Cloud Connector',
        url: 'https://scrapoxy.io/l/ovh',
        type: EConnectorType.Datacenter,
-       canInstall: true,
-       canUninstall: true,
+       canInstall: false,
+       canUninstall: false,
        useCertificate: true,
    };
 
@@ -53,6 +52,6 @@ export class ConnectorOvhFactory implements IConnectorFactory {
    }
 
    getInstallComponent(): Type<IInstallComponent> {
-       return InstallOvhComponent;
+       throw new Error('Not implemented');
    }
 }

@@ -3,10 +3,7 @@ import axios, { AxiosError } from 'axios';
 import type {
     IScalewayCreateInstancesRequest,
     IScalewayError,
-    IScalewayExtraVolume,
-    IScalewayImage,
     IScalewayInstance,
-    IScalewaySnapshot,
 } from './scaleway.interface';
 import type { IScalewayInstanceType } from '@scrapoxy/common';
 import type {
@@ -150,15 +147,6 @@ export class ScalewayApi {
         );
     }
 
-    public async stopInstance(instanceId: string): Promise<void> {
-        await this.instance.post(
-            `servers/${instanceId}/action`,
-            {
-                action: 'poweroff',
-            }
-        );
-    }
-
     public async terminateInstance(instanceId: string): Promise<void> {
         await this.instance.post(
             `servers/${instanceId}/action`,
@@ -166,10 +154,6 @@ export class ScalewayApi {
                 action: 'terminate',
             }
         );
-    }
-
-    public async deleteInstance(instanceId: string): Promise<void> {
-        await this.instance.delete(`servers/${instanceId}`);
     }
 
     public async setUserData(
@@ -184,107 +168,5 @@ export class ScalewayApi {
                 },
             }
         );
-    }
-
-    //////////// VOLUMES ////////////
-    public async listVolumes(): Promise<IScalewayExtraVolume[]> {
-        return await this.instance.get(
-            'volumes',
-            {
-                params: {
-                    project: this.projectId,
-                },
-            }
-        )
-            .then((res) => res.data.volumes);
-    }
-
-    public async deleteVolume(volumeId: string): Promise<void> {
-        await this.instance.delete(`volumes/${volumeId}`);
-    }
-
-    //////////// SNAPSHOTS ////////////
-    public async listSnapshots(): Promise<IScalewaySnapshot[]> {
-        const response = await this.instance.get(
-            'snapshots',
-            {
-                params: {
-                    project: this.projectId,
-                },
-            }
-        )
-            .then((r) => r.data.snapshots);
-
-        return response;
-    }
-
-    public async getSnapshot(snapshotId: string): Promise<IScalewaySnapshot> {
-        const response = await this.instance.get(`snapshots/${snapshotId}`)
-            .then((r) => r.data.snapshot);
-
-        return response;
-    }
-
-    public async createSnapshot(
-        volumeId: string, snapshotName: string
-    ): Promise<IScalewaySnapshot> {
-        const snapshot = await this.instance.post(
-            'snapshots',
-            {
-                project: this.projectId,
-                volume_id: volumeId,
-                name: snapshotName,
-            }
-        )
-            .then((r) => r.data.snapshot);
-
-        return snapshot;
-    }
-
-    public async deleteSnapshot(snapshotId: string): Promise<void> {
-        await this.instance.delete(`snapshots/${snapshotId}`);
-    }
-
-    //////////// IMAGES ////////////
-    public async listImages(): Promise<IScalewayImage[]> {
-        const response = await this.instance.get(
-            'images',
-            {
-                params: {
-                    project: this.projectId,
-                },
-            }
-        )
-            .then((r) => r.data.images);
-
-        return response;
-    }
-
-    public async createImage(
-        imageName: string, snapshotId: string, arch: string
-    ): Promise<IScalewayImage> {
-        const imageId = await this.instance.post(
-            'images',
-            {
-                project: this.projectId,
-                name: imageName,
-                root_volume: snapshotId,
-                arch: arch,
-            }
-        )
-            .then((r) => r.data.image);
-
-        return imageId;
-    }
-
-    public async getImage(imageId: string): Promise<IScalewayImage> {
-        const response = await this.instance.get(`images/${imageId}`)
-            .then((r) => r.data.image);
-
-        return response;
-    }
-
-    public async deleteImage(imageId: string): Promise<void> {
-        await this.instance.delete(`images/${imageId}`);
     }
 }

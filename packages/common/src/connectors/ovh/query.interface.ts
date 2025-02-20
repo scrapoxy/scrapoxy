@@ -2,7 +2,6 @@ export enum EOvhQueryCredential {
     Projects = 'projects',
     Regions = 'regions',
     Flavors = 'flavors',
-    Snapshots = 'snapshots',
 }
 
 
@@ -39,13 +38,3 @@ export interface IOvhQueryFlavors {
     projectId: string;
     region: string;
 }
-
-
-//////////// SNAPSHOTS ////////////
-export interface IOvhSnapshotView {
-    id: string;
-    name: string;
-}
-
-
-export type IOvhQuerySnapshots = IOvhQueryFlavors;

@@ -76,9 +76,6 @@ export class ConnectorAwsComponent implements IConnectorComponent, OnInit {
             instanceType: [
                 void 0, Validators.required,
             ],
-            imageId: [
-                void 0,
-            ],
             securityGroupName: [
                 void 0, Validators.required,
             ],
@@ -105,7 +102,6 @@ export class ConnectorAwsComponent implements IConnectorComponent, OnInit {
                 region: AWS_DEFAULT_REGION,
                 port: 3128,
                 instanceType: AWS_DEFAULT_INSTANCE_TYPE,
-                imageId: 'spximage',
                 securityGroupName: SCRAPOXY_DATACENTER_PREFIX,
                 tag: 'spx',
             });

@@ -111,34 +111,6 @@
             </c-col>
         </c-row>
     }
-    @if (subForm.controls['snapshotId']; as c) {
-        <c-row>
-            <label cLabel cCol md="2" for="snapshotId">Snapshot</label>
-
-            <c-col md="10">
-                <c-input-group>
-                    <select
-                        cSelect
-                        id="snapshotId"
-                        formControlName="snapshotId"
-                        [attr.disabled]="processingSnapshots ? true : null">
-                        <option [ngValue]="null" disabled>----- Select Snapshot ------</option>
-                        @for (snapshot of snapshots; track snapshot.id) {
-                            <option [ngValue]="snapshot.id">
-                                {{ snapshot.name }}
-                            </option>
-                        }
-                    </select>
-
-                    @if (processingSnapshots) {
-                        <span cInputGroupText>
-                            <svg cIcon name="cilLoopCircular" class="spin"></svg>
-                        </span>
-                    }
-                </c-input-group>
-            </c-col>
-        </c-row>
-    }
     @if (subForm.controls['tag']; as c) {
         <c-row>
             <label cLabel cCol md="2" for="tag">Tag</label>

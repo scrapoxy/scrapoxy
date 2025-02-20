@@ -80,76 +80,16 @@ export class AzureVmsTemplateBuilder {
         });
     }
 
-    addVmReference(
-        name: string,
-        imageReference: IAzureImageReference,
-        installScript: string
-    ): AzureVmsTemplateBuilder {
-        this.addVmIp(name);
-        this.addVmNic(name);
-
-        const userDataB64 = Buffer.from(installScript)
-            .toString('base64');
-        const
-            adminPassword = `#${Buffer.from(uuid())
-                .toString('base64')}#`,
-            adminUsername = `#${Buffer.from(uuid())
-                .toString('base64')}#`;
-        const vm = {
-            type: 'Microsoft.Compute/virtualMachines',
-            apiVersion: '2019-12-01',
-            name: `${this.prefix}-${name}-vm`,
-            location: '[parameters(\'location\')]',
-            dependsOn: [
-                `[resourceId('Microsoft.Network/networkInterfaces', '${this.prefix}-${name}-nic')]`,
-            ],
-            properties: {
-                hardwareProfile: {
-                    vmSize: '[parameters(\'vmSize\')]',
-                },
-                osProfile: {
-                    computerName: name,
-                    adminUsername,
-                    adminPassword,
-                    customData: userDataB64,
-                },
-                storageProfile: {
-                    imageReference,
-                    osDisk: {
-                        name: `${this.prefix}-${name}-disk`,
-                        createOption: 'fromImage',
-                        managedDisk: {
-                            storageAccountType: '[parameters(\'storageAccountType\')]',
-                        },
-                    },
-                },
-                networkProfile: {
-                    networkInterfaces: [
-                        {
-                            id: `[resourceId('Microsoft.Network/networkInterfaces', '${this.prefix}-${name}-nic')]`,
-                        },
-                    ],
-                },
-                diagnosticsProfile: {
-                    bootDiagnostics: {
-                        enabled: false,
-                    },
-                },
-            },
-        };
-        this.resources.push(vm);
-
-        return this;
-    }
-
     addVms(
         names: string[],
+        imageReference: IAzureImageReference,
         runScript: string,
         useSpotInstances: boolean
     ): AzureVmsTemplateBuilder {
         for (const name of names) {
             this.addVm(
                 name,
+                imageReference,
                 runScript,
                 useSpotInstances
             );
@@ -218,6 +158,7 @@ export class AzureVmsTemplateBuilder {
 
     private addVm(
         name: string,
+        imageReference: IAzureImageReference,
         runScript: string,
         useSpotInstances: boolean
     ): AzureVmsTemplateBuilder {
@@ -251,9 +192,7 @@ export class AzureVmsTemplateBuilder {
                     customData: userDataB64,
                 },
                 storageProfile: {
-                    imageReference: {
-                        id: `[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('imageResourceGroupName'), '/providers/Microsoft.Compute/galleries/', '${this.prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_gal/images/${this.prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_def/versions/1.0.0')]`,
-                    },
+                    imageReference,
                     osDisk: {
                         name: `${this.prefix}-${name}-disk`,
                         createOption: 'fromImage',
@@ -293,113 +232,7 @@ export class AzureVmsTemplateBuilder {
         this.parameters.subscriptionId = {
             type: 'string',
         };
-        this.parameters.imageResourceGroupName = {
-            type: 'string',
-        };
 
         return this;
-    }
-}
-
-
-export class AzureImageTemplateBuilder {
-    constructor(private readonly prefix: string) {
-    }
-
-    build(): any {
-        return {
-            $schema: 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#',
-            contentVersion: '1.0.0.0',
-            parameters: {
-                subscriptionId: {
-                    type: 'string',
-                },
-                imageResourceGroupName: {
-                    type: 'string',
-                },
-                location: {
-                    type: 'string',
-                },
-                galleryName: {
-                    type: 'string',
-                },
-                storageAccountType: {
-                    type: 'string',
-                },
-                vmName: {
-                    type: 'string',
-                },
-            },
-            resources: [
-                {
-                    type: 'Microsoft.Compute/galleries',
-                    name: `[concat('${this.prefix}_', parameters('galleryName'), '_gal')]`,
-                    apiVersion: '2019-03-01',
-                    location: '[parameters(\'location\')]',
-                    properties: {},
-                    tags: {},
-                },
-                {
-                    type: 'Microsoft.Compute/galleries/images',
-                    dependsOn: [
-                        `[concat('Microsoft.Compute/galleries/${this.prefix}_', parameters('galleryName'), '_gal')]`,
-                    ],
-                    name: `[concat('${this.prefix}_', parameters('galleryName'), '_gal/${this.prefix}_', parameters('galleryName'), '_def')]`,
-                    apiVersion: '2019-07-01',
-                    location: '[parameters(\'location\')]',
-                    properties: {
-                        osType: 'Linux',
-                        osState: 'Generalized',
-                        identifier: {
-                            publisher: SCRAPOXY_DATACENTER_PREFIX,
-                            offer: `${this.prefix}offer`,
-                            sku: `${this.prefix}sku`,
-                        },
-                        recommended: {
-                            vCPUs: {
-                                min: '1',
-                                max: '16',
-                            },
-                            memory: {
-                                min: '1',
-                                max: '32',
-                            },
-                        },
-                        hyperVGeneration: 'V1',
-                    },
-                    tags: {},
-                },
-                {
-                    type: 'Microsoft.Compute/galleries/images/versions',
-                    dependsOn: [
-                        `[concat('Microsoft.Compute/galleries/${this.prefix}_', parameters('galleryName'), '_gal/images/${this.prefix}_', parameters('galleryName'), '_def')]`,
-                    ],
-                    name: `[concat('${this.prefix}_', parameters('galleryName'), '_gal/${this.prefix}_', parameters('galleryName'), '_def/1.0.0')]`,
-                    apiVersion: '2020-09-30',
-                    location: '[parameters(\'location\')]',
-                    properties: {
-                        publishingProfile: {
-                            replicaCount: 1,
-                            targetRegions: [
-                                {
-                                    name: '[parameters(\'location\')]',
-                                    regionalReplicaCount: 1,
-                                    storageAccountType: '[parameters(\'storageAccountType\')]',
-                                },
-                            ],
-                            excludeFromLatest: false,
-                        },
-                        storageProfile: {
-                            osDiskImage: {
-                                hostCaching: 'None',
-                                source: {
-                                    id: `[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('imageResourceGroupName'), '/providers/Microsoft.Compute/disks/', '${this.prefix}-', parameters('vmName'), '-disk')]`,
-                                },
-                            },
-                        },
-                    },
-                },
-            ],
-        };
     }
 }

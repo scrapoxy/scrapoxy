@@ -1,8 +1,5 @@
 import * as fs from 'fs';
-import {
-    ConnectorOvhModule,
-    OvhApi,
-} from '@scrapoxy/backend-connectors';
+import { ConnectorOvhModule } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
 import {
     ITestCredential,
@@ -28,7 +25,7 @@ describe(
                     {
                         name: `Test on region ${connectorConfig.region}`,
                         config: connectorConfig,
-                        install: {},
+                        install: void 0,
                     },
                 ],
             },
@@ -48,29 +45,6 @@ describe(
             ],
             CONNECTOR_OVH_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallation',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    const api = new OvhApi(
-                        credentialTest.config.appKey,
-                        credentialTest.config.appSecret,
-                        credentialTest.config.consumerKey,
-                        agents
-                    );
-
-                    for (const connectorTest of credentialTest.connectors) {
-                        const snapshots = await api.getAllSnapshots(
-                            connectorTest.config.projectId,
-                            connectorTest.config.region
-                        );
-                        expect(snapshots)
-                            .toHaveLength(0);
-                    }
-                }
-            }
         );
     }
 );

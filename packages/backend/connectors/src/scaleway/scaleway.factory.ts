@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
-    ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -20,18 +17,10 @@ import {
     schemaConfig,
     schemaCredential,
 } from './scaleway.validation';
-import {
-    ScalewayInstallFactory,
-    ScalewayUninstallFactory,
-} from './tasks';
 import type {
     IConnectorScalewayConfig,
     IConnectorScalewayCredential,
 } from './scaleway.interface';
-import type {
-    IScalewayInstallCommandData,
-    IScalewayUninstallCommandData,
-} from './tasks';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
@@ -40,11 +29,9 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
-    IConnectorData,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    IFingerprintOptions,
     IScalewayInstanceType,
     IScalewayQueryInstanceType,
     ITaskToCreate,
@@ -65,21 +52,8 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorsproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorsproviders: ConnectorprovidersService) {
         connectorsproviders.register(this);
-
-        tasks.register(
-            ScalewayInstallFactory.type,
-            new ScalewayInstallFactory(this.agents)
-        );
-
-        tasks.register(
-            ScalewayUninstallFactory.type,
-            new ScalewayUninstallFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
@@ -135,95 +109,16 @@ export class ConnectorScalewayFactory implements IConnectorFactory, OnModuleDest
         return service;
     }
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorScalewayConfig,
-            credentialConfig = credential.config as IConnectorScalewayCredential;
-        const data: IScalewayInstallCommandData = {
-            secretAccessKey: credentialConfig.secretAccessKey,
-            region: connectorConfig.region,
-            projectId: credentialConfig.projectId,
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            instanceId: void 0,
-            instanceType: connectorConfig.instanceType,
-            imageId: void 0,
-            snapshotId: void 0,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: ScalewayInstallFactory.type,
-            name: `Install Scaleway on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: ScalewayInstallFactory.stepMax,
-            message: 'Installing Scaleway image...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorScalewayConfig,
-            credentialConfig = credential.config as IConnectorScalewayCredential;
-        const data: IScalewayUninstallCommandData = {
-            secretAccessKey: credentialConfig.secretAccessKey,
-            region: connectorConfig.region,
-            snapshotId: connectorConfig.snapshotId,
-            imageId: connectorConfig.imageId,
-            projectId: credentialConfig.projectId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: ScalewayUninstallFactory.type,
-            name: `Uninstall Scaleway on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: ScalewayUninstallFactory.stepMax,
-            message: 'Uninstalling Scaleway datacenter...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async validateInstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<void> {
-        const connectorConfig = connector.config as IConnectorScalewayConfig;
-
-        if (!connectorConfig.imageId || connectorConfig.imageId.length <= 0) {
-            throw new ConnectorInvalidError('Image ID cannot be empty');
-        }
-
-        const credentialConfig = credential.config as IConnectorScalewayCredential;
-        const api = new ScalewayApi(
-            credentialConfig.secretAccessKey,
-            connectorConfig.region,
-            credentialConfig.projectId,
-            this.agents
-        );
-        const image = await api.getImage(connectorConfig.imageId);
-
-        if (!image) {
-            throw new ConnectorInvalidError(`Cannot find image ${connectorConfig.imageId}`);
-        }
+    async validateInstallCommand(): Promise<void> {
+        // Nothing to install
     }
 
     async queryCredential(

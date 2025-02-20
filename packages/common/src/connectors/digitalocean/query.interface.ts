@@ -1,7 +1,6 @@
 export enum EDigitalOceanQueryCredential {
     Regions = 'regions',
     Sizes = 'sizes',
-    Snapshots = 'snapshots',
 }
 
 
@@ -24,13 +23,3 @@ export interface IDigitalOceanSizeView {
 export interface IDigitalOceanQuerySizes {
     region: string;
 }
-
-
-//////////// SNAPSHOTS ////////////
-export interface IDigitalOceanSnapshotView {
-    id: number;
-    name: string;
-}
-
-
-export type IDigitalOceanQuerySnapshots = IDigitalOceanQuerySizes;

@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
 } from '@scrapoxy/backend-sdk';
 import { AwsApi } from './api';
 import { convertToProxy } from './aws.helpers';
@@ -60,19 +60,70 @@ export class ConnectorAwsService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
-        const userData = await new RunScriptBuilder(
+        // Find the instance type to get the architecture
+        const instancesTypes = await this.api.describeInstancesTypes([
+            this.connectorConfig.instanceType,
+        ]);
+        const architectures: string[] = [];
+        for (const instanceType of instancesTypes) {
+            for (const info of instanceType.processorInfo) {
+                if (info?.supportedArchitectures) {
+                    for (const architecture of info.supportedArchitectures) {
+                        if (architecture?.item) {
+                            architectures.push(...architecture.item);
+                        }
+                    }
+                }
+            }
+        }
+
+        let
+            architecture: string,
+            name: string;
+
+        if (architectures.includes('arm64')) {
+            architecture = 'arm64';
+            name = 'ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-*';
+        } else if (architectures.includes('x86_64')) {
+            architecture = 'x86_64';
+            name = 'ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*';
+        } else {
+            throw new Error(`Cannot find any architecture for the instance type ${this.connectorConfig.instanceType}`);
+        }
+
+        // Find the instance type
+        const images = await this.api.describeImages({
+            architecture,
+            imageType: 'machine',
+            isPublic: true,
+            name,
+            ownerAlias: 'amazon',
+            state: 'available',
+            virtualizationType: 'hvm',
+        });
+
+        if (images.length <= 0) {
+            throw new Error('Cannot find any ubuntu 24.04 image');
+        }
+
+        const imagesSorted = images.sort((
+            a, b
+        ) => b.creationDate[ 0 ].localeCompare(a.creationDate[ 0 ]));
+        const userData = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            architecture === 'arm64' ? 'arm64' : 'amd64'
         )
             .build();
         const instances = await this.api.runInstances({
             count,
+            imageId: imagesSorted[ 0 ].imageId[ 0 ],
             instanceType: this.connectorConfig.instanceType,
-            imageId: this.connectorConfig.imageId,
             securityGroup: this.connectorConfig.securityGroupName,
             group: this.connectorConfig.tag,
-            terminateOnShutdown: true,
             userData,
+            terminateOnShutdown: true,
+
         });
 
         return instances.map((i) => convertToProxy(

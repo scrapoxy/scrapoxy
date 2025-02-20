@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
-    ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -16,25 +13,16 @@ import { DigitalOceanApi } from './api';
 import {
     toDigitalOceanRegionView,
     toDigitalOceanSizeView,
-    toDigitalOceanSnapshotView,
 } from './digitalocean.helpers';
 import { ConnectorDigitaloceanService } from './digitalocean.service';
 import {
     schemaConfig,
     schemaCredential,
 } from './digitalocean.validation';
-import {
-    DigitalInstallOceanFactory,
-    DigitalUninstallOceanFactory,
-} from './tasks';
 import type {
     IConnectorDigitalOceanConfig,
     IConnectorDigitalOceanCredential,
 } from './digitalocean.interface';
-import type {
-    IDigitalOceanInstallCommandData,
-    IDigitalOceanUninstallCommandData,
-} from './tasks';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
@@ -43,16 +31,12 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
-    IConnectorData,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
     IDigitalOceanQuerySizes,
-    IDigitalOceanQuerySnapshots,
     IDigitalOceanRegionView,
     IDigitalOceanSizeView,
-    IDigitalOceanSnapshotView,
-    IFingerprintOptions,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -73,21 +57,8 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
-
-        tasks.register(
-            DigitalInstallOceanFactory.type,
-            new DigitalInstallOceanFactory(this.agents)
-        );
-
-        tasks.register(
-            DigitalUninstallOceanFactory.type,
-            new DigitalUninstallOceanFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
@@ -137,96 +108,16 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
         return service;
     }
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorDigitalOceanConfig,
-            credentialConfig = credential.config as IConnectorDigitalOceanCredential;
-        const data: IDigitalOceanInstallCommandData = {
-            token: credentialConfig.token,
-            region: connectorConfig.region,
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            dropletId: void 0,
-            powerOffActionId: void 0,
-            snapshotActionId: void 0,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: DigitalInstallOceanFactory.type,
-            name: `Install DO on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: DigitalInstallOceanFactory.stepMax,
-            message: 'Installing DigitalOcean connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorDigitalOceanConfig,
-            credentialConfig = credential.config as IConnectorDigitalOceanCredential;
-        const data: IDigitalOceanUninstallCommandData = {
-            token: credentialConfig.token,
-            snapshotId: connectorConfig.snapshotId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: DigitalUninstallOceanFactory.type,
-            name: `Uninstall DO on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: DigitalUninstallOceanFactory.stepMax,
-            message: 'Uninstalling Digital Ocean connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async validateInstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<void> {
-        const
-            connectorConfig = connector.config as IConnectorDigitalOceanConfig,
-            credentialConfig = credential.config as IConnectorDigitalOceanCredential;
-        const api = new DigitalOceanApi(
-            credentialConfig.token,
-            this.agents
-        );
-
-        if (!connectorConfig.snapshotId || connectorConfig.snapshotId.length <= 0) {
-            throw new ConnectorInvalidError('Cannot find snapshot');
-        }
-
-        let snapshotId: number;
-        try {
-            snapshotId = parseInt(connectorConfig.snapshotId);
-        } catch (err: any) {
-            throw new ConnectorInvalidError(`Cannot parse snapshot id ${connectorConfig.snapshotId}`);
-        }
-
-        try {
-            await api.getSnapshot(snapshotId);
-        } catch (err: any) {
-            throw new ConnectorInvalidError(`Cannot find snapshot ${connectorConfig.snapshotId}`);
-        }
+    async validateInstallCommand(): Promise<void> {
+        // Nothing to install
     }
 
     async queryCredential(
@@ -243,13 +134,6 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
                 return this.querySizes(
                     credentialConfig,
                     query.parameters as IDigitalOceanQuerySizes
-                );
-            }
-
-            case EDigitalOceanQueryCredential.Snapshots: {
-                return this.querySnapshots(
-                    credentialConfig,
-                    query.parameters as IDigitalOceanQuerySnapshots
                 );
             }
 
@@ -287,20 +171,5 @@ export class ConnectorDigitaloceanFactory implements IConnectorFactory, OnModule
                 FILTER_SIZES.includes(s.slug) &&
                 s.regions.includes(parameters.region))
             .map(toDigitalOceanSizeView);
-    }
-
-    private async querySnapshots(
-        credentialConfig: IConnectorDigitalOceanCredential,
-        parameters: IDigitalOceanQuerySnapshots
-    ): Promise<IDigitalOceanSnapshotView[]> {
-        const api = new DigitalOceanApi(
-            credentialConfig.token,
-            this.agents
-        );
-        const snapshots = await api.getAllSnapshots();
-
-        return snapshots
-            .filter((s) => s.regions.includes(parameters.region))
-            .map(toDigitalOceanSnapshotView);
     }
 }

@@ -15,7 +15,6 @@ import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorAzureFactory } from './azure.factory';
 import { ConnectorAzureComponent } from './connector/connector.component';
 import { CredentialAzureComponent } from './credential/credential.component';
-import { InstallAzureComponent } from './install/install.component';
 
 
 @NgModule({
@@ -31,7 +30,7 @@ import { InstallAzureComponent } from './install/install.component';
         TooltipModule,
     ],
     declarations: [
-        ConnectorAzureComponent, CredentialAzureComponent, InstallAzureComponent,
+        ConnectorAzureComponent, CredentialAzureComponent,
     ],
     providers: [
         ConnectorAzureFactory,

@@ -6,7 +6,6 @@ import axios, { AxiosError } from 'axios';
 import { TencentCloudSignerV4 } from './signature';
 import { buildFilters } from './tencent.helpers';
 import type {
-    ITencentCreateImageResponse,
     ITencentDescribeImagesRequest,
     ITencentDescribeImagesResponse,
     ITencentDescribeInstancesRequest,
@@ -192,16 +191,6 @@ export class TencentApi {
         );
     }
 
-    public async stopInstances(instancesIds: string[]): Promise<void> {
-        const body = {
-            InstanceIds: instancesIds,
-        };
-        await this.tencentPost(
-            'StopInstances',
-            body
-        );
-    }
-
     public async terminateInstances(instancesIds: string[]): Promise<void> {
         const body = {
             InstanceIds: instancesIds,
@@ -262,52 +251,6 @@ export class TencentApi {
         );
 
         return data.ImageSet;
-    }
-
-    public async describeImage(imageId: string): Promise<ITencentImage | undefined> {
-        const body = {
-            ImageIds: [
-                imageId,
-            ],
-        };
-        const data = await this.tencentPost<ITencentDescribeImagesResponse>(
-            'DescribeImages',
-            body
-        );
-
-        if (data.ImageSet.length <= 0) {
-            return;
-        }
-
-        return data.ImageSet[ 0 ];
-    }
-
-    public async createImage(
-        imageName: string,
-        instancesId: string
-    ): Promise<string> {
-        const body = {
-            ImageName: imageName,
-            InstanceId: instancesId,
-        };
-        const data = await this.tencentPost<ITencentCreateImageResponse>(
-            'CreateImage',
-            body
-        );
-
-        return data.ImageId;
-    }
-
-    public async deleteImages(imagesIds: string[]): Promise<void> {
-        const body = {
-            ImageIds: imagesIds,
-            DeleteBindedSnap: true,
-        };
-
-        await this.tencentPost(
-            'DeleteImages',
-            body
-        );
     }
 
     private async tencentPost<T>(

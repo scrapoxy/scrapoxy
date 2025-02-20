@@ -1,3 +1,1 @@
-export * from './install-script-builder';
-
-export * from './run-script-builder';
+export * from './script-builder';

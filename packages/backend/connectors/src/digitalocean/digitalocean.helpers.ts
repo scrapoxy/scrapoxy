@@ -11,14 +11,12 @@ import type {
     IDigitalOceanDroplet,
     IDigitalOceanRegion,
     IDigitalOceanSize,
-    IDigitalOceanSnapshot,
 } from './digitalocean.interface';
 import type { ITransportProxyRefreshedConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
     IConnectorProxyRefreshed,
     IDigitalOceanRegionView,
     IDigitalOceanSizeView,
-    IDigitalOceanSnapshotView,
 } from '@scrapoxy/common';
 
 
@@ -76,16 +74,6 @@ export function toDigitalOceanSizeView(size: IDigitalOceanSize): IDigitalOceanSi
         description: size.description,
         vcpus: size.vcpus,
         memory: size.memory,
-    };
-
-    return s;
-}
-
-
-export function toDigitalOceanSnapshotView(snapshot: IDigitalOceanSnapshot): IDigitalOceanSnapshotView {
-    const s: IDigitalOceanSnapshotView = {
-        id: snapshot.id,
-        name: snapshot.name,
     };
 
     return s;

@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
-    ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -15,19 +12,11 @@ import {
     TENCENT_DEFAULT_ZONE,
 } from '@scrapoxy/common';
 import { TencentApi } from './api';
-import {
-    TencentInstallFactory,
-    TencentUninstallFactory,
-} from './tasks';
 import { ConnectorTencentService } from './tencent.service';
 import {
     schemaConfig,
     schemaCredential,
 } from './tencent.validation';
-import type {
-    ITencentInstallCommandData,
-    ITencentUninstallCommandData,
-} from './tasks';
 import type {
     IConnectorTencentConfig,
     IConnectorTencentCredential,
@@ -40,11 +29,9 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
-    IConnectorData,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    IFingerprintOptions,
     ITaskToCreate,
     ITencentQueryInstanceType,
     ITencentQueryZone,
@@ -72,21 +59,8 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorsproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorsproviders: ConnectorprovidersService) {
         connectorsproviders.register(this);
-
-        tasks.register(
-            TencentInstallFactory.type,
-            new TencentInstallFactory(this.agents)
-        );
-
-        tasks.register(
-            TencentUninstallFactory.type,
-            new TencentUninstallFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
@@ -141,95 +115,16 @@ export class ConnectorTencentFactory implements IConnectorFactory, OnModuleDestr
         return service;
     }
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorTencentConfig,
-            credentialConfig = credential.config as IConnectorTencentCredential;
-        const data: ITencentInstallCommandData = {
-            secretId: credentialConfig.secretId,
-            secretKey: credentialConfig.secretKey,
-            region: connectorConfig.region,
-            zone: connectorConfig.zone,
-            projectId: connectorConfig.projectId, // different from connect.projectId
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            instanceId: void 0,
-            instanceType: connectorConfig.instanceType,
-            imageId: void 0,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: TencentInstallFactory.type,
-            name: `Install Tencent on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: TencentInstallFactory.stepMax,
-            message: 'Installing Tencent image...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorTencentConfig,
-            credentialConfig = credential.config as IConnectorTencentCredential;
-        const data: ITencentUninstallCommandData = {
-            secretId: credentialConfig.secretId,
-            secretKey: credentialConfig.secretKey,
-            region: connectorConfig.region,
-            imageId: connectorConfig.imageId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: TencentUninstallFactory.type,
-            name: `Uninstall Tencent on connector ${connector.name} in region ${connectorConfig.zone}`,
-            stepMax: TencentUninstallFactory.stepMax,
-            message: 'Uninstalling Tencent datacenter...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async validateInstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<void> {
-        const connectorConfig = connector.config as IConnectorTencentConfig;
-
-        if (!connectorConfig.imageId || connectorConfig.imageId.length <= 0) {
-            throw new ConnectorInvalidError('Image ID cannot be empty');
-        }
-
-        const credentialConfig = credential.config as IConnectorTencentCredential;
-        const api = new TencentApi(
-            credentialConfig.secretId,
-            credentialConfig.secretKey,
-            connectorConfig.region,
-            this.agents
-        );
-        const image = await api.describeImage(connectorConfig.imageId);
-
-        if (!image) {
-            throw new ConnectorInvalidError(`Cannot find image ${connectorConfig.imageId}`);
-        }
+    async validateInstallCommand(): Promise<void> {
+        // Nothing to install
     }
 
     async queryCredential(

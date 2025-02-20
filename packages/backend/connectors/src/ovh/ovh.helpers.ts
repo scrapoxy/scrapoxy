@@ -11,7 +11,6 @@ import type {
     IOvhFlavor,
     IOvhInstance,
     IOvhProject,
-    IOvhSnapshot,
 } from './ovh.interface';
 import type { ITransportProxyRefreshedConfigDatacenter } from '@scrapoxy/backend-sdk';
 import type {
@@ -19,7 +18,6 @@ import type {
     IOvhFlavorView,
     IOvhProjectView,
     IOvhRegionView,
-    IOvhSnapshotView,
 } from '@scrapoxy/common';
 
 
@@ -64,16 +62,6 @@ export function toOvhFlavorView(flavor: IOvhFlavor): IOvhFlavorView {
     };
 
     return f;
-}
-
-
-export function toOvhSnapshotView(snapshot: IOvhSnapshot): IOvhSnapshotView {
-    const s: IOvhSnapshotView = {
-        id: snapshot.id,
-        name: snapshot.name,
-    };
-
-    return s;
 }
 
 

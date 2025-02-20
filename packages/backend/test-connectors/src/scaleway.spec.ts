@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import {
     ConnectorScalewayModule,
     IConnectorScalewayConfig,
-    ScalewayApi,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
 import {
@@ -32,11 +31,9 @@ describe(
                             region: SCALEWAY_DEFAULT_REGION,
                             port: 3128,
                             instanceType: SCALEWAY_DEFAULT_INSTANCE_TYPE,
-                            snapshotId: '',
-                            imageId: '',
                             tag: 'spxtest',
                         } satisfies IConnectorScalewayConfig,
-                        install: {},
+                        install: void 0,
                     },
                 ],
             },
@@ -56,39 +53,6 @@ describe(
             ],
             CONNECTOR_SCALEWAY_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallations',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    const api = new ScalewayApi(
-                        credentialTest.config.secretAccessKey,
-                        SCALEWAY_DEFAULT_REGION,
-                        credentialTest.config.projectId,
-                        agents
-                    );
-                        // Instances
-                    const instances = await api.listInstances();
-                    expect(instances)
-                        .toHaveLength(0);
-
-                    // Volumes
-                    const volumes = await api.listVolumes();
-                    expect(volumes)
-                        .toHaveLength(0);
-
-                    // Images
-                    const images = await api.listImages();
-                    expect(images)
-                        .toHaveLength(0);
-
-                    // Snapshots
-                    const snapshots = await api.listSnapshots();
-                    expect(snapshots)
-                        .toHaveLength(0);
-                }
-            }
         );
     }
 );

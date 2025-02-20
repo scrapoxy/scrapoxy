@@ -1,7 +1,6 @@
 import type {
     IOvhFlavorView,
     IOvhRegionView,
-    IOvhSnapshotView,
 } from '@scrapoxy/common';
 
 
@@ -17,7 +16,6 @@ export interface IConnectorOvhConfig {
     region: string;
     flavorId: string;
     port: number;
-    snapshotId: string;
     tag: string;
 }
 
@@ -108,19 +106,6 @@ export interface IOvhCreateInstancesRequest {
     imageId: string;
     userData?: string;
     count: number;
-}
-
-
-//////////// SNAPSHOTS ////////////
-export enum EOvhSnapshotStatus {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    active = 'active',
-}
-
-
-export interface IOvhSnapshot extends IOvhSnapshotView {
-    visibility: EOvhVisibility;
-    status: EOvhSnapshotStatus;
 }
 
 

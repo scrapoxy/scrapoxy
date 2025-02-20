@@ -10,7 +10,6 @@ import type {
     IOvhInstance,
     IOvhProject,
     IOvhRegion,
-    IOvhSnapshot,
 } from './ovh.interface';
 import type {
     AxiosInstance,
@@ -155,14 +154,6 @@ export class OvhApi {
         return instances.filter((f) => f.status !== EOvhInstanceStatus.DELETED);
     }
 
-    async getInstance(
-        projectId: string, instanceId: string
-    ): Promise<IOvhInstance> {
-        const response = await this.instance.get<IOvhInstance>(`cloud/project/${projectId}/instance/${instanceId}`);
-
-        return response.data;
-    }
-
     async createInstances(request: IOvhCreateInstancesRequest): Promise<IOvhInstance[]> {
         const payload: { [key: string]: any } = {
             name: request.name,
@@ -206,66 +197,11 @@ export class OvhApi {
         );
     }
 
-    async stopInstance(
-        projectId: string,
-        instanceId: string
-    ): Promise<void> {
-        await this.instance.post(
-            `cloud/project/${projectId}/instance/${instanceId}/stop`,
-            {}
-        );
-    }
-
-    async snapshotInstance(
-        projectId: string,
-        instanceId: string,
-        snapshotName: string
-    ): Promise<void> {
-        const payload = {
-            snapshotName,
-        };
-
-        await this.instance.post(
-            `cloud/project/${projectId}/instance/${instanceId}/snapshot`,
-            payload
-        );
-    }
-
     async removeInstance(
         projectId: string,
         instanceId: string
     ): Promise<void> {
         await this.instance.delete(`cloud/project/${projectId}/instance/${instanceId}`);
-    }
-
-    //////////// SNAPSHOTS ////////////
-    async getAllSnapshots(
-        projectId: string, region: string
-    ): Promise<IOvhSnapshot[]> {
-        const response = await this.instance.get<IOvhSnapshot[]>(
-            `cloud/project/${projectId}/snapshot`,
-            {
-                params: {
-                    region,
-                },
-            }
-        );
-
-        return response.data;
-    }
-
-    async getSnapshot(
-        projectId: string, snapshotId: string
-    ): Promise<IOvhSnapshot> {
-        const response = await this.instance.get<IOvhSnapshot>(`cloud/project/${projectId}/snapshot/${snapshotId}`);
-
-        return response.data;
-    }
-
-    async removeSnapshot(
-        projectId: string, snapshotId: string
-    ): Promise<void> {
-        await this.instance.delete(`cloud/project/${projectId}/snapshot/${snapshotId}`);
     }
 
     //////////// IMAGES ////////////

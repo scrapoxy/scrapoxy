@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorScalewayComponent } from './connector/connector.component';
 import { CredentialScalewayComponent } from './credential/credential.component';
-import { InstallScalewayComponent } from './install/install.component';
 import type {
     IConnectorComponent,
     IConnectorConfig,
@@ -31,8 +30,8 @@ export class ConnectorScalewayFactory implements IConnectorFactory {
         defaultConnectorName: 'Scaleway Connector',
         url: 'https://scrapoxy.io/l/scaleway',
         type: EConnectorType.Datacenter,
-        canInstall: true,
-        canUninstall: true,
+        canInstall: false,
+        canUninstall: false,
         useCertificate: true,
     };
 
@@ -53,6 +52,6 @@ export class ConnectorScalewayFactory implements IConnectorFactory {
     }
 
     getInstallComponent(): Type<IInstallComponent> {
-        return InstallScalewayComponent;
+        throw new Error('Not implemented');
     }
 }

@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
-    ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -17,7 +14,6 @@ import {
     toOvhFlavorView,
     toOvhProjectView,
     toOvhRegionView,
-    toOvhSnapshotView,
 } from './ovh.helpers';
 import {
     EOvhFlavorOsType,
@@ -29,18 +25,10 @@ import {
     schemaConfig,
     schemaCredential,
 } from './ovh.validation';
-import {
-    OvhInstallFactory,
-    OvhUninstallFactory,
-} from './tasks';
 import type {
     IConnectorOvhConfig,
     IConnectorOvhCredential,
 } from './ovh.interface';
-import type {
-    IOvhInstallCommandData,
-    IOvhUninstallCommandData,
-} from './tasks';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
@@ -49,18 +37,14 @@ import type {
 } from '@scrapoxy/backend-sdk';
 import type {
     ICertificate,
-    IConnectorData,
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    IFingerprintOptions,
     IOvhFlavorView,
     IOvhProjectView,
     IOvhQueryFlavors,
     IOvhQueryRegions,
-    IOvhQuerySnapshots,
     IOvhRegionView,
-    IOvhSnapshotView,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -81,27 +65,13 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
-
-        tasks.register(
-            OvhInstallFactory.type,
-            new OvhInstallFactory(this.agents)
-        );
-
-        tasks.register(
-            OvhUninstallFactory.type,
-            new OvhUninstallFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
         this.agents.close();
     }
-
 
     async validateCredentialConfig(config: IConnectorOvhCredential): Promise<void> {
         await validate(
@@ -148,98 +118,16 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
         return service;
     }
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorOvhConfig,
-            credentialConfig = credential.config as IConnectorOvhCredential;
-        const data: IOvhInstallCommandData = {
-            ...credentialConfig,
-            projectId: connectorConfig.projectId,
-            region: connectorConfig.region,
-            flavorId: connectorConfig.flavorId,
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            installInstanceId: void 0,
-            snapshotName: void 0,
-            snapshotId: void 0,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: OvhInstallFactory.type,
-            name: `Install OVH on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: OvhInstallFactory.stepMax,
-            message: 'Installing OVH connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorOvhConfig,
-            credentialConfig = credential.config as IConnectorOvhCredential;
-        const data: IOvhUninstallCommandData = {
-            ...credentialConfig,
-            projectId: connectorConfig.projectId,
-            region: connectorConfig.region,
-            snapshotId: connectorConfig.snapshotId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: OvhUninstallFactory.type,
-            name: `Uninstall OVH on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: OvhUninstallFactory.stepMax,
-            message: 'Uninstalling OVH connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async validateInstallCommand(
-        credential: ICredentialData, connector: IConnectorData
-    ): Promise<void> {
-        const
-            connectorConfig = connector.config as IConnectorOvhConfig,
-            credentialConfig = credential.config as IConnectorOvhCredential;
-        const api = new OvhApi(
-            credentialConfig.appKey,
-            credentialConfig.appSecret,
-            credentialConfig.consumerKey,
-            this.agents
-        );
-
-        // Check Snapshot
-        if (!connectorConfig.snapshotId || connectorConfig.snapshotId.length <= 0) {
-            throw new ConnectorInvalidError('Snapshot ID cannot be empty');
-        }
-
-        try {
-            await api.getSnapshot(
-                connectorConfig.projectId,
-                connectorConfig.snapshotId
-            );
-        } catch (err: any) {
-            throw new ConnectorInvalidError('Cannot find snapshot');
-        }
+    async validateInstallCommand(): Promise<void> {
+        // Nothing to install
     }
 
     async queryCredential(
@@ -263,13 +151,6 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
                 return this.queryFlavors(
                     credentialConfig,
                     query.parameters as IOvhQueryFlavors
-                );
-            }
-
-            case EOvhQueryCredential.Snapshots: {
-                return this.querySnapshots(
-                    credentialConfig,
-                    query.parameters as IOvhQuerySnapshots
                 );
             }
 
@@ -335,23 +216,5 @@ export class ConnectorOvhFactory implements IConnectorFactory, OnModuleDestroy {
         return flavors
             .filter((f) => FLAVOR_TYPES.includes(f.type) && f.osType === EOvhFlavorOsType.linux)
             .map(toOvhFlavorView);
-    }
-
-    private async querySnapshots(
-        credentialConfig: IConnectorOvhCredential,
-        parameters: IOvhQuerySnapshots
-    ): Promise<IOvhSnapshotView[]> {
-        const api = new OvhApi(
-            credentialConfig.appKey,
-            credentialConfig.appSecret,
-            credentialConfig.consumerKey,
-            this.agents
-        );
-        const snapshots = await api.getAllSnapshots(
-            parameters.projectId,
-            parameters.region
-        );
-
-        return snapshots.map(toOvhSnapshotView);
     }
 }

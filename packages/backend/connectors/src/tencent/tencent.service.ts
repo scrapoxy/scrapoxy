@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
     TRANSPORT_DATACENTER_TYPE,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -104,16 +104,25 @@ export class ConnectorTencentService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
-        const userData = await new RunScriptBuilder(
+        const userData = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            'amd64'
         )
             .build();
+        const images = await this.api.describeImages({
+            instanceType: this.connectorConfig.instanceType, platform: 'Ubuntu', imageType: 'PUBLIC_IMAGE',
+        });
+
+        if (images.length <= 0) {
+            throw new Error('No Ubuntu image found');
+        }
+
         const runInstancesRequest: ITencentRunInstancesRequest = {
             count: count,
             instanceName: randomName(),
             instanceType: this.connectorConfig.instanceType,
-            imageId: this.connectorConfig.imageId,
+            imageId: images[ 0 ].ImageId,
             group: this.connectorConfig.tag,
             terminateOnShutdown: true,
             userData,

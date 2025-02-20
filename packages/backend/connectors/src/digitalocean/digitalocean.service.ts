@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
 } from '@scrapoxy/backend-sdk';
 import { randomNames } from '@scrapoxy/common';
 import { DigitalOceanApi } from './api';
@@ -52,17 +52,17 @@ export class ConnectorDigitaloceanService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
-        const userData = await new RunScriptBuilder(
+        const userData = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            'amd64'
         )
             .build();
-        const snapshotId = parseInt(this.connectorConfig.snapshotId);
         const droplets = await this.api.createDroplets({
             names: randomNames(count),
             region: this.connectorConfig.region,
+            imageName: 'ubuntu-24-04-x64',
             size: this.connectorConfig.size,
-            snapshotId: snapshotId,
             tags: [
                 this.connectorConfig.tag,
             ],

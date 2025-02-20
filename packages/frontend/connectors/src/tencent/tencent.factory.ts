@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorTencentComponent } from './connector/connector.component';
 import { CredentialTencentComponent } from './credential/credential.component';
-import { InstallTencentComponent } from './install/install.component';
 import type {
     IConnectorComponent,
     IConnectorConfig,
@@ -31,8 +30,8 @@ export class ConnectorTencentFactory implements IConnectorFactory {
         defaultConnectorName: 'Tencent Connector',
         url: 'https://scrapoxy.io/l/tencent',
         type: EConnectorType.Datacenter,
-        canInstall: true,
-        canUninstall: true,
+        canInstall: false,
+        canUninstall: false,
         useCertificate: true,
     };
 
@@ -53,6 +52,6 @@ export class ConnectorTencentFactory implements IConnectorFactory {
     }
 
     getInstallComponent(): Type<IInstallComponent> {
-        return InstallTencentComponent;
+        throw new Error('Not implemented');
     }
 }

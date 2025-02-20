@@ -13,7 +13,6 @@ import { IconModule } from '@coreui/icons-angular';
 import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorScalewayComponent } from './connector/connector.component';
 import { CredentialScalewayComponent } from './credential/credential.component';
-import { InstallScalewayComponent } from './install/install.component';
 import { ConnectorScalewayFactory } from './scaleway.factory';
 
 
@@ -29,7 +28,7 @@ import { ConnectorScalewayFactory } from './scaleway.factory';
         TooltipModule,
     ],
     declarations: [
-        ConnectorScalewayComponent, CredentialScalewayComponent, InstallScalewayComponent,
+        ConnectorScalewayComponent, CredentialScalewayComponent,
     ],
     providers: [
         ConnectorScalewayFactory,

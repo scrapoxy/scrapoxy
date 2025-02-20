@@ -173,7 +173,7 @@ Complete the form with the following information:
 2. **Name**: The name of the connector;
 3. **# Proxies**: The number of instances to create;
 4. **Region**: The region where the instances will be created;
-5. **Port**: The port of the proxy (on AWS). If it is modified after installation, the security group must also be updated to allow traffic on the new port;
+5. **Port**: The port of the proxy (on AWS);
 6. **Instance Type**: The type of the instance;
 7. **Image ID**: The name of the image in the region;
 8. **Security group name**: The name of the security group containing the firewall rules;
@@ -189,32 +189,7 @@ Without this, connectors may interfere with each other, shutting down instances 
 :::
 
 
-### Step 3: Install the connector
-
-![Connector Install Select](spx_connector_install_select.png)
-
-On the connector list, click on `Install`.
-
----
-
-![Connector Install](spx_connector_install.png)
-
-Click on `Install`.
-
-Scrapoxy will start, install and stop the VM to create a custom image.
-
-::: warning
-Do not reuse an installation from a prior setup:
-Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
-:::
-
----
-
-![Connector Installed](spx_connector_installed.png)
-
-When the installation is finished, click on `Connectors`.
-
----
+### Step 3: Start the connector
 
 ![Connector Start](spx_connector_start.png)
 
@@ -222,25 +197,9 @@ When the installation is finished, click on `Connectors`.
 2. Start the connector.
 
 
-### Other: Uninstall the connector
+### Step 4: Stop the connector (optional)
 
 ![Connector Stop](spx_connector_stop.png)
 
 1. Stop the connector;
 2. Wait for proxies to be removed.
-
----
-
-![Connector Uninstall Select](spx_connector_uninstall_select.png)
-
-On the connector list, click on `Uninstall`.
-
----
-
-![Connector Uninstalled](spx_connector_uninstall_confirm.png)
-
-Confirm the uninstallation.
-
-![Connector Uninstalled](spx_connector_uninstalled.png)
-
-Wait for the uninstallation to finish: Scrapoxy will delete the custom image.

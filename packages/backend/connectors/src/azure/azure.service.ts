@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
     TRANSPORT_DATACENTER_TYPE,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -131,9 +131,24 @@ export class ConnectorAzureService implements IConnectorService {
     async createProxies(count: number): Promise<IConnectorProxyRefreshed[]> {
         this.logger.debug(`createProxies(): count=${count}`);
 
-        const runScript = await new RunScriptBuilder(
+        let architecture: string,
+            sku: string;
+
+        if (this.connectorConfig.vmSize.startsWith('Standard_A1')) {
+            sku = 'server-gen1';
+            architecture = 'amd64';
+        } else if (this.connectorConfig.vmSize.startsWith('Standard_D2pl')) {
+            sku = 'server-arm64';
+            architecture = 'arm64';
+        } else {
+            sku = 'server';
+            architecture = 'amd64';
+        }
+
+        const runScript = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            architecture
         )
             .build();
         const namesLimit = randomNames(Math.min(
@@ -146,6 +161,12 @@ export class ConnectorAzureService implements IConnectorService {
         )
             .addVms(
                 namesLimit,
+                {
+                    publisher: 'canonical',
+                    offer: 'ubuntu-24_04-lts',
+                    sku,
+                    version: 'latest',
+                },
                 runScript,
                 this.connectorConfig.useSpotInstances
             )
@@ -161,9 +182,6 @@ export class ConnectorAzureService implements IConnectorService {
                     parameters: {
                         subscriptionId: {
                             value: this.credentialConfig.subscriptionId,
-                        },
-                        imageResourceGroupName: {
-                            value: this.connectorConfig.imageResourceGroupName,
                         },
                         location: {
                             value: this.connectorConfig.location,

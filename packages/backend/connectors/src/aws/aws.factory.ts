@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -19,18 +17,10 @@ import {
     schemaConfig,
     schemaCredential,
 } from './aws.validation';
-import {
-    AwsInstallFactory,
-    AwsUninstallFactory,
-} from './tasks';
 import type {
     IConnectorAwsConfig,
     IConnectorAwsCredential,
 } from './aws.interface';
-import type {
-    IAwsInstallCommandData,
-    IAwsUninstallCommandData,
-} from './tasks';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
@@ -44,7 +34,6 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    IFingerprintOptions,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -72,21 +61,8 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorsproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorsproviders: ConnectorprovidersService) {
         connectorsproviders.register(this);
-
-        tasks.register(
-            AwsInstallFactory.type,
-            new AwsInstallFactory(this.agents)
-        );
-
-        tasks.register(
-            AwsUninstallFactory.type,
-            new AwsUninstallFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
@@ -140,72 +116,12 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         return service;
     }
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorAwsConfig,
-            credentialConfig = credential.config as IConnectorAwsCredential;
-        const data: IAwsInstallCommandData = {
-            accessKeyId: credentialConfig.accessKeyId,
-            secretAccessKey: credentialConfig.secretAccessKey,
-            region: connectorConfig.region,
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            instanceId: void 0,
-            instanceType: connectorConfig.instanceType,
-            securityGroupName: connectorConfig.securityGroupName,
-            imageId: void 0,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: AwsInstallFactory.type,
-            name: `Install AWS on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: AwsInstallFactory.stepMax,
-            message: 'Installing AWS image...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorAwsConfig,
-            credentialConfig = credential.config as IConnectorAwsCredential;
-        const data: IAwsUninstallCommandData = {
-            accessKeyId: credentialConfig.accessKeyId,
-            secretAccessKey: credentialConfig.secretAccessKey,
-            region: connectorConfig.region,
-            securityGroupName: connectorConfig.securityGroupName,
-            imageId: connectorConfig.imageId,
-            snapshotsIds: [],
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: AwsUninstallFactory.type,
-            name: `Uninstall AWS on connector ${connector.name} in region ${connectorConfig.region}`,
-            stepMax: AwsUninstallFactory.stepMax,
-            message: 'Uninstalling Aws datacenter...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
     async validateInstallCommand(
@@ -213,11 +129,6 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
         connector: IConnectorData
     ): Promise<void> {
         const connectorConfig = connector.config as IConnectorAwsConfig;
-
-        if (!connectorConfig.imageId || connectorConfig.imageId.length <= 0) {
-            throw new ConnectorInvalidError('Image ID cannot be empty');
-        }
-
         const credentialConfig = credential.config as IConnectorAwsCredential;
         const api = new AwsApi(
             credentialConfig.accessKeyId,
@@ -225,16 +136,33 @@ export class ConnectorAwsFactory implements IConnectorFactory, OnModuleDestroy {
             connectorConfig.region,
             this.agents
         );
-        const sgroup = await api.hasSecurityGroup(connectorConfig.securityGroupName);
 
-        if (!sgroup) {
-            throw new ConnectorInvalidError(`Cannot find security group ${connectorConfig.securityGroupName}`);
+        // Create security group
+        try {
+            await api.createSecurityGroup(connectorConfig.securityGroupName);
+        } catch (err: any) {
+            if (err.code !== 'InvalidGroup.Duplicate') {
+                throw new ConnectorInvalidError(err.message);
+            }
         }
 
-        const image = await api.describeImage(connectorConfig.imageId);
-
-        if (!image) {
-            throw new ConnectorInvalidError(`Cannot find image ${connectorConfig.imageId}`);
+        // Add security rule
+        try {
+            await api.authorizeSecurityGroupIngress(
+                connectorConfig.securityGroupName,
+                [
+                    {
+                        protocol: 'tcp',
+                        fromPort: connectorConfig.port,
+                        toPort: connectorConfig.port,
+                        cidrIp: '0.0.0.0/0',
+                    },
+                ]
+            );
+        } catch (err: any) {
+            if (err.code !== 'InvalidPermission.Duplicate') {
+                throw new ConnectorInvalidError(err.message);
+            }
         }
     }
 

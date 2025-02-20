@@ -7,7 +7,6 @@ import { parseStringPromise } from 'xml2js';
 import { AwsSignatureV4 } from './signature';
 import type {
     IAwsAuthorizeSecurityGroupIngressPermission,
-    IAwsCreateImageResponse,
     IAwsCreateSecurityGroupResponse,
     IAwsDescribeImagesRequest,
     IAwsDescribeImagesResponse,
@@ -204,28 +203,6 @@ export class AwsApi {
     }
 
     //////////// SECURITY GROUP ////////////
-    public async hasSecurityGroup(name: string): Promise<boolean> {
-        const data = new AxiosFormData({
-            Action: 'DescribeSecurityGroups',
-            'GroupName.1': name,
-        });
-
-        try {
-            await this.instance.post(
-                '/',
-                data
-            );
-
-            return true;
-        } catch (err: any) {
-            if (err.code === 'InvalidGroup.NotFound') {
-                return false;
-            }
-
-            throw err;
-        }
-    }
-
     public async createSecurityGroup(name: string): Promise<string> {
         const data = new AxiosFormData({
             Action: 'CreateSecurityGroup',
@@ -261,17 +238,6 @@ export class AwsApi {
             });
         }
 
-        await this.instance.post(
-            '/',
-            data
-        );
-    }
-
-    public async deleteSecurityGroup(groupName: string): Promise<void> {
-        const data = new AxiosFormData({
-            Action: 'DeleteSecurityGroup',
-            GroupName: groupName,
-        });
         await this.instance.post(
             '/',
             data
@@ -404,24 +370,6 @@ export class AwsApi {
         );
     }
 
-    public async stopInstances(instancesIds: string[]): Promise<void> {
-        const data = new AxiosFormData({
-            Action: 'StopInstances',
-        });
-
-        for (let i = 0; i < instancesIds.length; i++) {
-            data.append(
-                `InstanceId.${i + 1}`,
-                instancesIds[ i ]
-            );
-        }
-
-        await this.instance.post(
-            '/',
-            data
-        );
-    }
-
     public async terminateInstances(instancesIds: string[]): Promise<void> {
         const data = new AxiosFormData({
             Action: 'TerminateInstances',
@@ -518,108 +466,5 @@ export class AwsApi {
         }
 
         return images;
-    }
-
-
-    public async createImage(
-        imageName: string,
-        instanceId: string
-    ): Promise<string> {
-        const data = new AxiosFormData({
-            Action: 'CreateImage',
-            InstanceId: instanceId,
-            Name: imageName,
-        });
-        const response = await this.instance.post(
-            '/',
-            data
-        )
-            .then((r) => r.data.CreateImageResponse as IAwsCreateImageResponse);
-        const imageId = response.imageId[ 0 ];
-
-        return imageId;
-    }
-
-    public async describeImage(imageId: string): Promise<IAwsImage | undefined> {
-        const data = new AxiosFormData({
-            Action: 'DescribeImages',
-            'ImageId.1': imageId,
-        });
-
-        try {
-            const response = await this.instance.post(
-                '/',
-                data
-            )
-                .then((r) => r.data.DescribeImagesResponse as IAwsDescribeImagesResponse);
-
-            for (const imageSet of response.imagesSet) {
-                if (imageSet) {
-                    for (const image of imageSet.item) {
-                        return image;
-                    }
-                }
-            }
-
-            return; // No image found when it is a deleted image
-        } catch (err: any) {
-            if (err.code === 'InvalidAMIID.NotFound' ||
-                err.code === 'InvalidAMIID.Malformed') {
-                return;
-            }
-
-            throw err;
-        }
-    }
-
-    public async deregisterImage(imageId: string): Promise<void> {
-        const data = new AxiosFormData({
-            Action: 'DeregisterImage',
-            ImageId: imageId,
-        });
-        await this.instance.post(
-            '/',
-            data
-        );
-    }
-
-    //////////// SNAPSHOTS ////////////
-    public async hasAllSnapshots(snapshotsIds: string[]): Promise<boolean> {
-        const data = new AxiosFormData({
-            Action: 'DescribeSnapshots',
-        });
-
-        for (let i = 0; i < snapshotsIds.length; i++) {
-            data.append(
-                `SnapshotId.${i + 1}`,
-                snapshotsIds[ i ]
-            );
-        }
-
-        try {
-            await this.instance.post(
-                '/',
-                data
-            );
-
-            return true;
-        } catch (err: any) {
-            if (err.code === 'InvalidSnapshot.NotFound') {
-                return false;
-            }
-
-            throw err;
-        }
-    }
-
-    public async deleteSnapshot(snapshotId: string): Promise<void> {
-        const data = new AxiosFormData({
-            Action: 'DeleteSnapshot',
-            SnapshotId: snapshotId,
-        });
-        await this.instance.post(
-            '/',
-            data
-        );
     }
 }

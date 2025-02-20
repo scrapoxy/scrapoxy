@@ -8,8 +8,6 @@ export interface IConnectorScalewayConfig {
     region: string;
     port: number;
     instanceType: string;
-    snapshotId: string;
-    imageId: string;
     tag: string;
 }
 
@@ -60,28 +58,6 @@ export interface IScalewayIP {
 }
 
 
-export interface IScalewaySecurityRuleRequest {
-    protocol: 'unknown_protocol' | 'TCP' | 'UDP' | 'ICMP' | 'ANY';
-    direction: 'unknown_direction' | 'inbound' | 'outbound';
-    action: 'unknown_action' | 'accept' | 'drop';
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    ip_range: string;
-    position: number;
-    editable: boolean;
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    dest_port_from?: number;
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    dest_port_to?: number;
-    project: string;
-}
-
-
-export interface IScalewaySecurityRule extends IScalewaySecurityRuleRequest {
-    id: string;
-    zone: string;
-}
-
-
 //////////// INSTANCES ////////////
 export enum EScalewayInstanceState {
     STARTING = 'starting',
@@ -117,30 +93,6 @@ export interface IScalewayInstance extends IScalewayInstanceBase {
 export interface IScalewayCreateInstancesRequest extends IScalewayInstanceBase {
     image: string;
     volumes?: IScalewayVolumes<IScalewayVolume>;
-}
-
-
-//////////// SNAPSHOTS ////////////
-export enum EScalewaySnapshotState {
-    AVAILABLE = 'available',
-    SNAPSHOTTING = 'snapshotting',
-    ERROR = 'error',
-    INVALID = 'invalid_data',
-    IMPORTING = 'importing',
-    EXPORTING = 'exporting',
-}
-
-
-export interface IScalewaySnapshot {
-    id: string;
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    base_volume: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        volume_id: string;
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        volume_name: string;
-    };
-    state: EScalewaySnapshotState;
 }
 
 

@@ -9,13 +9,32 @@ import type { ICertificate } from '@scrapoxy/common';
 const gzipAsync = promisify(gzip);
 
 
-export abstract class AScriptBuilder {
-    protected readonly rootPath: string;
+export class ScriptBuilder {
+    private readonly rootPath: string;
+
+    private readonly execUrl: string;
 
     constructor(
-        protected readonly port: number,
-        protected readonly certificate: ICertificate
+        private readonly port: number,
+        private readonly certificate: ICertificate,
+        architecture: string
     ) {
+        switch (architecture) {
+            case 'amd64': {
+                this.execUrl = 'https://scrapoxy.io/l/scrapoxy-proxy-amd64';
+                break;
+            }
+
+            case 'arm64': {
+                this.execUrl = 'https://scrapoxy.io/l/scrapoxy-proxy-arm64';
+                break;
+            }
+
+            default: {
+                throw new Error(`Unsupported architecture: ${architecture}`);
+            }
+        }
+
         this.rootPath = resolve(
             getEnvAssetsPath(),
             'proxy'
@@ -23,7 +42,29 @@ export abstract class AScriptBuilder {
     }
 
     public async build(): Promise<string> {
-        const scriptRaw = await this.generateScript();
+        // Create the script
+        const configIni = [
+            '[general]',
+            `port=${this.port}`,
+            'timeout=60000',
+            '[certificate]',
+            this.certificate.cert,
+            '[key]',
+            this.certificate.key,
+        ].join('\n');
+        const configIniFile = this.writeFileFromString(
+            configIni,
+            '/root/config.ini'
+        );
+        const scriptRaw = [
+            '#!/bin/bash',
+            ...configIniFile,
+            'cd /root',
+            `curl -sL ${this.execUrl} | gunzip > ./proxy`,
+            'chmod +x ./proxy',
+            './proxy',
+        ].join('\n');
+        // Create a auto-decompress script
         const scriptRawCompressed = await gzipAsync(scriptRaw);
         const scriptRawCompressedB64 = scriptRawCompressed.toString('base64');
 
@@ -36,8 +77,6 @@ export abstract class AScriptBuilder {
             'base64 -d /tmp/spx.b64 | gunzip | bash -s --',
         ].join('\n');
     }
-
-    protected abstract generateScript(): Promise<string>;
 
     protected writeFileFromString(
         data: string, destination: string

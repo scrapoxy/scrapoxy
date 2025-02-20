@@ -15,7 +15,6 @@ import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorGcpComponent } from './connector/connector.component';
 import { CredentialGcpComponent } from './credential/credential.component';
 import { ConnectorGcpFactory } from './gcp.factory';
-import { InstallGcpComponent } from './install/install.component';
 
 
 @NgModule({
@@ -31,7 +30,7 @@ import { InstallGcpComponent } from './install/install.component';
         TooltipModule,
     ],
     declarations: [
-        ConnectorGcpComponent, CredentialGcpComponent, InstallGcpComponent,
+        ConnectorGcpComponent, CredentialGcpComponent,
     ],
     providers: [
         ConnectorGcpFactory,

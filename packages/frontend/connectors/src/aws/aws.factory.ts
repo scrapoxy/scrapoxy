@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorAwsComponent } from './connector/connector.component';
 import { CredentialAwsComponent } from './credential/credential.component';
-import { InstallAwsComponent } from './install/install.component';
 import type {
     IConnectorComponent,
     IConnectorConfig,
@@ -31,8 +30,8 @@ export class ConnectorAwsFactory implements IConnectorFactory {
         defaultConnectorName: 'AWS Connector',
         url: 'https://scrapoxy.io/l/aws',
         type: EConnectorType.Datacenter,
-        canInstall: true,
-        canUninstall: true,
+        canInstall: false,
+        canUninstall: false,
         useCertificate: true,
     };
 
@@ -53,6 +52,6 @@ export class ConnectorAwsFactory implements IConnectorFactory {
     }
 
     getInstallComponent(): Type<IInstallComponent> {
-        return InstallAwsComponent;
+        throw new Error('Not implemented');
     }
 }

@@ -160,36 +160,7 @@ Without this, connectors may interfere with each other, shutting down instances 
 :::
 
 
-### Step 3: Install the connector
-
-![Connector Install Select](spx_connector_install_select.png)
-
-On the connector list, click on `Install`.
-
----
-
-![Connector Install](spx_connector_install.png)
-
-Complete the form with the following information:
-1. **Disk Type**: The type of the disk;
-2. **Disk Size**: The size of the disk (in GB).
-
-And click on `Install`.
-
-Scrapoxy will start, install and stop the VM to create a custom image.
-
-::: warning
-Do not reuse an installation from a prior setup:
-Scrapoxy embeds a unique TLS certificate within the instance image to secure communication and communication with the Master will fail.
-:::
-
----
-
-![Connector Installed](spx_connector_installed.png)
-
-When the installation is finished, click on `Connectors`.
-
----
+### Step 3: Start the connector
 
 ![Connector Start](spx_connector_start.png)
 
@@ -197,25 +168,9 @@ When the installation is finished, click on `Connectors`.
 2. Start the connector.
 
 
-### Other: Uninstall the connector
+### Step 4: Stop the connector (optional)
 
 ![Connector Stop](spx_connector_stop.png)
 
 1. Stop the connector;
 2. Wait for proxies to be removed.
-
----
-
-![Connector Uninstall Select](spx_connector_uninstall_select.png)
-
-On the connector list, click on `Uninstall`.
-
----
-
-![Connector Uninstalled](spx_connector_uninstall_confirm.png)
-
-Confirm the uninstallation.
-
-![Connector Uninstalled](spx_connector_uninstalled.png)
-
-Wait for the uninstallation to finish: Scrapoxy will delete the custom image.

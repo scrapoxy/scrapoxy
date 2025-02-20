@@ -76,12 +76,6 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
             instanceType: [
                 void 0, Validators.required,
             ],
-            snapshotId: [
-                void 0,
-            ],
-            imageId: [
-                void 0,
-            ],
             tag: [
                 void 0, Validators.required,
             ],
@@ -105,8 +99,6 @@ export class ConnectorScalewayComponent implements IConnectorComponent, OnInit {
                 region: SCALEWAY_DEFAULT_REGION,
                 port: 3128,
                 instanceType: SCALEWAY_DEFAULT_INSTANCE_TYPE,
-                snapshotId: '',
-                imageId: '',
                 tag: 'spx',
             });
         }

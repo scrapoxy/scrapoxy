@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
     CONNECTOR_AZURE_TYPE,
     EAzureQueryCredential,
-    randomName,
 } from '@scrapoxy/common';
 import { AzureApi } from './api';
 import { ConnectorAzureService } from './azure.service';
@@ -19,19 +16,11 @@ import {
     schemaConfig,
     schemaCredential,
 } from './azure.validation';
-import {
-    AzureInstallFactory,
-    AzureUninstallFactory,
-} from './tasks';
 import type {
     IAzureVmSize,
     IConnectorAzureConfig,
     IConnectorAzureCredential,
 } from './azure.interface';
-import type {
-    IAzureInstallCommandData,
-    IAzureUninstallCommandData,
-} from './tasks';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
@@ -46,7 +35,6 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    IFingerprintOptions,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -71,21 +59,8 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
-
-        tasks.register(
-            AzureInstallFactory.type,
-            new AzureInstallFactory(this.agents)
-        );
-
-        tasks.register(
-            AzureUninstallFactory.type,
-            new AzureUninstallFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
@@ -139,78 +114,12 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
     }
 
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorAzureConfig,
-            credentialConfig = credential.config as IConnectorAzureCredential;
-        const data: IAzureInstallCommandData = {
-            tenantId: credentialConfig.tenantId,
-            clientId: credentialConfig.clientId,
-            secret: credentialConfig.secret,
-            subscriptionId: credentialConfig.subscriptionId,
-            location: connectorConfig.location,
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            resourceGroupName: connectorConfig.resourceGroupName,
-            vmName: randomName(),
-            vmSize: connectorConfig.vmSize,
-            storageAccountType: connectorConfig.storageAccountType,
-            vmDeploymentName: void 0,
-            prefix: connectorConfig.prefix,
-            imageDeploymentName: void 0,
-            imageResourceGroupName: connectorConfig.imageResourceGroupName,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: AzureInstallFactory.type,
-            name: `Install Azure on connector ${connector.name} in location ${connectorConfig.location}`,
-            stepMax: AzureInstallFactory.stepMax,
-            message: 'Installing Azure connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorAzureConfig,
-            credentialConfig = credential.config as IConnectorAzureCredential;
-        const data: IAzureUninstallCommandData = {
-            tenantId: credentialConfig.tenantId,
-            clientId: credentialConfig.clientId,
-            secret: credentialConfig.secret,
-            subscriptionId: credentialConfig.subscriptionId,
-            resourceGroupName: connectorConfig.resourceGroupName,
-            imageResourceGroupName: connectorConfig.imageResourceGroupName,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: AzureUninstallFactory.type,
-            name: `Uninstall Azure on connector ${connector.name} in location ${connectorConfig.location}`,
-            stepMax: AzureUninstallFactory.stepMax,
-            message: 'Uninstalling Azure connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
     async validateInstallCommand(
@@ -229,13 +138,15 @@ export class ConnectorAzureFactory implements IConnectorFactory, OnModuleDestroy
 
         try {
             await api.getResourceGroup(connectorConfig.resourceGroupName);
-
-            await api.getImage(
-                connectorConfig.imageResourceGroupName,
-                connectorConfig.prefix
-            );
         } catch (err: any) {
-            throw new ConnectorInvalidError(err.message);
+            try {
+                await api.createResourceGroup(
+                    connectorConfig.resourceGroupName,
+                    connectorConfig.location
+                );
+            } catch (err2: any) {
+                throw new ConnectorInvalidError(err2.message);
+            }
         }
     }
 

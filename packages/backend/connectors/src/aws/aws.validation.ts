@@ -14,9 +14,6 @@ const schemaConfig = Joi.object({
         .required(),
     instanceType: Joi.string()
         .required(),
-    imageId: Joi.string()
-        .allow('')
-        .optional(),
     securityGroupName: Joi.string()
         .required(),
     tag: Joi.string()

@@ -9,7 +9,6 @@ import {
 } from '@scrapoxy/frontend-sdk';
 import { ConnectorGcpComponent } from './connector/connector.component';
 import { CredentialGcpComponent } from './credential/credential.component';
-import { InstallGcpComponent } from './install/install.component';
 import type {
     IConnectorComponent,
     IConnectorConfig,
@@ -32,8 +31,8 @@ export class ConnectorGcpFactory implements IConnectorFactory {
        defaultConnectorName: 'GCP Connector',
        url: 'https://scrapoxy.io/l/gcp',
        type: EConnectorType.Datacenter,
-       canInstall: true,
-       canUninstall: true,
+       canInstall: false,
+       canUninstall: false,
        useCertificate: true,
    };
 
@@ -54,6 +53,6 @@ export class ConnectorGcpFactory implements IConnectorFactory {
    }
 
    getInstallComponent(): Type<IInstallComponent> {
-       return InstallGcpComponent;
+       throw new Error('Not implemented');
    }
 }

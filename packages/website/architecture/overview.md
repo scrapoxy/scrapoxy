@@ -45,7 +45,7 @@ A freeproxy is a manual proxy exclusively available for the `Free proxies List` 
 It shares similarities with the proxy concept but is manually managed.
 
 
-### Task 📆
+### Task 📆 (deprecated)
 
 A task corresponds to an installation or uninstallation task for a datacenter connector.
 

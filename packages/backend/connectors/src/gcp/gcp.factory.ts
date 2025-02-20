@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
-    ConnectorCertificateNotFoundError,
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
-    TasksService,
     validate,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -18,21 +16,11 @@ import { ConnectorGcpService } from './gcp.service';
 import {
     schemaConfig,
     schemaCredential,
-    schemaInstallConfig,
 } from './gcp.validation';
-import {
-    GcpInstallFactory,
-    GcpUninstallFactory,
-} from './tasks';
 import type {
     IConnectorGcpConfig,
     IConnectorGcpCredential,
-    IConnectorGcpInstallConfig,
 } from './gcp.interface';
-import type {
-    IGcpInstallCommandData,
-    IGcpUninstallCommandData,
-} from './tasks';
 import type { OnModuleDestroy } from '@nestjs/common';
 import type {
     IConnectorConfig,
@@ -45,7 +33,6 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
-    IFingerprintOptions,
     IGcpQueryMachineTypes,
     ITaskToCreate,
 } from '@scrapoxy/common';
@@ -71,21 +58,8 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
 
     private readonly agents = new Agents();
 
-    constructor(
-        connectorproviders: ConnectorprovidersService,
-        tasks: TasksService
-    ) {
+    constructor(connectorproviders: ConnectorprovidersService) {
         connectorproviders.register(this);
-
-        tasks.register(
-            GcpInstallFactory.type,
-            new GcpInstallFactory(this.agents)
-        );
-
-        tasks.register(
-            GcpUninstallFactory.type,
-            new GcpUninstallFactory(this.agents)
-        );
     }
 
     onModuleDestroy() {
@@ -127,11 +101,8 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
         );
     }
 
-    async validateInstallConfig(config: IConnectorGcpInstallConfig): Promise<void> {
-        await validate(
-            schemaInstallConfig,
-            config
-        );
+    async validateInstallConfig(): Promise<void> {
+        // Nothing to validate
     }
 
     async buildConnectorService(connector: IConnectorToRefresh): Promise<IConnectorService> {
@@ -145,82 +116,12 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
         return service;
     }
 
-    async buildInstallCommand(
-        installId: string,
-        credential: ICredentialData,
-        connector: IConnectorData,
-        certificate: ICertificate | null,
-        fingerprintOptions: IFingerprintOptions,
-        config: any
-    ): Promise<ITaskToCreate> {
-        if (!certificate) {
-            throw new ConnectorCertificateNotFoundError(
-                connector.projectId,
-                connector.id
-            );
-        }
-
-        const
-            connectorConfig = connector.config as IConnectorGcpConfig,
-            credentialConfig = credential.config as IConnectorGcpCredential,
-            installConfig = config as IConnectorGcpInstallConfig;
-        const data: IGcpInstallCommandData = {
-            ...credentialConfig,
-            zone: connectorConfig.zone,
-            hostname: void 0,
-            port: connectorConfig.port,
-            certificate,
-            machineType: connectorConfig.machineType,
-            templateName: connectorConfig.templateName,
-            networkName: connectorConfig.networkName,
-            diskType: installConfig.diskType,
-            diskSize: installConfig.diskSize,
-            firewallName: connectorConfig.firewallName,
-            insertFirewallOpId: void 0,
-            insertInstanceOpId: void 0,
-            stopInstanceOpId: void 0,
-            deleteInstanceOpId: void 0,
-            insertImageOp: void 0,
-            insertTemplateOpId: void 0,
-            fingerprintOptions,
-            installId,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: GcpInstallFactory.type,
-            name: `Install GCP on connector ${connector.name} in zone ${connectorConfig.zone}`,
-            stepMax: GcpInstallFactory.stepMax,
-            message: 'Installing GCP connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildInstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
-    async buildUninstallCommand(
-        credential: ICredentialData,
-        connector: IConnectorData
-    ): Promise<ITaskToCreate> {
-        const
-            connectorConfig = connector.config as IConnectorGcpConfig,
-            credentialConfig = credential.config as IConnectorGcpCredential;
-        const data: IGcpUninstallCommandData = {
-            ...credentialConfig,
-            zone: connectorConfig.zone,
-            templateName: connectorConfig.templateName,
-            firewallName: connectorConfig.firewallName,
-            deleteTemplateOpId: void 0,
-            deleteImageOpId: void 0,
-            deleteFirewallOpId: void 0,
-        };
-        const taskToCreate: ITaskToCreate = {
-            type: GcpUninstallFactory.type,
-            name: `Uninstall GCP on connector ${connector.name} in zone ${connectorConfig.zone}`,
-            stepMax: GcpUninstallFactory.stepMax,
-            message: 'Uninstalling GCP connector...',
-            data,
-        };
-
-        return taskToCreate;
+    async buildUninstallCommand(): Promise<ITaskToCreate> {
+        throw new Error('Not implemented');
     }
 
     async validateInstallCommand(
@@ -237,33 +138,28 @@ export class ConnectorGcpFactory implements IConnectorFactory, OnModuleDestroy {
             this.agents
         );
 
-        // Check network
-        try {
-            await api.getNetwork(connectorConfig.networkName);
-        } catch (err: any) {
-            throw new ConnectorInvalidError(`Cannot find network ${connectorConfig.networkName}`);
-        }
-
-        // Check firewall
+        // Create firewall
         try {
             await api.getFirewall(connectorConfig.firewallName);
         } catch (err: any) {
-            throw new ConnectorInvalidError(`Cannot find firewall ${connectorConfig.firewallName}`);
-        }
-
-        // Check image
-        const imageName = `${connectorConfig.templateName}-image`;
-        try {
-            await api.getImage(imageName);
-        } catch (err: any) {
-            throw new ConnectorInvalidError(`Cannot find image ${imageName}`);
-        }
-
-        // Check template
-        try {
-            await api.getTemplate(connectorConfig.templateName);
-        } catch (err: any) {
-            throw new ConnectorInvalidError(`Cannot find template ${connectorConfig.templateName}`);
+            // Firewall not found
+            try {
+                await api.insertFirewall({
+                    firewallName: connectorConfig.firewallName,
+                    networkName: connectorConfig.networkName,
+                    allowed: [
+                        {
+                            IPProtocol: 'tcp',
+                            ports: [
+                                connectorConfig.port.toString(10),
+                            ],
+                        },
+                    ],
+                    priority: 1000,
+                });
+            } catch (err2: any) {
+                throw new ConnectorInvalidError(err2.message);
+            }
         }
     }
 

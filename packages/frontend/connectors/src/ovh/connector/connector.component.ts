@@ -24,9 +24,7 @@ import type {
     IOvhProjectView,
     IOvhQueryFlavors,
     IOvhQueryRegions,
-    IOvhQuerySnapshots,
     IOvhRegionView,
-    IOvhSnapshotView,
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
@@ -57,8 +55,6 @@ export class ConnectorOvhComponent implements IConnectorComponent, OnInit {
 
     flavors: IOvhFlavorView[] = [];
 
-    snapshots: IOvhSnapshotView[] = [];
-
     readonly subForm: FormGroup;
 
     processingProjects = false;
@@ -66,8 +62,6 @@ export class ConnectorOvhComponent implements IConnectorComponent, OnInit {
     processingRegions = false;
 
     processingFlavors = false;
-
-    processingSnapshots = false;
 
     constructor(
         @Inject(CommanderFrontendClientService)
@@ -91,9 +85,6 @@ export class ConnectorOvhComponent implements IConnectorComponent, OnInit {
             flavorId: [
                 void 0, Validators.required,
             ],
-            snapshotId: [
-                void 0,
-            ],
             tag: [
                 void 0, Validators.required,
             ],
@@ -116,7 +107,6 @@ export class ConnectorOvhComponent implements IConnectorComponent, OnInit {
             this.subForm.patchValue({
                 region: OVH_DEFAULT_REGION,
                 port: 3128,
-                snapshotId: '',
                 tag: 'spx',
             });
         }
@@ -142,20 +132,12 @@ export class ConnectorOvhComponent implements IConnectorComponent, OnInit {
         const region = this.subForm.value.region;
 
         if (projectId) {
-            await Promise.all([
-                this.updateFlavors(
-                    projectId,
-                    region
-                ),
-                this.updateSnapshots(
-                    projectId,
-                    region
-                ),
-            ]);
+            await this.updateFlavors(
+                projectId,
+                region
+            );
         } else {
-            await Promise.all([
-                this.updateFlavors(), this.updateSnapshots(),
-            ]);
+            await this.updateFlavors();
         }
     }
 
@@ -284,53 +266,6 @@ export class ConnectorOvhComponent implements IConnectorComponent, OnInit {
             }
         } else {
             this.flavors = [];
-        }
-    }
-
-    private async updateSnapshots(
-        projectId?: string, region?: string
-    ): Promise<void> {
-        if (projectId && region) {
-            this.processingSnapshots = true;
-
-            try {
-                const parameters: IOvhQuerySnapshots = {
-                    projectId,
-                    region,
-                };
-
-                this.snapshots = await this.commander.queryCredential(
-                    this.projectId,
-                    this.credentialId,
-                    {
-                        type: EOvhQueryCredential.Snapshots,
-                        parameters,
-                    }
-                )
-                    .then((snapshots: IOvhSnapshotView[]) =>
-                        snapshots.sort((
-                            a, b
-                        ) => a.name.localeCompare(b.name)));
-
-                if (this.snapshots.length > 0 &&
-                    !this.subForm.value.snapshotId) {
-                    this.subForm.patchValue({
-                        ...this.subForm.value,
-                        snapshotId: this.snapshots[ 0 ].id,
-                    });
-                }
-            } catch (err: any) {
-                console.error(err);
-
-                this.toastsService.error(
-                    'Connector OVH',
-                    err.message
-                );
-            } finally {
-                this.processingSnapshots = false;
-            }
-        } else {
-            this.snapshots = [];
         }
     }
 }

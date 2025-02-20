@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
     Agents,
-    RunScriptBuilder,
+    ScriptBuilder,
     TRANSPORT_DATACENTER_TYPE,
 } from '@scrapoxy/backend-sdk';
 import {
@@ -169,16 +169,17 @@ export class ConnectorScalewayService implements IConnectorService {
     private async createProxy(): Promise<IScalewayInstance> {
         const instance = await this.api.createInstance({
             name: randomName(),
-            image: this.connectorConfig.imageId,
-            commercial_type: this.connectorConfig.instanceType,
             project: this.credentialConfig.projectId,
+            commercial_type: this.connectorConfig.instanceType,
+            image: 'ubuntu_noble',
             tags: [
                 this.connectorConfig.tag,
             ],
         });
-        const userData = await new RunScriptBuilder(
+        const userData = await new ScriptBuilder(
             this.connectorConfig.port,
-            this.certificate
+            this.certificate,
+            'amd64'
         )
             .build();
 

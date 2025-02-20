@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import {
-    AwsApi,
     ConnectorAwsModule,
     IConnectorAwsConfig,
 } from '@scrapoxy/backend-connectors';
@@ -36,11 +35,10 @@ describe(
                             region: AWS_DEFAULT_REGION,
                             port: 3128,
                             instanceType: AWS_DEFAULT_INSTANCE_TYPE,
-                            imageId: '',
                             securityGroupName: `${SCRAPOXY_DATACENTER_PREFIX}-test-${suffix}`,
                             tag: 'spxtest',
                         } satisfies IConnectorAwsConfig,
-                        install: {},
+                        install: void 0,
                     },
                 ],
             },
@@ -60,29 +58,6 @@ describe(
             ],
             CONNECTOR_AWS_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallations',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    for (const connectorTest of credentialTest.connectors) {
-                        const api = new AwsApi(
-                            credentialTest.config.accessKeyId,
-                            credentialTest.config.secretAccessKey,
-                            connectorTest.config.region,
-                            agents
-                        );
-                        const securityGroupExists = await api.hasSecurityGroup(connectorTest.config.securityGroupName);
-                        expect(securityGroupExists)
-                            .toBeFalsy();
-
-                        const image = await api.describeImage(connectorTest.config.imageId);
-                        expect(image)
-                            .toBeUndefined();
-                    }
-                }
-            }
         );
     }
 );

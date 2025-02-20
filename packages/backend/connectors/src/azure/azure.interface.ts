@@ -31,7 +31,6 @@ export interface IConnectorAzureConfig {
     vmSize: string;
     storageAccountType: string;
     prefix: string;
-    imageResourceGroupName: string;
     useSpotInstances: boolean;
 }
 
@@ -110,10 +109,6 @@ export interface IAzureImageReference {
     sku?: string;
     version?: string;
 }
-
-
-//////////// IMAGES ////////////
-export type IAzureImage = IAzureResource;
 
 
 //////////// DEPLOYMENTS ////////////

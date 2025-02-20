@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import {
-    AzureApi,
     ConnectorAzureModule,
     IConnectorAzureConfig,
 } from '@scrapoxy/backend-connectors';
@@ -39,10 +38,9 @@ describe(
                             vmSize: AZURE_DEFAULT_VM_SIZE,
                             storageAccountType: AZURE_DEFAULT_STORAGE_ACCOUNT_TYPE,
                             prefix: `spxtest${suffix}`,
-                            imageResourceGroupName: `spxtest_image_${suffix}_rg`,
                             useSpotInstances: false,
                         } satisfies IConnectorAzureConfig,
-                        install: {},
+                        install: void 0,
                     },
                 ],
             },
@@ -62,31 +60,6 @@ describe(
             ],
             CONNECTOR_AZURE_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallation',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    const api = new AzureApi(
-                        credentialTest.config.tenantId,
-                        credentialTest.config.clientId,
-                        credentialTest.config.secret,
-                        credentialTest.config.subscriptionId,
-                        agents
-                    );
-
-                    for (const connectorTest of credentialTest.connectors) {
-                        await expect(api.getResourceGroup(connectorTest.config.resourceGroupName))
-                            .rejects
-                            .toThrowError(/Resource .* could not be found./);
-
-                        await expect(api.getResourceGroup(connectorTest.config.imageResourceGroupName))
-                            .rejects
-                            .toThrowError(/Resource .* could not be found./);
-                    }
-                }
-            }
         );
     }
 );

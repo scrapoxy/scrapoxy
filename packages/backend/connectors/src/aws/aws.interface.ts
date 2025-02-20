@@ -8,7 +8,6 @@ export interface IConnectorAwsConfig {
     region: string;
     port: number;
     instanceType: string;
-    imageId: string;
     securityGroupName: string;
     tag: string;
 }
@@ -105,11 +104,6 @@ export interface IAwsDescribeRunInstancesResponse {
     instancesSet: ({
         item: IAwsInstance[];
     } | undefined)[];
-}
-
-
-export interface IAwsCreateImageResponse {
-    imageId: string[];
 }
 
 

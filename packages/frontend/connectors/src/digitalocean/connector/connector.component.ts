@@ -22,10 +22,8 @@ import type { OnInit } from '@angular/core';
 import type {
     ICommanderFrontendClient,
     IDigitalOceanQuerySizes,
-    IDigitalOceanQuerySnapshots,
     IDigitalOceanRegionView,
     IDigitalOceanSizeView,
-    IDigitalOceanSnapshotView,
 } from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
@@ -54,15 +52,11 @@ export class ConnectorDigitaloceanComponent implements IConnectorComponent, OnIn
 
     sizes: IDigitalOceanSizeView[] = [];
 
-    snapshots: IDigitalOceanSnapshotView[] = [];
-
     readonly subForm: FormGroup;
 
     processingRegions = false;
 
     processingSizes = false;
-
-    processingSnapshots = false;
 
     constructor(
         @Inject(CommanderFrontendClientService)
@@ -82,9 +76,6 @@ export class ConnectorDigitaloceanComponent implements IConnectorComponent, OnIn
             ],
             size: [
                 void 0, Validators.required,
-            ],
-            snapshotId: [
-                void 0,
             ],
             tag: [
                 void 0, Validators.required,
@@ -110,7 +101,6 @@ export class ConnectorDigitaloceanComponent implements IConnectorComponent, OnIn
                 port: 3128,
                 size: DIGITALOCEAN_DEFAULT_SIZE,
                 tag: 'spx',
-                snapshotId: '',
             });
         }
 
@@ -120,9 +110,7 @@ export class ConnectorDigitaloceanComponent implements IConnectorComponent, OnIn
     async regionChanged(): Promise<void> {
         const region = this.subForm.value.region;
 
-        await Promise.all([
-            this.updateSizes(region), this.updateSnapshots(region),
-        ]);
+        await this.updateSizes(region);
     }
 
     private async updateRegions(): Promise<void> {
@@ -185,41 +173,6 @@ export class ConnectorDigitaloceanComponent implements IConnectorComponent, OnIn
             }
         } else {
             this.sizes = [];
-        }
-    }
-
-    private async updateSnapshots(region?: string): Promise<void> {
-        if (region) {
-            this.processingSnapshots = true;
-
-            try {
-                const parameters: IDigitalOceanQuerySnapshots = {
-                    region,
-                };
-
-                this.snapshots = await this.commander.queryCredential(
-                    this.projectId,
-                    this.credentialId,
-                    {
-                        type: EDigitalOceanQueryCredential.Snapshots,
-                        parameters,
-                    }
-                )
-                    .then((snp: IDigitalOceanSnapshotView[]) => snp.sort((
-                        a, b
-                    ) => a.name.localeCompare(b.name)));
-            } catch (err: any) {
-                console.error(err);
-
-                this.toastsService.error(
-                    'Connector DO',
-                    err.message
-                );
-            } finally {
-                this.processingSnapshots = false;
-            }
-        } else {
-            this.snapshots = [];
         }
     }
 }

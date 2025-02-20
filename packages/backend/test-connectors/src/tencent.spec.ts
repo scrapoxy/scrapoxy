@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import {
     ConnectorTencentModule,
     IConnectorTencentConfig,
-    TencentApi,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
 import {
@@ -34,11 +33,10 @@ describe(
                             zone: TENCENT_DEFAULT_ZONE,
                             port: 3128,
                             instanceType: TENCENT_DEFAULT_INSTANCE_TYPE,
-                            imageId: '',
                             tag: 'spxtest',
                             projectId: '',
                         } satisfies IConnectorTencentConfig,
-                        install: {},
+                        install: void 0,
                     },
                 ],
             },
@@ -58,32 +56,6 @@ describe(
             ],
             CONNECTOR_TENCENT_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallations',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    const api = new TencentApi(
-                        credentialTest.config.secretId,
-                        credentialTest.config.secretKey,
-                        TENCENT_DEFAULT_REGION,
-                        // credentialTest.config.projectId,
-                        agents
-                    );
-                        // Instances
-                    const instances = await api.describeInstances();
-                    expect(instances)
-                        .toHaveLength(0);
-
-                    // Images
-                    const images = await api.describeImages({
-                        imageType: 'PRIVATE_IMAGE',
-                    });
-                    expect(images)
-                        .toHaveLength(0);
-                }
-            }
         );
     }
 );

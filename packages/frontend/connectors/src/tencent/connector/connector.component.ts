@@ -87,9 +87,6 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
             projectId: [
                 void 0, Validators.pattern(/^\d+$/),
             ],
-            imageId: [
-                void 0,
-            ],
             tag: [
                 void 0, Validators.required,
             ],
@@ -115,7 +112,6 @@ export class ConnectorTencentComponent implements IConnectorComponent, OnInit {
                 zone: TENCENT_DEFAULT_ZONE,
                 instanceType: TENCENT_DEFAULT_INSTANCE_TYPE,
                 projectId: '',
-                imageId: '',
                 tag: 'spx',
             });
         }

@@ -33,9 +33,9 @@ export interface IConnectorConfig {
 
     type: EConnectorType;
 
-    canInstall: boolean;
+    canInstall: boolean; // TODO: to remove
 
-    canUninstall: boolean;
+    canUninstall: boolean; // TODO: to remove
 
     useCertificate: boolean;
 }
@@ -52,6 +52,7 @@ export interface IConnectorFactory {
 
     getConnectorComponent: () => Type<IConnectorComponent>;
 
+    // TODO: to remove
     getInstallComponent: () => Type<IInstallComponent>;
 }
 

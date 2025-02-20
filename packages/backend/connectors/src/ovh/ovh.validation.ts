@@ -18,9 +18,6 @@ const schemaConfig = Joi.object({
         .required(),
     port: Joi.number()
         .required(),
-    snapshotId: Joi.string()
-        .allow('')
-        .optional(),
     tag: Joi.string()
         .required(),
 });

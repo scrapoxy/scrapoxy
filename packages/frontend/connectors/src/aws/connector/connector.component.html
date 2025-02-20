@@ -93,21 +93,6 @@
             </c-col>
         </c-row>
     }
-    @if (subForm.controls['imageId']; as c) {
-        <c-row>
-            <label cLabel cCol md="2" for="imageId">Image ID</label>
-
-            <c-col md="10">
-                <input
-                    type="text"
-                    cFormControl
-                    id="imageId"
-                    formControlName="imageId"
-                    placeholder="Enter the image ID"
-                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
-            </c-col>
-        </c-row>
-    }
     @if (subForm.controls['securityGroupName']; as c) {
         <c-row>
             <label cLabel cCol md="2" for="securityGroupName">Security group name</label>

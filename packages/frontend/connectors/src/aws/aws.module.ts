@@ -14,7 +14,6 @@ import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorAwsFactory } from './aws.factory';
 import { ConnectorAwsComponent } from './connector/connector.component';
 import { CredentialAwsComponent } from './credential/credential.component';
-import { InstallAwsComponent } from './install/install.component';
 
 
 @NgModule({
@@ -29,7 +28,7 @@ import { InstallAwsComponent } from './install/install.component';
         TooltipModule,
     ],
     declarations: [
-        ConnectorAwsComponent, CredentialAwsComponent, InstallAwsComponent,
+        ConnectorAwsComponent, CredentialAwsComponent,
     ],
     providers: [
         ConnectorAwsFactory,

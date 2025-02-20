@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import {
     ConnectorDigitaloceanModule,
-    DigitalOceanApi,
     IConnectorDigitalOceanConfig,
 } from '@scrapoxy/backend-connectors';
 import { Agents } from '@scrapoxy/backend-sdk';
@@ -33,10 +32,9 @@ describe(
                             region: DIGITALOCEAN_DEFAULT_REGION,
                             port: 3128,
                             size: DIGITALOCEAN_DEFAULT_SIZE,
-                            snapshotId: '',
                             tag: 'spxtest',
                         } satisfies IConnectorDigitalOceanConfig,
-                        install: {},
+                        install: void 0,
                     },
                 ],
             },
@@ -56,25 +54,6 @@ describe(
             ],
             CONNECTOR_DIGITALOCEAN_TYPE,
             credentialsConfig
-        );
-
-        it(
-            'should validate the uninstallation',
-            async() => {
-                for (const credentialTest of credentialsConfig) {
-                    const api = new DigitalOceanApi(
-                        credentialTest.config.token,
-                        agents
-                    );
-
-                    for (const connectorTest of credentialTest.connectors) {
-                        const snapshotId = parseInt(connectorTest.config.snapshotId);
-                        await expect(api.getSnapshot(snapshotId))
-                            .rejects
-                            .toThrow(/could not be found/);
-                    }
-                }
-            }
         );
     }
 );

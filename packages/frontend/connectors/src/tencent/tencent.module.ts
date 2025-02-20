@@ -13,7 +13,6 @@ import { IconModule } from '@coreui/icons-angular';
 import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorTencentComponent } from './connector/connector.component';
 import { CredentialTencentComponent } from './credential/credential.component';
-import { InstallTencentComponent } from './install/install.component';
 import { ConnectorTencentFactory } from './tencent.factory';
 
 
@@ -29,7 +28,7 @@ import { ConnectorTencentFactory } from './tencent.factory';
         TooltipModule,
     ],
     declarations: [
-        ConnectorTencentComponent, CredentialTencentComponent, InstallTencentComponent,
+        ConnectorTencentComponent, CredentialTencentComponent,
     ],
     providers: [
         ConnectorTencentFactory,

@@ -5,19 +5,14 @@ import type {
     IDigitalOceanAccountResponse,
     IDigitalOceanAction,
     IDigitalOceanActionResponse,
-    IDigitalOceanCreateDropletReferenceRequest,
     IDigitalOceanCreateDropletsRequest,
     IDigitalOceanDroplet,
-    IDigitalOceanDropletResponse,
     IDigitalOceanDropletsResponse,
     IDigitalOceanError,
     IDigitalOceanRegion,
     IDigitalOceanRegionsResponse,
     IDigitalOceanSize,
     IDigitalOceanSizesResponse,
-    IDigitalOceanSnapshot,
-    IDigitalOceanSnapshotResponse,
-    IDigitalOceanSnapshotsResponse,
 } from './digitalocean.interface';
 import type {
     AxiosInstance,
@@ -136,32 +131,11 @@ export class DigitalOceanApi {
         return res.data.droplets;
     }
 
-    async getDroplet(dropletId: number): Promise<IDigitalOceanDroplet> {
-        const res = await this.instance.get<IDigitalOceanDropletResponse>(`/droplets/${dropletId}`);
-
-        return res.data.droplet;
-    }
-
-    async createDropletReference(request: IDigitalOceanCreateDropletReferenceRequest): Promise<IDigitalOceanDroplet> {
-        const response = await this.instance.post<IDigitalOceanDropletResponse>(
-            'droplets',
-            {
-                image: request.imageName,
-                name: request.name,
-                region: request.region,
-                size: request.size,
-                user_data: request.userData,
-            }
-        );
-
-        return response.data.droplet;
-    }
-
     async createDroplets(request: IDigitalOceanCreateDropletsRequest): Promise<IDigitalOceanDroplet[]> {
         const res = await this.instance.post<IDigitalOceanDropletsResponse>(
             'droplets',
             {
-                image: request.snapshotId,
+                image: request.imageName,
                 names: request.names.slice(
                     0,
                     DROPLETS_LIMIT_PER_REQUEST
@@ -187,69 +161,7 @@ export class DigitalOceanApi {
         return res.data.action;
     }
 
-    async powerOffDroplet(dropletId: number): Promise<IDigitalOceanAction> {
-        const res = await this.instance.post<IDigitalOceanActionResponse>(
-            `droplets/${dropletId}/actions`,
-            {
-                type: 'power_off',
-            }
-        );
-
-        return res.data.action;
-    }
-
-    async snapshotDroplet(dropletId: number): Promise<IDigitalOceanAction> {
-        const res = await this.instance.post<IDigitalOceanActionResponse>(
-            `droplets/${dropletId}/actions`,
-            {
-                type: 'snapshot',
-            }
-        );
-
-        return res.data.action;
-    }
-
     async deleteDroplet(dropletId: number): Promise<void> {
         await this.instance.delete(`droplets/${dropletId}`);
-    }
-
-    async getDropletSnapshots(dropletId: number): Promise<IDigitalOceanSnapshot[]> {
-        const res = await this.instance.get<IDigitalOceanSnapshotsResponse>(
-            `droplets/${dropletId}/snapshots`,
-            {
-                params: QUERY_PARAMS,
-            }
-        );
-
-        return res.data.snapshots;
-    }
-
-    //////////// SNAPSHOTS ////////////
-    async getAllSnapshots(): Promise<IDigitalOceanSnapshot[]> {
-        const res = await this.instance.get<IDigitalOceanSnapshotsResponse>('snapshots');
-
-        return res.data.snapshots;
-    }
-
-    async getSnapshot(snapshotId: number): Promise<IDigitalOceanSnapshot> {
-        const res = await this.instance.get<IDigitalOceanSnapshotResponse>(`snapshots/${snapshotId}`);
-
-        return res.data.snapshot;
-    }
-
-    async deleteSnapshot(snapshotId: number): Promise<void> {
-        await this.instance.delete(`snapshots/${snapshotId}`);
-    }
-
-    //////////// ACTIONS ////////////
-    async getAction(actionId: number): Promise<IDigitalOceanAction> {
-        const res = await this.instance.get<IDigitalOceanActionResponse>(
-            `actions/${actionId}`,
-            {
-                params: QUERY_PARAMS,
-            }
-        );
-
-        return res.data.action;
     }
 }

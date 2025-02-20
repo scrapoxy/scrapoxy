@@ -2,7 +2,6 @@ import {
     Agents,
     AxiosFormData,
 } from '@scrapoxy/backend-sdk';
-import { SCRAPOXY_DATACENTER_PREFIX } from '@scrapoxy/common';
 import axios, { AxiosError } from 'axios';
 import { getAzureErrorMessage } from './azure.helpers';
 import { EAzureProvisioningState } from './azure.interface';
@@ -12,8 +11,6 @@ import type {
     IAzureDeploymentRequest,
     IAzureDisk,
     IAzureError,
-    IAzureImage,
-    IAzureInstanceView,
     IAzureLocation,
     IAzureNetworkInterface,
     IAzurePublicIpAddress,
@@ -187,21 +184,6 @@ export class AzureApi {
         );
     }
 
-    async deleteResourceGroup(resourceGroupName: string): Promise<string> {
-        const response = await this.instanceManagement.delete(
-            `resourcegroups/${resourceGroupName}`,
-            {
-                params: {
-                    'api-version': '2021-04-01',
-                    forceDeletionTypes: 'Microsoft.Compute/virtualMachines',
-                },
-            }
-        );
-        const id = response.headers[ 'x-ms-request-id' ];
-
-        return id;
-    }
-
     async getResourceGroupState(
         resourceGroupName: string,
         prefix: string
@@ -369,44 +351,11 @@ export class AzureApi {
         return response.data.value;
     }
 
-    async getVirtualMachineInstanceView(
-        resourceGroupName: string, virtualMachineName: string
-    ): Promise<IAzureInstanceView> {
-        const response = await this.instanceManagement.get<IAzureInstanceView>(
-            `resourceGroups/${resourceGroupName}/providers/Microsoft.Compute/virtualMachines/${virtualMachineName}/instanceView`,
-            {
-                params: {
-                    'api-version': '2023-03-01',
-                },
-            }
-        );
-
-        return response.data;
-    }
-
     async startVirtualMachine(
         resourceGroupName: string, virtualMachineName: string
     ): Promise<string> {
         const response = await this.instanceManagement.post(
             `resourceGroups/${resourceGroupName}/providers/Microsoft.Compute/virtualMachines/${virtualMachineName}/start`,
-            {},
-            {
-                params: {
-                    'api-version': '2023-03-01',
-                    skipShutdown: false,
-                },
-            }
-        );
-        const id = response.headers[ 'x-ms-request-id' ];
-
-        return id;
-    }
-
-    async powerOffVirtualMachine(
-        resourceGroupName: string, virtualMachineName: string
-    ): Promise<string> {
-        const response = await this.instanceManagement.post(
-            `resourceGroups/${resourceGroupName}/providers/Microsoft.Compute/virtualMachines/${virtualMachineName}/powerOff`,
             {},
             {
                 params: {
@@ -437,22 +386,6 @@ export class AzureApi {
         return id;
     }
 
-    //////////// IMAGE ////////////
-    async getImage(
-        resourceGroupName: string, prefix: string
-    ): Promise<IAzureImage> {
-        const response = await this.instanceManagement.get<IAzureImage>(
-            `resourceGroups/${resourceGroupName}/providers/Microsoft.Compute/galleries/${prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_gal/images/${prefix}img_${SCRAPOXY_DATACENTER_PREFIX}_def/versions/1.0.0`,
-            {
-                params: {
-                    'api-version': '2023-07-03',
-                },
-            }
-        );
-
-        return response.data;
-    }
-
     //////////// DEPLOYMENTS ////////////
     async listDeployments(
         resourceGroupName: string,
@@ -474,21 +407,6 @@ export class AzureApi {
         );
 
         return response.data.value;
-    }
-
-    async getDeployment(
-        resourceGroupName: string, deploymentName: string
-    ): Promise<IAzureDeployment> {
-        const response = await this.instanceManagement.get<IAzureDeployment>(
-            `resourceGroups/${resourceGroupName}/providers/Microsoft.Resources/deployments/${deploymentName}`,
-            {
-                params: {
-                    'api-version': '2021-04-01',
-                },
-            }
-        );
-
-        return response.data;
     }
 
     async createDeployment(
@@ -515,23 +433,6 @@ export class AzureApi {
         }
 
         return response.data;
-    }
-
-    async cancelDeployment(
-        resourceGroupName: string, deploymentName: string
-    ): Promise<string> {
-        const response = await this.instanceManagement.post(
-            `resourceGroups/${resourceGroupName}/providers/Microsoft.Resources/deployments/${deploymentName}/cancel`,
-            {},
-            {
-                params: {
-                    'api-version': '2021-04-01',
-                },
-            }
-        );
-        const id = response.headers[ 'x-ms-request-id' ];
-
-        return id;
     }
 
     //////////// AUTH ////////////

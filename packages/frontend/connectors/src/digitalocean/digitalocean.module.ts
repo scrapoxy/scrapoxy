@@ -14,7 +14,6 @@ import { ConnectorprovidersModule } from '@scrapoxy/frontend-sdk';
 import { ConnectorDigitaloceanComponent } from './connector/connector.component';
 import { CredentialDigitaloceanComponent } from './credential/credential.component';
 import { ConnectorDigitaloceanFactory } from './digitalocean.factory';
-import { InstallDigitaloceanComponent } from './install/install.component';
 
 
 @NgModule({
@@ -29,7 +28,7 @@ import { InstallDigitaloceanComponent } from './install/install.component';
         TooltipModule,
     ],
     declarations: [
-        ConnectorDigitaloceanComponent, CredentialDigitaloceanComponent, InstallDigitaloceanComponent,
+        ConnectorDigitaloceanComponent, CredentialDigitaloceanComponent,
     ],
     providers: [
         ConnectorDigitaloceanFactory,

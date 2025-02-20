@@ -12,9 +12,6 @@ const schemaConfig = Joi.object({
         .required(),
     size: Joi.string()
         .required(),
-    snapshotId: Joi.string()
-        .allow('')
-        .optional(),
     tag: Joi.string()
         .required(),
 });

@@ -10,7 +10,6 @@ export interface IConnectorTencentConfig {
     port: number;
     instanceType: string;
     projectId: string;
-    imageId: string;
     tag: string;
 }
 
@@ -104,17 +103,6 @@ export interface ITencentDescribeInstanceTypeConfigsResponse {
 }
 
 
-//////////// IMAGES ////////////
-export enum ETencentImageState {
-    CREATING = 'CREATING',
-    NORMAL = 'NORMAL',
-    USING = 'USING',
-    FAILED = 'FAILED',
-    DELETING = 'DELETING',
-    DELETED = 'DELETED',
-}
-
-
 export interface ITencentImage {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     ImageId: string;
@@ -136,10 +124,4 @@ export interface ITencentDescribeImagesRequest {
 export interface ITencentDescribeImagesResponse {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     ImageSet: ITencentImage[];
-}
-
-
-export interface ITencentCreateImageResponse {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    ImageId: string;
 }
