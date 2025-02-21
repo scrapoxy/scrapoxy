@@ -1,6 +1,18 @@
 {
     "releases": [
         {
+            "version": "4.23.0",
+            "breaking": "Before upgrading, please uninstall all connectors as this option will be removed in this version.",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**install**: removed the **connector installation** step, since Scrapoxy now launches the proxy without it."
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.22.1",
             "commitGroups": [
                 {
