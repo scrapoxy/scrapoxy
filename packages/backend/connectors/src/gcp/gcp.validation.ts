@@ -18,8 +18,6 @@ const schemaConfig = Joi.object({
         .required(),
     machineType: Joi.string()
         .required(),
-    templateName: Joi.string()
-        .required(),
     networkName: Joi.string()
         .required(),
     label: Joi.string()

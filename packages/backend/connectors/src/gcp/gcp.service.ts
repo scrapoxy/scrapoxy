@@ -67,7 +67,6 @@ export class ConnectorGcpService implements IConnectorService {
             diskType: 'pd-standard',
             instancesNames: randomNames(count),
             labelName: this.connectorConfig.label,
-            templateName: this.connectorConfig.templateName,
             machineType: this.connectorConfig.machineType,
             networkName: this.connectorConfig.networkName,
             startupScript,

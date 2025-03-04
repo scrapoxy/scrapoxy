@@ -82,31 +82,6 @@
             </c-col>
         </c-row>
     }
-    @if (subForm.controls['templateName']; as c) {
-        <c-row>
-            <label cLabel cCol md="2" for="templateName">Template Name</label>
-
-            <c-col md="10">
-                <input
-                    type="text"
-                    cFormControl
-                    id="templateName"
-                    formControlName="templateName"
-                    placeholder="Enter the Template Name"
-                    [valid]="c.dirty || c.touched ? c.valid : undefined" />
-
-                @if (c.dirty || c.touched) {
-                    <c-form-feedback [valid]="c.valid">
-                        @if (c.errors; as errs) {
-                            @if (errs['required']) {
-                                <div>Template Name is required.</div>
-                            }
-                        }
-                    </c-form-feedback>
-                }
-            </c-col>
-        </c-row>
-    }
     @if (subForm.controls['networkName']; as c) {
         <c-row>
             <label cLabel cCol md="2" for="networkName">Network Name</label>

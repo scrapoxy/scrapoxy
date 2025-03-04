@@ -32,7 +32,6 @@ describe(
                             zone: GCP_DEFAULT_ZONE,
                             port: 3128,
                             machineType: GCP_DEFAULT_MACHINE_TYPE,
-                            templateName: `spxtest-template-${suffix}`,
                             networkName: 'default',
                             label: 'spxtest',
                             firewallName: `spxtest-proxy-fw-${suffix}`,

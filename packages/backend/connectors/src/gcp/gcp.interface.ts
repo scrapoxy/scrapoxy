@@ -12,7 +12,6 @@ export interface IConnectorGcpConfig {
     networkName: string;
     port: number;
     label: string;
-    templateName: string;
     zone: string;
 }
 
@@ -66,7 +65,6 @@ export interface IGcpBulkInsertInstancesRequest {
     machineType: string;
     networkName: string;
     sourceImage: string;
-    templateName: string;
     zone: string;
     startupScript: string;
 }

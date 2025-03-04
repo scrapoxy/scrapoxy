@@ -76,9 +76,6 @@ export class ConnectorGcpComponent implements IConnectorComponent, OnInit {
             machineType: [
                 void 0, Validators.required,
             ],
-            templateName: [
-                void 0, Validators.required,
-            ],
             networkName: [
                 void 0, Validators.required,
             ],
@@ -108,7 +105,6 @@ export class ConnectorGcpComponent implements IConnectorComponent, OnInit {
                 zone: GCP_DEFAULT_ZONE,
                 port: 3128,
                 machineType: GCP_DEFAULT_MACHINE_TYPE,
-                templateName: `${SCRAPOXY_DATACENTER_PREFIX}-template`,
                 networkName: 'default',
                 label: 'spx',
                 firewallName: `${SCRAPOXY_DATACENTER_PREFIX}-fw`,
