@@ -746,6 +746,23 @@ export class MasterService implements OnModuleInit, OnModuleDestroy {
             return;
         }
 
+        // Scale up proxy if auto-scale is enabled
+        if (project.autoScaleUp && project.status === EProjectStatus.CALM) {
+            try {
+                await this.commanderConnect.scaleUpProject(project.id);
+            } catch (err: any) {
+                this.endSocketWithError(
+                    req,
+                    socket,
+                    557,
+                    'cannot_scaleup',
+                    `Cannot change project status: ${err.message}`
+                );
+
+                return;
+            }
+        }
+
         socket.on(
             'timeout',
             () => {
