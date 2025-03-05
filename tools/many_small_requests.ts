@@ -33,10 +33,11 @@ const proxy = {
 const ca = fs.readFileSync('packages/backend/sdk/src/assets/certificates/scrapoxy-ca.crt')
     .toString();
 const THREADS_COUNT = 100;
-
+const MODE_MIN = 0;
+const MODE_MAX = 2;
 
 function askFingerprintLoop(
-    mode = 0, tokenIndex = 0
+    mode: number, tokenIndex = 0
 ): Promise<void> {
     const token = tokens[ tokenIndex ];
     const [
@@ -156,16 +157,16 @@ function askFingerprintLoop(
             console.error(`[${err.m}] get error using ${err.using}: ${err.message}`);
         })
         .finally(() => {
-            if (mode >= 2) {
+            if (mode >= MODE_MAX) {
                 if (tokenIndex >= tokens.length - 1) {
                     return askFingerprintLoop(
-                        0,
+                        MODE_MIN,
                         0
                     );
                 }
 
                 return askFingerprintLoop(
-                    0,
+                    MODE_MIN,
                     tokenIndex + 1
                 );
             }
@@ -184,7 +185,7 @@ function askFingerprintLoop(
     const promises: Promise<void>[] = [];
     for (let i = 0; i < THREADS_COUNT; ++i) {
         promises.push(askFingerprintLoop(
-            0,
+            MODE_MIN,
             i % tokens.length
         ));
     }
