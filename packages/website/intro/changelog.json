@@ -1,6 +1,18 @@
 {
     "releases": [
         {
+            "version": "4.23.1",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**master**: add missing auto-scaleup part on connect tunnel method",
+                        "**gcp**: remove unused template name"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.23.0",
             "breaking": "Before upgrading, please uninstall all connectors as this option will be removed in this version.",
             "commitGroups": [
