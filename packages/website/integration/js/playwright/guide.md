@@ -48,7 +48,7 @@ certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n scrapoxy -i ./scrapoxy-ca.crt
 
 ## Step 4: Create and run the script
 
-Create a file name `playwright.js` with the following content:
+Create a file name `make_requests.js` with the following content:
 
 ```javascript
 import playwright from 'playwright';
@@ -89,5 +89,5 @@ All requests made in the same session will use the same proxy instance.
 Run the script:
 
 ```shell
-node playwright.js
+node make_requests.js
 ```

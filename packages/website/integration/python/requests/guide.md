@@ -27,7 +27,7 @@ It is assumed that file is saved in `/tmp/scrapoxy-ca.crt`.
 
 ## Step 3: Create and run the script
 
-Create a file name `requests.py` with the following content:
+Create a file name `make_requests.py` with the following content:
 
 ```python
 import requests
@@ -54,7 +54,7 @@ indicating the name of the proxy instance assigned for the request.
 Run the script:
 
 ```shell
-python requests.py
+python make_requests.py
 ```
 
 

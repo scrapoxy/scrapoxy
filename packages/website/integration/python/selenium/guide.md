@@ -29,7 +29,7 @@ It is assumed that file is saved in `/tmp/scrapoxy-ca.crt`.
 
 ### Step 3: Create and run the script
 
-Create a file name `selenium.py` with the following content:
+Create a file name `make_requests.py` with the following content:
 
 ```python
 from seleniumwire import webdriver
@@ -61,5 +61,5 @@ All requests made in the same session will use the same proxy instance.
 Run the script:
 
 ```shell
-python selenium.py
+python make_requests.py
 ```

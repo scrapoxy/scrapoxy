@@ -25,7 +25,7 @@ pip install hrequests[all]
 
 ## Step 3: Create and run the script
 
-Create a file name `hrequests.py` with the following content:
+Create a file name `make_request.py` with the following content:
 
 ```python
 import hrequests
@@ -56,5 +56,5 @@ All requests made in the same session will use the same proxy instance.
 Run the script:
 
 ```shell
-python hrequests.py
+python make_request.py
 ```

@@ -25,7 +25,7 @@ npm install puppeteer
 
 ## Step 3: Create and run the script
 
-Create a file name `puppeteer.js` with the following content:
+Create a file name `make_requests.js` with the following content:
 
 ```javascript
 import puppeteer from 'puppeteer';
@@ -71,7 +71,7 @@ All requests made in the same session will use the same proxy instance.
 Run the script:
 
 ```shell
-node puppeteer.js
+node make_requests.js
 ```
 
 
