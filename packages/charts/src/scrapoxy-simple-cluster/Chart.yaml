@@ -2,5 +2,5 @@ apiVersion: v2
 name: scrapoxy-simple-cluster
 description: Scrapoxy cluster with file storage
 type: application
-version: 1.0.1
+version: 1.0.2
 appVersion: "4.0.0"

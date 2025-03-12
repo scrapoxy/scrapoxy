@@ -6,12 +6,15 @@ metadata:
         app.kubernetes.io/component: {{ .Release.Name }}-master
         app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
-    type: ClusterIP
+    type: {{ .Values.master.serviceType }}
     ports:
         - name: master
           port: {{ .Values.master.port }}
           protocol: TCP
           appProtocol: tcp
+{{- if eq .Values.master.serviceType "NodePort" }}
+          nodePort: {{ .Values.master.nodePort }}
+{{- end }}
 {{- with .Values.master.debugPort }}
         - name: debug
           protocol: TCP

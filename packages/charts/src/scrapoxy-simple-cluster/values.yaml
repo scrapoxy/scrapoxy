@@ -19,7 +19,11 @@ commander:
             memory: 256Mi
 
 master:
+    serviceType: ClusterIP # NodePort or LoadBalancer
+
     port: 8888
+    nodePort: 31888
+
     resources:
         limits:
             cpu: 1000m
