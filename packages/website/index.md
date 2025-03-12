@@ -102,7 +102,7 @@ providers:
           url: '/l/proxy-cheap'
           img: '/assets/images/proxy-cheap.svg'
         - name: 'Proxy Seller'
-          url: '/proxy-seller'
+          url: '/l/proxy-seller'
           img: '/assets/images/proxy-seller.svg'
         - name: 'Proxyrack'
           url: '/l/proxyrack'
