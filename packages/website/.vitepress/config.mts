@@ -281,6 +281,12 @@ export default defineConfig({
                     replacement: fileURLToPath(
                         new URL('./theme/components/VPDocAsideOutline.vue', import.meta.url)
                     )
+                },
+                {
+                    find: /^.*\/VPSponsorsGrid\.vue$/,
+                    replacement: fileURLToPath(
+                        new URL('./theme/components/VPSponsorsGrid.vue', import.meta.url)
+                    )
                 }
             ]
         }
