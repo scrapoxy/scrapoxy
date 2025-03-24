@@ -1,6 +1,18 @@
 {
     "releases": [
         {
+            "version": "4.23.2",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**auth**: change cookie name from 'token' to 'spxtoken'",
+                        "**frontend**: correct CALM MODE tooltip"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.23.1",
             "commitGroups": [
                 {
