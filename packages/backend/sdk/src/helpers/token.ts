@@ -18,7 +18,7 @@ export const SCRAPOXY_COOKIE_REGEX = new RegExp(
 );
 
 
-export const AUTH_COOKIE = 'token';
+export const AUTH_COOKIE = 'spxtoken';
 
 
 const COOKIE_OPTIONS = {
