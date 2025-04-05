@@ -5,7 +5,7 @@ I will be happy to receive your contributions!
 
 ## Bug Reports or Feature Requests
 
-You can report **bugs 🐞** or **request features 🤲** by [opening an issue](/l/github-scrapoxy-issues).
+You can report **bugs 🐞** or **request features 🤲** in the [Discord Server](/l/discord-scrapoxy).
 
 
 ## Pull Requests

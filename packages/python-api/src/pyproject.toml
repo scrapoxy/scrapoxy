@@ -15,5 +15,5 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/scrapoxy/scrapoxy"
-Issues = "https://github.com/scrapoxy/scrapoxy/issues"
+Homepage = "https://scrapoxy.io"
+Issues = "https://scrapoxy.io/l/discord-scrapoxy"

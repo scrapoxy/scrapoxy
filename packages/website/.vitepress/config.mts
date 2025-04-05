@@ -71,7 +71,6 @@ export default defineConfig({
         nav: [
             {text: '🏠 Home', link: '/'},
             {text: '📄 Documentation', link: '/intro/scrapoxy'},
-            {text: '✉️ Contact', link: '/l/github-scrapoxy-issues'},
             {
                 text: '📙 Resources',
                 items: [

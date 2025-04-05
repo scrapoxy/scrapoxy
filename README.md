@@ -15,7 +15,7 @@ and smartly routes traffic to **avoid bans** 🚫.
 
 ![Scrapoxy](https://raw.githubusercontent.com/scrapoxy/scrapoxy/master/packages/website/public/assets/images/scrapoxy.gif)
 
-**🚀🚀 [GO TO SCRAPOXY.IO FOR MORE INFORMATION!](https://scrapoxy.io) 🚀🚀**
+**🚀🚀 [MORE INFO AT SCRAPOXY.IO](https://scrapoxy.io) // [JOIN THE DISCORD SERVER FOR SUPPORT OR FEATURE REQUEST](https://scrapoxy.io/l/discord-scrapoxy) 🚀🚀**
 
 
 ## Features
