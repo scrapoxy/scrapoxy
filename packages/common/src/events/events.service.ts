@@ -4,6 +4,7 @@ import {
 } from 'socket.io-client';
 import { AEventsService } from './events.abstract';
 import { ConnectedEvent } from './events.interface';
+import { AUTH_COOKIE } from '../info';
 import type { IProjectNamespace } from './events.interface';
 
 
@@ -36,7 +37,7 @@ export class EventsService extends AEventsService {
                 transportOptions = {
                     polling: {
                         extraHeaders: {
-                            Cookie: `token=${token}; Path=/; HttpOnly; SameSite=Strict`,
+                            Cookie: `${AUTH_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Strict`,
                         },
                     },
                 };

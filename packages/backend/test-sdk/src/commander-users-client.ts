@@ -1,8 +1,6 @@
+import { catchError } from '@scrapoxy/backend-sdk';
 import {
     AUTH_COOKIE,
-    catchError,
-} from '@scrapoxy/backend-sdk';
-import {
     randomName,
     toUserToken,
 } from '@scrapoxy/common';
