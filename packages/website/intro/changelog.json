@@ -1,6 +1,23 @@
 {
     "releases": [
         {
+            "version": "4.24.0",
+            "commitGroups": [
+                {
+                    "title": "Features",
+                    "commits": [
+                        "**config**: show version and installId in UI"
+                    ]
+                },
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**token**: fix token import"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.23.2",
             "commitGroups": [
                 {
