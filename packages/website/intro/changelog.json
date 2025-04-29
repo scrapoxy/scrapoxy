@@ -1,6 +1,18 @@
 {
     "releases": [
         {
+            "version": "4.24.1",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**iproyal**: fix issue when no order has no credentials",
+                        "**iproyal**: add caching for requests to avoid rate limit"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.24.0",
             "commitGroups": [
                 {
