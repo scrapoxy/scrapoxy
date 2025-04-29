@@ -1,5 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    Cache,
+} from '@scrapoxy/backend-sdk';
 import { pickRandom } from '@scrapoxy/common';
 import { IproyalServerApi } from './api';
 import { convertToProxy } from './iproyal-server.helpers';
@@ -22,11 +25,13 @@ export class ConnectorIproyalService implements IConnectorService {
     constructor(
         credentialConfig: IConnectorIproyalServerCredential,
         private readonly connectorConfig: IConnectorIproyalServerConfig,
-        agents: Agents
+        agents: Agents,
+        cache: Cache
     ) {
         this.api = new IproyalServerApi(
             credentialConfig.token,
-            agents
+            agents,
+            cache
         );
     }
 

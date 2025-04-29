@@ -1,5 +1,7 @@
 export * from './auths';
 
+export * from './cache';
+
 export * from './connectors';
 
 export * from './commander';

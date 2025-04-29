@@ -1,4 +1,7 @@
-import { Agents } from '@scrapoxy/backend-sdk';
+import {
+    Agents,
+    Cache,
+} from '@scrapoxy/backend-sdk';
 import axios from 'axios';
 import type {
     IIproyalServerOrder,
@@ -110,33 +113,75 @@ export class IproyalServerApi {
     }
 
     private async getAllOrders(): Promise<IIproyalServerOrder[]> {
-        const res = await this.instance.get<IIproyalServerOrder[]>(
-            'orders?status[]=confirmed',
-            {
-                params: {
-                    status: [
-                        'confirmed',
-                    ],
-                },
-            }
-        );
+        // Check if we have the orders in cache
+        const key = `${this.token}::iproyal-server-orders`;
+        let orders: IIproyalServerOrder[] = await this.cache.get(key);
 
-        return res.data;
+        if (!orders) {
+            const res = await this.instance.get<IIproyalServerOrder[]>(
+                'orders?status[]=confirmed',
+                {
+                    params: {
+                        status: [
+                            'confirmed',
+                        ],
+                    },
+                }
+            );
+
+            orders = res.data;
+
+            // Cache the orders
+            this.cache.set(
+                key,
+                orders
+            );
+        }
+
+        return orders;
     }
 
     private async getOrderById(id: number): Promise<IIproyalServerOrderDetail> {
-        const res = await this.instance.get<IIproyalServerOrderDetail>(`${id}/order`);
+        // Check if we have the order in cache
+        const key = `${this.token}::iproyal-server-order::${id}`;
+        let order: IIproyalServerOrderDetail = await this.cache.get(key);
 
-        return res.data;
+        if (!order) {
+            const res = await this.instance.get<IIproyalServerOrderDetail>(`${id}/order`);
+
+            order = res.data;
+
+            // Cache the order
+            this.cache.set(
+                key,
+                order
+            );
+        }
+
+        return order;
     }
 
     private async getOrderProxiesById(id: number): Promise<IIproyalServerProxiesResponse> {
-        const res = await this.instance.get<IIproyalServerProxiesResponse>(`${id}/credentials`);
+        // Check if we have the proxies in cache
+        const key = `${this.token}::iproyal-server-proxies-${id}`;
+        let proxies: IIproyalServerProxiesResponse = await this.cache.get(key);
 
-        if (typeof res.data === 'string') {
-            throw new IproyalServerApiError(`Error: ${res.data}`);
+        if (!proxies) {
+            const res = await this.instance.get<IIproyalServerProxiesResponse>(`${id}/credentials`);
+
+            proxies = res.data;
+
+            // Cache the proxies
+            this.cache.set(
+                key,
+                proxies
+            );
         }
 
-        return res.data;
+        if (typeof proxies === 'string') {
+            throw new IproyalServerApiError(`Error: ${proxies}`);
+        }
+
+        return proxies;
     }
 }

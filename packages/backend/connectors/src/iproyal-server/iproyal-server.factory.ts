@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
     Agents,
+    CacheService,
     ConnectorInvalidError,
     ConnectorprovidersService,
     CredentialInvalidError,
@@ -45,7 +46,10 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
 
     private readonly agents: Agents = new Agents();
 
-    constructor(connectorproviders: ConnectorprovidersService) {
+    constructor(
+        connectorproviders: ConnectorprovidersService,
+        private readonly cache: CacheService
+    ) {
         connectorproviders.register(this);
     }
 
@@ -62,7 +66,8 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
         try {
             const api = new IproyalServerApi(
                 config.token,
-                this.agents
+                this.agents,
+                this.cache.getCache(this.config.refreshDelay)
             );
 
             await api.getMyProduct();
@@ -83,7 +88,8 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
         try {
             const api = new IproyalServerApi(
                 credentialConfig.token,
-                this.agents
+                this.agents,
+                this.cache.getCache(this.config.refreshDelay)
             );
 
             await api.getAllProxies(
@@ -103,7 +109,8 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
         return new ConnectorIproyalService(
             connector.credentialConfig,
             connector.connectorConfig,
-            this.agents
+            this.agents,
+            this.cache.getCache(this.config.refreshDelay)
         );
     }
 
@@ -142,7 +149,8 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
     private async queryProducts(credentialConfig: IConnectorIproyalServerCredential): Promise<string[]> {
         const api = new IproyalServerApi(
             credentialConfig.token,
-            this.agents
+            this.agents,
+            this.cache.getCache(this.config.refreshDelay)
         );
         const products = await api.getMyProduct();
 
@@ -152,7 +160,8 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
     private async queryCountries(credentialConfig: IConnectorIproyalServerCredential): Promise<string[]> {
         const api = new IproyalServerApi(
             credentialConfig.token,
-            this.agents
+            this.agents,
+            this.cache.getCache(this.config.refreshDelay)
         );
         const countries = await api.getMyCountries();
 
