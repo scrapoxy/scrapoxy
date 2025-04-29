@@ -9,12 +9,16 @@ import type {
 import type { AxiosInstance } from 'axios';
 
 
+export class IproyalServerApiError extends Error {
+}
+
 export class IproyalServerApi {
     private readonly instance: AxiosInstance;
 
     constructor(
-        token: string,
-        agents: Agents
+        private readonly token: string,
+        agents: Agents,
+        private readonly cache: Cache
     ) {
         this.instance = axios.create({
             ...agents.axiosDefaults,
@@ -47,9 +51,15 @@ export class IproyalServerApi {
                     }
                 }
 
-                const orderProxies = await this.getOrderProxiesById(order.id);
-                for (const data of orderProxies.data) {
-                    proxies.push(...data.proxies);
+                try {
+                    const orderProxies = await this.getOrderProxiesById(order.id);
+                    for (const data of orderProxies.data) {
+                        proxies.push(...data.proxies);
+                    }
+                } catch (err: any) {
+                    if (!err.message?.includes('don\'t have any credentials')) {
+                        throw err;
+                    }
                 }
             })();
 
@@ -122,6 +132,10 @@ export class IproyalServerApi {
 
     private async getOrderProxiesById(id: number): Promise<IIproyalServerProxiesResponse> {
         const res = await this.instance.get<IIproyalServerProxiesResponse>(`${id}/credentials`);
+
+        if (typeof res.data === 'string') {
+            throw new IproyalServerApiError(`Error: ${res.data}`);
+        }
 
         return res.data;
     }
