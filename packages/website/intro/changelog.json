@@ -1,6 +1,18 @@
 {
     "releases": [
         {
+            "version": "4.24.2",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**smartproxy**: rename smartproxy to decodo",
+                        "**zyte**: fix some typos"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.24.1",
             "commitGroups": [
                 {
