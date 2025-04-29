@@ -10,6 +10,8 @@ export * from './connector.interface';
 
 export * from './datacenter-local';
 
+export * from './decodo';
+
 export * from './digitalocean';
 
 export * from './evomi';
@@ -55,8 +57,6 @@ export * from './proxyrack';
 export * from './rayobyte';
 
 export * from './scaleway';
-
-export * from './smartproxy';
 
 export * from './tencent';
 

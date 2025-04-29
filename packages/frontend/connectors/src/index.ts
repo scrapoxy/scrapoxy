@@ -52,7 +52,7 @@ export * from './rayobyte';
 
 export * from './scaleway';
 
-export * from './smartproxy';
+export * from './decodo';
 
 export * from './tencent';
 

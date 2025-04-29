@@ -14,6 +14,7 @@ import { migration as migration0013 } from './0013-country-case';
 import { migration as migration0014 } from './0014-brightdata-v3';
 import { migration as migration0015 } from './0015-remove-install';
 import { migration as migration0016 } from './0016-remove-templatename';
+import { migration as migration0017 } from './0017-smartproxy-is-decodo';
 
 
 export default [
@@ -33,4 +34,5 @@ export default [
     migration0014,
     migration0015,
     migration0016,
+    migration0017,
 ];

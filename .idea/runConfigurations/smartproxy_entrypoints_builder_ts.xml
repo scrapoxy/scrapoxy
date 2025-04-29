@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="smartproxy_entrypoints_builder.ts" type="NodeJSConfigurationType" node-parameters="--require ts-node/register" path-to-js-file="tools/smartproxy_entrypoints_builder.ts" working-dir="$PROJECT_DIR$">
-    <method v="2" />
-  </configuration>
-</component>
