@@ -2,7 +2,7 @@
 
 ![Zyte](/assets/images/zyte.svg){width=150 nozoom}
 
-[Zyte](/l/zyte) (formely Crawlera) is a proxies service for Data Extraction.
+[Zyte](/l/zyte) (formerly Crawlera) is a proxies service for Data Extraction.
 
 Scrapoxy supports both [Zyte API (Proxy Mode)](/l/zyte-api)
 and [Smart Proxy Manager](/l/zyte-spm).
