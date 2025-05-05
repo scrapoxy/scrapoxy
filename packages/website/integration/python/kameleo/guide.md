@@ -80,12 +80,12 @@ Connect to the Kameleo CLI:
 
 ```python
 from kameleo.local_api_client import KameleoLocalApiClient
+import os
 
-kameleo_port = 5050
+kameleo_port = os.getenv('KAMELEO_PORT', '5050')
 
 client = KameleoLocalApiClient(
-  endpoint=f'http://localhost:{kameleo_port}',
-  retry_total=0
+    endpoint=f'http://localhost:{kameleo_port}'
 )
 ```
 
@@ -104,11 +104,10 @@ operating system, and browser.
 Get all the profiles:
 
 ```python
-base_profiles = client.search_base_profiles(
-  device_type='desktop',
-  browser_product='chrome',
-  os_family='windows',
-  language='en-us'
+fingerprints = client.fingerprint.search_fingerprints(
+    device_type='desktop',
+    browser_product='chrome',
+    browser_version='134',
 )
 ```
 
@@ -118,18 +117,17 @@ base_profiles = client.search_base_profiles(
 Set up a profile compatible with Scrapoxy:
 
 ```python
-from kameleo.local_api_client.builder_for_create_profile import BuilderForCreateProfile
-from kameleo.local_api_client.models import Server
+from kameleo.local_api_client import KameleoLocalApiClient
+from kameleo.local_api_client.models import CreateProfileRequest, ProxyChoice, Server
 
-create_profile_request = BuilderForCreateProfile \
-  .for_base_profile(base_profiles[0].id) \
-  .set_name('kameleo scrapoxy integration') \
-  .set_recommended_defaults() \
-  .set_proxy('http', Server(host='localhost', port=8888, id='USERNAME', secret='PASSWORD')) \
-  .set_start_page("https://kameleo.io") \
-  .build()
-
-profile = client.create_profile(body=create_profile_request)
+create_profile_request = CreateProfileRequest(
+    fingerprint_id=fingerprints[0].id,
+    name='start with proxy example',
+    proxy=ProxyChoice(
+        value='socks5',
+        extra=Server(host=PROXY_HOST, port=PROXY_PORT, id=PROXY_USERNAME, secret=PROXY_PASSWORD)
+    ))
+profile = client.profile.create_profile(create_profile_request)
 ```
 
 The recommended default settings are designed to work with most anti-bot systems.
@@ -148,7 +146,7 @@ Kameleo includes 2 custom-built browsers designed to bypass anti-bot systems dur
 Start the browser profile:
 
 ```python
-client.start_profile(profile.id)
+client.profile.start_profile(profile.id)
 ```
 
 
@@ -176,10 +174,10 @@ And open Kameleo's browser on Cloudflare:
 from selenium import webdriver
 
 options = webdriver.ChromeOptions()
-options.add_experimental_option("kameleo:profileId", profile.id)
+options.add_experimental_option('kameleo:profileId', profile.id)
 driver = webdriver.Remote(
-  command_executor=f'http://localhost:{kameleo_port}/webdriver',
-  options=options
+    command_executor=f'http://localhost:{kameleo_port}/webdriver',
+    options=options
 )
 
 driver.get('https://cloudflare.com')
@@ -202,9 +200,7 @@ import asyncio
 
 async def main():
     browser_ws_endpoint = f'ws://localhost:{kameleo_port}/puppeteer/{profile.id}'
-    browser = await pyppeteer.launcher.connect(
-      browserWSEndpoint=browser_ws_endpoint,
-      defaultViewport=False)
+    browser = await pyppeteer.launcher.connect(browserWSEndpoint=browser_ws_endpoint, defaultViewport=False)
     page = await browser.newPage()
     
     await page.goto('https://cloudflare.com')
@@ -228,9 +224,9 @@ from playwright.sync_api import sync_playwright
 
 browser_ws_endpoint = f'ws://localhost:{kameleo_port}/playwright/{profile.id}'
 with sync_playwright() as playwright:
-  browser = playwright.chromium.connect_over_cdp(endpoint_url=browser_ws_endpoint)
-  context = browser.contexts[0]
-  page = context.new_page()
+    browser = playwright.chromium.connect_over_cdp(endpoint_url=browser_ws_endpoint)
+    context = browser.contexts[0]
+    page = context.new_page()
   page.goto('https://cloudflare.com')
 ```
 
@@ -240,5 +236,5 @@ with sync_playwright() as playwright:
 For more information about Kameleo, check out the following resources:
 
 * [Terminology](/l/kameleo-terminology)
-* [Getting Started guide](/l/kameleo-getting-started)
+* [Getting Started with Kameleo Automation](/l/kameleo-getting-started)
 * [Examples on Kameleo's GitHub](/l/kameleo-examples)
