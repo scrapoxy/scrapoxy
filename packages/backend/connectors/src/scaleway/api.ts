@@ -125,7 +125,7 @@ export class ScalewayApi {
         request.volumes = {
             0: {
                 size: 10000000000,
-                volume_type: 'b_ssd',
+                volume_type: 'sbs_volume',
             },
         };
 
