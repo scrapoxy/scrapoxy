@@ -4,38 +4,33 @@ export interface IConnectorIproyalServerCredential {
 
 
 export interface IConnectorIproyalServerConfig {
-    product: string;
+    productId: number;
 
     country: string;
 }
 
 
-export interface IIproyalServerOrder {
-    id: number;
-    productName: string;
-    orderDate: string;
-}
-
-
-export interface IIproyalServerOrderDetail {
-    id: number;
-    productName: string;
-    location: string;
+export interface IIproyalServerProxiesResponse<T> {
+    data: T;
 }
 
 
 export interface IIproyalServerProxy {
-    id: number;
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    ip_address: string;
-    port: number;
     username: string;
     password: string;
+    ip: string;
 }
 
 
-export interface IIproyalServerProxiesResponse {
-    data: [{
+export interface IIproyalServerOrder {
+    id: number;
+    location: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    proxy_data: {
+        ports: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            'http|https': number;
+        };
         proxies: IIproyalServerProxy[];
-    }];
+    };
 }

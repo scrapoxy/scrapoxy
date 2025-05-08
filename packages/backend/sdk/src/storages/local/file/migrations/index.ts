@@ -15,6 +15,7 @@ import { migration as migration0014 } from './0014-brightdata-v3';
 import { migration as migration0015 } from './0015-remove-install';
 import { migration as migration0016 } from './0016-remove-templatename';
 import { migration as migration0017 } from './0017-smartproxy-is-decodo';
+import { migration as migration0018 } from './0018-iproyal-new-api';
 
 
 export default [
@@ -35,4 +36,5 @@ export default [
     migration0015,
     migration0016,
     migration0017,
+    migration0018,
 ];

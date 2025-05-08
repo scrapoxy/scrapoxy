@@ -17,7 +17,10 @@ import {
     ToastsService,
 } from '@scrapoxy/frontend-sdk';
 import type { OnInit } from '@angular/core';
-import type { ICommanderFrontendClient } from '@scrapoxy/common';
+import type {
+    ICommanderFrontendClient,
+    IIproyalServerQueryCountries,
+} from '@scrapoxy/common';
 import type { IConnectorComponent } from '@scrapoxy/frontend-sdk';
 
 
@@ -41,13 +44,9 @@ export class ConnectorIproyalServerComponent implements IConnectorComponent, OnI
     @Input()
         createMode: boolean;
 
-    products: string[] = [];
-
     countries: string[] = [];
 
     readonly subForm: FormGroup;
-
-    processingProducts = false;
 
     processingCountries = false;
 
@@ -58,7 +57,7 @@ export class ConnectorIproyalServerComponent implements IConnectorComponent, OnI
         private readonly toastsService: ToastsService
     ) {
         this.subForm = fb.group({
-            product: [
+            productId: [
                 void 0, Validators.required,
             ],
             country: [
@@ -81,57 +80,67 @@ export class ConnectorIproyalServerComponent implements IConnectorComponent, OnI
 
         if (this.createMode) {
             this.subForm.patchValue({
-                product: 'all',
+                productId: 3,
                 country: 'all',
             });
         }
 
-        // Products
-        this.processingProducts = true;
-        this.commander.queryCredential(
-            this.projectId,
-            this.credentialId,
-            {
-                type: EIproyalServerQueryCredential.Products,
-            }
-        )
-            .then((products) => {
-                this.products = products;
-            })
-            .catch((err: any) => {
+        await Promise.resolve();
+
+        await this.updateCountries(this.subForm.value.productId);
+    }
+
+    async productIdChanged(): Promise<void> {
+        const productId = this.subForm.value.productId;
+
+        if (productId) {
+            await this.updateCountries(productId);
+        } else {
+            await this.updateCountries();
+        }
+    }
+
+    private async updateCountries(productId?: number): Promise<void> {
+        console.log(
+            'updateCountries',
+            productId
+        );
+
+        if (productId) {
+            this.processingCountries = true;
+
+            try {
+                const parameters: IIproyalServerQueryCountries = {
+                    productId,
+                };
+
+                this.countries = await this.commander.queryCredential(
+                    this.projectId,
+                    this.credentialId,
+                    {
+                        type: EIproyalServerQueryCredential.Countries,
+                        parameters,
+                    }
+                )
+                    .then((countries) => countries.sort());
+
+                if (this.subForm.value.country && !this.countries.includes(this.subForm.value.country)) {
+                    this.subForm.patchValue({
+                        country: 'all',
+                    });
+                }
+            } catch (err: any) {
                 console.error(err);
 
                 this.toastsService.error(
                     'Connector Iproyal Server',
                     err.message
                 );
-            })
-            .finally(() => {
-                this.processingProducts = false;
-            });
-
-        // Countries
-        this.processingCountries = true;
-        this.commander.queryCredential(
-            this.projectId,
-            this.credentialId,
-            {
-                type: EIproyalServerQueryCredential.Countries,
-            }
-        )
-            .then((country) => {
-                this.countries = country;
-            })
-            .catch((err: any) => {
-                console.error(err);
-
-                this.toastsService.error(
-                    'Connector Iproyal Server',
-                    err.message
-                );
-            })
-            .finally(() => {
+            } finally {
                 this.processingCountries = false;
-            });
+            }
+        } else {
+            this.countries = [];
+        }
     }
 }

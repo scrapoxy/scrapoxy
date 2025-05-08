@@ -35,7 +35,7 @@ describe(
                         {
                             name: 'Test on Static IP',
                             config: {
-                                product: 'all',
+                                productId: 3,
                                 country: 'all',
                             } satisfies IConnectorIproyalServerConfig,
                             install: void 0,

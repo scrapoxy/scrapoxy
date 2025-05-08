@@ -1,4 +1,7 @@
 export enum EIproyalServerQueryCredential {
-    Products = 'products',
     Countries = 'countries',
+}
+
+export interface IIproyalServerQueryCountries {
+    productId: number;
 }

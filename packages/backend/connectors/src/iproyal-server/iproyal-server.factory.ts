@@ -31,6 +31,7 @@ import type {
     IConnectorToRefresh,
     ICredentialData,
     ICredentialQuery,
+    IIproyalServerQueryCountries,
     ITaskToCreate,
 } from '@scrapoxy/common';
 
@@ -70,7 +71,7 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
                 this.cache.getCache(this.config.refreshDelay)
             );
 
-            await api.getMyProduct();
+            await api.getBalance();
         } catch (err: any) {
             throw new CredentialInvalidError(err.message);
         }
@@ -92,10 +93,7 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
                 this.cache.getCache(this.config.refreshDelay)
             );
 
-            await api.getAllProxies(
-                connectorConfig.product,
-                connectorConfig.country
-            );
+            await api.getAllOrders(connectorConfig.productId);
         } catch (err: any) {
             throw new ConnectorInvalidError(err.message);
         }
@@ -132,12 +130,11 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
         const credentialConfig = credential.config as IConnectorIproyalServerCredential;
 
         switch (query.type) {
-            case EIproyalServerQueryCredential.Products: {
-                return this.queryProducts(credentialConfig);
-            }
-
             case EIproyalServerQueryCredential.Countries: {
-                return this.queryCountries(credentialConfig);
+                return this.queryCountries(
+                    credentialConfig,
+                    query.parameters as IIproyalServerQueryCountries
+                );
             }
 
             default: {
@@ -146,24 +143,16 @@ export class ConnectorIproyalServerFactory implements IConnectorFactory, OnModul
         }
     }
 
-    private async queryProducts(credentialConfig: IConnectorIproyalServerCredential): Promise<string[]> {
+    private async queryCountries(
+        credentialConfig: IConnectorIproyalServerCredential,
+        parameters: IIproyalServerQueryCountries
+    ): Promise<string[]> {
         const api = new IproyalServerApi(
             credentialConfig.token,
             this.agents,
             this.cache.getCache(this.config.refreshDelay)
         );
-        const products = await api.getMyProduct();
-
-        return products;
-    }
-
-    private async queryCountries(credentialConfig: IConnectorIproyalServerCredential): Promise<string[]> {
-        const api = new IproyalServerApi(
-            credentialConfig.token,
-            this.agents,
-            this.cache.getCache(this.config.refreshDelay)
-        );
-        const countries = await api.getMyCountries();
+        const countries = await api.getMyCountries(parameters.productId);
 
         return countries;
     }

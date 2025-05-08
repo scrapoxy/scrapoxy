@@ -6,7 +6,7 @@ const schemaCredential = Joi.object({
         .required(),
 });
 const schemaConfig = Joi.object({
-    product: Joi.string()
+    productId: Joi.number()
         .required(),
     country: Joi.string()
         .required(),
