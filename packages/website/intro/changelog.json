@@ -1,6 +1,18 @@
 {
     "releases": [
         {
+            "version": "4.24.3",
+            "commitGroups": [
+                {
+                    "title": "Bug Fixes",
+                    "commits": [
+                        "**iproyal**: use the new API",
+                        "**scaleway**: update volume type to sbs_volume (thanks to [Rémy Fontaine](https://scrapoxy.io/l/github-remyft) from [Sahar](https://scrapoxy.io/l/sahar))"
+                    ]
+                }
+            ]
+        },
+        {
             "version": "4.24.2",
             "commitGroups": [
                 {
