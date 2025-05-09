@@ -214,7 +214,7 @@ npm install playwright
 And open Kameleo's browser on Cloudflare:
 
 ```js
-import { chromium } from "playwright";
+import playwright from "playwright";
 
 const browserWSEndpoint = `ws://localhost:${kameleoPort}/playwright/${profile.id}`;
 const browser = await chromium.connectOverCDP({
