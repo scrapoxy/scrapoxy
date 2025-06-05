@@ -117,7 +117,7 @@ It can be started in seconds using Docker, or be deployed in a complex, distribu
 
 ### 🔓 Free 🔓
 
-Scrapoxy is free, under a [commercial licence](./LICENCE.md).
+Scrapoxy is free, only pay for support.
 
 
 ## Documentation
