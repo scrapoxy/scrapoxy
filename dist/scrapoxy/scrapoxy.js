@@ -2,4 +2,4 @@
 
 "use strict";
 
-console.log("Scrapoxy is no longer distributed in a NPM package. Use the Docker instead.")
+console.log("Scrapoxy has been discontinued.")
