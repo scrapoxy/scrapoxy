@@ -12,5 +12,5 @@
         "scrapoxy": "scrapoxy.js"
     },
     "main": "scrapoxy.js",
-    "version": "4.28.4"
+    "version": "4.28.5"
 }
